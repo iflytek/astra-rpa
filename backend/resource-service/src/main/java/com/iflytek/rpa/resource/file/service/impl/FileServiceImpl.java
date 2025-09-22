@@ -225,7 +225,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
         return S3Client.builder()
                 .region(Region.US_EAST_1) // 根据实际情况调整区域
                 .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
-                .endpointOverride(java.net.URI.create("https://" + s3Config.getUrl()))
+                .endpointOverride(java.net.URI.create(s3Config.getUrl()))
                 .build();
     }
 }

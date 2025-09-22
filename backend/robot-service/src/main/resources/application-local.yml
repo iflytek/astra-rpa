@@ -125,8 +125,8 @@ sms:
 
 casdoor:
   endpoint: ${CASDOOR_ENDPOINT}
-  client-id: e3ba6fec42cfe996121f
-  client-secret: 0c18bf2a11ffbb756ec6ce47dae9e09bdd48e3dd
+  client-id: ${CASDOOR_CLIENT_ID}
+  client-secret: ${CASDOOR_CLIENT_SECRET}
   certificate: |-
     -----BEGIN CERTIFICATE-----
     MIIE3TCCAsWgAwIBAgIDAeJAMA0GCSqGSIb3DQEBCwUAMCgxDjAMBgNVBAoTBWFk
@@ -157,6 +157,6 @@ casdoor:
     EzhOO4NA9WgaE1c6GzZD87GhrZukHWHE4KvTpkiQ3pGmTqUjIHvon+0lKtG8E5fz
     Kg==
     -----END CERTIFICATE-----
-  organization-name: example-org
-  application-name: example-app
-  redirect-url: http://localhost:1420/
+  organization-name: ${CASDOOR_ORGANIZATION_NAME}
+  application-name: ${CASDOOR_APPLICATION_NAME}
+  redirect-url: ${CASDOOR_REDIRECT_URL}
