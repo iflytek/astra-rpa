@@ -7,17 +7,6 @@ import cv2
 import numpy as np
 
 
-
-# def ocr_image(image, flag):
-#     """
-#     执行OCR来提取文本
-#     """
-#     uniOCR = universalOcr(APP_ID, API_KEY, API_SECRET)
-#     _, buffer = cv2.imencode('.jpg', image)
-#     text, boxes = uniOCR.get_result(buffer, flag)
-#     return text, boxes
-
-
 class ImageDetector(object):
     """
     用于图像处理和目标检测的类，使用OpenCV库。
@@ -252,14 +241,6 @@ class ImageDetector(object):
 
         return contours
 
-    # def qcolor_to_bgr(self, qcolor):
-    #     # 获取 RGB 颜色分量
-    #     r = qcolor.red()
-    #     g = qcolor.green()
-    #     b = qcolor.blue()
-    #     # 返回 BGR 颜色元组
-    #     return (b, g, r)
-
     def detect_objects(self, dash_color, line_width):
         """
         检测图像中的对象，并返回带有检测到的对象的原始图像和边界框列表。
@@ -267,11 +248,6 @@ class ImageDetector(object):
         :return: 带有检测到的对象的原始图像和边界框列表。
                  每个边界框以 ((左上角x, 左上角y), (右下角x, 右下角y)) 的格式表示。
         """
-
-        # 对灰度图像进行高斯处理
-        # self.img = img
-        # self.gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        # self.original_img = o_image
 
         start_time = time.time()
         blurred = cv2.GaussianBlur(self.gray_img, (3, 3), 0)
@@ -357,28 +333,6 @@ class ImageDetector(object):
         end_time = time.time()
         print(end_time - start_time)
         return self.output_img, selected_boxes
-
-    # def detect_ocr_text(self, line_width):
-    #     ocr_bboxes = ocr_image(self.original_img, True)[1]
-    #     bboxes = []
-    #     for ocr_bbox in ocr_bboxes:
-    #         x, y = ocr_bbox[0], ocr_bbox[1]
-    #         w = ocr_bbox[4] - x
-    #         h = ocr_bbox[5] - y
-    #         bboxes.append((x, y, w, h))
-    #     selected_boxes = self.apply_nms(bboxes)
-    #     boxes_with_coordinates = []
-    #
-    #     dash_color = "#FF0000"
-    #     dash_color = dash_color.lstrip('#')
-    #
-    #     dash_color = tuple(int(dash_color[i:i + 2], 16) for i in (0, 2, 4))
-    #     for box in selected_boxes:
-    #         x, y, w, h = box
-    #         boxes_with_coordinates.append(box)
-    #         self.draw_dashed_rectangle((x, y), (x + w, y + h), dash_color, line_width, 5)
-    #
-    #     return selected_boxes
 
     def show_or_save_image(self, save_path: str = None, show_image: bool = True):
         """
