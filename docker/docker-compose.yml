@@ -14,6 +14,7 @@ services:
     # ports:
     #   - "${DATABASE_PORT}:3306"
     volumes:
+      - ./volumes/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
       - ./data/mysql:/var/lib/mysql
       - ./volumes/mysql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
       - ./volumes/mysql/init_app_market_dict_data.sql:/docker-entrypoint-initdb.d/02-init_data.sql
