@@ -83,7 +83,7 @@ class NotifyUtils:
 
     def send(self, robot_name, run_time):
         if self.email_setting.get("is_enable", False):
-            content = "【AstraRPA】您运行的机器人 {}于{}运行失败，请您及时查看".format(
+            content = "【AstronRPA】您运行的机器人 {}于{}运行失败，请您及时查看".format(
                 robot_name, run_time
             )
             self.login_send()
