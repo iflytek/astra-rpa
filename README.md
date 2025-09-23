@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![AstronRPA Logo](https://via.placeholder.com/200x80?text=AstronRPA)
+![AstronRPA Logo](./docs/images/icon_128px.png)
 
 **🤖 Enterprise-grade Robotic Process Automation (RPA) Development Platform**
 

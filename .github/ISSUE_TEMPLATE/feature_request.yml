@@ -1,0 +1,235 @@
+name: 🚀 功能请求
+description: 建议一个新功能或改进
+title: "[Feature]: "
+labels: ["enhancement", "feature-request"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您的功能建议！您的想法对改进 AstronRPA 很有价值。
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 确认清单
+      description: 在提交功能请求之前，请确认以下事项
+      options:
+        - label: 我已经搜索了现有的 Issues 和 Discussions，确认这不是重复请求
+          required: true
+        - label: 我已经阅读了项目文档和路线图
+          required: true
+        - label: 这个功能符合项目的目标和范围
+          required: false
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 🎯 功能类别
+      description: 选择最符合您请求的类别
+      options:
+        - 🎨 用户界面/用户体验
+        - 🤖 RPA 自动化能力
+        - 🔧 开发工具和 API
+        - 📊 监控和分析
+        - 🔒 安全和权限
+        - 🚀 性能优化
+        - 🌐 平台支持
+        - 📱 移动端支持
+        - 🔌 集成和扩展
+        - 📚 文档和教程
+        - 🛠️ 开发者体验
+        - 其他
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: 🧩 相关组件
+      description: 选择主要涉及的组件
+      options:
+        - 前端 Web 应用
+        - 前端 Tauri 桌面应用
+        - 前端浏览器插件
+        - 后端 robot-service (Java)
+        - 后端 ai-service (Python)
+        - 后端 openapi-service (Python)
+        - 后端 resource-service (Java)
+        - RPA 引擎核心
+        - RPA 组件 - rpasystem
+        - RPA 组件 - rpabrowser
+        - RPA 组件 - rpagui
+        - RPA 组件 - rpaexcel
+        - RPA 组件 - rpacv
+        - RPA 组件 - rpaai
+        - RPA 组件 - rpadatabase
+        - RPA 组件 - 其他组件
+        - 部署和运维
+        - 文档
+        - 全局功能
+        - 新组件
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 🤔 问题描述
+      description: 您希望解决什么问题？目前的痛点是什么？
+      placeholder: |
+        描述您遇到的问题或不便之处...
+        例如：
+        - 当前流程繁琐，需要多个步骤
+        - 缺少某个关键功能
+        - 现有功能不够灵活
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 💡 解决方案
+      description: 您建议的解决方案是什么？
+      placeholder: |
+        详细描述您的功能请求...
+        例如：
+        - 添加一个新的组件来处理...
+        - 在现有界面上增加...
+        - 提供新的 API 接口来...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 替代方案
+      description: 您是否考虑过其他解决方案？
+      placeholder: |
+        描述您考虑过的其他方案...
+        或者现在的临时解决方法...
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: 📋 使用场景
+      description: 详细描述这个功能的使用场景和用户故事
+      placeholder: |
+        用户故事示例：
+        作为 [用户角色]，
+        我希望能够 [执行某个操作]，
+        以便 [达到某个目标]。
+        
+        具体场景：
+        1. 场景一：...
+        2. 场景二：...
+    validations:
+      required: true
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: 🎯 示例或原型
+      description: 提供具体的示例、截图、原型设计或参考实现
+      placeholder: |
+        - 界面原型图
+        - 代码示例
+        - 参考其他产品的类似功能
+        - API 接口设计草图
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: ✅ 验收标准
+      description: 您认为什么样的实现才算成功？
+      placeholder: |
+        功能完成的标准：
+        - [ ] 能够实现...
+        - [ ] 用户可以通过...操作
+        - [ ] 性能达到...标准
+        - [ ] 兼容...环境
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 📊 优先级
+      description: 这个功能对您有多重要？
+      options:
+        - 🔥 关键 - 项目必需功能
+        - 🔶 高 - 显著提升效率
+        - 🔷 中 - 有用的增强
+        - 🔹 低 - 可有可无
+      default: 2
+
+  - type: dropdown
+    id: effort
+    attributes:
+      label: ⏱️ 预估工作量
+      description: 您认为这个功能的实现难度如何？
+      options:
+        - 🟢 简单 - 几小时内
+        - 🟡 中等 - 几天内
+        - 🟠 复杂 - 几周内
+        - 🔴 困难 - 几个月内
+        - 🤷 不确定
+      default: 4
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: 📈 预期影响
+      description: 这个功能会带来什么价值？影响哪些用户？
+      placeholder: |
+        这个功能将会：
+        - 帮助...类型的用户
+        - 提升...方面的效率
+        - 解决...领域的问题
+        - 降低...成本
+
+  - type: textarea
+    id: considerations
+    attributes:
+      label: ⚠️ 技术考虑
+      description: 是否有特殊的技术要求、约束或考虑事项？
+      placeholder: |
+        - 性能要求
+        - 兼容性要求
+        - 安全考虑
+        - 架构影响
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: 📚 相关资源
+      description: 提供相关的参考资料、文档或链接
+      placeholder: |
+        - 相关文档链接
+        - 技术规范
+        - 竞品分析
+        - 学术论文
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: 🤝 贡献意愿
+      description: 您是否愿意参与这个功能的开发？
+      options:
+        - label: 我愿意提交 PR 来实现这个功能
+          required: false
+        - label: 我可以提供设计或原型
+          required: false
+        - label: 我可以帮助测试和验证
+          required: false
+        - label: 我可以提供技术咨询
+          required: false
+        - label: 我可以帮助完善需求文档
+          required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📝 额外信息
+      description: 添加任何其他相关信息或想法
+      placeholder: 任何其他有助于理解和实现这个功能的信息

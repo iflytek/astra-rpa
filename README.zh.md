@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![AstronRPA Logo](https://via.placeholder.com/200x80?text=AstronRPA)
+![AstronRPA Logo](./docs/images/icon_128px.png)
 
 **🤖 企业级机器人流程自动化（RPA）开发平台**
 

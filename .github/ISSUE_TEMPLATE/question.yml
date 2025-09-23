@@ -1,0 +1,248 @@
+name: ❓ 问题咨询
+description: 提出使用问题或寻求帮助
+title: "[Question]: "
+labels: ["question", "help wanted"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        欢迎提问！我们很乐意帮助您解决 AstronRPA 相关的问题。
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 确认清单
+      description: 在提交问题之前，请确认以下事项
+      options:
+        - label: 我已经搜索了现有的 Issues、Discussions 和文档
+          required: true
+        - label: 我已经查阅了相关的用户手册和 API 文档
+          required: true
+        - label: 这是一个使用问题，而不是 Bug 报告或功能请求
+          required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 🎯 问题类型
+      description: 选择最符合您问题的类别
+      options:
+        - 🛠️ 安装和部署
+        - 🚀 快速开始和入门
+        - 🎨 界面使用和操作
+        - 🤖 RPA 流程设计
+        - 🧩 组件使用和配置
+        - 🔧 API 集成和开发
+        - 🐍 Python 脚本编写
+        - ☕ Java 服务配置
+        - 🌐 网页自动化
+        - 📊 Excel 数据处理
+        - 🖼️ 图像识别和 OCR
+        - 🤖 AI 功能使用
+        - 🗄️ 数据库操作
+        - 📧 邮件处理
+        - 🔒 权限和安全
+        - 📊 监控和日志
+        - 🐳 Docker 容器化
+        - 🔄 CI/CD 集成
+        - 📚 学习资源
+        - 其他
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: 🧩 相关组件
+      description: 选择主要涉及的组件（如果适用）
+      options:
+        - 不确定/通用问题
+        - 前端 Web 应用
+        - 前端 Tauri 桌面应用
+        - 前端浏览器插件
+        - 后端 robot-service
+        - 后端 ai-service
+        - 后端 openapi-service
+        - 后端 resource-service
+        - RPA 引擎核心
+        - rpasystem 系统组件
+        - rpabrowser 浏览器组件
+        - rpagui GUI 自动化
+        - rpaexcel Excel 组件
+        - rpacv 计算机视觉
+        - rpaai AI 组件
+        - rpadatabase 数据库组件
+        - rpaemail 邮件组件
+        - rpadocx Word 组件
+        - rpapdf PDF 组件
+        - rpaencrypt 加密组件
+        - 其他 RPA 组件
+        - Docker 部署
+        - 文档
+      default: 0
+
+  - type: dropdown
+    id: experience
+    attributes:
+      label: 👤 经验水平
+      description: 您在 RPA 和相关技术方面的经验如何？
+      options:
+        - 🌱 新手 - 刚开始学习 RPA
+        - 🌿 初级 - 有一些基础知识
+        - 🌳 中级 - 有相当经验
+        - 🌲 高级 - 非常熟练
+      default: 0
+
+  - type: textarea
+    id: question
+    attributes:
+      label: ❓ 具体问题
+      description: 请清楚地描述您的问题
+      placeholder: |
+        详细描述您遇到的问题或需要帮助的地方...
+        
+        例如：
+        - 我想实现...功能，但不知道如何...
+        - 我按照文档操作，但是...
+        - 我在使用...组件时遇到了...
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 🎯 使用场景
+      description: 描述您想要实现的目标和使用场景
+      placeholder: |
+        我想要实现什么：
+        - 业务目标：...
+        - 具体场景：...
+        - 预期结果：...
+    validations:
+      required: true
+
+  - type: textarea
+    id: attempts
+    attributes:
+      label: 🔍 尝试过的方法
+      description: 您已经尝试了哪些解决方法？
+      placeholder: |
+        我已经尝试了：
+        1. 查阅了...文档
+        2. 尝试了...方法
+        3. 搜索了...相关信息
+        
+        遇到的问题：
+        - ...
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: 🖥️ 运行环境
+      description: 您的运行环境
+      options:
+        - Windows 10
+        - Windows 11
+        - macOS
+        - Linux Ubuntu
+        - Linux CentOS
+        - Docker 容器
+        - 其他
+      default: 0
+
+  - type: input
+    id: version
+    attributes:
+      label: 📋 版本信息
+      description: 您使用的 AstronRPA 版本
+      placeholder: 例如：v1.0.0
+
+  - type: textarea
+    id: code
+    attributes:
+      label: 💻 相关代码
+      description: 如果有相关代码，请粘贴在这里（请移除敏感信息）
+      placeholder: |
+        ```python
+        # 您的代码示例
+        ```
+        
+        或
+        
+        ```javascript
+        // 您的代码示例
+        ```
+
+  - type: textarea
+    id: config
+    attributes:
+      label: ⚙️ 配置文件
+      description: 相关的配置文件内容（请移除敏感信息）
+      placeholder: |
+        ```yaml
+        # 配置文件内容
+        ```
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📋 日志信息
+      description: 相关的日志或错误信息
+      placeholder: |
+        ```
+        日志内容或错误信息
+        ```
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 📸 截图或图片
+      description: 如果有助于说明问题，请添加截图
+      placeholder: 拖拽图片文件到这里，或粘贴图片链接
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: ⏰ 紧急程度
+      description: 这个问题的紧急程度如何？
+      options:
+        - 🔥 紧急 - 阻止项目进展
+        - 🔶 高 - 影响开发计划
+        - 🔷 中 - 希望尽快解决
+        - 🔹 低 - 有时间再解决
+      default: 2
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 💭 期望的帮助
+      description: 您希望得到什么样的帮助？
+      placeholder: |
+        我希望：
+        - 得到具体的操作步骤
+        - 了解最佳实践
+        - 获得代码示例
+        - 推荐相关资源
+        - 其他...
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: 🤝 回馈意愿
+      description: 解决问题后，您是否愿意帮助其他用户？
+      options:
+        - label: 我愿意分享解决方案
+          required: false
+        - label: 我可以帮助改进相关文档
+          required: false
+        - label: 我愿意回答类似问题
+          required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📝 补充信息
+      description: 任何其他有助于理解问题的信息
+      placeholder: 其他相关的背景信息、限制条件或特殊要求

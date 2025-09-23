@@ -1,0 +1,185 @@
+name: 📚 文档改进
+description: 报告文档问题或建议文档改进
+title: "[Docs]: "
+labels: ["documentation", "improvement"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您帮助改进 AstronRPA 的文档！好的文档是项目成功的关键。
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 确认清单
+      description: 在提交文档问题之前，请确认以下事项
+      options:
+        - label: 我已经搜索了现有的文档相关 Issues
+          required: true
+        - label: 我已经查看了最新版本的文档
+          required: true
+
+  - type: dropdown
+    id: doc_type
+    attributes:
+      label: 📖 文档类型
+      description: 选择相关的文档类型
+      options:
+        - README 文件
+        - 安装和部署指南
+        - 用户使用手册
+        - API 文档
+        - 组件开发文档
+        - 架构设计文档
+        - 故障排除指南
+        - 代码注释
+        - 配置说明
+        - 示例和教程
+        - 其他
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: 🎯 问题类型
+      description: 选择文档问题的类型
+      options:
+        - 📝 内容缺失 - 缺少重要信息
+        - ❌ 内容错误 - 信息不准确
+        - 🔄 内容过时 - 需要更新
+        - 😕 表达不清 - 难以理解
+        - 🔗 链接失效 - 链接或引用错误
+        - 🎨 格式问题 - 排版或格式错误
+        - 🌍 翻译问题 - 多语言相关
+        - 💡 改进建议 - 可以做得更好
+        - 📋 新增需求 - 需要新的文档
+      default: 0
+    validations:
+      required: true
+
+  - type: input
+    id: doc_location
+    attributes:
+      label: 📍 文档位置
+      description: 请提供相关文档的路径或链接
+      placeholder: 例如：README.md, docs/api.md, https://example.com/docs
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 📝 问题描述
+      description: 详细描述文档问题或改进建议
+      placeholder: |
+        请具体描述：
+        - 现在的文档有什么问题？
+        - 缺少了什么信息？
+        - 哪里容易让人困惑？
+        - 有什么改进建议？
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_content
+    attributes:
+      label: 📄 当前内容
+      description: 如果适用，请引用当前的文档内容
+      placeholder: |
+        ```
+        当前文档中的相关内容...
+        ```
+
+  - type: textarea
+    id: suggested_content
+    attributes:
+      label: ✏️ 建议内容
+      description: 您建议的改进内容或新增内容
+      placeholder: |
+        ```
+        建议的文档内容...
+        ```
+
+  - type: textarea
+    id: context
+    attributes:
+      label: 🎯 使用场景
+      description: 描述用户在什么情况下会需要这个文档
+      placeholder: |
+        用户场景：
+        - 新用户首次安装时...
+        - 开发者集成 API 时...
+        - 用户遇到问题时...
+
+  - type: dropdown
+    id: audience
+    attributes:
+      label: 👥 目标读者
+      description: 这个文档主要面向哪类用户？
+      options:
+        - 🌱 初学者用户
+        - 👤 普通用户
+        - 👨‍💻 开发者
+        - 🏢 企业用户
+        - 🔧 运维人员
+        - 📚 文档贡献者
+        - 🎯 所有用户
+      default: 6
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 📊 优先级
+      description: 这个文档问题的重要程度
+      options:
+        - 🔥 高 - 阻碍用户使用
+        - 🔶 中 - 影响用户体验
+        - 🔹 低 - 细节完善
+      default: 1
+
+  - type: textarea
+    id: additional_resources
+    attributes:
+      label: 📚 参考资源
+      description: 相关的参考资料或示例
+      placeholder: |
+        - 相关的代码文件
+        - 参考其他项目的文档
+        - 有用的外部链接
+        - 截图或图表
+
+  - type: checkboxes
+    id: languages
+    attributes:
+      label: 🌍 语言版本
+      description: 哪些语言版本需要更新？
+      options:
+        - label: 简体中文
+          required: false
+        - label: English
+          required: false
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: 🤝 贡献意愿
+      description: 您是否愿意帮助改进文档？
+      options:
+        - label: 我愿意提交 PR 来改进文档
+          required: false
+        - label: 我可以提供更多详细信息
+          required: false
+        - label: 我可以帮助审核文档修改
+          required: false
+        - label: 我可以提供翻译协助
+          required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📝 补充信息
+      description: 任何其他有助于改进文档的信息
+      placeholder: 其他建议、想法或相关信息

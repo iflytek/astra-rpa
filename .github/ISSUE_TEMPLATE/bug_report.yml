@@ -1,0 +1,184 @@
+name: 🐛 Bug 报告
+description: 报告一个 Bug 以帮助我们改进
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您花时间填写这个 Bug 报告！请尽可能详细地描述问题。
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 确认清单
+      description: 在提交 Bug 报告之前，请确认以下事项
+      options:
+        - label: 我已经搜索了现有的 Issues，确认这不是重复报告
+          required: true
+        - label: 我已经阅读了相关文档
+          required: true
+        - label: 我使用的是最新版本
+          required: false
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: 🧩 影响的组件
+      description: 选择受影响的主要组件
+      options:
+        - 前端 Web 应用
+        - 前端 Tauri 桌面应用
+        - 前端浏览器插件
+        - 后端 robot-service (Java)
+        - 后端 ai-service (Python)
+        - 后端 openapi-service (Python)
+        - 后端 resource-service (Java)
+        - RPA 引擎核心
+        - RPA 组件 - rpasystem
+        - RPA 组件 - rpabrowser
+        - RPA 组件 - rpagui
+        - RPA 组件 - rpaexcel
+        - RPA 组件 - rpacv
+        - RPA 组件 - rpaai
+        - RPA 组件 - rpadatabase
+        - RPA 组件 - 其他组件
+        - Docker 部署
+        - 文档
+        - 其他
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: 🖥️ 运行环境
+      description: 选择您的运行环境
+      options:
+        - Windows 10
+        - Windows 11
+        - macOS
+        - Linux Ubuntu
+        - Linux CentOS
+        - Docker 容器
+        - 其他
+      default: 0
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 📋 版本信息
+      description: 请提供具体的版本信息
+      placeholder: 例如：v1.0.0 或 commit hash
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 🐛 Bug 描述
+      description: 清晰、简洁地描述 Bug 是什么
+      placeholder: 描述您遇到的问题
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 🔄 复现步骤
+      description: 描述如何复现这个 Bug
+      placeholder: |
+        1. 打开 '...'
+        2. 点击 '...'
+        3. 滚动到 '...'
+        4. 看到错误
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: ✅ 期望行为
+      description: 描述您期望发生什么
+      placeholder: 应该发生什么
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: ❌ 实际行为
+      description: 描述实际发生了什么
+      placeholder: 实际发生了什么
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 📸 截图或视频
+      description: 如果适用，请添加截图或录屏来帮助解释您的问题
+      placeholder: 拖拽图片或视频文件到这里，或粘贴图片链接
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📋 相关日志
+      description: 请粘贴相关的错误日志或控制台输出
+      placeholder: |
+        ```
+        请在这里粘贴日志内容
+        ```
+
+  - type: textarea
+    id: config
+    attributes:
+      label: ⚙️ 配置信息
+      description: 相关的配置文件内容（请移除敏感信息）
+      placeholder: |
+        ```yaml
+        # 配置文件内容
+        ```
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: 🔧 临时解决方案
+      description: 如果您找到了临时解决方案，请描述
+      placeholder: 描述任何临时解决方案或变通方法
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 📊 优先级
+      description: 这个 Bug 对您的影响程度
+      options:
+        - 🔥 严重 - 阻止核心功能
+        - 🔶 高 - 影响重要功能
+        - 🔷 中 - 影响次要功能
+        - 🔹 低 - 轻微影响
+      default: 2
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 📝 额外信息
+      description: 添加任何其他有助于解决问题的上下文或信息
+      placeholder: 任何其他相关信息
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: 🤝 贡献意愿
+      description: 您是否愿意帮助解决这个问题？
+      options:
+        - label: 我愿意提交 PR 来修复这个 Bug
+          required: false
+        - label: 我可以提供更多测试信息
+          required: false
+        - label: 我可以帮助验证修复
+          required: false

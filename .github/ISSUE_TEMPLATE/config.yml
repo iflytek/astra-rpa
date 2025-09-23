@@ -1,0 +1,25 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 查看文档
+    url: https://github.com/iflytek/astron-rpa#-documentation
+    about: 查看项目文档、API 参考和使用指南
+
+  - name: 💬 社区讨论
+    url: https://github.com/iflytek/astron-rpa/discussions
+    about: 在 GitHub Discussions 中与社区成员交流想法和经验
+
+  - name: 📧 技术支持
+    url: mailto:cbg_rpa_ml@iflytek.com
+    about: 通过邮件联系技术支持团队获取专业帮助
+
+  - name: 🚀 快速开始
+    url: https://github.com/iflytek/astron-rpa/blob/main/docker/QUICK_START.md
+    about: 查看快速开始指南，了解如何部署和使用 AstronRPA
+
+  - name: 🔧 开发指南
+    url: https://github.com/iflytek/astron-rpa/tree/main/engine/components
+    about: 查看组件开发指南，学习如何开发自定义 RPA 组件
+
+  - name: 🐛 已知问题
+    url: https://github.com/iflytek/astron-rpa/labels/bug
+    about: 查看已知问题和正在处理的 Bug 列表
