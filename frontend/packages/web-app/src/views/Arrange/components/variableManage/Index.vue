@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useTranslation } from 'i18next-vue'
-
-import VariablePanel from './VariablePanel.vue'
-import ProcessVarPane from './ProcessVarPane.vue'
 import { ref, shallowRef } from 'vue'
+
+import ProcessVarPane from './ProcessVarPane.vue'
+import VariablePanel from './VariablePanel.vue'
 
 defineOptions({ name: 'VariableManagement' })
 

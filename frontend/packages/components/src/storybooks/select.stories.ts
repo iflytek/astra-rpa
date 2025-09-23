@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { Select, SelectOption, Space } from 'ant-design-vue'
-import { ref } from 'vue'
 import type { SelectProps } from 'ant-design-vue'
+import { ref } from 'vue'
 
 const meta = {
   title: 'Antdv/Select',

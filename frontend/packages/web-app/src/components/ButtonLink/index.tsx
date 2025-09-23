@@ -1,6 +1,6 @@
+import { Button, Tooltip } from 'ant-design-vue'
 import { defineComponent } from 'vue'
 import type { SlotsType } from 'vue'
-import { Button, Tooltip } from 'ant-design-vue'
 
 export const ButtonLink = defineComponent({
   name: 'ButtonLink',

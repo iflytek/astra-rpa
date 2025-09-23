@@ -1,5 +1,6 @@
-import { useFileLogModal } from '@/hooks/useFileLog'
 import BUS from '@/utils/eventBus'
+
+import { useFileLogModal } from '@/hooks/useFileLog'
 
 export function useHome() {
   const { openFileLogModal } = useFileLogModal()

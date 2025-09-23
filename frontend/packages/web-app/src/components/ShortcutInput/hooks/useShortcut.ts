@@ -1,5 +1,7 @@
 import { onBeforeUnmount, ref } from 'vue'
+
 import { getKeyboard, resetKeyboard } from '@/utils/hotkeys'
+
 import type { ShortcutItemMap } from '@/components/ShortcutInput/types.ts'
 
 export function useShortcut(modelValue: ShortcutItemMap, emit) {

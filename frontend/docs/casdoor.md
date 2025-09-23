@@ -4,13 +4,13 @@
 
 Casdoor 认证在本项目中通过 SDK 初始化，主要配置项如下：
 
-| 配置项            | 说明                       | 示例值                      |
-|-------------------|----------------------------|-----------------------------|
-| serverUrl         | Casdoor 服务端地址         | http://localhost:8000       |
-| clientId          | 应用 Client ID             | e3ba6fec42cfe996121f        |
-| appName           | Casdoor 应用名称           | example-app                   |
-| organizationName  | Casdoor 组织名称           | example-org                         |
-| redirectPath      | 登录回调路径               | /                           |
+| 配置项           | 说明               | 示例值                |
+| ---------------- | ------------------ | --------------------- |
+| serverUrl        | Casdoor 服务端地址 | http://localhost:8000 |
+| clientId         | 应用 Client ID     | e3ba6fec42cfe996121f  |
+| appName          | Casdoor 应用名称   | example-app           |
+| organizationName | Casdoor 组织名称   | example-org           |
+| redirectPath     | 登录回调路径       | /                     |
 
 配置代码示例（见 [`index.ts`](../packages/web-app/src/auth/casdoorAuth/index.ts)）：
 

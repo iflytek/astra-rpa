@@ -1,4 +1,6 @@
-import { computed, type Ref } from 'vue'
+import { computed } from 'vue'
+import type { Ref } from 'vue'
+
 import type { ItemType } from './useItems'
 
 export interface ResizableInfo {
@@ -31,23 +33,23 @@ export default function useResizable(items: Ref<ItemType[]>, pxSizes: Ref<number
       const mergedResizable
         // Both need to be resizable
         = prevResizable
-        && nextResizable
+          && nextResizable
         // Prev is not collapsed and limit min size
-        && (prevSize !== 0 || !prevMin)
+          && (prevSize !== 0 || !prevMin)
         // Next is not collapsed and limit min size
-        && (nextSize !== 0 || !nextMin)
+          && (nextSize !== 0 || !nextMin)
 
       const startCollapsible
         // Self is collapsible
         = (prevCollapsible.end && prevSize > 0)
         // Collapsed and can be collapsed
-        || (nextCollapsible.start && nextSize === 0 && prevSize > 0)
+          || (nextCollapsible.start && nextSize === 0 && prevSize > 0)
 
       const endCollapsible
         // Self is collapsible
         = (nextCollapsible.start && nextSize > 0)
         // Collapsed and can be collapsed
-        || (prevCollapsible.end && prevSize === 0 && nextSize > 0)
+          || (prevCollapsible.end && prevSize === 0 && nextSize > 0)
 
       resizeInfos[i] = {
         resizable: mergedResizable,

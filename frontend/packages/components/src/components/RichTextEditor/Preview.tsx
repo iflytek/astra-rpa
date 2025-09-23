@@ -1,5 +1,5 @@
-import { defineComponent } from 'vue'
 import { Typography } from 'ant-design-vue'
+import { defineComponent } from 'vue'
 
 import './style.scss'
 

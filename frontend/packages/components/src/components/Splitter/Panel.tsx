@@ -1,30 +1,31 @@
 import {
-  defineComponent,
   computed,
-  type StyleValue,
-  type SlotsType,
-} from "vue";
-import { panelProps } from "./interface";
+  defineComponent,
+
+} from 'vue'
+import type { SlotsType, StyleValue } from 'vue'
+
+import { panelProps } from './interface'
 
 export const Panel = defineComponent({
-  name: "SplitterPanel",
+  name: 'SplitterPanel',
   props: panelProps(),
   slots: Object as SlotsType<{
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    default: any;
+    default: any
   }>,
   setup(props, { slots }) {
     const style = computed<StyleValue>(() => {
-      const hasSize = props.size !== undefined;
-      const isString = typeof props.size === "string";
+      const hasSize = props.size !== undefined
+      const isString = typeof props.size === 'string'
 
       return {
-        flexBasis: hasSize ? `${props.size}${isString ? "" : "px"}` : "auto",
+        flexBasis: hasSize ? `${props.size}${isString ? '' : 'px'}` : 'auto',
         flexGrow: hasSize ? 0 : 1,
-      };
-    });
+      }
+    })
 
-    const prefixCls = computed(() => props.prefixCls || "splitter");
+    const prefixCls = computed(() => props.prefixCls || 'splitter')
 
     return () => (
       <div
@@ -36,6 +37,6 @@ export const Panel = defineComponent({
       >
         {slots.default?.()}
       </div>
-    );
+    )
   },
-});
+})

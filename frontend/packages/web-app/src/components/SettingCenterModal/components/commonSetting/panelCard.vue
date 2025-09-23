@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Switch } from 'ant-design-vue'
 import { computed } from 'vue'
+
 import Card from '../card.vue'
 
 const props = defineProps({

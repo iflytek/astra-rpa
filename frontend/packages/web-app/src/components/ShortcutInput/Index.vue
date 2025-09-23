@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons-vue'
+import { computed, ref, watch } from 'vue'
+
 import { useShortcut } from '@/components/ShortcutInput/hooks/useShortcut'
 import type { ShortcutItemMap } from '@/components/ShortcutInput/types.ts'
 

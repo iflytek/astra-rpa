@@ -1,10 +1,12 @@
 <!-- @format -->
 <script setup lang="ts">
-import { watch, onBeforeUnmount } from 'vue'
-import TriggerInput from '@/views/Arrange/components/triggerInsert/TriggerInput.vue'
-import { setInputPos, setTriggerPreId } from '@/views/Arrange/components/triggerInsert/hooks/useTriggerInput'
 import { isEqual } from 'lodash-es'
+import { onBeforeUnmount, watch } from 'vue'
+
 import BUS from '@/utils/eventBus'
+
+import { setInputPos, setTriggerPreId } from '@/views/Arrange/components/triggerInsert/hooks/useTriggerInput'
+import TriggerInput from '@/views/Arrange/components/triggerInsert/TriggerInput.vue'
 
 const { ids } = defineProps({
   ids: {
@@ -21,7 +23,8 @@ function reset() {
 }
 
 watch(() => ids, (val, oldVal) => {
-  if(isEqual(val, oldVal)) return
+  if (isEqual(val, oldVal))
+    return
   reset()
 }, {
   immediate: true,

@@ -1,7 +1,6 @@
-import type { ProcessNodeVM, ProjectVM } from '@/corobot/vm'
-
 import { getAbilityInfo, getNewAtomDesc, getTreeByParentKey } from '@/api/atom'
 import { addProcess as addProcessApi, addProcessPyCode, copyProcess as copyProcessApi, copyProcessPyCode, deleteProcessPyCode, delProcess, flowSave, genProcessName as genProcessNameApi, genProcessPyCodeName, getProcess, getProcessAndCodeList, renameProcess as renameProcessApi, renameProcessPyCode } from '@/api/resource'
+import type { ProcessNodeVM, ProjectVM } from '@/corobot/vm'
 
 export function loadProject(robotId: string): Promise<ProjectVM> {
   return getProcessAndCodeList({ robotId }).then(res => ({

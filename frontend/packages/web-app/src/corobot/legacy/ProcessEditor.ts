@@ -1,6 +1,8 @@
 import { Bus as Event } from '@/utils/eventBus'
+
 import type { ProcessNodeEvent } from '../IProjectDocument'
 import type { ProcessNode } from '../type'
+
 import { UndoManager } from './UndoManager'
 import type { Operation } from './UndoManager'
 

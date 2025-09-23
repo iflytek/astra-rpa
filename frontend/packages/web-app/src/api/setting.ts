@@ -1,7 +1,9 @@
+import { blob2Text } from '@/utils/common'
+
+import { fileRead, fileWrite } from '@/api/resource'
+
 import http from './http'
 import { getRootBaseURL } from './http/env'
-import { fileRead, fileWrite } from '@/api/resource'
-import { blob2Text } from '@/utils/common'
 
 const useSettingPath = './.setting.json'
 

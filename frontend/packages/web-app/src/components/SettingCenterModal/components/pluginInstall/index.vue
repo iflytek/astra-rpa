@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Card from '../card.vue'
+
 import { useBrowerPlugin } from './hooks/useBrowerPlugin'
 import PluginButton from './pluginButton.vue'
 

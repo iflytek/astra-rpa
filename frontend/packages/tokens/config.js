@@ -1,7 +1,8 @@
 import StyleDictionary from 'style-dictionary'
 import { formats, transformGroups, transformTypes } from 'style-dictionary/enums'
-import { jsVarsPlugin, scssVarsPlugin, tailwindPreset } from './config/format.js'
+
 import { isDark } from './config/filter.js'
+import { jsVarsPlugin, scssVarsPlugin, tailwindPreset } from './config/format.js'
 
 const { value: transformTypeValue } = transformTypes
 

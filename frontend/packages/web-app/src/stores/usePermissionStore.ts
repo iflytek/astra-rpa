@@ -1,8 +1,9 @@
+import { defineStore } from 'pinia'
 /**
  * 全局权益信息的维护
  */
 import { ref } from 'vue'
-import { defineStore } from 'pinia'
+
 import type { AnyObj } from '@/types/common'
 
 export const usePermissionStore = defineStore('running', () => {

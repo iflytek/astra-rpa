@@ -1,5 +1,5 @@
-import { computed, defineComponent, ref, watchEffect } from 'vue'
 import { DownOutlined, LeftOutlined, RightOutlined, UpOutlined } from '@ant-design/icons-vue'
+import { computed, defineComponent, ref, watchEffect } from 'vue'
 
 import { functionType } from '../../utils/type'
 

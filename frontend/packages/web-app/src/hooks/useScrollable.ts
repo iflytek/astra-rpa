@@ -1,6 +1,5 @@
-import type { Ref } from 'vue'
-
 import { useResizeObserver } from '@vueuse/core'
+import type { Ref } from 'vue'
 import { ref } from 'vue'
 
 export function useScrollable(el: Ref<HTMLElement | null>) {

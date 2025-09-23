@@ -1,8 +1,10 @@
 <!-- @format -->
 <script setup lang="ts">
 import { provide } from 'vue'
-import AtomConfig from '../atomForm/AtomConfig.vue'
+
 import type { VariableTypes } from '@/views/Arrange/types/atomForm'
+
+import AtomConfig from '../atomForm/AtomConfig.vue'
 
 defineProps({
   customData: {

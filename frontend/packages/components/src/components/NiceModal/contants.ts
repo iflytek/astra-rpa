@@ -10,9 +10,9 @@ export type Simplify<T> = T extends any ? { [P in keyof T]: T[P] } : never
 
 export type ComponentProps<C extends Component> = C extends new (...args: any) => any
   ? Omit<
-      InstanceType<C>['$props'],
+    InstanceType<C>['$props'],
       keyof VNodeProps | keyof AllowedComponentProps
-    >
+  >
   : never
 
 export type RemoveReadonly<T> = { -readonly [P in keyof T]: T[P] }

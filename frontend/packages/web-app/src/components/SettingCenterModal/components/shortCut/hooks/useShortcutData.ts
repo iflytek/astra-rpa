@@ -1,10 +1,10 @@
 import { onBeforeUnmount, ref } from 'vue'
 
-import type { ShortcutItemMap } from '@/components/ShortcutInput/types.ts'
+import { updateHotkeysSetting } from '@/utils/registerHotkeys'
 
+import type { ShortcutItemMap } from '@/components/ShortcutInput/types.ts'
 import { commonKeys, shortcuts } from '@/constants/shortcuts'
 import useUserSettingStore from '@/stores/useUserSetting.ts'
-import { updateHotkeysSetting } from '@/utils/registerHotkeys'
 
 export function useShortcutData() {
   const shortcutForm = ref()

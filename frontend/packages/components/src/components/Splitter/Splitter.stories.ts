@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { useElementSize } from '@vueuse/core'
 import { Button, Switch } from 'ant-design-vue'
 import { ref, useTemplateRef } from 'vue'
-import { useElementSize } from '@vueuse/core'
+
+import { Panel } from './Panel'
 
 import { Splitter } from './index'
-import { Panel } from './Panel'
 
 const meta = {
   title: 'Example/Splitter',

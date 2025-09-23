@@ -1,9 +1,11 @@
 <script lang="tsx">
+import { CloseOutlined } from '@ant-design/icons-vue'
+import { Form, Spin } from 'ant-design-vue'
+
+import type { DialogOption } from '@/views/Arrange/components/customDialog/types'
+
 import createUserFormItem from '../hooks/createUserFormItem'
 import useUserFormDialog from '../hooks/useUserFormDialog'
-import { Form, Spin } from 'ant-design-vue'
-import { CloseOutlined } from '@ant-design/icons-vue'
-import type { DialogOption } from '@/views/Arrange/components/customDialog/types'
 
 export default {
   name: 'UserFormDialog',
@@ -43,16 +45,16 @@ export default {
               {
                 optionData.value?.itemList?.length
                   ? optionData.value?.itemList.map((formItem) => {
-                    const formItemRules = [
-                      ...(formItem?.rules || []),
-                      ...(formItem?.required ? [{ required: true, message: `${formItem.label}不能为空` }] : []),
-                    ]
-                    return (
-                      <Form.Item class="mb-3" label={formItem.label} name={formItem.bind} rules={formItemRules}>
-                        {createItemFn[formItem.dialogFormType](formItem, formState.value)}
-                      </Form.Item>
-                    )
-                  })
+                      const formItemRules = [
+                        ...(formItem?.rules || []),
+                        ...(formItem?.required ? [{ required: true, message: `${formItem.label}不能为空` }] : []),
+                      ]
+                      return (
+                        <Form.Item class="mb-3" label={formItem.label} name={formItem.bind} rules={formItemRules}>
+                          {createItemFn[formItem.dialogFormType](formItem, formState.value)}
+                        </Form.Item>
+                      )
+                    })
                   : <Spin tip="加载中..." />
               }
             </Form>

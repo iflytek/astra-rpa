@@ -1,9 +1,9 @@
 <!-- @format -->
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { isNil } from 'lodash-es'
-import { Divider } from 'ant-design-vue'
 import { ArrowDownOutlined, ArrowUpOutlined, CloseOutlined } from '@ant-design/icons-vue'
+import { Divider } from 'ant-design-vue'
+import { isNil } from 'lodash-es'
+import { computed, ref } from 'vue'
 
 const { total, active, value } = defineProps({
   value: {

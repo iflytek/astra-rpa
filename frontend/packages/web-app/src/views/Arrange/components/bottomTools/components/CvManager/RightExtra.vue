@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import CvPickBtn from '@/views/Arrange/components/cvPick/CvPickBtn.vue'
 import CvUploadBtn from '@/views/Arrange/components/cvPick/CvUploadBtn.vue'
+
 import ElementManageHeader from '../ElementManageHeader.vue'
 </script>
 

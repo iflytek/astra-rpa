@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useFlowStore } from '@/stores/useFlowStore'
 import type { Ref } from 'vue'
 import { computed, inject } from 'vue'
-import { isConditionalKeys } from '@/views/Arrange/components/atomForm/hooks/useBaseConfig'
+
+import { useFlowStore } from '@/stores/useFlowStore'
 import { useSharedData } from '@/stores/useSharedData'
+import { isConditionalKeys } from '@/views/Arrange/components/atomForm/hooks/useBaseConfig'
 
 const { itemData, id, canEdit } = defineProps({
   itemData: {

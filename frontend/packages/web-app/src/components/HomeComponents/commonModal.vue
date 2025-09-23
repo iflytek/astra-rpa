@@ -108,7 +108,7 @@ export default {
     && getLatestDownloadPath().then((downloadPath) => {
       console.log('downloadPath>>>>>>>>>>>>>', downloadPath)
       this.submitInfo.path
-          = downloadPath.length > 0 && downloadPath[0]
+        = downloadPath.length > 0 && downloadPath[0]
           ? downloadPath[0]
           : `${this.getUserPath}\\Documents\\${DATA_PATH}\\Download`
       // 判断默认存储目录是否已存在

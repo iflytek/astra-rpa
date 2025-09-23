@@ -1,14 +1,17 @@
 <script lang="ts" setup>
-import { inject, nextTick, ref } from 'vue'
 import { message } from 'ant-design-vue'
-import { dialogFormConfig, getRightIndex } from '../utils/index.ts'
-import draggable from 'vuedraggable'
-import { genNonDuplicateID } from '@/views/Arrange/utils/index'
 import { cloneDeep } from 'lodash-es'
-import type { FormItemConfig } from '../types/index.ts'
-import FormItem from './formItem.vue'
+import { inject, nextTick, ref } from 'vue'
+import draggable from 'vuedraggable'
+
 import type { Fun } from '@/types/common.js'
+import { genNonDuplicateID } from '@/views/Arrange/utils/index'
+
 import { limitFormsNum } from '../config/index.ts'
+import type { FormItemConfig } from '../types/index.ts'
+import { dialogFormConfig, getRightIndex } from '../utils/index.ts'
+
+import FormItem from './formItem.vue'
 
 const { dialogData, updateDialogDataFormList } = inject('dialogData') as { dialogData: any, updateDialogDataFormList: any }
 const { selectedFormItem, updateSelectedFormItem } = inject('selectedFormItem') as { selectedFormItem: FormItemConfig, updateSelectedFormItem: Fun }

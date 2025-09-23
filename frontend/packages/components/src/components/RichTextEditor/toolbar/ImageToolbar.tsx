@@ -1,8 +1,7 @@
-import type { Editor } from '@tiptap/vue-3'
-import type { PropType } from 'vue'
-
 import { PictureOutlined } from '@ant-design/icons-vue'
+import type { Editor } from '@tiptap/vue-3'
 import { Upload } from 'ant-design-vue'
+import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
 
 import { IconButton } from '../../IconButton'

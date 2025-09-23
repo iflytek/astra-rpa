@@ -4,6 +4,7 @@ import { throttle } from 'lodash-es'
 import { usePickStore } from '@/stores/usePickStore'
 
 import ElementManageHeader from '../ElementManageHeader.vue'
+
 import ElementBtns from './ElementBtns.vue'
 
 const usePick = usePickStore()

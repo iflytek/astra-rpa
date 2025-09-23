@@ -1,169 +1,169 @@
 .color-picker {
-    width: 275px;
-  
-    canvas {
-      vertical-align: top;
-    }
-  
-    .color-set {
-      display: flex;
-      margin-left: 5px;
-      // padding: 8px 0 8px 8px;
-      // border-left: 1px solid #d9d9d9;
-    }
-  
-    .color-show {
-      height: 56px;
-      width: 100px;
-      margin: 8px auto;
-      display: flex;
-    }
+  width: 275px;
+
+  canvas {
+    vertical-align: top;
   }
-  
-  .color-panel {
+
+  .color-set {
     display: flex;
-    // padding: 8px 8px 0 8px;
-  
-    .color-box {
-      width: 100px;
-    }
+    margin-left: 5px;
+    // padding: 8px 0 8px 8px;
+    // border-left: 1px solid #d9d9d9;
   }
-  
-  .color-view {
-    display: flex;
-    // padding: 0 8px;
-  }
-  
-  .input {
-    flex: 1;
-    margin-left: 8px;
-  }
-  
-  // 颜色面板
-  .saturation {
-    position: relative;
-    cursor: pointer;
-  
-    .slide {
-      position: absolute;
-      left: 100px;
-      top: 0;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      border: 1px solid #fff;
-      box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.3);
-      pointer-events: none;
-    }
-  }
-  
-  // 颜色调节条
-  .bar {
-    position: relative;
-    margin-left: 8px;
-    cursor: pointer;
-  
-    .slide {
-      box-sizing: border-box;
-      position: absolute;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: #fff;
-      border: 1px solid #f0f0f0;
-      box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
-      pointer-events: none;
-      border-radius: 1px;
-    }
-  }
-  
-  .color-type {
-    display: flex;
+
+  .color-show {
+    height: 56px;
+    width: 100px;
     margin: 8px auto;
-    font-size: 12px;
-  
-    .name {
-      width: 32px;
-      height: 24px;
-      float: left;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #a0acc0;
-    }
-  
-    .value {
-      display: block;
-      box-sizing: border-box;
-      flex: 1;
-      height: 24px;
-      padding: 0 8px;
-      border: 1px solid #42516c;
-      color: #eff0f4;
-      background: #2e3850;
-      box-sizing: border-box;
-      width: 100px;
-      caret-color: #49a4ff;
-  
-      &:focus-visible {
-        outline: 1px solid rgba(18, 107, 190, 0.5);
-      }
-    }
-  }
-  
-  // 默认颜色
-  .colors {
     display: flex;
-    flex-wrap: wrap;
-    padding: 0;
-    margin: 0;
-  
-    .item {
-      flex-basis: calc(20% - 4px);
-      margin: 2px;
-      width: 16px;
-      height: 16px;
-      border-radius: 1px;
-      box-sizing: border-box;
-      vertical-align: top;
-      display: inline-block;
-      transition: all 0.1s;
-      cursor: pointer;
-  
-      &:hover {
-        transform: scale(1.2);
-      }
+  }
+}
+
+.color-panel {
+  display: flex;
+  // padding: 8px 8px 0 8px;
+
+  .color-box {
+    width: 100px;
+  }
+}
+
+.color-view {
+  display: flex;
+  // padding: 0 8px;
+}
+
+.input {
+  flex: 1;
+  margin-left: 8px;
+}
+
+// 颜色面板
+.saturation {
+  position: relative;
+  cursor: pointer;
+
+  .slide {
+    position: absolute;
+    left: 100px;
+    top: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+  }
+}
+
+// 颜色调节条
+.bar {
+  position: relative;
+  margin-left: 8px;
+  cursor: pointer;
+
+  .slide {
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+    border-radius: 1px;
+  }
+}
+
+.color-type {
+  display: flex;
+  margin: 8px auto;
+  font-size: 12px;
+
+  .name {
+    width: 32px;
+    height: 24px;
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #a0acc0;
+  }
+
+  .value {
+    display: block;
+    box-sizing: border-box;
+    flex: 1;
+    height: 24px;
+    padding: 0 8px;
+    border: 1px solid #42516c;
+    color: #eff0f4;
+    background: #2e3850;
+    box-sizing: border-box;
+    width: 100px;
+    caret-color: #49a4ff;
+
+    &:focus-visible {
+      outline: 1px solid rgba(18, 107, 190, 0.5);
     }
   }
-  
-  .btn {
-    margin-top: 0 8px 8px;
-    border-top: 1px solid #d9d9d9;
-    text-align: right;
-    padding-top: 8px;
-  
-    button {
-      margin-left: 8px;
-      width: 52px;
-      height: 20px;
-      font-size: 12px;
-      font-weight: 400;
-      border-radius: 6px;
-      border: none;
-    }
-  
-    .confirm-btn {
-      color: #fff;
-      background-color: var(--headerFontColorHover);
-  
-      &:hover {
-        background-color: #7a93ff;
-      }
-    }
-  
-    .clear-btn {
-      border: 1px solid #d9d9d9;
-      background-color: #fff;
-      color: #000000;
+}
+
+// 默认颜色
+.colors {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+
+  .item {
+    flex-basis: calc(20% - 4px);
+    margin: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 1px;
+    box-sizing: border-box;
+    vertical-align: top;
+    display: inline-block;
+    transition: all 0.1s;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.2);
     }
   }
+}
+
+.btn {
+  margin-top: 0 8px 8px;
+  border-top: 1px solid #d9d9d9;
+  text-align: right;
+  padding-top: 8px;
+
+  button {
+    margin-left: 8px;
+    width: 52px;
+    height: 20px;
+    font-size: 12px;
+    font-weight: 400;
+    border-radius: 6px;
+    border: none;
+  }
+
+  .confirm-btn {
+    color: #fff;
+    background-color: var(--headerFontColorHover);
+
+    &:hover {
+      background-color: #7a93ff;
+    }
+  }
+
+  .clear-btn {
+    border: 1px solid #d9d9d9;
+    background-color: #fff;
+    color: #000000;
+  }
+}

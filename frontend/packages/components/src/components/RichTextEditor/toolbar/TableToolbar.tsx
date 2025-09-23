@@ -1,9 +1,10 @@
-import { computed, defineComponent, ref } from 'vue'
-import { Popover } from 'ant-design-vue'
-import type { PropType } from 'vue'
-import type { Editor } from '@tiptap/vue-3'
-import { IconButton } from '../../IconButton'
 import { TableOutlined } from '@ant-design/icons-vue'
+import type { Editor } from '@tiptap/vue-3'
+import { Popover } from 'ant-design-vue'
+import { computed, defineComponent, ref } from 'vue'
+import type { PropType } from 'vue'
+
+import { IconButton } from '../../IconButton'
 
 export const TableToolbar = defineComponent({
   name: 'TableToolbar',

@@ -1,17 +1,14 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-
 import { Button, Checkbox, message } from 'ant-design-vue'
 import { useTranslation } from 'i18next-vue'
+import type { PropType } from 'vue'
 import { computed, defineAsyncComponent, ref, useTemplateRef } from 'vue'
 
-import { releaseWithPublish } from '@/api/market'
 import { publishRobot } from '@/api/robot'
-import { useCommonOperate } from '@/views/Home/pages/hooks/useCommonOperate'
+// import { useCommonOperate } from '@/views/Home/pages/hooks/useCommonOperate'
 
 import type BasicForm from './BasicForm.vue'
 import type { FormState } from './utils'
-
 import { toBackData } from './utils'
 
 const props = defineProps({
@@ -25,7 +22,7 @@ const props = defineProps({
 const emits = defineEmits(['submited'])
 const BasicFormComponent = defineAsyncComponent(() => import('./BasicForm.vue'))
 const { t } = useTranslation()
-const { applicationReleaseCheck } = useCommonOperate()
+// const { applicationReleaseCheck } = useCommonOperate()
 
 const isFirstVerison = computed(() => props.defaultData?.version === 1)
 
@@ -46,7 +43,8 @@ async function handleSubmit(): Promise<void> {
   }
   console.log('lastPublishData', lastPublishData)
 
-  const res = await publishRobot(lastPublishData)
+  await publishRobot(lastPublishData)
+  // const res = await publishRobot(lastPublishData)
   message.success('发版成功')
 
   // // 检查是否需要上架申请(如果开启上架审核且分享过市场, 需弹窗提示是否要发起上架申请，用户确认后发起上架申请)

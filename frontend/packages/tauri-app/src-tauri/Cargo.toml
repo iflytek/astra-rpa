@@ -2,7 +2,7 @@
 name = "iflyrpa"
 version = "1.0.1"
 description = "iflyrpa."
-authors = ["iflytek"]
+authors = [ "iflytek" ]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -11,26 +11,39 @@ edition = "2021"
 tauri-build = { version = "1", features = [] }
 
 [dependencies]
-tauri = { version = "1", features = [ "fs-all", "path-all", "os-all", "system-tray", "dialog-all", "window-all", "global-shortcut-all", "clipboard-all", "shell-all"] }
-serde = { version = "1", features = ["derive"] }
+tauri = { version = "1", features = [
+  "fs-all",
+  "path-all",
+  "os-all",
+  "system-tray",
+  "dialog-all",
+  "window-all",
+  "global-shortcut-all",
+  "clipboard-all",
+  "shell-all"
+] }
+serde = { version = "1", features = [ "derive" ] }
 serde_json = "1"
 # self package
-reqwest = { version = "0.12", default-features = false, features = ["json", "blocking", "native-tls"] }
+reqwest = { version = "0.12", default-features = false, features = [
+  "json",
+  "blocking",
+  "native-tls"
+] }
 lazy_static = "1.5"
 chrono = "0.4"
 fern = "0.7"
 log = "0.4"
-hyper = { version = "0.14", features = ["full"] }
+hyper = { version = "0.14", features = [ "full" ] }
 hyper-tls = "0.5"
-tokio = { version = "1.0", features = ["full"] }
+tokio = { version = "1.0", features = [ "full" ] }
 base64 = "0.22.1"
 
 # Windows特有的依赖，只在Windows平台上使用
 [target.'cfg(target_os = "windows")'.dependencies]
-windows = { version = "0.54", features = ["Win32_System_Threading"] }
+windows = { version = "0.54", features = [ "Win32_System_Threading" ] }
 window-shadows = "0.2.2"
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
-custom-protocol = ["tauri/custom-protocol"]
-
+custom-protocol = [ "tauri/custom-protocol" ]

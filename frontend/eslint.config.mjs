@@ -71,13 +71,13 @@ export default antfu({
         ],
       },
     ],
-    "unicorn/prefer-dom-node-text-content": "off",
+    'unicorn/prefer-dom-node-text-content': 'off',
   },
   ignores: [
     'packages/electron-app/resources/**/*.js',
     'packages/components/lib/**/*.js',
     'public/*.js',
-    "packages/browser-plugin/src/3rd/*.js",
-    "packages/browser-plugin/src/test/*.js",
+    'packages/browser-plugin/src/3rd/*.js',
+    'packages/browser-plugin/src/test/*.js',
   ],
 })

@@ -1,5 +1,5 @@
-import { useVariableStore } from '@/stores/useVariableStore'
 import { useProcessStore } from '@/stores/useProcessStore'
+import { useVariableStore } from '@/stores/useVariableStore'
 
 export function getRealValue(itemValue, mark = '') {
   let res

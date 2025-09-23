@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { MARKET_USER_OWNER, USER_TYPES } from '@/views/Home/components/TeamMarket/config/market'
 import { DownOutlined } from '@ant-design/icons-vue'
 import { Button, Dropdown, Menu } from 'ant-design-vue'
+
+import { MARKET_USER_OWNER, USER_TYPES } from '@/views/Home/components/TeamMarket/config/market'
 
 const props = defineProps({
   userType: {

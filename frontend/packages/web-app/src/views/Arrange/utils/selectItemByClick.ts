@@ -1,8 +1,9 @@
 import { message } from 'ant-design-vue'
-import { useFlowStore } from '@/stores/useFlowStore'
-import { betweenTowItem, getIdx, getMultiSelectIds } from '@/views/Arrange/utils/flowUtils'
-import { toggleContextmenu } from '@/views/Arrange/utils/contextMenu'
 import { uniq } from 'lodash-es'
+
+import { useFlowStore } from '@/stores/useFlowStore'
+import { toggleContextmenu } from '@/views/Arrange/utils/contextMenu'
+import { betweenTowItem, getIdx, getMultiSelectIds } from '@/views/Arrange/utils/flowUtils'
 
 export function changeSelectAtoms(curId: string | null, newIds, isSetLastClickItem = true) {
   const flowStore = useFlowStore()

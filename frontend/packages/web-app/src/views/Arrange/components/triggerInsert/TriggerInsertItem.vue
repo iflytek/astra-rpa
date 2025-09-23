@@ -1,6 +1,7 @@
 <!-- @format -->
 <script setup lang="ts">
 import { inject, ref, watch } from 'vue'
+
 import TriggerInput from '@/views/Arrange/components/triggerInsert/TriggerInput.vue'
 
 const { id, index, indent } = defineProps({

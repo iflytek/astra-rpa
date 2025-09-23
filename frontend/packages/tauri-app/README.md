@@ -35,24 +35,27 @@ AstronRPA 是一个使用 Tauri 框架开发的跨平台桌面 RPA 应用，结�
 ### 快速开始
 
 1. **安装依赖**
+
    ```bash
    pnpm install
    ```
 
 2. **开发模式运行**
+
    ```bash
    # 启动 Web 前端开发服务器
    pnpm run dev:web
-   
+
    # 启动 Tauri 开发环境（离线模式）
    pnpm run dev
    ```
 
 3. **构建生产版本**
+
    ```bash
    # 构建 Web 前端
    pnpm run build:web
-   
+
    # 构建桌面应用
    pnpm run build
    ```
@@ -60,10 +63,12 @@ AstronRPA 是一个使用 Tauri 框架开发的跨平台桌面 RPA 应用，结�
 ## 可用脚本
 
 ### 开发脚本
+
 - `pnpm run dev:web` - 启动 Web 前端开发服务器
 - `pnpm run dev` - 启动 Tauri 开发环境（离线模式）
 
 ### 构建脚本
+
 - `pnpm run build` - 构建生产版本
 - `pnpm run build:web` - 仅构建 Web 前端
 - `pnpm run build:updater` - 构建在线更新版本
@@ -74,18 +79,21 @@ AstronRPA 是一个使用 Tauri 框架开发的跨平台桌面 RPA 应用，结�
 ### 配置文件
 
 配置文件位于 `src-tauri/resources/conf.json`，包含:
+
 - `remote_addr`: 远程服务器地址（在线模式使用）
 - `casdoor`: casdoor 登录认证服务地址
 
 ## 核心功能
 
 ### 系统功能
+
 - **窗口管理**: 无边框窗口、窗口阴影、居中显示
 - **系统托盘**: 最小化到托盘、托盘菜单交互
 - **进程管理**: 防止重复启动、进程监控
 - **日志系统**: 完整的日志记录和文件输出
 
 ### RPA 功能
+
 - **Python 环境**: 自动下载和配置 Python 运行时
 - **脚本执行**: 执行 RPA 自动化脚本
 - **实时通信**: 前后端实时消息传递
@@ -94,10 +102,12 @@ AstronRPA 是一个使用 Tauri 框架开发的跨平台桌面 RPA 应用，结�
 ## 依赖说明
 
 ### 主要依赖
+
 - `@tauri-apps/api`: Tauri 前端 API
 - `@rpa/web-app`: Web 前端应用（工作区依赖）
 
 ### 开发依赖
+
 - `@tauri-apps/cli`: Tauri 命令行工具
 - `env-cmd`: 环境变量管理
 - `cross-env`: 跨平台环境变量设置
@@ -141,6 +151,7 @@ packages/tauri-app/
 ## 技术支持
 
 如遇问题，请检查:
+
 1. 日志文件中的错误信息
 2. Python 环境是否正确安装
 3. 网络连接状态（在线模式）

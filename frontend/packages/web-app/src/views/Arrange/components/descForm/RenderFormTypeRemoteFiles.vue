@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useSharedData } from '@/stores/useSharedData'
+
 import { replaceMiddle } from '@/utils/common'
+
+import { useSharedData } from '@/stores/useSharedData'
 
 const { itemData } = defineProps({
   itemData: {

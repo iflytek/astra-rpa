@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import NormalTable from '@/components/NormalTable/index.vue'
-import { h, reactive } from 'vue'
-import type { resOption } from '../../types'
-import { getDeployedAccounts } from '@/api/market'
-import type { cardAppItem } from '../../types/market'
 import { HintIcon } from '@rpa/components'
-import { useAppConfigStore } from '@/stores/useAppConfig'
 import { storeToRefs } from 'pinia'
+import { h, reactive } from 'vue'
+
+import { getDeployedAccounts } from '@/api/market'
+import NormalTable from '@/components/NormalTable/index.vue'
+import { useAppConfigStore } from '@/stores/useAppConfig'
+
+import type { resOption } from '../../types'
+import type { cardAppItem } from '../../types/market'
 
 interface deployAccountsMap {
   id: string

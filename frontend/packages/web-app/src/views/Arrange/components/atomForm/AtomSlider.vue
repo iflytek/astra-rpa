@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { Slider } from 'ant-design-vue'
+import { ref } from 'vue'
+
 import { MATCH_DEGREE } from '@/views/Arrange/config/atom'
 
 const { renderData } = defineProps({

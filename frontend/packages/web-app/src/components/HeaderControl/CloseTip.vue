@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { RadioChangeEvent } from 'ant-design-vue'
-
 import { RadioGroup } from 'ant-design-vue'
 import { useTranslation } from 'i18next-vue'
 import { storeToRefs } from 'pinia'

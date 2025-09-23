@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import MultiChat from '@/components/MultiChat/Index.vue'
 import ConfigProvider from '@/components/ConfigProvider/index.vue'
+import MultiChat from '@/components/MultiChat/Index.vue'
 </script>
 
 <template>

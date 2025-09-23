@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
 import { message } from 'ant-design-vue'
-import { isHex, isRgb, rgb2hex, rgb2hsv } from '@/views/Arrange/utils/colorPicker.ts'
-import { DEFAULT_COLOR_LIST, ORIGIN_BUTTON } from '@/views/Arrange/config/atom'
-import { createDom } from '@/views/Arrange/components/atomForm/hooks/useAtomVarPopover'
+import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
+
 import { getColorOnCanvas, getRgbColor, renderBarColor, renderSaturationColor } from '@/views/Arrange/components/atomForm/hooks/useAtomColorPopover'
+import { createDom } from '@/views/Arrange/components/atomForm/hooks/useAtomVarPopover'
+import { DEFAULT_COLOR_LIST, ORIGIN_BUTTON } from '@/views/Arrange/config/atom'
+import { isHex, isRgb, rgb2hex, rgb2hsv } from '@/views/Arrange/utils/colorPicker.ts'
 
 const { initColor, renderData } = defineProps({
   initColor: {

@@ -6,6 +6,7 @@ import type {
   SignatureHelp,
   WorkspaceEdit,
 } from 'vscode-languageserver-types'
+
 import type { HoverInfo } from './LspSession'
 import { LspSession } from './LspSession'
 import type { EditorSettings } from './Settings'

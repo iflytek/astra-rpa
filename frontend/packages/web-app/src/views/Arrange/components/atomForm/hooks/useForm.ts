@@ -17,6 +17,6 @@ function toggleAtomForm(show?: boolean) {
 }
 
 export {
-  useShowAtomForm,
   toggleAtomForm,
+  useShowAtomForm,
 }

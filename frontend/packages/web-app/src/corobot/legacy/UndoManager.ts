@@ -1,8 +1,8 @@
-export type Operation<T> =
-  | { type: 'insert', index: number[], item: T[] }
-  | { type: 'delete', index: number[], item: T[] }
-  | { type: 'update', index: number[], oldItem: T[], newItem: T[] }
-  | { type: 'move', fromIndex: number, toIndex: number, toPreId: string, fromPreId: string, item: T[] }
+export type Operation<T>
+  = | { type: 'insert', index: number[], item: T[] }
+    | { type: 'delete', index: number[], item: T[] }
+    | { type: 'update', index: number[], oldItem: T[], newItem: T[] }
+    | { type: 'move', fromIndex: number, toIndex: number, toPreId: string, fromPreId: string, item: T[] }
 
 export type Transaction<T> = Operation<T>[]
 export type ApplyOperationCallback<T> = (

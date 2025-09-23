@@ -1,5 +1,5 @@
-import { ref } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
+import { ref } from 'vue'
 
 export function useCvPickForm() {
   const formRef = ref()

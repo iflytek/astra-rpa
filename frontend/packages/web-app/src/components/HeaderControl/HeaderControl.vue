@@ -6,7 +6,6 @@ import { SettingCenterModal } from '@/components/SettingCenterModal'
 import { VUE_APP_COMMANDER, VUE_APP_HELP } from '@/constants'
 import { utilsManager } from '@/platform'
 import useUserSettingStore from '@/stores/useUserSetting.ts'
-import type { Fun } from '@/types/common'
 
 import MessageTip from '../MesssageTip/Index.vue'
 

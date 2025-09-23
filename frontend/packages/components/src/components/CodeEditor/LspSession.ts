@@ -7,6 +7,7 @@ import type {
   SignatureHelp,
   WorkspaceEdit,
 } from 'vscode-languageserver-types'
+
 import { endpointDelete, endpointPost } from './EndpointUtils'
 import type { EditorSettings } from './Settings'
 

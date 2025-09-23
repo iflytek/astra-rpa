@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, nextTick, reactive, useTemplateRef, watch } from 'vue'
 import draggable from 'vuedraggable'
-import ProcessItem from './ProcessItem.vue'
-import ProcessHeaderMore from './ProcessHeaderMore.vue'
-import ProcessHeaderAdd from './ProcessHeaderAdd.vue'
+
 import { useProcessStore } from '@/stores/useProcessStore'
+
+import ProcessHeaderAdd from './ProcessHeaderAdd.vue'
+import ProcessHeaderMore from './ProcessHeaderMore.vue'
+import ProcessItem from './ProcessItem.vue'
 
 const processStore = useProcessStore()
 const processOpenBox = useTemplateRef<HTMLDivElement>('processOpenBox')

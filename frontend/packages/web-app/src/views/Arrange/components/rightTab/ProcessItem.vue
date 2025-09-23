@@ -1,7 +1,8 @@
 <script lang="ts" setup>
+import DropDownMenu from '@/views/Arrange/components/process/DropdownMenu.vue'
+
 import type { IMenuItem } from '../process/DropdownMenu.vue'
 import { ProcessActionEnum, useProcessMenuActions } from '../process/hooks/useProcessMenus'
-import DropDownMenu from '@/views/Arrange/components/process/DropdownMenu.vue'
 
 const props = defineProps<{
   processItem: RPA.Flow.ProcessModule

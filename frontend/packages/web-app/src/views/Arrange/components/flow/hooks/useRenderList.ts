@@ -1,6 +1,6 @@
+import { createInjectionState } from '@vueuse/core'
 import type { MaybeRef } from 'vue'
 import { computed, ref, unref, watch } from 'vue'
-import { createInjectionState } from '@vueuse/core'
 
 type Position = 'top' | 'bottom' | ''
 

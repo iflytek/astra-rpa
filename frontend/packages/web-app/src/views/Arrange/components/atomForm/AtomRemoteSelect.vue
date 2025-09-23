@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
+
 import { useSharedData } from '@/stores/useSharedData'
 
 defineOptions({

@@ -1,5 +1,6 @@
-import { translate } from '@/plugins/i18next'
 import { isEmpty, omit } from 'lodash-es'
+
+import { translate } from '@/plugins/i18next'
 
 export interface AtomTreeNode extends Omit<RPA.AtomTreeNode, 'atomics'> {
   uniqueId: string

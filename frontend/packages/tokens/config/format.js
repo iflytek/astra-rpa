@@ -1,5 +1,6 @@
-import { fileHeader } from 'style-dictionary/utils'
 import { kebabCase } from 'lodash-es'
+import { fileHeader } from 'style-dictionary/utils'
+
 import { isColor } from './filter.js'
 
 // 自定义格式：生成引用 CSS 变量的 SCSS 变量

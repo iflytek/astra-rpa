@@ -1,7 +1,8 @@
-const { defineConfig } = require('@lobehub/i18n-cli');
-const { env } = require('process');
+const { env } = require('node:process')
 
-const modelName = env.OPENAI_MODEL_NAME || 'azure/gpt-4o-mini';
+const { defineConfig } = require('@lobehub/i18n-cli')
+
+const modelName = env.OPENAI_MODEL_NAME || 'azure/gpt-4o-mini'
 
 module.exports = defineConfig({
   modelName,
@@ -12,4 +13,4 @@ module.exports = defineConfig({
   saveImmediately: true, // 每个翻译块完成后立即保存结果
   concurrency: 5,
   temperature: 0.3,
-});
+})

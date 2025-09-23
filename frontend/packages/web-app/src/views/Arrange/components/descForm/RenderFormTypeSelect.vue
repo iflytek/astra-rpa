@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useFlowStore } from '@/stores/useFlowStore'
 import type { Ref } from 'vue'
 import { computed, inject } from 'vue'
+
+import { useFlowStore } from '@/stores/useFlowStore'
 import { isConditionalKeys } from '@/views/Arrange/components/atomForm/hooks/useBaseConfig'
 
 const { itemData, desc, id, canEdit } = defineProps({

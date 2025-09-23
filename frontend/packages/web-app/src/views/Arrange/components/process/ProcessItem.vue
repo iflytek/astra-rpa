@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import { ProcessActionEnum, useProcessMenuActions } from './hooks/useProcessMenus'
+import { useElementVisibility, useMouseInElement } from '@vueuse/core'
+import { computed, useTemplateRef, watch } from 'vue'
+
+import { useProcessStore } from '@/stores/useProcessStore'
+
 import DropDownMenu from './DropdownMenu.vue'
 import type { IMenuItem } from './DropdownMenu.vue'
-import { useProcessStore } from '@/stores/useProcessStore'
-import { computed, useTemplateRef, watch } from 'vue'
-import { useElementVisibility, useMouseInElement } from '@vueuse/core'
+import { ProcessActionEnum, useProcessMenuActions } from './hooks/useProcessMenus'
 
 const props = defineProps({
   processItem: {

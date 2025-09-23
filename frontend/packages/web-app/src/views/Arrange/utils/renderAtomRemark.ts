@@ -1,9 +1,12 @@
 import { isEmpty } from 'lodash-es'
-import { replaceStrFunc } from './atomDescUtils'
-import { DEFAULT_DESC_TEXT, SPECIALKEY } from '@/views/Arrange/config/flow'
+
 import i18next from '@/plugins/i18next'
+
 import { Group, GroupEnd } from '@/views/Arrange/config/atomKeyMap'
+import { DEFAULT_DESC_TEXT, SPECIALKEY } from '@/views/Arrange/config/flow'
 import { backContainNodeIdx, getIdx } from '@/views/Arrange/utils/flowUtils'
+
+import { replaceStrFunc } from './atomDescUtils'
 import { caculateConditional } from './selfExecuting'
 
 // 渲染原子能力的备注

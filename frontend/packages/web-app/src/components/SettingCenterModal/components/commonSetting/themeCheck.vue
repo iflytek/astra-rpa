@@ -2,10 +2,11 @@
 import type { SegmentedProps } from 'ant-design-vue'
 import { Segmented } from 'ant-design-vue'
 import { useTranslation } from 'i18next-vue'
+import { computed } from 'vue'
 
 import { useAppConfigStore } from '@/stores/useAppConfig'
+
 import Card from '../card.vue'
-import { computed } from 'vue'
 
 const { t } = useTranslation()
 

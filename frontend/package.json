@@ -10,7 +10,8 @@
   "scripts": {
     "cz": "cz",
     "preinstall": "npx only-allow pnpm",
-    "lint:fix": "eslint . --fix",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
     "dev:web": "pnpm --filter @rpa/web-app run dev",
     "dev:tauri": "pnpm --filter @rpa/tauri-app run dev",
     "dev:tauri-logwin": "pnpm --filter @rpa/tauri-app-window run dev",
@@ -23,7 +24,7 @@
     "test:run": "vitest run"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^5.2.0",
+    "@antfu/eslint-config": "^5.4.1",
     "@lobehub/i18n-cli": "^1.25.1",
     "@vitest/ui": "3.2.4",
     "cross-env": "^7.0.3",

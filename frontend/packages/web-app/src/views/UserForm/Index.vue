@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import UserForm from '@/views/Arrange/components/customDialog/components/userFormDialog.vue'
 import ConfigProvider from '@/components/ConfigProvider/index.vue'
+import UserForm from '@/views/Arrange/components/customDialog/components/userFormDialog.vue'
 </script>
 
 <template>

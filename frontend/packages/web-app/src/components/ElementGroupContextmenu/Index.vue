@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
+
 import CvUploadBtn from '@/views/Arrange/components/cvPick/CvUploadBtn.vue'
 
 type PickType = 'cv' | 'element'

@@ -1,8 +1,10 @@
-import { nextTick, watch } from 'vue'
 import { message } from 'ant-design-vue'
+import { nextTick, watch } from 'vue'
+
+import $loading from '@/utils/globalLoading'
+
 import { useFlowStore } from '@/stores/useFlowStore'
 import { useRunningStore } from '@/stores/useRunningStore'
-import $loading from '@/utils/globalLoading'
 import { atomScrollIntoView } from '@/views/Arrange/utils'
 
 export function useRunDebug() {

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+
+import { useProcessStore } from '@/stores/useProcessStore'
+
 import type { IMenuItem } from './DropdownMenu.vue'
 import DropDownMenu from './DropdownMenu.vue'
-import { useProcessStore } from '@/stores/useProcessStore'
 
 interface ProcessMenuItem extends IMenuItem {
   isMain: boolean

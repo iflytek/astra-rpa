@@ -1,8 +1,8 @@
+import dayjs from 'dayjs'
+import { debounce } from 'lodash-es'
 // 运行日志信息
 import { defineStore } from 'pinia'
 import { ref, shallowRef } from 'vue'
-import dayjs from 'dayjs'
-import { debounce } from 'lodash-es'
 
 const LOG_LEVEL_MAP: Record<RPA.LogLevel, string> = {
   error: '错误',

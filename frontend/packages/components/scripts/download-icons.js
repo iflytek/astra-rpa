@@ -1,8 +1,9 @@
-import dotenv from 'dotenv'
+import fss from 'node:fs'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+
 import axios from 'axios'
-import fss from 'node:fs'
+import dotenv from 'dotenv'
 
 const { parsed: envConfig } = dotenv.config()
 

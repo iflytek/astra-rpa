@@ -1,4 +1,5 @@
-import { computed, ref, type Ref } from 'vue'
+import { computed, ref } from 'vue'
+import type { Ref } from 'vue'
 
 import type { ItemType } from './useItems'
 import type { ResizableInfo } from './useResizable'
@@ -164,10 +165,10 @@ export default function useResize(
 
       const shouldUseCache
         = targetCacheCollapsedSize
-        && targetCacheCollapsedSize <= targetSizeMax
-        && targetCacheCollapsedSize >= targetSizeMin
-        && currentCacheCollapsedSize <= currentSizeMax
-        && currentCacheCollapsedSize >= currentSizeMin
+          && targetCacheCollapsedSize <= targetSizeMax
+          && targetCacheCollapsedSize >= targetSizeMin
+          && currentCacheCollapsedSize <= currentSizeMax
+          && currentCacheCollapsedSize >= currentSizeMin
 
       if (shouldUseCache) {
         currentSizes[targetIndex] = targetCacheCollapsedSize

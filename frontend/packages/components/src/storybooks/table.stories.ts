@@ -1,6 +1,6 @@
+import { DownOutlined, SmileOutlined } from '@ant-design/icons-vue'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { Divider, Space, Table, Tag } from 'ant-design-vue'
-import { DownOutlined, SmileOutlined } from '@ant-design/icons-vue'
 
 const meta = {
   title: 'Antdv/Table',

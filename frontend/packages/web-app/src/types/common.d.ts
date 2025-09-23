@@ -1,5 +1,4 @@
 import type { RuleObject } from 'ant-design-vue/es/form'
-
 import type { i18n, Namespace, TFunction } from 'i18next'
 
 export interface AnyObj {

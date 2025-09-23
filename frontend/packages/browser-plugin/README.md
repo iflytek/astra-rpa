@@ -46,7 +46,7 @@ iframeXpath 与其他元素定位逻辑相同，统一查找逻辑，也存在�
 
 ### Chrome
 
-1. chrome 可以选择构建crx 插件包，推荐使用chrome developer dashboard 发布到chrome 插件商店，chrome 开发者账户需要收费，若不发布到插件商店，会被chrome 浏览器的限制启用，需要在安装插件时写入chrome://policy 政策   `ExtensionInstallAllowlist `  Windows 以注册表的方式 `Software\Policies\Google\Chrome\ExtensionInstallAllowlist` 写入白名单，Linux 写入方式  `/etc/opt/chrome/policies/managed/policy.json  ` 详细可见 [https://chromeenterprise.google/policies/?policy=ExtensionInstallAllowlist]()
+1. chrome 可以选择构建crx 插件包，推荐使用chrome developer dashboard 发布到chrome 插件商店，chrome 开发者账户需要收费，若不发布到插件商店，会被chrome 浏览器的限制启用，需要在安装插件时写入chrome://policy 政策 `ExtensionInstallAllowlist ` Windows 以注册表的方式 `Software\Policies\Google\Chrome\ExtensionInstallAllowlist` 写入白名单，Linux 写入方式 `/etc/opt/chrome/policies/managed/policy.json  ` 详细可见 [https://chromeenterprise.google/policies/?policy=ExtensionInstallAllowlist]()
 2. 不发布的打包方式：打开chrome浏览器，进入chrome://extensions/ 页， 启用开发者模式，选择打包扩展程序，浏览扩展程序根目录，第一次私钥文件可以不填，然后打包扩展程序，在扩展程序根目录就会生成一个对应的.crx 文件 和 .pem 密钥文件，.pem文件后续在更新插件包的时候需要使用，同一个密钥文件就会生成一样的插件id， 用于更新插件。
 
 ### Firefox

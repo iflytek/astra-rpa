@@ -1,8 +1,8 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import type { BasicColorSchema } from '@vueuse/core'
 import { message } from 'ant-design-vue'
 import deepmerge from 'deepmerge'
-import type { BasicColorSchema } from '@vueuse/core'
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
 import { autoStartDisable, autoStartEnable, autoStartStatus, getUserSetting, setUserSetting } from '@/api/setting'
 

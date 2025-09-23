@@ -1,8 +1,8 @@
 /** @format */
 
-import type { CustomValueType, DirectoryAttrItem, DirectoryItem, EleVariableType, VarDataType, WebElementType } from '@/types/resource'
-
 import { generateUUID } from '@/utils/common'
+
+import type { CustomValueType, DirectoryAttrItem, DirectoryItem, EleVariableType, VarDataType, WebElementType } from '@/types/resource'
 import { PATTERN_RULES, PATTERN_RULES_TYPE, PATTERN_RULES_UIA } from '@/views/Arrange/config/pick'
 
 export type ElementT = 'uia' | 'web' | 'cv' | 'jab' | 'sap'

@@ -1,6 +1,7 @@
 /** @format */
 
 import { isArray } from 'lodash-es'
+
 import { CONDITION_OPTIONS_DATAFRAME_TYPE, CONDITION_OPTIONS_EXCEL_TYPE, defaultValueText, SPECIALKEY } from '@/views/Arrange/config/flow'
 import { varHtmlToStr } from '@/views/Arrange/utils/index'
 

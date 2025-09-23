@@ -1,14 +1,14 @@
+import { useDark, useResizeObserver } from '@vueuse/core'
 import { computed, defineComponent, Fragment, h, ref, useTemplateRef } from 'vue'
 import type { VNode } from 'vue'
-import { useDark, useResizeObserver } from '@vueuse/core'
 
+import useItems from './hooks/useItems'
+import useResizable from './hooks/useResizable'
+import useResize from './hooks/useResize'
+import useSizes from './hooks/useSizes'
 import { splitterProps } from './interface'
 import type { PanelProps } from './interface'
 import { SplitBar } from './SplitBar'
-import useItems from './hooks/useItems'
-import useSizes from './hooks/useSizes'
-import useResizable from './hooks/useResizable'
-import useResize from './hooks/useResize'
 
 export const Splitter = defineComponent({
   name: 'Splitter',

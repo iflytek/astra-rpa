@@ -1,7 +1,7 @@
+import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons-vue'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { Input, Space, Tooltip } from 'ant-design-vue'
 import { ref } from 'vue'
-import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons-vue'
 
 const meta = {
   title: 'Antdv/Input',

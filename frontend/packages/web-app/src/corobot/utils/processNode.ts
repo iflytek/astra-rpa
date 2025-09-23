@@ -1,12 +1,13 @@
-import { CONVERT_MAP, Else, ElseIf, LOOP_END_MAP, Module, Process } from '@/views/Arrange/config/atomKeyMap'
-import type { ProcessNodeVM } from '@/corobot'
-import { requiredItem } from '@/views/Arrange/components/flow/hooks/useValidate'
+import { cloneDeep } from 'lodash-es'
+
 import type { ASTNode } from '@/ast/ASTNode'
+import type { ProcessNodeVM } from '@/corobot'
 import type { ArgumentValue, NodeArgument, ProcessNode } from '@/corobot/type'
 import { useProcessStore } from '@/stores/useProcessStore'
-import { exceptionKeys } from '@/views/Arrange/utils/generateData'
-import { cloneDeep } from 'lodash-es'
+import { requiredItem } from '@/views/Arrange/components/flow/hooks/useValidate'
+import { CONVERT_MAP, Else, ElseIf, LOOP_END_MAP, Module, Process } from '@/views/Arrange/config/atomKeyMap'
 import { pickProcessAndModuleOptions } from '@/views/Arrange/utils'
+import { exceptionKeys } from '@/views/Arrange/utils/generateData'
 
 export function processNodeToList(astNodeList: Map<string, ASTNode>, node: ProcessNodeVM[] | RPA.Atom[], projectDoc, processId: string): RPA.Atom[] {
   const start = projectDoc.loadNumber * (projectDoc.nodeAbilityMap[processId].currentPage - 2)

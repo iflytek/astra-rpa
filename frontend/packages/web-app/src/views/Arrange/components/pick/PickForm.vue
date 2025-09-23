@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
 import type { Rule } from 'ant-design-vue/es/form'
+import { ref } from 'vue'
+
 import { getWeightedLength, getWeightText } from '@/utils/common'
 
 const props = defineProps({

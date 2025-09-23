@@ -2,7 +2,8 @@ import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { RpaResolver } from '@rpa/components/resolver'
-import { sentryVitePlugin, type SentryVitePluginOptions } from '@sentry/vite-plugin'
+import { sentryVitePlugin } from '@sentry/vite-plugin'
+import type { SentryVitePluginOptions } from '@sentry/vite-plugin'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 // import Inspect from 'vite-plugin-inspect' 开发时查看编译代码

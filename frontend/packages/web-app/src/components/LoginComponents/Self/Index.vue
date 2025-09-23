@@ -1,7 +1,7 @@
 <!-- @format -->
 <script setup>
-import { ref } from 'vue'
 import { TabPane, Tabs } from 'ant-design-vue'
+import { ref } from 'vue'
 
 import AccountLogin from './components/AccountLogin.vue'
 import MobileLogin from './components/MobileLogin.vue'

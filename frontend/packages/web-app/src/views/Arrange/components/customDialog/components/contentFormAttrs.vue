@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { computed, inject } from 'vue'
+
 import AtomFormItem from '@/views/Arrange/components/atomForm/AtomFormItem.vue'
+
 import type { FormItemConfig } from '../types/index.ts'
 import { conditionalFn } from '../utils/index.ts'
 

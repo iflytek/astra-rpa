@@ -1,5 +1,6 @@
-import type { ProcessNode } from '@/corobot/type'
 import type { Bus as Emittery } from '@/utils/eventBus'
+
+import type { ProcessNode } from '@/corobot/type'
 
 import type {
   ElementGroupVM,

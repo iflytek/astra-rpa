@@ -1,9 +1,10 @@
-import { ref } from 'vue'
 import { message } from 'ant-design-vue'
+import { debounce } from 'lodash-es'
+import { ref } from 'vue'
+
 import { /* TODO 暂时注释掉， 后续组织架构功能完善再打开 getCompanyInfo, */ getInviteUser, getTransferUser } from '@/api/market'
 import { MARKET_USER_ADMIN } from '@/views/Home/components/TeamMarket/config/market'
 import type { resOption } from '@/views/Home/types'
-import { debounce } from 'lodash-es'
 
 export function usePhoneInvite(marketId: string, type: string = 'invite', emit?: any) {
   const userList = ref([])

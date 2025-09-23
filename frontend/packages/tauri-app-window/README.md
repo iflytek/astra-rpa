@@ -155,7 +155,8 @@ iflyrpa-window.exe --url="tauri://localhost/multichat.html?max_turns=10&is_save=
 
 - D:\work\client-ui\packages\tauri-app-window直接打开该目录下的终端，输入打包命令
 
-  ```package.json
+  ```bash
+  ## package.json
   # 打release包，生产环境需要
   npm run build
   # 打debug包，日常联调自测可用

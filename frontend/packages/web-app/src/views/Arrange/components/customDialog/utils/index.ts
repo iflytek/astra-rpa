@@ -1,4 +1,5 @@
-import type { FormItemConfig } from '../types'
+import { cloneDeep } from 'lodash-es'
+
 import {
   defaultFilePathConfig,
   defaultMultiSelectConfig,
@@ -17,7 +18,7 @@ import {
   timeDefaultValueConfig,
   timeFormatConfig,
 } from '../config/index.ts'
-import { cloneDeep } from 'lodash-es'
+import type { FormItemConfig } from '../types'
 
 function getLabelConfig(dialogFormName) {
   return {

@@ -4,10 +4,11 @@ import { message } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
 import { ref, useTemplateRef } from 'vue'
 
+import BUS from '@/utils/eventBus'
+
 import PythonPackageManagement from '@/components/PythonPackageManagement/Index.vue'
 import { useAppConfigStore } from '@/stores/useAppConfig'
 import { useFlowStore } from '@/stores/useFlowStore'
-import BUS from '@/utils/eventBus'
 import AtomForm from '@/views/Arrange/components/atomForm/AtomForm.vue'
 import ProcessManage from '@/views/Arrange/components/process/ProcessManage.vue'
 import CustomTabItem from '@/views/Arrange/components/rightTab/CustomTabItem.vue'

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import RoleDropdown from '@/views/Home/components/TeamMarket/MarketManage/RoleDropdown.vue'
-import { useCompanyInvite, usePhoneInvite } from '@/views/Home/components/TeamMarket/hooks/MarketManage/useInviteUser'
 import { /* TODO 暂时注释掉， 后续组织架构功能完善再打开 Button, */ Select, TreeSelect } from 'ant-design-vue'
+import { ref } from 'vue'
+
+import { useCompanyInvite, usePhoneInvite } from '@/views/Home/components/TeamMarket/hooks/MarketManage/useInviteUser'
+import RoleDropdown from '@/views/Home/components/TeamMarket/MarketManage/RoleDropdown.vue'
 
 const { marketId } = defineProps({
   marketId: {

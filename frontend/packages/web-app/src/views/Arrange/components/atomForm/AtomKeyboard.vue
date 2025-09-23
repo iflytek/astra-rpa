@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import type { ShortcutItemMap } from '@/components/ShortcutInput/types'
-
 import ShortCutInput from '@/components/ShortcutInput/Index.vue'
+import type { ShortcutItemMap } from '@/components/ShortcutInput/types'
 import { OTHER_IN_TYPE } from '@/constants/atom'
 
 const { renderData } = defineProps({

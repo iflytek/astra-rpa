@@ -1,71 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
- 
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>在可编辑div中定位和设置光标</title>
     <style>
-        #editor {
-            height: 500px;
-            width: 500px;
-            border: 1px solid red;
-        }
+      #editor {
+        height: 500px;
+        width: 500px;
+        border: 1px solid red;
+      }
     </style>
-</head>
- 
-<body>
- 
+  </head>
+
+  <body>
     <div id="editor" contenteditable></div>
-    <input type="text" id="htmlInput">
+    <input type="text" id="htmlInput" />
     <button id="insertHtml">插入HTML元素</button>
- 
+
     <script>
- 
-        document.getElementById('insertHtml').onclick = function () {
- 
-            var editor = document.getElementById('editor');
-            var html = document.getElementById('htmlInput').value;
- 
-            editor.focus();
-      
-            if (window.getSelection) {
- 
-                var selection = window.getSelection();
- 
-                if (selection.getRangeAt && selection.rangeCount) {
- 
-                    var range = selection.getRangeAt(0);
-                    range.deleteContents();
-                    var element = document.createElement('div');
-                    element.innerHTML = html;
-                    
-                    var node;
-                    var lastNode;
-                    var fragment = document.createDocumentFragment();
-        
-                    while ((node = element.firstChild)) {
-                        lastNode = fragment.appendChild(node);
-                    };
- 
-                    range.insertNode(fragment);
-                    if (lastNode) {
-                        range = range.cloneRange();
-                        range.setStartAfter(lastNode);
-                        range.collapse(true);
-                        selection.removeAllRanges();
-                        selection.addRange(range);
-                    };
-                }
- 
-            } else if (document.selection && document.selection.type != 'Control') {
- 
-                editor.focus();
-                var range = document.selection.createRange();
-                range.pasteHTML(html);
-                editor.focus();
+      document.getElementById('insertHtml').onclick = function () {
+        var editor = document.getElementById('editor')
+        var html = document.getElementById('htmlInput').value
+
+        editor.focus()
+
+        if (window.getSelection) {
+          var selection = window.getSelection()
+
+          if (selection.getRangeAt && selection.rangeCount) {
+            var range = selection.getRangeAt(0)
+            range.deleteContents()
+            var element = document.createElement('div')
+            element.innerHTML = html
+
+            var node
+            var lastNode
+            var fragment = document.createDocumentFragment()
+
+            while ((node = element.firstChild)) {
+              lastNode = fragment.appendChild(node)
             }
+
+            range.insertNode(fragment)
+            if (lastNode) {
+              range = range.cloneRange()
+              range.setStartAfter(lastNode)
+              range.collapse(true)
+              selection.removeAllRanges()
+              selection.addRange(range)
+            }
+          }
+        } else if (document.selection && document.selection.type != 'Control') {
+          editor.focus()
+          var range = document.selection.createRange()
+          range.pasteHTML(html)
+          editor.focus()
         }
+      }
     </script>
-</body>
- 
+  </body>
 </html>

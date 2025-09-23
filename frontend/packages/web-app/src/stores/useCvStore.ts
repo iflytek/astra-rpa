@@ -1,16 +1,15 @@
-import type { Ref } from 'vue'
-
 import { message } from 'ant-design-vue'
 // 元素信息
 import { defineStore } from 'pinia'
+import type { Ref } from 'vue'
 import { ref } from 'vue'
 
-import type { Element, ElementGroup, PickStepType } from '@/types/resource.d'
+import { addBase64Header, base64ToFile } from '@/utils/common'
+import BUS from '@/utils/eventBus'
 
 import { addElement, addElementGroup, delElementGroup, generateCvElementName, getElementDetail, getElementsAll, moveElement, postDeleteElement, renameElementGroup, updateElement, uploadFile } from '@/api/resource'
 import { useProcessStore } from '@/stores/useProcessStore'
-import { addBase64Header, base64ToFile } from '@/utils/common'
-import BUS from '@/utils/eventBus'
+import type { Element, ElementGroup, PickStepType } from '@/types/resource.d'
 import { useGlobalDataUpdate } from '@/views/Arrange/hook/useGlobalDataUpdate'
 import { gainUnUseQuote } from '@/views/Arrange/hook/useQuoteManage'
 

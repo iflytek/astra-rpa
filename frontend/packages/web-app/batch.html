@@ -9,53 +9,52 @@
     <title>晓悟RPA</title>
     <style>
       body {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 100vh;
-          min-height: 400px;
-          margin: 0;
-          background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        min-height: 400px;
+        margin: 0;
+        background-color: transparent;
       }
 
       .loading-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: relative;
-          flex-direction: column;
-          height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        flex-direction: column;
+        height: 100%;
       }
 
       .loading-circle {
-          width: 50px;
-          height: 50px;
-          border: 4px solid #726fff;
-          border-top: 4px solid #726fff8b;
-          border-radius: 50%;
-          animation: spin 1.5s linear infinite;
+        width: 50px;
+        height: 50px;
+        border: 4px solid #726fff;
+        border-top: 4px solid #726fff8b;
+        border-radius: 50%;
+        animation: spin 1.5s linear infinite;
       }
 
       .loading-text {
-          color: #726fff;
-          font-size: 16px;
-          margin-top: 10px;
+        color: #726fff;
+        font-size: 16px;
+        margin-top: 10px;
       }
 
       @keyframes spin {
-          0% {
-              transform: rotate(0deg);
-          }
-          100% {
-              transform: rotate(360deg);
-          }
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
     </style>
   </head>
 
   <body>
-    <div id="app-batch">
-    </div>
+    <div id="app-batch"></div>
     <script type="module" src="/src/views/Batch/index.ts"></script>
   </body>
 </html>

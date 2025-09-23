@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { ColumnsType } from 'ant-design-vue/es/table'
 import { Badge, Table } from 'ant-design-vue'
+import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { PropType } from 'vue'
 
 export interface Version {

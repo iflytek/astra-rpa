@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { getRootBaseURL, getBaseURL } from '@/api/http/env'
+import { getBaseURL, getRootBaseURL } from '@/api/http/env'
 import { utilsManager, windowManager } from '@/platform'
 
 let casdoorUrl = ''
@@ -23,10 +23,11 @@ async function getCasdoorServerUrl() {
     const res = await utilsManager.readFile(confPath)
     const conf = JSON.parse(new TextDecoder().decode(res as Uint8Array) || '{}')
     casdoorUrl = conf.casdoor
-  } catch (error) { 
-    console.log("error", error)
   }
-  console.log("casdoorUrl", casdoorUrl)
+  catch (error) {
+    console.log('error', error)
+  }
+  console.log('casdoorUrl', casdoorUrl)
 }
 
 getCasdoorServerUrl()
@@ -71,4 +72,4 @@ function checkHttpResponse(response: any): boolean {
   return isExpired
 }
 
-export { casdoorUrl, checkHttpResponse, getHttpAuthHeader, redirectToLogin }
+export { checkHttpResponse, getHttpAuthHeader, redirectToLogin }

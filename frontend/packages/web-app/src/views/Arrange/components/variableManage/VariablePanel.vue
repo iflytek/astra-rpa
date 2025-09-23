@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { ColumnType } from 'ant-design-vue/es/table'
-
 import { message } from 'ant-design-vue'
+import type { ColumnType } from 'ant-design-vue/es/table'
 import { useTranslation } from 'i18next-vue'
 import { cloneDeep } from 'lodash-es'
 import { computed, ref, toRaw } from 'vue'

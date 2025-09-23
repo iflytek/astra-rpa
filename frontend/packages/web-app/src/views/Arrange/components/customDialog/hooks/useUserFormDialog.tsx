@@ -1,11 +1,11 @@
-import { onMounted, ref } from 'vue'
 import { Button, message } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { isEmpty } from 'lodash-es'
+import { onMounted, ref } from 'vue'
 
-import type { DialogOption, FormItemConfig } from '@/views/Arrange/components/customDialog/types'
 import { utilsManager, windowManager } from '@/platform'
 import type { AnyObj } from '@/types/common'
+import type { DialogOption, FormItemConfig } from '@/views/Arrange/components/customDialog/types'
 
 const PICKER_MIN_HEIGHT = 340
 const OTHER_MIN_HEIGHT = 200
@@ -31,7 +31,7 @@ export default function useUserFormDialog(props, emit) {
           }
           return Promise.resolve()
         },
-        trigger: 'change'
+        trigger: 'change',
       },
     ]
   )

@@ -1,8 +1,8 @@
+import { useFlowStore } from '@/stores/useFlowStore'
 import type { AnyObj } from '@/types/common'
+import { Group, GroupEnd } from '@/views/Arrange/config/atomKeyMap'
 import type { AtomTabs } from '@/views/Arrange/types/atomForm'
 import { generateFormMap } from '@/views/Arrange/utils/generateData'
-import { Group, GroupEnd } from '@/views/Arrange/config/atomKeyMap'
-import { useFlowStore } from '@/stores/useFlowStore'
 import { buildDependencyMap, checkAndExecuteDependencies, initializeExpressions } from '@/views/Arrange/utils/selfExecuting'
 
 // 根据用户选择的节点，生成对应的配置表单

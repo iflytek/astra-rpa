@@ -1,8 +1,9 @@
+import { message } from 'ant-design-vue'
 import { inject, nextTick, ref, watch } from 'vue'
 import type { Ref } from 'vue'
+
 import { editTeamInfo, teamInfo } from '@/api/market'
 import { useMarketStore } from '@/stores/useMarketStore'
-import { message } from 'ant-design-vue'
 import type { AnyObj } from '@/types/common'
 import { MARKET_USER_OWNER } from '@/views/Home/components/TeamMarket/config/market'
 

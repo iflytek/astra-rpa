@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { watch } from 'vue'
 import { Progress } from 'ant-design-vue'
-import { AppFileStatus } from '@/views/Home/types/market'
+import { watch } from 'vue'
+
 import { useAppFileDownload } from '@/views/Home/components/TeamMarket/hooks/useAppFileDownload'
+import { AppFileStatus } from '@/views/Home/types/market'
 
 const { fileList } = defineProps({
   fileList: {

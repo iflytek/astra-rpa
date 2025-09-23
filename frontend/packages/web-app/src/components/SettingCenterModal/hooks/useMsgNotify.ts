@@ -1,10 +1,11 @@
-import { onBeforeUnmount, ref } from 'vue'
-import type { Ref } from 'vue'
 import { message } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
+import { isEmpty } from 'lodash-es'
+import { onBeforeUnmount, ref } from 'vue'
+import type { Ref } from 'vue'
+
 import { toolsInterfacePost } from '@/api/setting'
 import useUserSettingStore from '@/stores/useUserSetting.ts'
-import { isEmpty } from 'lodash-es'
 
 export function useNotify() {
   const emailRef = ref()

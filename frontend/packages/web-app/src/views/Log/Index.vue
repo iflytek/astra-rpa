@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import LogWindow from '@/components/LogWindow/Index.vue'
 import ConfigProvider from '@/components/ConfigProvider/index.vue'
+import LogWindow from '@/components/LogWindow/Index.vue'
 </script>
 
 <template>

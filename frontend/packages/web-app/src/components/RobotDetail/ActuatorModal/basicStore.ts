@@ -1,5 +1,6 @@
 import { createInjectionState } from '@vueuse/core'
 import { onBeforeMount, ref, shallowRef } from 'vue'
+
 import { getRobotBasicInfo } from '@/api/robot'
 
 interface BasicContentData {

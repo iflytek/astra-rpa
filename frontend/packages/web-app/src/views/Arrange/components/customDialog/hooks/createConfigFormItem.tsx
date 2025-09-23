@@ -1,7 +1,8 @@
-import { Checkbox, DatePicker, Input, Radio, Select } from 'ant-design-vue'
 import { UploadOutlined } from '@ant-design/icons-vue'
-import { fontFamilyMap, fontStyleMap } from '../config'
+import { Checkbox, DatePicker, Input, Radio, Select } from 'ant-design-vue'
+
 import TagInputConfig from '../components/tagInputConfig.vue'
+import { fontFamilyMap, fontStyleMap } from '../config'
 
 export default function useConfigFormItem() {
   /**

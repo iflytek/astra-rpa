@@ -2,9 +2,10 @@
 import { ref, watch } from 'vue'
 
 import useUserSettingStore from '@/stores/useUserSetting'
+
+import LanguageCheck from './languageCheck.vue'
 import PanelCard from './panelCard.vue'
 import ThemeCheck from './themeCheck.vue'
-import LanguageCheck from './languageCheck.vue'
 
 const panelOption = ref([
   {

@@ -1,9 +1,8 @@
-import type { App } from 'vue'
-
 import i18next from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import I18NextVue from 'i18next-vue'
 import { get, hasIn, isEmpty, isObject, isString, template } from 'lodash-es'
+import type { App } from 'vue'
 
 import locales from '@/constants/i18n'
 

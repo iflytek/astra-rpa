@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useShortcutData } from './hooks/useShortcutData'
 import ShortCutInput from '@/components/ShortcutInput/Index.vue'
 import type { ShortcutItemMap } from '@/components/ShortcutInput/types.ts'
+
+import { useShortcutData } from './hooks/useShortcutData'
 
 const {
   shortcutForm,

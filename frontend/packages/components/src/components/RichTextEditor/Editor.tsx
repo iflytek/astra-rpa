@@ -14,9 +14,10 @@ import type { PropType } from 'vue'
 import { defineComponent, onBeforeUnmount, watch } from 'vue'
 
 import { IconButton } from '../IconButton'
+
 import { HeadingToolbar } from './toolbar/HeadingToolbar'
-import { LinkToolbar } from './toolbar/LinkToolbar'
 import { ImageToolbar } from './toolbar/ImageToolbar'
+import { LinkToolbar } from './toolbar/LinkToolbar'
 import { TableToolbar } from './toolbar/TableToolbar'
 
 import './style.scss'

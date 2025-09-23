@@ -1,10 +1,10 @@
-cargo-features = ["profile-rustflags"]
+cargo-features = [ "profile-rustflags" ]
 
 [package]
 name = "iflyrpa-window"
 version = "1.0.1"
 description = "iflyrpa-window"
-authors = ["dev"]
+authors = [ "dev" ]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -13,20 +13,31 @@ edition = "2021"
 tauri-build = { version = "1", features = [] }
 
 [dependencies]
-tauri = { version = "1", features = [ "fs-all", "path-all", "os-all", "dialog-all", "window-all", "global-shortcut-all", "clipboard-all"] }
-serde = { version = "1", features = ["derive"] }
+tauri = { version = "1", features = [
+  "fs-all",
+  "path-all",
+  "os-all",
+  "dialog-all",
+  "window-all",
+  "global-shortcut-all",
+  "clipboard-all"
+] }
+serde = { version = "1", features = [ "derive" ] }
 serde_json = "1"
-window-shadows="0.2.2"
+window-shadows = "0.2.2"
 lazy_static = "1.4"
-winapi = { version = "0.3", features = ["winuser"] }
+winapi = { version = "0.3", features = [ "winuser" ] }
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
-custom-protocol = ["tauri/custom-protocol"]
+custom-protocol = [ "tauri/custom-protocol" ]
 
 # 32位打包,下载i686-pc-windows-msvc 到target/i686-pc-windows-msvc 目录下或者通过下面命令指定,需要安装 Microsoft Visual Studio
-#[target.i686-pc-windows-msvc]
-#linker = "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx86\\x86\\link.exe"
+# [target.i686-pc-windows-msvc]
+# linker = "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.39.33519\\bin\\Hostx86\\x86\\link.exe"
 
 [profile.release]
-rustflags = ["-C", "link-args=/SUBSYSTEM:console"]
+rustflags = [
+  "-C",
+  "link-args=/SUBSYSTEM:console"
+]

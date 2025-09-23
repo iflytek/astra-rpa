@@ -1,5 +1,5 @@
 packages:
-  - 'locales'
+  - locales
   # all packages in direct subdirs of packages/
   - 'packages/*'
   # all packages in subdirs of components/

@@ -1,7 +1,8 @@
 <script lang="tsx">
-import { reactive } from 'vue'
-import useConfigFormItem from '../hooks/createConfigFormItem'
 import { Form } from 'ant-design-vue'
+import { reactive } from 'vue'
+
+import useConfigFormItem from '../hooks/createConfigFormItem'
 
 export default {
   name: 'FormItem',

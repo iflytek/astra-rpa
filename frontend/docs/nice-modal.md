@@ -68,7 +68,7 @@ vue-nice-modal 是一个工具库,可以将 Vue.js 的 modal 组件转换为基�
 
 ```html
 <!-- my-modal.vue -->
-<a-modal v-bind="NiceModal.antdModal(modal)">xxx</a-modal
+<a-modal v-bind="NiceModal.antdModal(modal)">xxx</a-modal>
 ```
 
 > 最后使用 NiceModal.create 创建模态框高阶组件

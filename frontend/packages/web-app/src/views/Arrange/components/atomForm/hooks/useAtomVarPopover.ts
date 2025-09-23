@@ -1,13 +1,11 @@
-import type { FlowVariable, GlobalVariable, VariableFunction } from '@/views/Arrange/types/variable'
-
 import { ATOM_FORM_TYPE } from '@/constants/atom'
 import useCursorStore from '@/stores/useCursorStore'
 import { useProcessStore } from '@/stores/useProcessStore'
 import { generateHtmlVal } from '@/views/Arrange/components/atomForm/hooks/useRenderFormType'
 import { ORIGIN_SPECIAL, ORIGIN_VAR, SINGLE_VAR_TYPE_ARR } from '@/views/Arrange/config/atom'
+import type { FlowVariable, GlobalVariable, VariableFunction } from '@/views/Arrange/types/variable'
 
 import type { VarTreeItem } from '../../../types/flow'
-
 import { transDataForPreview } from '../../customDialog/utils'
 
 const outputStrType = [

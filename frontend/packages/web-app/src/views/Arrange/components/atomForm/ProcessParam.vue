@@ -1,14 +1,16 @@
 <!-- 子流程选择组件 -->
 <script setup lang="ts">
-import type { VxeGridProps } from 'vxe-table'
-import VxeGrid from '@/plugins/VxeTable'
 import { find, fromPairs, get, isArray, isEqual } from 'lodash-es'
 import { computed, ref, toRaw, watch } from 'vue'
+import type { VxeGridProps } from 'vxe-table'
 
-import AtomConfig from './AtomConfig.vue'
+import VxeGrid from '@/plugins/VxeTable'
+
+import { getConfigParams } from '@/api/atom'
 import { useFlowStore } from '@/stores/useFlowStore'
 import { useProcessStore } from '@/stores/useProcessStore.ts'
-import { getConfigParams } from '@/api/atom'
+
+import AtomConfig from './AtomConfig.vue'
 
 interface ParamItemValue {
   rpa: 'special'

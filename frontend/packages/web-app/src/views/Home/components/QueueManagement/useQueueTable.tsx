@@ -8,6 +8,7 @@ import { reactive } from 'vue'
 import type { TaskTrigger } from '@/types/schedule'
 
 import { TASK_TYPE, TASK_TYPE_OPTION, WEEK_MAP } from '../../config/task'
+
 import useQueueOperation from './useQueueOperation'
 
 export default function useQueueTableOption() {

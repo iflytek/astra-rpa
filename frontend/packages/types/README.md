@@ -15,9 +15,6 @@ pnpm add @rpa/types
 ### 1. 导入类型
 
 ```typescript
-// 导入单个类型
-import type { CreateWindowOptions, WindowManager } from '@rpa/types'
-// 导入多个类型
 import type {
   AppEnv,
   ClipboardManager,
@@ -75,9 +72,9 @@ types package 已经包含了全局类型声明，你可以在任何地方直接
 
 ```typescript
 // 直接使用全局类型 - TypeScript 会自动识别类型
-const windowManager = window.windowManager  // 类型: WindowManager | undefined
-const clipboardManager = window.clipboardManager  // 类型: ClipboardManager | undefined
-const utilsManager = window.utilsManager  // 类型: UtilsManager | undefined
+const windowManager = window.windowManager // 类型: WindowManager | undefined
+const clipboardManager = window.clipboardManager // 类型: ClipboardManager | undefined
+const utilsManager = window.utilsManager // 类型: UtilsManager | undefined
 
 // 类型安全的访问
 if (windowManager) {
@@ -88,8 +85,8 @@ if (windowManager) {
 
 if (utilsManager) {
   // 在这里 utilsManager 的类型是 UtilsManager
-  const appEnv = utilsManager.getAppEnv()  // 类型: AppEnv
-  const version = await utilsManager.getAppVersion()  // 类型: Promise<string>
+  const appEnv = utilsManager.getAppEnv() // 类型: AppEnv
+  const version = await utilsManager.getAppVersion() // 类型: Promise<string>
 }
 ```
 
@@ -110,11 +107,11 @@ if (utilsManager) {
 }
 
 // tsconfig.json
-{
-  "compilerOptions": {
-    "types": ["@rpa/types"]
-  }
-}
+// {
+//   "compilerOptions": {
+//     "types": ["@rpa/types"]
+//   }
+// }
 ```
 
 ## 可用的类型

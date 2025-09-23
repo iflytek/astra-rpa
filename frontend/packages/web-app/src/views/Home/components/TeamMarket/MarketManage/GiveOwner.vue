@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { usePhoneInvite } from '@/views/Home/components/TeamMarket/hooks/MarketManage/useInviteUser'
 import { Select } from 'ant-design-vue'
+import { ref } from 'vue'
+
+import { usePhoneInvite } from '@/views/Home/components/TeamMarket/hooks/MarketManage/useInviteUser'
 
 const props = defineProps({
   marketId: {
