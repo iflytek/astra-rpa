@@ -1,8 +1,8 @@
-# AstraRPA
+# AstronRPA
 
 <div align="center">
 
-![AstraRPA Logo](https://via.placeholder.com/200x80?text=AstraRPA)
+![AstronRPA Logo](https://via.placeholder.com/200x80?text=AstronRPA)
 
 **🤖 Enterprise-grade Robotic Process Automation (RPA) Development Platform**
 
@@ -11,7 +11,7 @@
 [![Java](https://img.shields.io/badge/java-8+-orange.svg)](https://openjdk.java.net/)
 [![Vue](https://img.shields.io/badge/vue-3+-green.svg)](https://vuejs.org/)
 [![Docker](https://img.shields.io/badge/docker-ready-brightgreen.svg)](https://www.docker.com/)
-[![GitHub Stars](https://img.shields.io/github/stars/iflytek/astra-rpa?style=social)](https://github.com/iflytek/astra-rpa/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/iflytek/astron-rpa?style=social)](https://github.com/iflytek/astron-rpa/stargazers)
 
 English | [简体中文](README.zh.md)
 
@@ -20,7 +20,7 @@ English | [简体中文](README.zh.md)
 ## 📑 Table of Contents
 
 - [📋 Overview](#-overview)
-- [🎯 Why Choose AstraRPA](#-why-choose-astrarpa)
+- [🎯 Why Choose AstronRPA](#-why-choose-astronrpa)
 - [✨ Core Features](#-core-features)
 - [🛠️ Tech Stack](#-tech-stack)
 - [📱 Screenshots](#-screenshots)
@@ -38,11 +38,11 @@ English | [简体中文](README.zh.md)
 
 ## 📋 Overview
 
-AstraRPA is an all-in-one Robotic Process Automation (RPA) development tool that provides enterprises and developers with a complete RPA automation solution from design to deployment. The platform integrates the latest AI language models, rich component libraries, various development modes and frameworks, enabling developers to build powerful automation processes in the most convenient way.
+AstronRPA is an all-in-one Robotic Process Automation (RPA) development tool that provides enterprises and developers with a complete RPA automation solution from design to deployment. The platform integrates the latest AI language models, rich component libraries, various development modes and frameworks, enabling developers to build powerful automation processes in the most convenient way.
 
-AstraRPA is derived from the "iFlytek RPA Platform" which has served tens of thousands of enterprises and millions of developers, and we have made its core engine completely open source. Through visual design and build tools, developers can quickly create and debug robots, applications, and workflows using no-code or low-code approaches, enabling powerful RPA application development and more customized business logic.
+AstronRPA is derived from the "iFlytek RPA Platform" which has served tens of thousands of enterprises and millions of developers, and we have made its core engine completely open source. Through visual design and build tools, developers can quickly create and debug robots, applications, and workflows using no-code or low-code approaches, enabling powerful RPA application development and more customized business logic.
 
-### 🎯 Why Choose AstraRPA?
+### 🎯 Why Choose AstronRPA?
 
 - **🏭 Production Ready**: Mature platform serving tens of thousands of enterprises
 - **👨‍💻 Developer Friendly**: Visual design + comprehensive APIs and documentation
@@ -161,8 +161,8 @@ Recommended for quick deployment:
 
 ```bash
 # Clone the repository
-git clone https://github.com/iflytek/astra-rpa.git
-cd astra-rpa
+git clone https://github.com/iflytek/astron-rpa.git
+cd astron-rpa
 
 # Enter docker directory
 cd docker
@@ -316,7 +316,7 @@ We welcome any form of contribution! Please check [Contributing Guide](CONTRIBUT
 ## 🌟 Star History
 
 <div align="center">
-  <img src="https://api.star-history.com/svg?repos=iflytek/astra-rpa&type=Date" alt="Star History Chart" width="600">
+  <img src="https://api.star-history.com/svg?repos=iflytek/astron-rpa&type=Date" alt="Star History Chart" width="600">
 </div>
 
 ## 💖 Sponsorship
@@ -325,7 +325,7 @@ We welcome any form of contribution! Please check [Contributing Guide](CONTRIBUT
   <a href="https://github.com/sponsors/iflytek">
     <img src="https://img.shields.io/badge/Sponsor-GitHub%20Sponsors-pink?style=for-the-badge&logo=github" alt="GitHub Sponsors">
   </a>
-  <a href="https://opencollective.com/astrarpa">
+  <a href="https://opencollective.com/astronrpa">
     <img src="https://img.shields.io/badge/Sponsor-Open%20Collective-blue?style=for-the-badge&logo=opencollective" alt="Open Collective">
   </a>
 </div>
@@ -333,8 +333,8 @@ We welcome any form of contribution! Please check [Contributing Guide](CONTRIBUT
 ## 📞 Getting Help
 
 - 📧 Technical Support: [cbg_rpa_ml@iflytek.com](mailto:cbg_rpa_ml@iflytek.com)
-- 💬 Community Discussion: [GitHub Discussions](https://github.com/iflytek/astra-rpa/discussions)
-- 🐛 Bug Reports: [Issues](https://github.com/iflytek/astra-rpa/issues)
+- 💬 Community Discussion: [GitHub Discussions](https://github.com/iflytek/astron-rpa/discussions)
+- 🐛 Bug Reports: [Issues](https://github.com/iflytek/astron-rpa/issues)
 
 ## 📄 License
 
@@ -347,11 +347,11 @@ This project is open source under the [Open Source License](LICENSE).
 **Developed and maintained by iFlytek**
 
 [![Follow](https://img.shields.io/github/followers/iflytek?style=social&label=Follow)](https://github.com/iflytek)
-[![Star](https://img.shields.io/github/stars/iflytek/astra-rpa?style=social&label=Star)](https://github.com/iflytek/astra-rpa)
-[![Fork](https://img.shields.io/github/forks/iflytek/astra-rpa?style=social&label=Fork)](https://github.com/iflytek/astra-rpa/fork)
-[![Watch](https://img.shields.io/github/watchers/iflytek/astra-rpa?style=social&label=Watch)](https://github.com/iflytek/astra-rpa/watchers)
+[![Star](https://img.shields.io/github/stars/iflytek/astron-rpa?style=social&label=Star)](https://github.com/iflytek/astron-rpa)
+[![Fork](https://img.shields.io/github/forks/iflytek/astron-rpa?style=social&label=Fork)](https://github.com/iflytek/astron-rpa/fork)
+[![Watch](https://img.shields.io/github/watchers/iflytek/astron-rpa?style=social&label=Watch)](https://github.com/iflytek/astron-rpa/watchers)
 
-**AstraRPA** - Making RPA development simple and powerful!
+**AstronRPA** - Making RPA development simple and powerful!
 
 If you find this project helpful, please give us a ⭐ Star!
 

@@ -1,4 +1,4 @@
-# AstraRPA 前端平台
+# AstronRPA 前端平台
 
 <div align="center">
 
@@ -16,7 +16,7 @@
 
 ## 📑 目录
 
-- [AstraRPA 前端平台](#astrarpa-前端平台)
+- [AstronRPA 前端平台](#astronrpa-前端平台)
   - [📑 目录](#-目录)
   - [📋 概述](#-概述)
   - [✨ 核心特性](#-核心特性)
@@ -33,7 +33,7 @@
 
 ## 📋 概述
 
-AstraRPA 前端是一个专为 RPA 应用构建的现代化前端平台。它提供了构建基于 Web 和桌面 RPA 应用的完整解决方案，采用统一代码库。
+AstronRPA 前端是一个专为 RPA 应用构建的现代化前端平台。它提供了构建基于 Web 和桌面 RPA 应用的完整解决方案，采用统一代码库。
 
 该平台采用 pnpm workspaces 的单体仓库架构，支持多种应用类型，包括 Web 应用、桌面应用（通过 Tauri）和浏览器插件，所有应用共享通用组件和工具。
 
@@ -72,8 +72,8 @@ AstraRPA 前端是一个专为 RPA 应用构建的现代化前端平台。它提
 
 ```bash
 # 克隆项目
-git clone https://github.com/iflytek/astra-rpa.git
-cd astra-rpa/frontend
+git clone https://github.com/iflytek/astron-rpa.git
+cd astron-rpa/frontend
 
 # 安装依赖
 pnpm install

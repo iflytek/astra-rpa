@@ -1,10 +1,10 @@
-# AstraRPA Tauri App
+# AstronRPA Tauri App
 
 > 基于 Tauri 框架构建的 RPA (机器人流程自动化) 桌面应用程序
 
 ## 项目简介
 
-AstraRPA 是一个使用 Tauri 框架开发的跨平台桌面 RPA 应用，结合了 Rust 后端的高性能和 Web 前端的灵活性。应用支持在线和离线两种运行模式，提供完整的 RPA 自动化解决方案。
+AstronRPA 是一个使用 Tauri 框架开发的跨平台桌面 RPA 应用，结合了 Rust 后端的高性能和 Web 前端的灵活性。应用支持在线和离线两种运行模式，提供完整的 RPA 自动化解决方案。
 
 ## 技术栈
 

@@ -1,4 +1,4 @@
-# AstraRPA Quick Start Guide
+# AstronRPA Quick Start Guide
 
 ## 🚀 Quick Start
 

@@ -1,4 +1,4 @@
-# AstraRPA Frontend
+# AstronRPA Frontend
 
 <div align="center">
 
@@ -16,7 +16,7 @@ English | [简体中文](README.zh.md)
 
 ## 📑 Table of Contents
 
-- [AstraRPA Frontend](#astrarpa-frontend)
+- [AstronRPA Frontend](#astronrpa-frontend)
   - [📑 Table of Contents](#-table-of-contents)
   - [📋 Overview](#-overview)
   - [✨ Key Features](#-key-features)
@@ -33,7 +33,7 @@ English | [简体中文](README.zh.md)
 
 ## 📋 Overview
 
-AstraRPA Frontend is a modern frontend platform built for RPA applications. It provides a comprehensive solution for building both web-based and desktop RPA applications with a unified codebase.
+AstronRPA Frontend is a modern frontend platform built for RPA applications. It provides a comprehensive solution for building both web-based and desktop RPA applications with a unified codebase.
 
 The platform features a monorepo architecture using pnpm workspaces, supporting multiple application types including web applications, desktop applications (via Tauri), and browser plugins, all sharing common components and utilities.
 
@@ -72,8 +72,8 @@ The platform features a monorepo architecture using pnpm workspaces, supporting 
 
 ```bash
 # Clone the repository
-git clone https://github.com/iflytek/astra-rpa.git
-cd astra-rpa/frontend
+git clone https://github.com/iflytek/astron-rpa.git
+cd astron-rpa/frontend
 
 # Install dependencies
 pnpm install

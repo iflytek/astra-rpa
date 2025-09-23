@@ -1,8 +1,8 @@
-# AstraRPA
+# AstronRPA
 
 <div align="center">
 
-![AstraRPA Logo](https://via.placeholder.com/200x80?text=AstraRPA)
+![AstronRPA Logo](https://via.placeholder.com/200x80?text=AstronRPA)
 
 **🤖 企业级机器人流程自动化（RPA）开发平台**
 
@@ -11,7 +11,7 @@
 [![Java](https://img.shields.io/badge/java-8+-orange.svg)](https://openjdk.java.net/)
 [![Vue](https://img.shields.io/badge/vue-3+-green.svg)](https://vuejs.org/)
 [![Docker](https://img.shields.io/badge/docker-ready-brightgreen.svg)](https://www.docker.com/)
-[![GitHub Stars](https://img.shields.io/github/stars/iflytek/astra-rpa?style=social)](https://github.com/iflytek/astra-rpa/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/iflytek/astron-rpa?style=social)](https://github.com/iflytek/astron-rpa/stargazers)
 
 [English](README.md) | 简体中文
 
@@ -20,7 +20,7 @@
 ## 📑 目录
 
 - [📋 概述](#-概述)
-- [🎯 为什么选择 AstraRPA](#-为什么选择-astrarpa)
+- [🎯 为什么选择 AstronRPA](#-为什么选择-astronrpa)
 - [✨ 核心特性](#-核心特性)
 - [🛠️ 技术栈](#-技术栈)
 - [📱 界面展示](#-界面展示)
@@ -38,11 +38,11 @@
 
 ## 📋 概述
 
-AstraRPA 是一个全能型的机器人流程自动化（RPA）开发工具，为企业和开发者提供从设计到部署的全流程 RPA 自动化解决方案。平台集成最新的 AI 大模型、丰富的组件库、多种开发模式和框架，让开发者能够以最便捷的方式构建强大的自动化流程。
+AstronRPA 是一个全能型的机器人流程自动化（RPA）开发工具，为企业和开发者提供从设计到部署的全流程 RPA 自动化解决方案。平台集成最新的 AI 大模型、丰富的组件库、多种开发模式和框架，让开发者能够以最便捷的方式构建强大的自动化流程。
 
-AstraRPA 源自服务于数万家企业和数百万开发者的"科大讯飞 RPA 平台"，我们将其核心引擎完全开源。通过可视化设计和构建工具，开发者可以使用无代码或低代码的方式快速创建和调试机器人、应用程序和工作流，实现强大的 RPA 应用开发和更多定制化的业务逻辑。
+AstronRPA 源自服务于数万家企业和数百万开发者的"科大讯飞 RPA 平台"，我们将其核心引擎完全开源。通过可视化设计和构建工具，开发者可以使用无代码或低代码的方式快速创建和调试机器人、应用程序和工作流，实现强大的 RPA 应用开发和更多定制化的业务逻辑。
 
-### 🎯 为什么选择 AstraRPA？
+### 🎯 为什么选择 AstronRPA？
 
 - **🏭 生产可用**：源自服务数万家企业的成熟平台
 - **👨‍💻 开发者友好**：可视化设计 + 完整的 API 和文档
@@ -161,8 +161,8 @@ AstraRPA 源自服务于数万家企业和数百万开发者的"科大讯飞 RPA
 
 ```bash
 # 克隆项目
-git clone https://github.com/iflytek/astra-rpa.git
-cd astra-rpa
+git clone https://github.com/iflytek/astron-rpa.git
+cd astron-rpa
 
 # 进入 docker 目录
 cd docker
@@ -316,7 +316,7 @@ mvn spring-boot:run
 ## 🌟 Star 历史
 
 <div align="center">
-  <img src="https://api.star-history.com/svg?repos=iflytek/astra-rpa&type=Date" alt="Star 历史图表" width="600">
+  <img src="https://api.star-history.com/svg?repos=iflytek/astron-rpa&type=Date" alt="Star 历史图表" width="600">
 </div>
 
 ## 💖 赞助支持
@@ -325,7 +325,7 @@ mvn spring-boot:run
   <a href="https://github.com/sponsors/iflytek">
     <img src="https://img.shields.io/badge/赞助-GitHub%20Sponsors-pink?style=for-the-badge&logo=github" alt="GitHub Sponsors">
   </a>
-  <a href="https://opencollective.com/astrarpa">
+  <a href="https://opencollective.com/astronrpa">
     <img src="https://img.shields.io/badge/赞助-Open%20Collective-blue?style=for-the-badge&logo=opencollective" alt="Open Collective">
   </a>
 </div>
@@ -333,8 +333,8 @@ mvn spring-boot:run
 ## 📞 获取帮助
 
 - 📧 技术支持: [cbg_rpa_ml@iflytek.com](mailto:cbg_rpa_ml@iflytek.com)
-- 💬 社区讨论: [GitHub Discussions](https://github.com/iflytek/astra-rpa/discussions)
-- 🐛 问题反馈: [Issues](https://github.com/iflytek/astra-rpa/issues)
+- 💬 社区讨论: [GitHub Discussions](https://github.com/iflytek/astron-rpa/discussions)
+- 🐛 问题反馈: [Issues](https://github.com/iflytek/astron-rpa/issues)
 
 ## 📄 开源协议
 
@@ -347,11 +347,11 @@ mvn spring-boot:run
 **由科大讯飞开发维护**
 
 [![Follow](https://img.shields.io/github/followers/iflytek?style=social&label=关注)](https://github.com/iflytek)
-[![Star](https://img.shields.io/github/stars/iflytek/astra-rpa?style=social&label=Star)](https://github.com/iflytek/astra-rpa)
-[![Fork](https://img.shields.io/github/forks/iflytek/astra-rpa?style=social&label=Fork)](https://github.com/iflytek/astra-rpa/fork)
-[![Watch](https://img.shields.io/github/watchers/iflytek/astra-rpa?style=social&label=关注)](https://github.com/iflytek/astra-rpa/watchers)
+[![Star](https://img.shields.io/github/stars/iflytek/astron-rpa?style=social&label=Star)](https://github.com/iflytek/astron-rpa)
+[![Fork](https://img.shields.io/github/forks/iflytek/astron-rpa?style=social&label=Fork)](https://github.com/iflytek/astron-rpa/fork)
+[![Watch](https://img.shields.io/github/watchers/iflytek/astron-rpa?style=social&label=关注)](https://github.com/iflytek/astron-rpa/watchers)
 
-**AstraRPA** - 让 RPA 开发变得简单而强大！
+**AstronRPA** - 让 RPA 开发变得简单而强大！
 
 如果您觉得这个项目对您有帮助，请给我们一个 ⭐ Star！
 
