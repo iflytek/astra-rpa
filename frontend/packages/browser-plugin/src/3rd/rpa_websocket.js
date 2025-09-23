@@ -6,14 +6,21 @@ function gen_event_id() {
   });
 }
 function get_navigator_user_agent() {
-  const isChorme = /Chrome/.test(navigator.userAgent); // 谷歌浏览器
-  const isFirefox = /Firefox/.test(navigator.userAgent); // 火狐浏览器
-  const isEdge = /Edg/.test(navigator.userAgent); // Edge浏览器
+  const isChorme = /Chrome/.test(navigator.userAgent);
+  const isFirefox = /Firefox/.test(navigator.userAgent);
+  const isEdge = /Edg/.test(navigator.userAgent);
 
   if (isFirefox) return "$firefox$";
   if (isEdge) return "$edge$";
   if (isChorme) return "$chrome$";
   return "$unknown$";
+}
+function custom_agent() {
+  const modeAgent = {
+    '360se': "$360se$",
+    '360ChromeX': "$360ChromeX$"
+  }
+  return modeAgent[__BUILD_MODE__] || '';
 }
 
 function get_navigator_version() {
@@ -41,7 +48,7 @@ function gen_time() {
 }
 
 function default_log(msg) {
-  console.log(msg);
+  console.info('[info]', msg);
 }
 
 class BaseMsg {
@@ -56,28 +63,18 @@ class BaseMsg {
     need_ack = undefined,
     data = undefined
   ) {
-    // 回复事件id 已http的形式使用 适合一来一回的消息
     this.reply_event_id = reply_event_id;
-    // 事件id 唯一值
     this.event_id = event_id;
-    // 事件发生的时间戳
     this.event_time = event_time;
-    // 业务 大业务
     this.channel = channel;
-    // 事件名称 大业务下面的小事件
     this.key = key;
-    // 用户名，客户标识，同一个客户多个连接，发送时会广播，主要时解决回收不及时问题
     this.uuid = uuid;
-    // 消息发送给
     this.send_uuid = send_uuid;
-    // 是否需要回复, 目前ack还不完善
     this.need_ack = need_ack;
-    // 数据
     this.data = data;
   }
 
   to_reply() {
-    // 消息回复
     let res_msg = new BaseMsg();
     res_msg.reply_event_id = this.event_id;
     res_msg.channel = this.channel;
@@ -105,7 +102,6 @@ class WsError extends WsException {}
 class PingTimeoutError extends WsError {}
 class MsgUnlawfulnessError extends WsError {}
 
-// 特殊消息
 const PingMsg = new BaseMsg();
 PingMsg.channel = "ping";
 const PongMsg = new BaseMsg();
@@ -117,29 +113,20 @@ AckMsg.channel = "ack";
 
 class Route {
   constructor(channel, key, func) {
-    // 同msg的channel
     this.channel = channel;
-    // 同msg的key
     this.key = key;
-    // 回调
     this.func = func;
   }
 }
 
 class Watch {
   constructor(watch_type, watch_key, func = undefined, retry_time = 0) {
-    // 监听类型
     this.watch_type = watch_type;
-    // 监听key
     this.watch_key = watch_key;
-    // 触发callback
     this.callback = func;
-    // 额外重试次数
     this.retry_time = retry_time;
-    // 重试间隔
     this.interval = 10;
 
-    // 中间数据
     this.time = 0;
     this.timeout = 0;
   }
@@ -164,31 +151,24 @@ class WsApp {
     reconnect_max_time = 20,
     log = default_log
   ) {
-    // 配置
     this.url = url;
     this.log = log;
 
-    // 状态
     this.ws_app = undefined;
     this.running = false;
 
-    // ping机制
     this.ping_interval = ping_interval;
 
-    // 路由管理
     this.routes = {}; // map[str, Route]
 
-    // 重启机制
     this.reconnect_time = 0;
     this.reconnect_interval = reconnect_interval;
     this.reconnect_max_time = reconnect_max_time;
 
-    // 消息监听
     this.watch_interval = 1;
     this.watch_msg = {}; // map[str, Watch]
     this.watch_msg_queue = [];
 
-    // 异步任务
     this.start_ping_task = undefined;
   }
   _send_text(msg) {
@@ -262,7 +242,7 @@ class WsApp {
   }
 
   _close_watch() {
-    this.watch_msg = {}; // map[str, Watch]
+    this.watch_msg = {};
     this.watch_msg_queue = [];
   }
 
@@ -316,7 +296,6 @@ class WsApp {
         data.data
       );
       setTimeout(function () {
-        // 拦截特殊消息
         if (msg.channel == PongMsg.channel) {
           return;
         } else if (msg.channel == AckMsg.channel) {
@@ -332,7 +311,6 @@ class WsApp {
           return;
         }
 
-        // 拦截reply消息
         if (msg.reply_event_id) {
           let name = `${"reply"}$$${msg.reply_event_id}`;
           if (name in that.watch_msg) {
@@ -343,7 +321,6 @@ class WsApp {
           return;
         }
 
-        // 分发消息
         let res_msg = msg.to_reply();
         try {
           let res = that._call_route(msg.channel, msg.key, msg);
@@ -352,7 +329,6 @@ class WsApp {
           res_msg.data = String(error);
         }
 
-        // 消息返回
         try {
           if (res_msg.data != undefined) {
             that.send(res_msg);
@@ -435,9 +411,12 @@ class WsApp {
     }
   }
 }
-const agent =  get_navigator_user_agent()
+const customAgent = custom_agent();
+const agent = customAgent ? customAgent : get_navigator_user_agent()
+console.info("userAgent:", agent);
 const token = btoa(agent);
-const wsUrl = "ws://127.0.0.1:9082/ws?token=" + token + '&mv3=1&nv=' + get_navigator_version();
+const ws_base_url = import.meta.env.VITE_APP_WS_URL
+const wsUrl = `${ws_base_url}?token=${token}&nv=${get_navigator_version()}`;
 export const wsApp = new WsApp(
   wsUrl,
   10,

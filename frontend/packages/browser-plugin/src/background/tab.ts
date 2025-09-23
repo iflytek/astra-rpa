@@ -1,4 +1,4 @@
-import { StatusCode } from './constant'
+import { ErrorMessage, StatusCode } from './constant'
 import { Debugger } from './debugger'
 import { captureArea, captureFullPage } from './full_page_shot'
 import { Utils } from './utils'
@@ -158,7 +158,7 @@ export const Tabs = {
             resolve(response.data)
           }
           else {
-            reject(new Error(response.msg || '执行失败，未获取到结果'))
+            reject(new Error(response.msg || ErrorMessage.EXECUTE_ERROR))
           }
         }).catch((error) => { reject(error) })
       }
@@ -322,7 +322,7 @@ export const Tabs = {
               tabId,
               frame.frameId,
               (arg) => {
-                // @ts-expect-error 插件content_script中的window对象
+                // @ts-expect-error window in content script
                 return window.handleSync({
                   key: 'getFrameInfo',
                   data: arg,

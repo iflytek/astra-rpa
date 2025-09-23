@@ -1,11 +1,14 @@
+import { log } from '../3rd/log'
+
+import { ErrorMessage } from './constant'
 import { Utils } from './utils'
 
-const isFirefox = Utils.getNavigatorUserAgent() === '$firefox$' // 火狐浏览器
+const isFirefox = Utils.getNavigatorUserAgent() === '$firefox$'
 
 export function checkDebuggerDetached(tabId, attempts = 0) {
   return new Promise((resolve, reject) => {
     if (attempts > 10) {
-      reject(new Error('检测 detach 状态超时'))
+      reject(new Error(ErrorMessage.DEBUGGER_TIMOUT))
       return
     }
 
@@ -23,20 +26,18 @@ export function checkDebuggerDetached(tabId, attempts = 0) {
 }
 
 /**
- * 调试器相关功能
- * 1，附加调试器
- * 2，监听事件， 获取到执行上下文
- * 3，执行代码
- * 4，断开调试器
+ * Debugger-related functions
+ * 1. attach debugger
+ * 2. Listen for events and obtain the execution context
+ * 3, execute the code
+ * 4. detach debugger
  */
-
-/** @format */
 const Debugger = {
   attached: false,
   tabId: 0,
   frameContextIdMap: {
-    0: [], // 默认frameId 0 对应的 executionContextIds
-  } as Record<string, number[]>, // 绑定frameId 和executionContextIds
+    0: [], // frameId 0 executionContextIds
+  } as Record<string, number[]>, // frameId executionContextIds
   enableRuntime: (tabId: number) => {
     return new Promise((resolve, reject) => {
       chrome.debugger.sendCommand({ tabId }, 'Runtime.enable', {}, () => {
@@ -61,7 +62,7 @@ const Debugger = {
           reject(chrome.runtime.lastError)
         }
         else {
-          console.log('Debugger attached successfully')
+          log.info('Debugger attached successfully')
           Debugger.tabId = tabId
           Debugger.attached = true
           resolve(true)
@@ -72,7 +73,7 @@ const Debugger = {
   detachDebugger: (tabId: number) => {
     return new Promise((resolve) => {
       chrome.debugger.detach({ tabId }, () => {
-        console.log('Debugger detached successfully')
+        log.info('Debugger detached successfully')
         Debugger.attached = false
         Debugger.frameContextIdMap = { 0: [] }
         resolve(true)
@@ -93,7 +94,6 @@ const Debugger = {
     })
   },
   evaluate: async (tabId: number, code: string, frameId: number) => {
-    // console.log('code: ', code)
     code = `(function() { ${code} })()`
 
     await Debugger.attachDebugger(tabId)
@@ -102,13 +102,13 @@ const Debugger = {
 
     const currentFrameContextIds = Debugger.frameContextIdMap[frameId] || []
     if (!currentFrameContextIds.length) {
-      throw new Error('未找到执行上下文，请确保页面已加载完成')
+      throw new Error(ErrorMessage.CONTEXT_NOT_FOUND)
     }
     const allPromise = currentFrameContextIds?.map(item => chrome.debugger.sendCommand({ tabId }, 'Runtime.evaluate', { expression: code, contextId: item }))
     const allRes = await Promise.all(allPromise)
-    const successRes = allRes.find(item => !item.exceptionDetails) // 成功
-    const failRes = allRes.find(item => item.exceptionDetails) // 失败
-    console.log('evaluate successRes: ', successRes, 'evaluate failRes: ', failRes)
+    const successRes = allRes.find(item => !item.exceptionDetails)
+    const failRes = allRes.find(item => item.exceptionDetails)
+    log.info('evaluate successRes: ', successRes, 'evaluate failRes: ', failRes)
     await Debugger.detachDebugger(tabId)
     if (successRes) {
       return successRes.result.value || ''
@@ -117,13 +117,13 @@ const Debugger = {
       throw new Error(failRes.result.description)
     }
     else {
-      throw new Error('执行失败，未获取到结果')
+      throw new Error(ErrorMessage.EXECUTE_ERROR)
     }
   },
 }
 /**
- * 监听 console.log，获取 frameId 和 executionContextId 的对应关系
- * content 中的 iflyrpa_debugger_on 代码会打印 frameId
+ * Listen to console.log to obtain the correspondence between frameId and executionContextId
+ * The rpa_debugger_on code in the content will print the frameId
  */
 if (!isFirefox) {
   chrome.debugger.onEvent.addListener(async (source, method, params) => {
@@ -136,7 +136,7 @@ if (!isFirefox) {
     const executionContextId = params.executionContextId
 
     if (logValue.includes('rpa_debugger_on')) {
-      const frameId = `${logValue.split(':')[1]}` // 统一用字符串键
+      const frameId = `${logValue.split(':')[1]}`
       if (!Debugger.frameContextIdMap[frameId]) {
         Debugger.frameContextIdMap[frameId] = [executionContextId]
       }

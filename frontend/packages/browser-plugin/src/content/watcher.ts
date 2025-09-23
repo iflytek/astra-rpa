@@ -28,9 +28,6 @@ export function elementChangeWatcher(data: ElementInfo): WatchXPathResult {
   return result
 }
 
-/**
- * 逐层查找 cssSelector 路径的元素，若某层找不到则返回已找到的最后节点和未找到的选择器
- */
 function findNodeByCssSelectorStepwise(selector: string, onlyPosition: boolean = false): WatchXPathResult {
   const steps = selector
     .split('>')
@@ -44,7 +41,6 @@ function findNodeByCssSelectorStepwise(selector: string, onlyPosition: boolean =
     let j = i + 1
     if (steps[i] === '$shadow$') {
       j = j + 1
-      // 防止 $shadow$ 为末尾导致越界
       if (j > steps.length) {
         return {
           found: false,
@@ -94,9 +90,6 @@ function findNodeByCssSelectorStepwise(selector: string, onlyPosition: boolean =
   }
 }
 
-/**
- * 逐层查找 xpath 路径的元素，若某层找不到则返回已找到的最后节点和未找到的路径
- */
 function findNodeByXPathStepwise(xpath: string, onlyPosition: boolean = false): WatchXPathResult {
   const steps = xpath.split('/').filter(s => s.trim() !== '')
   let lastMatchedNode: Node | null = document

@@ -1,5 +1,5 @@
 /**
- * 标签映射
+ * tag map in chinese
  */
 export const TagMap = {
   html: '根元素',
@@ -57,7 +57,7 @@ export const TagMap = {
   video: '视频',
 }
 /**
- * 输入类型映射
+ * input type map in chinese
  */
 export const InputTypeMap = {
   text: '输入框',

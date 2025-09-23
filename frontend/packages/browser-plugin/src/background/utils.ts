@@ -2,9 +2,9 @@ import { StatusCode } from './constant'
 
 export const Utils = {
   getNavigatorUserAgent() {
-    const isChorme = /Chrome/.test(navigator.userAgent) // 谷歌浏览器
-    const isFirefox = /Firefox/.test(navigator.userAgent) // 火狐浏览器
-    const isEdge = /Edg/.test(navigator.userAgent) // Edge浏览器
+    const isChorme = /Chrome/.test(navigator.userAgent)
+    const isFirefox = /Firefox/.test(navigator.userAgent)
+    const isEdge = /Edg/.test(navigator.userAgent)
 
     if (isFirefox)
       return '$firefox$'
@@ -38,13 +38,12 @@ export const Utils = {
     let body = inputString
     let flags = ''
     const lastSlashIndex = inputString.lastIndexOf('/')
-    // 检查是否以 '/' 开始和以 ‘/’结束
+
     if (inputString.startsWith('/') && lastSlashIndex > 0) {
-      body = inputString.slice(1, lastSlashIndex) // 提取正则表达式主体
+      body = inputString.slice(1, lastSlashIndex)
       if (body.startsWith('^') && body.endsWith('$')) {
-        body = body.slice(1, -1) // 去除正则表达式主体中的 '^' 和 '$'
+        body = body.slice(1, -1)
       }
-      // body 包含 \d, \w, \s, \b, \., \*, \?, \+, \{, \}, \[ 或 \] 时，需要添加转义字符
       if (
         body.includes('\\d')
         || body.includes('\\w')
@@ -59,9 +58,9 @@ export const Utils = {
         || body.includes('\\[')
         || body.includes('\\]')
       ) {
-        body = body.replace(/\\/g, '\\') // 添加转义字符
+        body = body.replace(/\\/g, '\\')
       }
-      flags = inputString.slice(lastSlashIndex + 1) // 提取标志位
+      flags = inputString.slice(lastSlashIndex + 1)
     }
     try {
       const regex = new RegExp(body, flags)

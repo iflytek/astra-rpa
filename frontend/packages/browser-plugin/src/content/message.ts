@@ -1,6 +1,5 @@
 function isExtensionContextValid() {
   try {
-    // 检查 chrome.runtime 对象是否存在及其 id
     return !!(chrome.runtime && chrome.runtime.id)
   }
   catch (error) {

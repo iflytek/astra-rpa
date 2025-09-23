@@ -3,11 +3,10 @@ export function highLight(rect: DOMRectT) {
   if (highlight)
     return
   clearHighlight()
-  highlight = document.createElement('div') // 遮罩 div
+  highlight = document.createElement('div')
   highlight.className = 'rpa-highlight'
   document.querySelector('html').appendChild(highlight)
   const { width, height, left, top } = rect
-  // 当前document 在浏览器中的位置
   highlight.style.top = `${Math.round(top)}px`
   highlight.style.left = `${Math.round(left)}px`
   highlight.style.width = `${Math.round(width)}px`
@@ -20,12 +19,11 @@ export function highLight(rect: DOMRectT) {
 
 export function highLightRects(rects: DOMRectT[]) {
   rects.forEach((rect) => {
-    const highlight = document.createElement('div') // 遮罩 div
+    const highlight = document.createElement('div')
     highlight.className = 'rpa-highlight'
     document.querySelector('html').appendChild(highlight)
 
     const { width, height, left, top } = rect
-    // 当前document 在浏览器中的位置
     highlight.style.top = `${Math.round(top)}px`
     highlight.style.left = `${Math.round(left)}px`
     highlight.style.width = `${Math.round(width)}px`

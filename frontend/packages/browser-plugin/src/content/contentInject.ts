@@ -1,4 +1,4 @@
-import { DEEP_SEARCH_TRIGGER, ELEMENT_SEARCH_TRIGGER, HIGH_LIGHT_BORDER, HIGH_LIGHT_DURATION, SCROLL_DELAY, SCROLL_TIMES, StatusCode } from './constant'
+import { DEEP_SEARCH_TRIGGER, ELEMENT_SEARCH_TRIGGER, ErrorMessage, HIGH_LIGHT_BORDER, HIGH_LIGHT_DURATION, SCROLL_DELAY, SCROLL_TIMES, StatusCode } from './constant'
 import { similarBatch, similarListBatch, tableColumnDataBatch, tableDataBatch, tableDataFormatterProcure, tableHeaderBatch } from './dataBatch'
 import {
   checkElements,
@@ -26,8 +26,8 @@ import { elementChangeWatcher } from './watcher'
 let timeoutId: number | null
 let deepTimeoutId: number | null
 let highlightTime = 0
-const frontCheckEnabled = false // 是否启用前端检验框
-let deepSearchEnabled = false // 是否启用深度搜索
+const frontCheckEnabled = false
+let deepSearchEnabled = false
 let currentFrameInfo = {
   frameId: 0,
   iframeXpath: '',
@@ -44,11 +44,11 @@ function findElement(ev: MouseEvent, docu: Document | ShadowRoot, _extra) {
   const { clientX: x, clientY: y } = ev
   let element = findElementByPoint({ x, y }, deepSearchEnabled, docu)
   if (!element) {
-    element = ev.target as HTMLElement // 修复找不到html元素的问题
+    element = ev.target as HTMLElement
   }
   let shadowPath = ''
   let shadowDirs: ElementDirectory[] = []
-  // shadowRoot存在时，获取shadowRoot中的元素
+
   if (element?.shadowRoot) {
     const shadowRoot = element?.shadowRoot
     const shadowElementPath = getNthCssSelector(element)
@@ -67,7 +67,6 @@ function findElement(ev: MouseEvent, docu: Document | ShadowRoot, _extra) {
   }
 }
 
-/* 鼠标事件 */
 function moveListener(ev: MouseEvent, docu: Document | ShadowRoot, extra) {
   timeoutId && clearTimeout(timeoutId)
   deepTimeoutId && clearTimeout(deepTimeoutId)
@@ -75,7 +74,7 @@ function moveListener(ev: MouseEvent, docu: Document | ShadowRoot, extra) {
   timeoutId = setTimeout(() => {
     findElement(ev, docu, extra)
     clearTimeout(timeoutId)
-    // DEEP_SEARCH_TRIGGER 秒后，开启深度搜索
+
     deepTimeoutId = setTimeout(() => {
       deepSearchEnabled = true
       findElement(ev, docu, extra)
@@ -84,26 +83,23 @@ function moveListener(ev: MouseEvent, docu: Document | ShadowRoot, extra) {
     }, DEEP_SEARCH_TRIGGER)
   }, ELEMENT_SEARCH_TRIGGER)
 }
-/* 元素信息 */
+
 function formatElementInfo(element: HTMLElement, target: Document | ShadowRoot, shadowPath = '', shadowDirs: ElementDirectory[] = []) {
-  // 获取元素的xpath
   const xpath = getXpath(element)
-  // 获取元素的cssSelector
   const cssSelector = getNthCssSelector(element)
-  // 获取元素的目录
   const pathDirs = getElementDirectory(element)
   const selector = shadowPath ? `${shadowPath}>$shadow$>${cssSelector}` : cssSelector
   const dirs = shadowDirs.length > 0 ? shadowDirs.concat([{ tag: '$shadow$', checked: true, value: '$shadow$', attrs: [] }], pathDirs) : pathDirs
   const tag = Utils.getTag(element)
-  const innerText = Utils.pureText(getText(element)).substring(0, 10) // 获取元素名称
-  const text = innerText ? Utils.pureText(innerText) : '未知名称'
+  const innerText = Utils.pureText(getText(element)).substring(0, 10)
+  const text = innerText ? Utils.pureText(innerText) : 'unknown'
   const elementData = {
     matchTypes: [],
-    checkType: 'shadowRoot' in target ? 'customization' : 'visualization', // 获取元素类型，可视化获取 / 自定义获取
+    checkType: 'shadowRoot' in target ? 'customization' : 'visualization',
     xpath,
     cssSelector: selector,
     pathDirs: dirs,
-    rect: getBoundingClientRect(element), // 仅作为拾取元素时的高亮
+    rect: getBoundingClientRect(element),
     url: window.location.href,
     shadowRoot: target instanceof ShadowRoot,
     tag,
@@ -112,17 +108,16 @@ function formatElementInfo(element: HTMLElement, target: Document | ShadowRoot, 
   return elementData
 }
 
-/* iframe 消息处理 */
 function messageHandler(ev: MessageEvent) {
   const { key, data } = ev.data
-  if (data && key === 'setIflyrpaIframe') {
+  if (data && key === 'setCurrentWindowIframeInfo') {
     currentFrameInfo = data
   }
-  if (key === 'getIflyrpaIframe') {
+  if (key === 'getCurrentWindowIframeInfo') {
     tagFrame()
   }
 }
-/* 标记iframe */
+
 function tagFrame() {
   const iframes = getIFramesElements()
   iframes.forEach((iframe) => {
@@ -132,18 +127,16 @@ function tagFrame() {
     }
     iframe.contentWindow?.postMessage(
       {
-        key: 'setIflyrpaIframe',
+        key: 'setCurrentWindowIframeInfo',
         data: iframeInfo,
       },
       '*',
     )
   })
   if (window.parent !== window) {
-    // 非顶层frame
-    // 向父窗口发送消息
     window.parent.postMessage(
       {
-        key: 'getIflyrpaIframe',
+        key: 'getCurrentWindowIframeInfo',
       },
       '*',
     )
@@ -151,10 +144,10 @@ function tagFrame() {
 }
 
 /**
- * 滚动查找元素，如果找不到，则滚动查找
- * 最多滚动20次当前窗口高度
- * SCROLL_TIMES = 20 最大滚动次数
- * SCROLL_DELAY = 1500ms //单次滚动后等待页面加载的时间
+ * Scroll to search for elements. If not found, scroll to search
+ * Scroll the current window height up to 20 times at most
+ * SCROLL_TIMES = 20 max scroll times
+ * SCROLL_DELAY = 1500ms scroll delay
  */
 async function scrollFindElement(data: ElementInfo) {
   const windowHeight = window.innerHeight
@@ -173,17 +166,13 @@ async function scrollFindElement(data: ElementInfo) {
   return null
 }
 
-/**
- * 元素未找到原因，变动的元素节点
- */
-
 function elementNotFoundReason(data: ElementInfo) {
   const { checkType } = data
   if (!data.cssSelector && !data.xpath && checkType === 'customization') {
-    return Utils.fail('元素信息不完整，无法定位元素', StatusCode.ELEMENT_NOT_FOUND)
+    return Utils.fail(ErrorMessage.ELEMENT_INFO_INCOMPLETE, StatusCode.ELEMENT_NOT_FOUND)
   }
   if (data.pathDirs && data.pathDirs.length === 0 && checkType === 'visualization') {
-    return Utils.fail('元素信息不完整，无法定位元素', StatusCode.ELEMENT_NOT_FOUND)
+    return Utils.fail(ErrorMessage.ELEMENT_INFO_INCOMPLETE, StatusCode.ELEMENT_NOT_FOUND)
   }
   let message = '未找到元素'
   const result = elementChangeWatcher(data)
@@ -193,9 +182,6 @@ function elementNotFoundReason(data: ElementInfo) {
   return Utils.fail(message, StatusCode.ELEMENT_NOT_FOUND)
 }
 
-/**
- * 统一的鼠标事件派发
- */
 function dispatchMouseSequence(
   dom: HTMLElement,
   events: string[],
@@ -209,7 +195,6 @@ function dispatchMouseSequence(
     clientY: coords?.clientY ?? 0,
   }
   for (const type of events) {
-    // 微任务后派发，避免同步链路里阻塞
     queueMicrotask(() => dom.dispatchEvent(new MouseEvent(type, base)))
   }
 }
@@ -217,9 +202,7 @@ function dispatchMouseSequence(
 const ContentHandler = {
   version: '5.1.7',
   ele: {
-    /**
-     * 通过 元素的xpath，cssSelector，目录，查找元素
-     */
+
     getElement: async (data: ElementInfo, isSelf = false, atomRun = false): Promise<null | HTMLElement[]> => {
       const { matchTypes } = data
       const isScrollFind = matchTypes && matchTypes.includes('scrollPosition') && !isSelf && !atomRun
@@ -227,15 +210,14 @@ const ContentHandler = {
       if (!tempEles && isScrollFind) {
         tempEles = (await scrollFindElement(data)) as HTMLElement[]
       }
-      return tempEles as HTMLElement[] // 多元素
+      return tempEles as HTMLElement[]
     },
-    // 获取单个dom
+
     getDom: async (data: ElementInfo): Promise<HTMLElement | null> => {
       const eles = await ContentHandler.ele.getElement(data)
       const result = eles ? eles[0] : null
       return result
     },
-    // 校验元素位置
     checkElement: async (data: ElementInfo) => {
       let checkEles = null
       try {
@@ -247,19 +229,19 @@ const ContentHandler = {
       frontCheckEnabled && checkEles && checkElements(checkEles)
       if (checkEles && checkEles.length === 1) {
         const elementPos = getBoundingClientRect(checkEles[0])
-        return Utils.success({ rect: [elementPos] }) // 单元素
+        return Utils.success({ rect: [elementPos] })
       }
       else if (checkEles && checkEles.length > 1) {
         const elementPosArr = checkEles.map((ele: HTMLElement) => {
           return getBoundingClientRect(ele)
         })
-        return Utils.success({ rect: elementPosArr }) // 多元素
+        return Utils.success({ rect: elementPosArr })
       }
       else {
         return elementNotFoundReason(data)
       }
     },
-    // 获取到元素的位置信息
+
     getElementPos: async (data: ElementInfo) => {
       let checkEle = null
       try {
@@ -276,7 +258,7 @@ const ContentHandler = {
         return elementNotFoundReason(data)
       }
     },
-    // 滚动到可视区域
+
     scrollIntoView: async (data: ElementInfo) => {
       const { matchTypes } = data
       let scrollEle: HTMLElement[] | null
@@ -288,7 +270,7 @@ const ContentHandler = {
       }
       if (scrollEle && scrollEle[0]) {
         scrollEle[0].scrollIntoView({
-          behavior: 'instant', // 立即滚动
+          behavior: 'instant',
           block: 'center',
         })
         return Utils.success(true)
@@ -301,7 +283,7 @@ const ContentHandler = {
         return elementNotFoundReason(data)
       }
     },
-    // 获取元素信息
+
     elementFromSelect: async (data: ElementInfo) => {
       const { domain = location.origin, url = location.href, shadowRoot } = data
       let elements = null
@@ -326,7 +308,7 @@ const ContentHandler = {
         return elementNotFoundReason(data)
       }
     },
-    // 元素是否存在
+
     elementIsRender: async (data: ElementInfo) => {
       let ele = null
       try {
@@ -342,7 +324,7 @@ const ContentHandler = {
         return Utils.success(false)
       }
     },
-    // 元素是否为表格
+
     elementIsTable: async (data: ElementInfo) => {
       let ele = null
       try {
@@ -359,7 +341,7 @@ const ContentHandler = {
         return Utils.success(false)
       }
     },
-    // 相似元素抓取
+
     similarBatch: (data: ElementInfo) => {
       try {
         const res = similarBatch(data)
@@ -369,7 +351,7 @@ const ContentHandler = {
         return Utils.fail(error.toString(), StatusCode.EXECUTE_ERROR)
       }
     },
-    // 表格数据抓取
+
     tableDataBatch: (data: ElementInfo) => {
       try {
         const res = tableDataBatch(data)
@@ -379,7 +361,7 @@ const ContentHandler = {
         return Utils.fail(error.toString(), StatusCode.EXECUTE_ERROR)
       }
     },
-    // 表格单列抓取
+
     tableColumnDataBatch: (data: ElementInfo) => {
       try {
         const res = tableColumnDataBatch(data)
@@ -390,7 +372,6 @@ const ContentHandler = {
       }
     },
 
-    // 表头抓取， 以相似元素模式抓取，仅抓取数据，不包含元素
     tableHeaderBatch: (data: ElementInfo) => {
       try {
         const res = tableHeaderBatch(data)
@@ -400,7 +381,7 @@ const ContentHandler = {
         return Utils.fail(error.toString(), StatusCode.EXECUTE_ERROR)
       }
     },
-    // 相似元素组抓取
+
     simalarListBatch: (data) => {
       try {
         const res = similarListBatch(data)
@@ -411,7 +392,6 @@ const ContentHandler = {
       }
     },
 
-    // 获取相似元素内容
     similarElement: async (data: ElementInfo) => {
       try {
         const eles = await ContentHandler.ele.getElement(data)
@@ -421,7 +401,7 @@ const ContentHandler = {
         return Utils.fail(error.toString(), StatusCode.EXECUTE_ERROR)
       }
     },
-    // 重塑相似元素，使用绝对路径
+
     reSimilarElement: async (data: ElementInfo) => {
       const preEles = await ContentHandler.ele.getElement(data.preData)
       const curEles = await ContentHandler.ele.getElement(data)
@@ -440,10 +420,10 @@ const ContentHandler = {
         return Utils.success(null)
       }
     },
-    // 高亮 列
+
     highLightColumn: async (data: ElementInfo & { produceType: string, columnIndex: number }) => {
       if (highlightTime > 0)
-        return Utils.success({ rect: [] }) // 防止重复高亮, 导致高亮框清除不掉
+        return Utils.success({ rect: [] })
       highlightTime = HIGH_LIGHT_DURATION
       const { produceType, columnIndex } = data
       const highlightColor = Utils.generateColor(columnIndex ? columnIndex - 1 : 0)
@@ -457,14 +437,12 @@ const ContentHandler = {
           const th = table.querySelector(`th:nth-child(${columnIndex})`) as HTMLElement | null
           const thborder = th?.style.border
 
-          // 高亮表头
           if (th) {
             th.style.border = HIGH_LIGHT_BORDER
             th.style.borderColor = highlightColor
             rect.push(getBoundingClientRect(th))
           }
 
-          // 高亮列单元格
           table.querySelectorAll('tr').forEach((tr) => {
             const td = tr.querySelector(`td:nth-child(${columnIndex})`) as HTMLElement | null
             if (td) {
@@ -476,7 +454,6 @@ const ContentHandler = {
             }
           })
 
-          // 恢复
           setTimeout(() => {
             highlightTime = 0
             if (th)
@@ -526,11 +503,11 @@ const ContentHandler = {
       window.scrollTo(0, 0)
       return true
     },
-    // 获取关联元素
+
     getRelativeElement: async (data: ElementInfo) => {
       let ele: HTMLElement[]
       const options = data?.relativeOptions as Options
-      // 获取当前元素
+
       try {
         ele = await ContentHandler.ele.getElement(data)
       }
@@ -541,11 +518,11 @@ const ContentHandler = {
         return elementNotFoundReason(data)
       }
       if (ele.length > 1) {
-        return Utils.fail('找到多个元素，无法唯一定位', StatusCode.EXECUTE_ERROR)
+        return Utils.fail(ErrorMessage.ELEMENT_MULTI_FOUND, StatusCode.EXECUTE_ERROR)
       }
 
       const { relativeType } = options
-      // relativeType 为 child/parent/sibling
+
       let findEl
       try {
         if (relativeType === 'child') {
@@ -584,7 +561,7 @@ const ContentHandler = {
         return Utils.fail(error.toString(), StatusCode.EXECUTE_ERROR)
       }
     },
-    // 生成元素对象
+
     generateElement: (data: GenerateParamsT) => {
       const { type, value } = data
       let eles = null
@@ -610,12 +587,11 @@ const ContentHandler = {
         return Utils.success(result)
       }
       else {
-        return Utils.fail('未找到元素', StatusCode.ELEMENT_NOT_FOUND)
+        return Utils.fail(ErrorMessage.ELEMENT_NOT_FOUND, StatusCode.ELEMENT_NOT_FOUND)
       }
     },
 
-    // ---v3 声明式原子能力
-    // 点击元素
+    // ---v3
     clickElement: async (data: ElementInfo) => {
       const result = await ContentHandler.ele.getDom(data)
       const { buttonType } = data.atomConfig
@@ -641,13 +617,12 @@ const ContentHandler = {
       return Utils.success(true)
     },
 
-    // input元素输入文本
     inputElement: async (data: ElementInfo) => {
       const result = (await ContentHandler.ele.getDom(data)) as HTMLInputElement | HTMLTextAreaElement
       const { inputText } = data.atomConfig
       if (result) {
         if (result.tagName !== 'INPUT' && result.tagName !== 'TEXTAREA') {
-          return Utils.fail('该元素不是原生输入元素', StatusCode.EXECUTE_ERROR)
+          return Utils.fail(ErrorMessage.ELEMENT_NOT_INPUT, StatusCode.EXECUTE_ERROR)
         }
         result.value = inputText
         return Utils.success(true)
@@ -657,7 +632,6 @@ const ContentHandler = {
       }
     },
 
-    // 获取元素的text
     getElementText: async (data: ElementInfo) => {
       const result = (await ContentHandler.ele.getDom(data))
       if (result) {
@@ -674,7 +648,6 @@ const ContentHandler = {
       }
     },
 
-    // 获取元素的属性
     getElementAttrs: async (data: ElementInfo) => {
       const result = await ContentHandler.ele.getDom(data)
       const { operation, attrName } = data.atomConfig
@@ -682,28 +655,28 @@ const ContentHandler = {
         let value = null
         switch (operation) {
           case '0':
-            value = getText(result) // 获取元素文本内容
+            value = getText(result)
             break
           case '1':
-            value = result.outerHTML // 获取元素源代码
+            value = result.outerHTML
             break
           case '2':
-            value = (result as HTMLInputElement).value || result.getAttribute('value') // 获取元素值
+            value = (result as HTMLInputElement).value || result.getAttribute('value')
             break
           case '3':
-            value = (result as HTMLImageElement).src || (result as HTMLAnchorElement).href || '' // 获取元素链接地址
+            value = (result as HTMLImageElement).src || (result as HTMLAnchorElement).href || ''
             break
           case '4':
-            value = result.getAttribute(attrName) || '' // 获取元素属性
+            value = result.getAttribute(attrName) || ''
             break
           case '5':
-            value = getBoundingClientRect(result) // 获取元素位置
+            value = getBoundingClientRect(result)
             break
           case '6':
             if (result.tagName !== 'INPUT') {
-              return Utils.fail('元素无选中属性', StatusCode.EXECUTE_ERROR)
+              return Utils.fail(ErrorMessage.ELEMENT_NOT_CHECKED, StatusCode.EXECUTE_ERROR)
             }
-            value = (result as HTMLInputElement).checked // 获取选框选中状态?
+            value = (result as HTMLInputElement).checked
             break
           default:
             break
@@ -715,7 +688,6 @@ const ContentHandler = {
       }
     },
 
-    // 移除元素的属性
     removeElementAttr: async (data: ElementInfo) => {
       const result = await ContentHandler.ele.getDom(data)
       const { attrName } = data.atomConfig
@@ -728,7 +700,6 @@ const ContentHandler = {
       }
     },
 
-    // 设置元素的属性
     setElementAttr: async (data: ElementInfo) => {
       const result = await ContentHandler.ele.getDom(data)
       const { attrName, attrValue } = data.atomConfig
@@ -741,7 +712,6 @@ const ContentHandler = {
       }
     },
 
-    //  获取checked 属性
     getElementChecked: async (data: ElementInfo) => {
       const result = (await ContentHandler.ele.getDom(data)) as HTMLInputElement
       if (result) {
@@ -749,7 +719,7 @@ const ContentHandler = {
           return Utils.success(result.checked)
         }
         else {
-          return Utils.fail('该元素不是原生选框元素', StatusCode.EXECUTE_ERROR)
+          return Utils.fail(ErrorMessage.ELEMENT_NOT_SELECT, StatusCode.EXECUTE_ERROR)
         }
       }
       else {
@@ -757,7 +727,6 @@ const ContentHandler = {
       }
     },
 
-    // 设置checked属性
     setElementChecked: async (data: ElementInfo) => {
       const result = (await ContentHandler.ele.getDom(data)) as HTMLInputElement
       const { checked, reverse } = data.atomConfig
@@ -775,7 +744,7 @@ const ContentHandler = {
           return Utils.success(true)
         }
         else {
-          return Utils.fail('该元素不是原生选框元素', StatusCode.EXECUTE_ERROR)
+          return Utils.fail(ErrorMessage.ELEMENT_NOT_SELECT, StatusCode.EXECUTE_ERROR)
         }
       }
       else {
@@ -783,16 +752,14 @@ const ContentHandler = {
       }
     },
 
-    // 获取select
     getElementSelected: async (data: ElementInfo) => {
       const result = (await ContentHandler.ele.getDom(data)) as HTMLSelectElement
       const { option } = data.atomConfig
       if (result) {
         if (result.tagName !== 'SELECT') {
-          return Utils.fail('该元素不是原生下拉框元素', StatusCode.EXECUTE_ERROR)
+          return Utils.fail(ErrorMessage.ELEMENT_NOT_SELECT, StatusCode.EXECUTE_ERROR)
         }
         if (option === 'selected') {
-          // 获取选中项
           const list = Array.from(result.selectedOptions).map((option) => {
             return {
               label: option.label || '',
@@ -802,7 +769,6 @@ const ContentHandler = {
           return Utils.success(list)
         }
         else {
-          // 获取所有选项
           const list = Array.from(result.options).map((option) => {
             return {
               label: option.label || '',
@@ -817,38 +783,35 @@ const ContentHandler = {
       }
     },
 
-    // 设置select
     setElementSelected: async (data: ElementInfo) => {
       const result = (await ContentHandler.ele.getDom(data)) as HTMLSelectElement
       const { value, pattern, indexValue } = data.atomConfig
       if (result) {
         if (result.tagName !== 'SELECT') {
-          return Utils.fail('该元素不是原生下拉框元素', StatusCode.EXECUTE_ERROR)
+          return Utils.fail(ErrorMessage.ELEMENT_NOT_SELECT, StatusCode.EXECUTE_ERROR)
         }
         const options = result.options
         for (let i = 0; i < options.length; i++) {
-          // 模糊匹配
           if (pattern === 'contains' && options[i].label.includes(value)) {
             result.value = options[i].value
           }
-          // 精确匹配
+
           if (pattern === 'equal' && options[i].label === value) {
             result.value = options[i].value
           }
-          // indexValue 匹配
+
           if (pattern === 'index' && i + 1 === indexValue) {
             result.value = options[i].value
           }
-          // 正则匹配 todo
         }
-        result.dispatchEvent(new Event('change', { bubbles: true })) // 触发change事件
+        result.dispatchEvent(new Event('change', { bubbles: true }))
         return Utils.success(true)
       }
       else {
         return elementNotFoundReason(data)
       }
     },
-    // 获取表格数据
+
     getTableData: async (data: ElementInfo) => {
       const result = (await ContentHandler.ele.getDom(data)) as HTMLTableElement
       if (result) {
@@ -860,7 +823,6 @@ const ContentHandler = {
       }
     },
 
-    // 滚动
     scrollWindow: async (data: ElementInfo) => {
       let target: Window | HTMLElement = window
       if (data.xpath || data.cssSelector || data.pathDirs) {
@@ -941,14 +903,12 @@ const ContentHandler = {
     },
     getFrameInfo(data: { frameId: number }) {
       const { frameId } = data
-      console.log(`rpa_debugger_on:${frameId}`) // !!! 请勿删除，依靠该代码确定 chrome.debugger 往哪个frame 注入
+      console.log(`rpa_debugger_on:${frameId}`) // !!! Do not delete. Rely on this code to determine which frame chrome.debugger is injected into
       tagFrame()
       currentFrameInfo.frameId = frameId
       return currentFrameInfo
     },
-    /**
-     * 通过坐标获取iframe元素，递进获取嵌套iframe
-     */
+
     getIframeElement: (data: Point) => {
       const { x, y } = data
       const dpr = window.devicePixelRatio
@@ -983,9 +943,7 @@ const ContentHandler = {
     },
   },
   page: {
-    /**
-     *  from Mozilla Online
-     */
+
     fullPageRect: () => {
       const rootScrollable = document.compatMode === 'BackCompat' ? document.body : document.documentElement
       const sizeLimit = 2 ** 13
@@ -1018,15 +976,15 @@ function executeHandler(key: string, data, isAsync: boolean = true) {
     return ContentHandler.page[key](data)
   }
   else {
-    return Utils.fail('暂不支持该功能')
+    return Utils.fail(ErrorMessage.UNSUPPORT_ERROR)
   }
 }
-// 异步版本
+
 async function handle(params) {
   const { key, data } = params
   return await executeHandler(key, data, true)
 }
-// 同步版本
+
 function handleSync(params) {
   const { key, data } = params
   return executeHandler(key, data, false)
@@ -1043,13 +1001,13 @@ function RpaExtGetElement(data) {
 
 window.removeEventListener('message', messageHandler)
 window.addEventListener('message', messageHandler)
-// @ts-expect-error  挂载到 window 上
+// @ts-expect-error Mount to window
 window.handle = handle
-// @ts-expect-error  挂载到 window 上
+// @ts-expect-error  Mount to window
 window.handleSync = handleSync
-// @ts-expect-error  挂载到 window 上
+// @ts-expect-error  Mount to window
 window.RpaExtGetElement = RpaExtGetElement
-// @ts-expect-error  挂载到 window 上
+// @ts-expect-error Mount to window
 window.currentFrameInfo = currentFrameInfo
 tagFrame()
-export { handle, moveListener }
+export { ContentHandler, dispatchMouseSequence, findElement, formatElementInfo, handle, messageHandler, moveListener, scrollFindElement }

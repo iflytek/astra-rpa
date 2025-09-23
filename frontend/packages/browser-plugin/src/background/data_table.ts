@@ -1,16 +1,15 @@
 /**
- * 处理 table 形式的数据
- * 数据抓取的元素， table 为 单一元素， 相似元素为 多个元素
- * 对于单一元素， 只需要调用一次获取元素及数据， 对于多个元素， 需要循环调用获取元素及数据
+ * Process data in table form
+ * The elements for data scraping, table is a single element, and similar elements are multiple elements
+ * For a single element, only one call is needed to obtain the element and data. For multiple elements, a loop call is required to obtain the element and data
  */
 
-import type { SimilarDataType, TableDataType } from '../types/data_grab'
+import type { SimilarDataType, TableDataType } from '../types/data_batch'
 
 class DataTable {
   public data: TableDataType | SimilarDataType
   private produceType: 'table' | 'similar'
   constructor(params, values, produceType: 'table' | 'similar') {
-    // 初始化
     this.produceType = produceType
     if (produceType === 'table') {
       this.data = {

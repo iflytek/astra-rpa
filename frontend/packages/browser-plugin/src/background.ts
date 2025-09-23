@@ -1,3 +1,4 @@
+import { log } from './3rd/log'
 /** @format */
 import { wsApp } from './3rd/rpa_websocket'
 import { bgHandler, contentMessageHandler } from './background/backgroundInject'
@@ -22,7 +23,7 @@ function reloadAllTabs() {
 function getInstalledExtensions() {
   return new Promise<chrome.management.ExtensionInfo[]>((resolve) => {
     chrome.management.getAll((exts: chrome.management.ExtensionInfo[]) => {
-      console.log('Installed extensions:', exts)
+      log.info('Installed extensions:', exts)
       resolve(exts)
     })
   })
@@ -56,7 +57,7 @@ chrome.management.onEnabled.addListener((info) => {
   }
 })
 
-;(function () {
+; (function () {
   wsApp.start()
   wsApp.event('browser', '', (msg) => {
     const newMsg = msg.to_reply()
@@ -69,8 +70,8 @@ chrome.management.onEnabled.addListener((info) => {
 
 async function wsHandler(message) {
   const msgObject = typeof message === 'string' ? JSON.parse(message) : message
-  console.log('key: ', msgObject.key, '\nparams: ', msgObject)
+  log.info(msgObject.key, msgObject)
   const result = await bgHandler(msgObject)
-  console.log('key: ', msgObject.key, '\nresult: ', result)
+  log.info(msgObject.key, result)
   return result
 }

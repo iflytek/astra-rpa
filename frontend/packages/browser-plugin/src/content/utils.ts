@@ -90,23 +90,22 @@ export const Utils = {
 
   generateColor(index: number) {
     const colors = [
-      '#FF5733', // 亮橙色
-      '#33FF57', // 亮绿色
-      '#3357FF', // 亮蓝色
-      '#FF33A1', // 粉红色
-      '#A133FF', // 紫色
-      '#33FFF5', // 青绿色
-      '#F5FF33', // 亮黄色
-      '#FF3333', // 亮红色
-      '#33FFA1', // 薄荷绿
-      '#8A33FF', // 深紫色
+      '#FF5733',
+      '#33FF57',
+      '#3357FF',
+      '#FF33A1',
+      '#A133FF',
+      '#33FFF5',
+      '#F5FF33',
+      '#FF3333',
+      '#33FFA1',
+      '#8A33FF',
     ]
     return colors[index % colors.length]
   },
 
   generateRandomColor() {
     const r = Math.floor(Math.random() * 256)
-    // g 取值 50-200
     const g = Math.floor(Math.random() * 151) + 50
     const b = Math.floor(Math.random() * 256)
     return `rgb(${r},${g},${b})`

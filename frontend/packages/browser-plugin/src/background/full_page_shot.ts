@@ -1,17 +1,17 @@
 import { Utils } from './utils'
 
-const scale = 1 // 缩放比
-const quality = 92 // 0 - 100 图片质量
-const format = 'jpeg' // 图片格式
+const scale = 1
+const quality = 92
+const format = 'jpeg'
 export async function captureFullPage(tab: chrome.tabs.Tab) {
-  const isFirefox = Utils.getNavigatorUserAgent() === '$firefox$' // 火狐浏览器
+  const isFirefox = Utils.getNavigatorUserAgent() === '$firefox$'
   let data
-  // 如果是火狐浏览器，执行火狐浏览器截图
+
   if (isFirefox) {
     data = await fullPageShotFirefox(tab)
     return data
   }
-  // 默认是谷歌浏览器
+
   await attach(tab.id, null, tab)
   await enablePage(tab.id)
   await setBg(tab.id, { color: { r: 255, g: 255, b: 255, a: 1 } })
@@ -161,9 +161,6 @@ export function fullPageShotFirefox(tab) {
   })
 }
 
-/**
- * 截取某个区域的截图
- */
 export async function captureArea(tab: chrome.tabs.Tab, area: { x: number, y: number, width: number, height: number }) {
   const dpr = await getPageDevicePixelRatio(tab)
   area = {

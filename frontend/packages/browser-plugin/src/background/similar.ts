@@ -1,5 +1,6 @@
 /**
- * 根据 元素信息确定元素是否相似,相似及返回相似元素信息
+ * Determine whether elements are similar based on the element information.
+ * If they are similar, return the information of similar elements
  */
 export function getSimilarElement(preElementInfo: ElementInfo, currentElementInfo: ElementInfo) {
   if (!isSimilarElement(preElementInfo, currentElementInfo)) {
@@ -11,13 +12,10 @@ export function getSimilarElement(preElementInfo: ElementInfo, currentElementInf
 
   const pathDirs = generateSimilarPathDirs(preElementInfo.pathDirs, currentElementInfo.pathDirs)
 
-  // 对 currentElementInfo 的属性进行遍历，如果属性值和 preElementInfo 的属性值相同，则保持不变，否则设置为 preElementInfo 的属性值
   const similarElementInfo = { ...preElementInfo, xpath, cssSelector, pathDirs }
   return similarElementInfo
 }
-/**
- * 判断两个元素是否相似
- */
+
 export function isSimilarElement(preElementInfo: ElementInfo, currentElementInfo: ElementInfo) {
   const { xpath, cssSelector, pathDirs } = preElementInfo
   const { xpath: currentXpath, cssSelector: currentCssSelector, pathDirs: currentPathDirs } = currentElementInfo
@@ -26,14 +24,13 @@ export function isSimilarElement(preElementInfo: ElementInfo, currentElementInfo
   const cssSelectorArr = cssSelector.split('>')
   const currentCssSelectorArr = currentCssSelector.split('>')
 
-  // 存在以下情况，则认为两个元素不是相似元素
   if (preElementInfo.url !== currentElementInfo.url) {
     return false
   }
   if (xpathArr.length !== currentXpathArr.length) {
     return false
   }
-  // 若存在 tag 不一样，但是路径长度一样，则认为两个元素不是相似元素
+
   if (xpathArr.length === currentXpathArr.length) {
     for (let i = 0; i < xpathArr.length; i++) {
       const leftTag = xpathArr[i]?.split('[')[0]
@@ -47,16 +44,14 @@ export function isSimilarElement(preElementInfo: ElementInfo, currentElementInfo
   if (cssSelectorArr.length !== currentCssSelectorArr.length) {
     return false
   }
-  // pathDirs 长度不一样，则认为两个元素不是相似元素
+
   if (pathDirs.length !== currentPathDirs.length) {
     return false
   }
 
   return true
 }
-/**
- * 得到相似的xpath，这里不在校验是否是相似元素
- */
+
 export function generateSimilarXapth(preXpath: string, currentXpath: string) {
   if (preXpath === currentXpath) {
     return preXpath
@@ -72,9 +67,6 @@ export function generateSimilarXapth(preXpath: string, currentXpath: string) {
   return xpath
 }
 
-/**
- * 得到相似的selector，这里不在校验是否是相似元素
- */
 export function generateSimilarSelector(preSelector: string, currentSelector: string) {
   if (preSelector === currentSelector) {
     return preSelector
@@ -100,7 +92,6 @@ export function generateSimilarSelector(preSelector: string, currentSelector: st
 }
 
 export function generateSimilarPathDirs(prePathDirs: Array<ElementDirectory>, currentPathDirs: Array<ElementDirectory>) {
-  // 逆向遍历 prePathDirs
   for (let i = prePathDirs.length - 1; i >= 0; i--) {
     const prePathDir = prePathDirs[i]
     const currentPathDir = currentPathDirs[i]
@@ -122,7 +113,7 @@ export function generateSimilarPathDirs(prePathDirs: Array<ElementDirectory>, cu
       }
     })
     const idChecked = prePathDir.attrs.some(item => item.name === 'id' && item.checked)
-    if (idChecked) { // 存在id  则其他属性都为false
+    if (idChecked) {
       prePathDir.attrs.forEach((attr) => {
         if (attr.name !== 'id') {
           attr.checked = false

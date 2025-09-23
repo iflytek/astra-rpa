@@ -2,15 +2,10 @@ import { MAX_TEXT_LENGTH, SVG_NODETAGS } from './constant'
 import { highLight, highLightRects } from './highlight'
 import { Utils } from './utils'
 
-/**
- * 计算 xpath 的元素个数
- */
 export function xpathEvaluateCount(xpath: string) {
   return document.evaluate(`count(${xpath})`, document, null, XPathResult.ANY_TYPE, null).numberValue
 }
-/**
- * 获取支持的tag, 若tagName 是特殊字符，则返回*
- */
+
 function getSupportTag(tagName: string) {
   if (Utils.isSpecialCharacter(tagName)) {
     return '*'
@@ -19,9 +14,7 @@ function getSupportTag(tagName: string) {
     return tagName
   }
 }
-/**
- * 获取元素的内部文本，包括子节点等
- */
+
 export function getText(element: HTMLElement) {
   if (element.tagName === 'INPUT') {
     return (element as HTMLInputElement).value || element.getAttribute('placeholder') || ''
@@ -39,9 +32,7 @@ export function getText(element: HTMLElement) {
     return element.textContent || element.innerText || ''
   }
 }
-/**
- * 获取当前节点的text , 不包括子节点，用于可视化编辑
- */
+
 function getNodeText(element: HTMLElement) {
   const nodeText
     = Array.from(element.childNodes)
@@ -70,9 +61,7 @@ export function textAttrFromElement(ele: HTMLElement) {
   }
   return value
 }
-/**
- * 获取元素属性
- */
+
 export function getAttr(element: HTMLElement, attrName: string) {
   const attrMap = {
     id: element.getAttribute('id'),
@@ -91,28 +80,20 @@ export function getAttr(element: HTMLElement, attrName: string) {
   }
   return element.getAttribute(attrName)
 }
-/**
- * 获取元素属性map
- */
+
 export function getAttrs(element: Element) {
   const attrs = {}
-  ;['src', 'href', 'id', 'class', 'title', 'name'].forEach((key) => {
+    ;['src', 'href', 'id', 'class', 'title', 'name'].forEach((key) => {
     const attr = element.getAttribute(key)?.replace(/[\u0000-\u001F\u007F]/g, '')
     attr && (attrs[key] = attr)
   })
   return attrs
 }
 
-/**
- * 元素是否是table, 或者是table的子元素
- */
 export function isTable(element: HTMLElement) {
   return element.tagName.toLowerCase() === 'table' || element.closest('table') !== null
 }
 
-/**
- * 获取相同元素Index
- */
 function getElementIndex(element: HTMLElement) {
   return element.parentElement
     ? Array.from(element.parentElement.children)
@@ -120,47 +101,31 @@ function getElementIndex(element: HTMLElement) {
       .indexOf(element) + 1
     : 0
 }
-/**
- * 获取元素Index, 用于 * nth-child 选择器
- */
+
 function getAllElementIndex(element: HTMLElement) {
   return element.parentElement ? Array.from(element.parentElement.children).indexOf(element) + 1 : 0
 }
 
-/**
- * 获取元素css Selector nth 的index
- */
 function getElementNthIndex(element: HTMLElement) {
-  // 若元素存在相同兄弟元素，则返回元素的index
   if (hasSameTypeSiblings(element)) {
     return element.parentElement ? Array.from(element.parentElement.children).indexOf(element) + 1 : 0
   }
 }
 
 function getNodeNthIndex(element: HTMLElement) {
-  // 若元素存在相同兄弟元素，则返回元素的index
   if (element.parentNode) {
     return Array.from(element.parentNode.children).indexOf(element) + 1
   }
 }
 
-/**
- * 获取元素是否有相同类型兄弟元素
- */
 function hasSameTypeSiblings(element: HTMLElement) {
   return element.parentElement ? Array.from(element.parentElement.children).filter(sibling => sibling.tagName.toLowerCase() === element.tagName.toLowerCase()).length > 1 : false
 }
 
-/**
- * 获取元素是否有兄弟元素
- */
 function hasSiblings(element: HTMLElement) {
   return element.parentElement ? Array.from(element.parentElement.children).length > 1 : false
 }
 
-/**
- * 获取相同类型兄弟节点上是否存在相同class
- */
 function hasSameClassSiblings(element: HTMLElement, className: string) {
   const siblings = element.parentElement ? Array.from(element.parentElement.children).filter(sibling => sibling !== element) : []
   if (siblings) {
@@ -172,9 +137,6 @@ function hasSameClassSiblings(element: HTMLElement, className: string) {
   }
 }
 
-/**
- * 选取元素的class, 优先返回不重复的class
- */
 function pickClass(element: HTMLElement) {
   const classList = Array.from(element.classList)
   for (const cls of classList) {
@@ -185,7 +147,6 @@ function pickClass(element: HTMLElement) {
   return ''
 }
 
-// 获取鼠标位置的元素 x, y 是元素相对于document的坐标, 每个document 是iframe 的dcoument
 export function elementFromPoint(x: number, y: number, docu: Document | ShadowRoot) {
   const element = docu.elementFromPoint(x, y)
   return element
@@ -198,13 +159,10 @@ function isUniqueIdFn(id: string) {
 function isLegalClass(cls: string) {
   return cls && !Utils.isNumberString(cls) && !Utils.isSpecialCharacter(cls)
 }
-// 判断元素是否是SVG元素
 function isSvgElement(element: Element): boolean {
   return element.namespaceURI === 'http://www.w3.org/2000/svg'
 }
-/**
- * 获取元素的xpath
- */
+
 export function getXpath(element: HTMLElement, absolute = false) {
   if (!element)
     return ''
@@ -215,11 +173,11 @@ export function getXpath(element: HTMLElement, absolute = false) {
     let tagName = getSupportTag(element.tagName.toLowerCase())
     let index = getElementIndex(element)
     let hasSublings = hasSameTypeSiblings(element)
-    // 如果是SVG元素，特殊处理
+
     const isSvg = isSvgElement(element)
     tagName = isSvg ? `*` : tagName
-    index = isSvg ? getAllElementIndex(element) : index // SVG元素使用节点的nth-child索引
-    hasSublings = isSvg ? hasSiblings(element) : hasSublings // SVG元素使用是否有兄弟元素
+    index = isSvg ? getAllElementIndex(element) : index
+    hasSublings = isSvg ? hasSiblings(element) : hasSublings
     if (!absolute && isUniqueId) {
       xpath = `//${tagName}[@id="${id}"]${xpath}`
       break
@@ -233,7 +191,6 @@ export function getXpath(element: HTMLElement, absolute = false) {
 
     element = element.parentElement
     if (element && element.tagName.toLowerCase() === 'body' && !absolute) {
-      // 如果是body元素，则返回目录
       xpath = `/${xpath}`
       break
     }
@@ -241,9 +198,6 @@ export function getXpath(element: HTMLElement, absolute = false) {
   return xpath
 }
 
-/**
- * 获取元素的css selector
- */
 export function getNthCssSelector(element: HTMLElement, isAbsolute = false): string {
   if (!element)
     return ''
@@ -267,41 +221,28 @@ export function getNthCssSelector(element: HTMLElement, isAbsolute = false): str
       selectors.unshift(tagName)
     }
     else if (className) {
-      // 增加class 在css selector的权重
       selectors.unshift(`${tagName}.${className}`)
     }
     else {
       selectors.unshift(`${tagName}:nth-child(${index})`)
     }
-    // const eles = getElementBySelector(selectors.join('>'));
-    // if (eles && eles.length === 1 && eles[0] === element) {
-    //   return selectors.join('>');
-    // }
+
     element = element.parentElement
     if (element && element.tagName.toLowerCase() === 'body' && !isAbsolute) {
-      // 如果是body元素，则返回目录
       return selectors.join('>')
     }
   }
   return selectors.join('>')
 }
 
-/**
- * 仅匹配位置的xpath
- */
 function onlyPositionXpath(xpath: string) {
   const pathArr = xpath.split('/')
   const positionArr = pathArr.map((item) => {
-    // 匹配 [@position()=number] 格式
     const match2 = item.match(/\[@position\(\)=\d+\]/)
-    // 匹配 [@position()=number and xxx] 格式 多个条件的
     if (item.includes('@position') && !match2) {
-      // 只取 [@position()=number] 的条件,匹配出number
-      // 匹配出div[@position()=1 and @id="app"] 种的 数字
       const match3 = item.match(/@position\(\)=\d+/)
       if (match3) {
         const num = match3[0].split('=')[1]
-        // 去掉以 [ 开始， 以] 结束的所有字符串，替换成 [@position=number]
         return item.replace(/\[.*\]/, `[@position()=${num}]`)
       }
     }
@@ -322,9 +263,7 @@ function svgPathResolver(xpath: string) {
     const attr = attrMatch ? attrMatch[1] : ''
     if (tag && tag !== '*') {
       if (SVG_NODETAGS && SVG_NODETAGS.includes(tag)) {
-        // SVG 元素
         if (attr) {
-          // 判断是否 position()=number
           const posMatch = attr.match(/^position\(\)\s*=\s*(\d+)$/)
           if (posMatch) {
             return `*[local-name()="${tag}" and position()=${posMatch[1]}]`
@@ -347,9 +286,6 @@ function svgPathResolver(xpath: string) {
   return svgPath
 }
 
-/**
- * 通过xpath获取元素
- */
 export function getElementsByXpath(path: string, onlyPosition: boolean = false): HTMLElement[] | null {
   if (!path)
     return null
@@ -369,40 +305,27 @@ export function getElementsByXpath(path: string, onlyPosition: boolean = false):
   return elements.length > 0 ? elements : null
 }
 
-/**
- * 获取单元素
- */
 export function getElementByXPath(xpath: string): HTMLElement | null {
   const element = xpath ? document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue : null
   return element as HTMLElement
 }
 
-/**
- * 通过类名获取元素
- */
 export function getElementsByClassName(className: string): HTMLElement[] {
   const elements = document.querySelectorAll(`.${className}`)
   return Array.from(elements) as HTMLElement[]
 }
 
-/**
- * 组合式选择器获取元素
- */
 export function getElementsByComposition(searchString: string): HTMLElement[] | null {
   const all = document.querySelectorAll(searchString)
   return Array.from(all) as HTMLElement[]
 }
 
-/**
- * 通过 selector 获取元素
- */
 export function getElementBySelector(selector: string, onlyPosition: boolean = false): HTMLElement[] | null {
   if (!selector)
     return null
   if (onlyPosition) {
     selector = onlyPositionSelector(selector)
   }
-  // selector 存在 >$shadow$>，则使用 多级querySelector
   if (selector.includes('$shadow$')) {
     const sahdowElements = getShadowElementsBySelector(selector)
     return sahdowElements.length > 0 ? sahdowElements : null
@@ -428,35 +351,27 @@ function onlyPositionSelector(selector: string) {
   return filteredSelector
 }
 
-/**
- * 穿透多级 Shadow DOM 查询所有匹配元素
- */
 function queryDeepShadow(selectorLevels: string[], currentHosts: [Document | ShadowRoot] = [document]) {
   if (selectorLevels.length === 0)
     return []
 
-  // 取出当前层级的选择器
   const currentSelector = selectorLevels[0]
   const remainingSelectors = selectorLevels.slice(1)
   const isLastLevel = remainingSelectors.length === 0
 
-  // 遍历当前宿主元素，查询匹配的子元素
   const matches = []
   for (const host of currentHosts) {
     const elements = host.querySelectorAll(currentSelector)
     if (elements.length === 0)
       continue
 
-    // 如果是最后一层，直接收集结果
     if (isLastLevel) {
       matches.push(...elements)
       continue
     }
 
-    // 否则进入下一层 Shadow DOM
     for (const el of elements) {
       if (el.shadowRoot) {
-        // 递归处理下一层级
         const nestedMatches = queryDeepShadow(remainingSelectors, [el.shadowRoot])
         matches.push(...nestedMatches)
       }
@@ -465,47 +380,32 @@ function queryDeepShadow(selectorLevels: string[], currentHosts: [Document | Sha
 
   return matches
 }
-/**
- * 获取 shadowdom selector 对应的元素
- */
+
 function getShadowElementsBySelector(selector: string) {
   const selectorLevels = selector.split('>$shadow$>')
   const allElements = queryDeepShadow(selectorLevels)
   return allElements
 }
 
-/**
- * 对attrs 中的每一项做权重处理
- */
 function getWeightedAttrs(attrs: ElementAttrs[]) {
-  /**
-   * 遍历attrs 中的每一项
-   * 规则：1，存在id 则该项选中， attr.checked = true, 其他项 attr.checked = false
-   * 2，不存在id, 存在 text 则该项选中， attr.checked = true, 其他项 attr.checked = false
-   * 3，不存在id, text, 存在 index, type 则该项选中， attr.checked = true, 其他项 attr.checked = false
-   */
   const idAttr = attrs.find(attr => attr.name === 'id')
   const typeAttr = attrs.find(attr => attr.name === 'type')
   const indexAttr = attrs.find(attr => attr.name === 'index')
   const textAttr = attrs.find(attr => attr.name === 'text')
   const textValue = (textAttr && textAttr.value) || ''
   const classAttr = attrs.find(attr => attr.name === 'class')
-  // 1，存在id 则该项选中， attr.checked = true, 其他项 attr.checked = false
   if (idAttr) {
     attrs.forEach(attr => (attr.checked = false))
     idAttr.checked = true
     return attrs
   }
-  // 2，不存在id, 存在 src, href, text 则该项选中， attr.checked = true, 其他项 attr.checked = false
   if (textAttr && !Utils.isControlCharacter(String(textValue))) {
     textAttr.checked = true
     return attrs
   }
-  // 3，存在class 且已经选中则选中class
   if (classAttr && classAttr.checked) {
     return attrs
   }
-  // 如果不存在id, text, 则选中 index, type
   if (typeAttr) {
     typeAttr.checked = true
   }
@@ -515,9 +415,6 @@ function getWeightedAttrs(attrs: ElementAttrs[]) {
   return attrs
 }
 
-/**
- * 获取元素目录
- */
 export function getElementDirectory(element: HTMLElement, isAbsolute = false): ElementDirectory[] {
   if (!element)
     return []
@@ -531,14 +428,12 @@ export function getElementDirectory(element: HTMLElement, isAbsolute = false): E
     let index = getElementIndex(element)
     let hasSubling = hasSameTypeSiblings(element)
 
-    // 如果是SVG元素，特殊处理
     const isSvg = isSvgElement(element)
-    tagName = isSvg ? `*` : tagName // SVG元素使用通配符 *
-    index = isSvg ? getAllElementIndex(element) : index // SVG元素使用节点的nth-child索引
-    hasSubling = isSvg ? hasSiblings(element) : hasSubling // SVG元素使用是否有兄弟元素
+    tagName = isSvg ? `*` : tagName
+    index = isSvg ? getAllElementIndex(element) : index
+    hasSubling = isSvg ? hasSiblings(element) : hasSubling
 
     let attrs = []
-    //  id > local-name >  class,index > type > text
     if (isUniqueIdFn(id))
       attrs.push({ name: 'id', value: id, checked: false, type: 0 })
     if (isSvg)
@@ -550,7 +445,6 @@ export function getElementDirectory(element: HTMLElement, isAbsolute = false): E
     if (className)
       attrs.push({ name: 'class', value: className, checked: false, type: 1 })
     if (elementDirectory.length === 0) {
-      // 节点 text 属性
       const text = getNodeText(element)
       if (text && text.length < MAX_TEXT_LENGTH && Utils.isEffectCharacter(text)) {
         attrs.push({ name: 'text', value: text, checked: false, type: 1 })
@@ -561,36 +455,33 @@ export function getElementDirectory(element: HTMLElement, isAbsolute = false): E
     const attributes = { tag: tagName, checked: true, value: tagName, attrs }
     elementDirectory.unshift(attributes)
     if (id && isUniqueId && !isAbsolute) {
-      // 相对目录, 有id 就返回相对目录
       return elementDirectory
     }
     element = element.parentElement
     if (element && element.tagName.toLowerCase() === 'body' && !isAbsolute) {
-      return elementDirectory // 如果是body元素，则返回目录
+      return elementDirectory
     }
   }
   return elementDirectory
 }
-/**
- *  校验元素是否符合目录的正则规则，后处理
- */
+
 function checkElementsByRegular(searchElements: HTMLElement[], elementDirectory: ElementDirectory[]) {
   const dirs = elementDirectory.filter(item => item.checked)
   const filterList = searchElements.filter((element) => {
-    const allElements = [] // 当前元素及目录长度内的所有父元素
-    let currentElement = element // 当前元素
-    let dlength = dirs.length // 目录长度
-    let flag = true // 默认符合
+    const allElements = []
+    let currentElement = element
+    let dlength = dirs.length
+    let flag = true
     while (dlength > 0) {
-      allElements.unshift(currentElement) // 添加当前元素到数组开始，得到顺序相同的节点
+      allElements.unshift(currentElement)
       currentElement = currentElement.parentElement
       dlength--
     }
     dirs.forEach((item, index) => {
       const attrs = item.attrs
-      const regAttr = attrs.find(attr => attr.type === 2 && attr.checked) // 存在正则校验
+      const regAttr = attrs.find(attr => attr.type === 2 && attr.checked)
       if (regAttr) {
-        const nodeValue = String(regAttr.value).trim() //
+        const nodeValue = String(regAttr.value).trim()
         if (nodeValue) {
           const node = allElements[index]
           if (node) {
@@ -614,11 +505,7 @@ function checkElementsByRegular(searchElements: HTMLElement[], elementDirectory:
   return filterList
 }
 
-/**
- * 通过 element 目录获取元素, 从底部向上查找,只要查到唯一一个元素即可停止
- */
 export function directoryFindElement(elementDirectory: ElementDirectory[], onlyPosition: boolean = false) {
-  // let searchPath = '';
   let searchElements: HTMLElement[] = []
   const xpath = generateXPath(elementDirectory, onlyPosition)
   console.log('directoryFindElement generateXPath xpath: ', xpath)
@@ -632,7 +519,6 @@ export function directoryFindElement(elementDirectory: ElementDirectory[], onlyP
   }
 }
 
-// 处理xpath text()=xxx 中存在" 双引号问题
 function textfn(val: string) {
   if (val.includes('"')) {
     return `text()=concat(${val
@@ -649,36 +535,31 @@ function conditionStr(attr: ElementAttrs) {
   if (attr.checked && attr.value) {
     switch (attr.name) {
       case 'index':
-        // 索引
         condition = `position()=${attr.value}`
         break
 
       case 'innertext':
-        // 文本内容
         condition
           = attr.type === 1
-            ? `contains(., "${attr.value}")` // 通配，包含
-            : textfn(attr.value) // 默认等于，处理双引号问题
+            ? `contains(., "${attr.value}")`
+            : textfn(attr.value)
         break
       case 'text':
-        // 文本内容
         condition
           = attr.type === 1
-            ? `contains(., "${attr.value}")` // 通配，包含
-            : textfn(attr.value) // 默认等于，处理双引号问题
+            ? `contains(., "${attr.value}")`
+            : textfn(attr.value)
         break
 
       case 'local-name':
-        // SVG 元素的 local-name 属性
         condition = `local-name()="${attr.value}"`
         break
 
       default:
-        // 其他属性
         condition
           = attr.type === 1
-            ? `contains(@${attr.name}, "${attr.value}")` // 通配，包含
-            : `@${attr.name}="${attr.value}"` // 默认等于
+            ? `contains(@${attr.name}, "${attr.value}")`
+            : `@${attr.name}="${attr.value}"`
         break
     }
   }
@@ -686,15 +567,11 @@ function conditionStr(attr: ElementAttrs) {
   return condition
 }
 
-/**
- * pathDirs 转成xpath
- */
 export function generateXPath(dirs: ElementDirectory[], onlyPosition: boolean = false): string {
   if (dirs && dirs.length === 0) {
     return ''
   }
   if (onlyPosition) {
-    // 仅匹配位置
     dirs.forEach((item) => {
       item.attrs.forEach((attr) => {
         const attrValue = `${attr.value}`.trim()
@@ -716,7 +593,6 @@ export function generateXPath(dirs: ElementDirectory[], onlyPosition: boolean = 
       const attrs = dir.attrs
         .filter((attr) => {
           if (attr.type === 2 && attr.value && attr.checked) {
-            // 正则表达式暂不处理， 正则表达式不支持前处理
             return false
           }
           else {
@@ -737,24 +613,16 @@ export function generateXPath(dirs: ElementDirectory[], onlyPosition: boolean = 
   return `//${xpath}`
 }
 
-/**
- * 获取鼠标移动到的元素
- */
 export function getMouseOverElement(document = window.document, position) {
   const { x, y } = position
   return document.elementFromPoint(x, y)
 }
 
-// 判断元素是否存在子元素
 export function hasChildElement(element) {
   return element && element.children && element.children.length > 0
 }
 
-/**
- * 校验元素
- */
 export function checkElements(elements: HTMLElement[]) {
-  // 获取元素的位置信息
   if (elements.length > 1) {
     const rects = elements.map(element => element.getBoundingClientRect().toJSON())
     highLightRects(rects)
@@ -765,9 +633,6 @@ export function checkElements(elements: HTMLElement[]) {
   }
 }
 
-/**
- * 获取x,y 坐标下所有元素
- */
 export function getElementsByPosition(x: number, y: number) {
   const elements = document.elementsFromPoint(x, y)
   const positions = elements.map((element) => {
@@ -779,12 +644,9 @@ export function getElementsByPosition(x: number, y: number) {
   })
   return positions
 }
-/**
- *  获取 body 标签下所有可见元素，拿到元素位置和大小
- */
+
 export function getAllElementsPositionInBody(body: HTMLElement | ShadowRoot = document.body): Array<ElementPosition> {
   const elements = Array.from(body.querySelectorAll('*')) as HTMLElement[]
-  // 过滤掉元数据元素 <head>、<title>、<meta>、<script>、<style>
   const visibleElements = Array.from(elements).filter(
     element =>
       element.tagName.toLowerCase() !== 'head'
@@ -796,7 +658,6 @@ export function getAllElementsPositionInBody(body: HTMLElement | ShadowRoot = do
       && element?.style.display !== 'none'
       && element?.style.visibility !== 'hidden',
   )
-  // 过滤掉不可见元素
   const visibleElements2 = visibleElements.filter(element => element.getBoundingClientRect().width > 0 && element.getBoundingClientRect().height > 0)
   const positions = []
   let shadowPositions = []
@@ -811,13 +672,10 @@ export function getAllElementsPositionInBody(body: HTMLElement | ShadowRoot = do
       ...rect.toJSON(),
     })
   })
-  // 合并 shadowPositions 到 positions 中
   positions.push(...shadowPositions)
   return positions
 }
-/**
- * 获取所有元素的位置和大小
- */
+
 export function getAllElementsPosition() {
   const elements = getAllElements()
   const positions = []
@@ -830,9 +688,7 @@ export function getAllElementsPosition() {
   })
   return positions
 }
-/**
- * 获取 body 标签下所有元素
- */
+
 export function getAllElements() {
   const elements = document.querySelectorAll('*')
   return Array.from(elements)
@@ -847,9 +703,7 @@ export function getAllFrames() {
   const frames = Array.from(iframeList).concat(Array.from(frameList))
   return frames
 }
-/**
- * 获取当前 window 下的 iframe
- */
+
 export function getWindowFrames() {
   const frames = getAllFrames()
   const framesList = Array.from(frames).map((frame) => {
@@ -862,23 +716,16 @@ export function getWindowFrames() {
   return framesList
 }
 
-/**
- * 获取当前 window 下的 iframe
- */
 export function getIFramesElements() {
   const frames = getAllFrames()
   return frames
 }
 
-/**
- * 获取从a点{x,y}到b点{x,y}的所有像素点上的元素
- */
 export function getElementsFromPoints(a: { x: number, y: number }, b: { x: number, y: number }) {
   const elements = []
   for (let x = a.x; x <= b.x; x++) {
     for (let y = a.y; y <= b.y; y++) {
       const element = document.elementFromPoint(x, y)
-      // 如果数组已经包含该元素，则跳过
       if (elements.includes(element))
         continue
       if (element) {
@@ -889,20 +736,13 @@ export function getElementsFromPoints(a: { x: number, y: number }, b: { x: numbe
   return elements
 }
 
-/**
- * 从所有元素中获取到符合位置的元素
- */
 export function getElementFromAllElements(elements: Array<ElementPosition>, range: ElementRange): Promise<Array<ElementPosition>> {
   return new Promise((resolve, reject) => {
     try {
       const result = elements.filter((item) => {
-        // item 的 x 不小于range.start.x 且  item 的 x 不大于 range.end.x
         const exp1 = item.x >= range.start.x && item.x <= range.end.x
-        // item 的 y 不小于 range.start.y 且 item 的 y 不大于 range.end.y
         const exp2 = item.y >= range.start.y && item.y <= range.end.y
-        // item 的 x + item.width 不大于 range.end.x
         const exp3 = item.x + item.width <= range.end.x
-        // item 的 y + item.height 不大于 range.end.y
         const exp4 = item.y + item.height <= range.end.y
 
         return exp1 && exp2 && exp3 && exp4
@@ -915,24 +755,17 @@ export function getElementFromAllElements(elements: Array<ElementPosition>, rang
   })
 }
 
-/**
- * 通过 point {x,y} 获取最小范围的元素
- */
 export function getClosestElementByPoint(target: Point) {
   const ele = elementFromPoint(target.x, target.y, document)
-  // 支持 document.elementsFromPoint 的浏览器 直接走elementsFromPoint ，不支持的再获取所有元素
   const eles = document.elementsFromPoint ? getElementsByPosition(target.x, target.y) : getAllElementsPositionInBody()
   if (!eles.length)
     return ele
-  // 元素 left, top, right, bottom 能包含target {x,y} 的元素
   const pointEles = eles.filter((item) => {
     return item.left <= target.x && item.top <= target.y && item.right >= target.x && item.bottom >= target.y
   })
   if (!pointEles.length)
     return ele
-  // 遍历pointEles 找到 left, top, right, bottom 距离 target (x, y) 最近的一项
   const closestElement = pointEles.reduce((prev, curr) => {
-    // 左上角 和右下角 做位置计算, 元素位置大小通过 左上角和右下角就可以确定, 右上角和左下角可以无需计算
     const prevDistance = Math.hypot(prev.left - target.x, prev.top - target.y, prev.right - target.x, prev.bottom - target.y)
     const currDistance = Math.hypot(curr.left - target.x, curr.top - target.y, curr.right - target.x, curr.bottom - target.y)
     return prevDistance <= currDistance ? prev : curr
@@ -940,12 +773,8 @@ export function getClosestElementByPoint(target: Point) {
   return closestElement.element
 }
 
-/**
- * 查找元素, 提供开关项来控制是否深度查找, 解决遮盖和iframe ,shadow dom问题
- */
 export function findElementByPoint(target: Point, deep = false, docu: Document | ShadowRoot = document) {
   let ele = elementFromPoint(target.x, target.y, docu) as HTMLElement
-  // 深度查找
   if (deep && docu instanceof Document) {
     ele = getClosestElementByPoint(target)
   }
@@ -954,9 +783,6 @@ export function findElementByPoint(target: Point, deep = false, docu: Document |
   return ele
 }
 
-/**
- * 从 x, y 坐标获取元素, 若有 shadow dom, 则递归查找
- */
 export function shadowRootElement(point: Point, shadowRoot: ShadowRoot, shadowPath: string = '', shadowDirs: ElementDirectory[] = []) {
   const { x, y } = point
   const ele = shadowRoot.elementFromPoint(x, y) as HTMLElement
@@ -964,7 +790,7 @@ export function shadowRootElement(point: Point, shadowRoot: ShadowRoot, shadowPa
     const shadowNth = `:nth-child(${getNodeNthIndex(ele)})`
     shadowPath = shadowPath ? `${shadowPath}>$shadow$>${getNthCssSelector(ele)}${shadowNth}` : `${getNthCssSelector(ele)}${shadowNth}`
     shadowDirs = shadowDirs.concat(getElementDirectory(ele))
-    return shadowRootElement(point, ele.shadowRoot, shadowPath, shadowDirs) // 递归查找
+    return shadowRootElement(point, ele.shadowRoot, shadowPath, shadowDirs)
   }
   else {
     return {
@@ -975,9 +801,6 @@ export function shadowRootElement(point: Point, shadowRoot: ShadowRoot, shadowPa
   }
 }
 
-/**
- * 获取元素缩放比例
- */
 export function getZoom(element: HTMLElement) {
   let zoom = 1
   while (element) {
@@ -988,9 +811,6 @@ export function getZoom(element: HTMLElement) {
   return zoom
 }
 
-/**
- *  获取元素padding
- */
 export function getPadding(element: HTMLElement) {
   const dpr = window.devicePixelRatio
   const computedStyle = window.getComputedStyle(element)
@@ -1011,18 +831,8 @@ export function getBorder(element: HTMLElement) {
   return { borderLeft: borderLeft * dpr, borderTop: borderTop * dpr, borderRight: borderRight * dpr, borderBottom: borderBottom * dpr }
 }
 
-// function getFramePosition(element: HTMLElement) {
-//   const dpr = window.devicePixelRatio;
-//   const posLeft = Number.parseInt(window.getComputedStyle(element).left) || 0;
-//   const posTop = Number.parseInt(window.getComputedStyle(element).top) || 0;
-//   return { left: posLeft * dpr, top: posTop * dpr };
-// }
-
-/**
- *  获取元素位置大小 ，经过缩放处理
- */
 export function getBoundingClientRect(element: HTMLElement): DOMRectT {
-  // @ts-expect-error  currentFrameInfo 在 window 上
+  // @ts-expect-error  currentFrameInfo in window
   const iframeTransform = window.currentFrameInfo.iframeTransform
   const { scaleX = 1, scaleY = 1 } = iframeTransform
   const safeNum = 8
@@ -1032,8 +842,8 @@ export function getBoundingClientRect(element: HTMLElement): DOMRectT {
   return {
     left: Math.round(left * scaleX * dpr),
     top: Math.round(top * scaleY * dpr),
-    width: Math.round(width * scaleX * dpr) || safeNum, // 防止宽度为0
-    height: Math.round(height * scaleY * dpr) || safeNum, // 防止高度为0
+    width: Math.round(width * scaleX * dpr) || safeNum,
+    height: Math.round(height * scaleY * dpr) || safeNum,
     right: Math.round(right * scaleX * dpr),
     bottom: Math.round(bottom * scaleY * dpr),
     x: Math.round(x * scaleX * dpr),
@@ -1045,7 +855,6 @@ export function getFrameContentRect(element: HTMLElement) {
   const frameRect = getBoundingClientRect(element)
   const padding = getPadding(element)
   const border = getBorder(element)
-  // const position = getFramePosition(element)
   const frameContentRect = {
     left: frameRect.left + padding.paddingLeft + border.borderLeft,
     top: frameRect.top + padding.paddingTop + border.borderTop,
@@ -1059,23 +868,17 @@ export function getFrameContentRect(element: HTMLElement) {
   return frameContentRect
 }
 
-/**
- * 处理 iframe 上的缩放导致内部位置偏移的问题
- */
 export function getIframeTransform(element: Element) {
   const style = window.getComputedStyle(element)
   const matrix = new DOMMatrix(style.transform)
   const scaleX = matrix.a
   const scaleY = matrix.d
-  // 返回变化
   return {
     scaleX,
     scaleY,
   }
 }
-/**
- * 通过元素信息获取元素
- */
+
 export function getElementByElementInfo(params: ElementInfo): HTMLElement[] | null {
   const { xpath, cssSelector, pathDirs, shadowRoot, checkType, matchTypes } = params
   const onlyPosition = matchTypes && matchTypes.includes('onlyPosition')
@@ -1092,9 +895,6 @@ export function getElementByElementInfo(params: ElementInfo): HTMLElement[] | nu
   return eles
 }
 
-/**
- * 获取子元素
- */
 export function getChildElementByType(element: HTMLElement, params: Options): HTMLElement[] | HTMLElement | null {
   const { elementGetType } = params
   if (elementGetType === 'index') {
@@ -1111,9 +911,6 @@ export function getChildElementByType(element: HTMLElement, params: Options): HT
   }
 }
 
-/**
- * 获取兄弟元素
- */
 export function getSiblingElementByType(element: HTMLElement, params: Options): HTMLElement[] | HTMLElement | null {
   const { elementGetType } = params
   if (elementGetType === 'all') {
