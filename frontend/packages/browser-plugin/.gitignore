@@ -1,13 +1,13 @@
 node_modules
 dist
-dist-ie
-atom-script-ie
 rpa-extension
-rpa-extension.zip
+coverage
+
 *.zip
 *.crx
 *.pem
+*.env
 
 .vscode
 .idea
-
+public/manifest.json

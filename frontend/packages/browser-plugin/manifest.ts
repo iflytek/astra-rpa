@@ -1,17 +1,19 @@
 /** @format */
 import { readFileSync, writeFileSync } from 'node:fs'
 
-export function generateManifest(mode: string) {
+export function generateManifest(mode: string, environment) {
   console.log('Generating manifest.json...')
   const packageJson = readFileSync('./package.json', 'utf-8')
-  const { version, description, displayName, homepage } = JSON.parse(packageJson)
+  const { version } = JSON.parse(packageJson)
   const isFirefox = mode === 'firefox'
-
+  const appName = environment.VITE_APP_NAME
+  const appDescription = environment.VITE_APP_NAME
+  const appHomePage = environment.VITE_APP_HOMEPAGE
   let manifest = {
     manifest_version: 3,
-    name: displayName,
-    description,
-    homepage_url: homepage,
+    name: appName,
+    description: mode !== 'production' ? `${appDescription}-${mode}` : appDescription,
+    homepage_url: appHomePage,
     version,
     icons: {
       16: 'static/icon_16.png',
@@ -63,11 +65,11 @@ export function generateManifest(mode: string) {
       background: {
         scripts: ['background.js'],
       },
-      description: `${description}-Firefox`,
+      description: `${appDescription}-Firefox`,
       content_security_policy: 'script-src \'none\' \'unsafe-eval\';',
       browser_specific_settings: {
         gecko: {
-          id: 'iflyrpa@iflytek.com',
+          id: environment.VITE_FIREFOXID,
           strict_min_version: '58.0',
         },
       },
@@ -75,12 +77,6 @@ export function generateManifest(mode: string) {
     }
     // @ts-expect-error firefox specific
     manifest = { ...manifest, ...manifestFirefox }
-  }
-  if (mode === '360se') {
-    manifest.description = `${description}-360安全浏览器`
-  }
-  if (mode === '360ChromeX') {
-    manifest.description = `${description}-360极速浏览器X`
   }
 
   writeFileSync('./public/manifest.json', JSON.stringify(manifest, null, 2))

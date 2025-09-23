@@ -1,15 +1,20 @@
 import fs from 'node:fs'
 
 import archiver from 'archiver'
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 
 import { generateManifest } from './manifest'
 import pkg from './package.json'
 
 export default defineConfig((env) => {
-  generateManifest(env.mode)
+  const environment = loadEnv(env.mode, process.cwd(), '')
+
+  generateManifest(env.mode, environment)
 
   return {
+    define: {
+      __BUILD_MODE__: JSON.stringify(env.mode),
+    },
     resolve: {
       alias: {
         '@': '/src',
@@ -65,6 +70,20 @@ export default defineConfig((env) => {
             },
           },
         ],
+      },
+    },
+    test: {
+      name: 'background',
+      environment: 'node',
+      setupFiles: ['./tests/chrome.vitest.js'],
+      include: [
+        'src/test/background.*.{test,spec}.js',
+      ],
+      exclude: [
+        'src/test/content.*.{test,spec}.js',
+      ],
+      coverage: {
+        provider: 'v8', // or 'istanbul'
       },
     },
   }

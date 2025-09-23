@@ -1,28 +1,38 @@
 {
   "name": "@rpa/extension",
-  "displayName": "晓悟RPA插件",
+  "displayName": "RPA-Browser-Plugin",
   "version": "5.1.7",
-  "description": "晓悟RPA插件v3升级版",
-  "homepage": "https://www.iflyrpa.com/",
+  "description": "RPA browser plugin",
+  "homepage": "",
   "type": "commonjs",
   "keywords": [],
   "license": "ISC",
-  "author": "iflyrpa.com",
+  "author": "",
   "main": "background.js",
   "scripts": {
+    "test": "vitest",
     "build": "vite build",
     "build:firefox": "vite build --mode=firefox",
     "build:360se": "vite build --mode=360se",
-    "build:360ChromeX": "vite build --mode=360ChromeX"
+    "build:360ChromeX": "vite build --mode=360ChromeX",
+    "test:browser": "vitest --config=vitest.browser.config.js",
+    "coverage": "vitest --config=vitest.browser.config.js run --coverage"
   },
   "devDependencies": {
     "@babel/cli": "^7.25.6",
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.4",
+    "@solidjs/testing-library": "^0.8.10",
     "@types/archiver": "^6.0.3",
+    "@vitest/browser": "^3.2.4",
+    "@vitest/coverage-v8": "^3.2.4",
     "archiver": "^7.0.1",
     "chrome-types": "^0.1.290",
+    "jsdom": "^27.0.0",
+    "playwright": "^1.55.0",
     "vite": "^5.3.1",
+    "vite-plugin-solid": "^2.11.8",
+    "vitest": "^3.2.4",
     "ws": "^8.18.0"
   }
 }
