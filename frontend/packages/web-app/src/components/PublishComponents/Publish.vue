@@ -49,21 +49,21 @@ async function handleSubmit(): Promise<void> {
   const res = await publishRobot(lastPublishData)
   message.success('发版成功')
 
-  // 检查是否需要上架申请(如果开启上架审核且分享过市场, 需弹窗提示是否要发起上架申请，用户确认后发起上架申请)
-  applicationReleaseCheck({
-    robotId: lastPublishData.robotId,
-    version: lastPublishData.version,
-    source: 'publish',
-  }, async (params) => {
-    // 需要上架申请
-    const releaseRes = await releaseWithPublish({ robotId: lastPublishData.robotId, robotVersion: lastPublishData.version, name: lastPublishData.name, ...params }) as { data?: string }
-    message.success(releaseRes.data || '当前机器人自动通过上架审核，请至应用市场查看更新')
-  }, () => { // 不需要上架申请, 原发版逻辑
-    // 如果分享过市场，data内容为market，如果没分享过，内容为create，对应两种提示
-    if (Number(basicFormData.value.version) > 1 && res.data === 'market') {
-      message.success('当前机器人发版更新已自动同步到应用市场')
-    }
-  })
+  // // 检查是否需要上架申请(如果开启上架审核且分享过市场, 需弹窗提示是否要发起上架申请，用户确认后发起上架申请)
+  // applicationReleaseCheck({
+  //   robotId: lastPublishData.robotId,
+  //   version: lastPublishData.version,
+  //   source: 'publish',
+  // }, async (params) => {
+  //   // 需要上架申请
+  //   const releaseRes = await releaseWithPublish({ robotId: lastPublishData.robotId, robotVersion: lastPublishData.version, name: lastPublishData.name, ...params }) as { data?: string }
+  //   message.success(releaseRes.data || '当前机器人自动通过上架审核，请至应用市场查看更新')
+  // }, () => { // 不需要上架申请, 原发版逻辑
+  //   // 如果分享过市场，data内容为market，如果没分享过，内容为create，对应两种提示
+  //   if (Number(basicFormData.value.version) > 1 && res.data === 'market') {
+  //     message.success('当前机器人发版更新已自动同步到应用市场')
+  //   }
+  // })
   emits('submited')
 }
 </script>

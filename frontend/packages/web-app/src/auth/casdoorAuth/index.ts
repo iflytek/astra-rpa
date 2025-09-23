@@ -16,9 +16,9 @@ export class CasdoorAuthService implements IAuthService {
   constructor() {
     const config = {
       serverUrl: this.serverUrl,
-      clientId: '0397c002688a506c417e',
-      appName: 'rap-robot',
-      organizationName: 'cbg',
+      clientId: 'e3ba6fec42cfe996121f',
+      appName: 'example-app',
+      organizationName: 'example-org',
       redirectPath: '/',
     }
     this.casdoorSDK = new Sdk(config)

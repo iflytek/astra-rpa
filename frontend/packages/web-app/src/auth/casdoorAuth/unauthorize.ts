@@ -39,7 +39,7 @@ async function casdoorRedirectUrl() {
 async function redirectToLogin(): Promise<void> {
   try {
     const res = await casdoorRedirectUrl() as any
-    const signinUrl = `${casdoorUrl}/casdoor${res.data}`
+    const signinUrl = `${casdoorUrl}${res.data}`
     if (signinUrl) {
       if (windowManager) {
         await windowManager.restoreLoginWindow()
