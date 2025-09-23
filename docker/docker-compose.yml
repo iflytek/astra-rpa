@@ -121,16 +121,17 @@ services:
       start_period: 30s
     networks:
       - rpa-opensource-network
-  
-  nginx:
-    image: nginx:1.25-alpine
-    container_name: rpa-opensource-nginx
+
+  openresty-nginx:
+    image: openresty/openresty:latest
+    container_name: rpa-opensource-openresty-nginx
     restart: always
     ports:
       - "32742:80"
     volumes:
-      - ./volumes/nginx:/etc/nginx/conf.d:ro
-      - ./logs/nginx:/var/log/nginx
+      - ./volumes/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./volumes/nginx/lua:/usr/local/openresty/nginx/lua:ro
+      - ./logs/nginx:/usr/local/openresty/nginx/logs
     depends_on:
       - resource-service
       - robot-service
