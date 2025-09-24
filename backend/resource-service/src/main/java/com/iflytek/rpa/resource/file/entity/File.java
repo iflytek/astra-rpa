@@ -1,10 +1,9 @@
 package com.iflytek.rpa.resource.file.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import java.util.Date;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.Date;
 
 /**
  * 文件表实体类

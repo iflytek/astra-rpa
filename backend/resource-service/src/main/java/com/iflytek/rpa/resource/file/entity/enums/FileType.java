@@ -1,6 +1,5 @@
 package com.iflytek.rpa.resource.file.entity.enums;
 
-
 /**
  * 文件类型枚举
  */
@@ -80,4 +79,3 @@ public enum FileType {
         return comment;
     }
 }
-

@@ -1,5 +1,7 @@
 package com.iflytek.rpa.resource.file.service.impl;
 
+import static software.amazon.awssdk.core.sync.RequestBody.fromBytes;
+
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.iflytek.rpa.resource.common.exp.ServiceException;
 import com.iflytek.rpa.resource.common.response.AppResponse;
@@ -10,6 +12,13 @@ import com.iflytek.rpa.resource.file.entity.File;
 import com.iflytek.rpa.resource.file.service.FileService;
 import com.iflytek.rpa.resource.file.utils.IdWorker;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +30,6 @@ import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
-
-import java.io.IOException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
-import static software.amazon.awssdk.core.sync.RequestBody.fromBytes;
 
 /**
  * 文件表 服务实现类
@@ -71,7 +70,6 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
         return AppResponse.success(true);
     }
 
-
     /**
      * 从S3下载文件
      *
@@ -103,7 +101,9 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
             response.reset();
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/octet-stream");
-            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
+            response.addHeader(
+                    "Content-Disposition",
+                    "attachment;filename=" + URLEncoder.encode(fileName, StandardCharsets.UTF_8));
             IOUtils.copy(s3Object, response.getOutputStream());
 
         } catch (NoSuchKeyException e) {
@@ -119,7 +119,6 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
             if (s3Object != null) s3Object.close();
         }
     }
-
 
     @Override
     public AppResponse<String> uploadFile(MultipartFile file) throws IOException {
@@ -146,7 +145,6 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
         saveFileInfo(fileId, targetPath, decodedFileName);
 
         return AppResponse.success(fileId);
-
     }
 
     /**
@@ -176,12 +174,12 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
         S3Client s3Client = null;
         try {
             s3Client = buildS3Client();
-            
+
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(s3Config.getBucket())
                     .key(targetPath)
                     .build();
-            
+
             s3Client.putObject(putObjectRequest, fromBytes(fileContent));
 
         } catch (S3Exception e) {
@@ -217,10 +215,8 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
      * 构建S3客户端
      */
     private S3Client buildS3Client() {
-        AwsBasicCredentials awsCredentials = AwsBasicCredentials.create(
-                s3Config.getAccessKey(),
-                s3Config.getSecretKey()
-        );
+        AwsBasicCredentials awsCredentials =
+                AwsBasicCredentials.create(s3Config.getAccessKey(), s3Config.getSecretKey());
 
         return S3Client.builder()
                 .region(Region.US_EAST_1) // 根据实际情况调整区域

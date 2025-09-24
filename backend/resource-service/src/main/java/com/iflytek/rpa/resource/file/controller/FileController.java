@@ -6,12 +6,11 @@ import com.iflytek.rpa.resource.common.response.ErrorCodeEnum;
 import com.iflytek.rpa.resource.file.entity.enums.FileType;
 import com.iflytek.rpa.resource.file.entity.vo.ShareFileUploadVo;
 import com.iflytek.rpa.resource.file.service.FileService;
+import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/file")
@@ -21,6 +20,7 @@ public class FileController {
     private final long maxFileSize = 50 * 1024 * 1024;
     // 文件大小校验 (100MB = 50 * 1024 * 1024 bytes)
     private final long maxShareSize = 100 * 1024 * 1024;
+
     @Autowired
     private FileService fileService;
 
@@ -97,7 +97,9 @@ public class FileController {
     private void checkVideo(MultipartFile file) {
         // 校验视频文件格式
         String originalFilename = file.getOriginalFilename();
-        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
+        String fileExtension = originalFilename
+                .substring(originalFilename.lastIndexOf(".") + 1)
+                .toLowerCase();
         String[] allowedVideoFormats = {"mp4", "webm", "ogg", "avi", "mov", "mpeg"};
 
         boolean isValidFormat = false;
@@ -109,17 +111,15 @@ public class FileController {
         }
 
         if (!isValidFormat) {
-            throw new ServiceException(ErrorCodeEnum.E_PARAM_CHECK.getCode(),
-                    "视频文件格式不支持，仅支持：mp4, webm, ogg, avi, mov, mpeg");
+            throw new ServiceException(
+                    ErrorCodeEnum.E_PARAM_CHECK.getCode(), "视频文件格式不支持，仅支持：mp4, webm, ogg, avi, mov, mpeg");
         }
     }
 
     private void checkParam(MultipartFile file, long maxSize) {
-        if (file == null || file.isEmpty())
-            throw new ServiceException(ErrorCodeEnum.E_PARAM_LOSE.getCode(), "文件不能为空");
+        if (file == null || file.isEmpty()) throw new ServiceException(ErrorCodeEnum.E_PARAM_LOSE.getCode(), "文件不能为空");
 
-        if (file.getSize() > maxSize)
-            throw new ServiceException(ErrorCodeEnum.E_PARAM_CHECK.getCode(), "文件大小不能超过50MB");
+        if (file.getSize() > maxSize) throw new ServiceException(ErrorCodeEnum.E_PARAM_CHECK.getCode(), "文件大小不能超过50MB");
 
         if (StringUtils.isBlank(file.getOriginalFilename()))
             throw new ServiceException(ErrorCodeEnum.E_PARAM_LOSE.getCode(), "文件名不能为空");

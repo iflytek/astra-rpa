@@ -4,6 +4,7 @@ import com.iflytek.rpa.resource.common.response.AppResponse;
 import com.iflytek.rpa.resource.common.response.ErrorCodeEnum;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
-
-import java.util.Set;
 
 /**
  * 全局异常处理器
@@ -51,7 +50,8 @@ public class GlobalExceptionHandler {
      * @return 错误响应
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<AppResponse<String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<AppResponse<String>> handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException e) {
         log.warn("参数校验异常: {}", e.getMessage());
 
         StringBuilder errorMsg = new StringBuilder();
@@ -61,9 +61,9 @@ public class GlobalExceptionHandler {
                     .append(fieldError.getDefaultMessage())
                     .append("; ");
         }
-        
-        AppResponse<String> response = AppResponse.error(ErrorCodeEnum.E_PARAM_CHECK.getCode(), 
-                "参数校验失败: " + errorMsg.toString());
+
+        AppResponse<String> response =
+                AppResponse.error(ErrorCodeEnum.E_PARAM_CHECK.getCode(), "参数校验失败: " + errorMsg.toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
@@ -84,9 +84,9 @@ public class GlobalExceptionHandler {
                     .append(fieldError.getDefaultMessage())
                     .append("; ");
         }
-        
-        AppResponse<String> response = AppResponse.error(ErrorCodeEnum.E_PARAM_CHECK.getCode(), 
-                "参数绑定失败: " + errorMsg.toString());
+
+        AppResponse<String> response =
+                AppResponse.error(ErrorCodeEnum.E_PARAM_CHECK.getCode(), "参数绑定失败: " + errorMsg.toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
@@ -108,9 +108,9 @@ public class GlobalExceptionHandler {
                     .append(violation.getMessage())
                     .append("; ");
         }
-        
-        AppResponse<String> response = AppResponse.error(ErrorCodeEnum.E_PARAM_CHECK.getCode(), 
-                "参数约束违反: " + errorMsg.toString());
+
+        AppResponse<String> response =
+                AppResponse.error(ErrorCodeEnum.E_PARAM_CHECK.getCode(), "参数约束违反: " + errorMsg.toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
@@ -121,7 +121,8 @@ public class GlobalExceptionHandler {
      * @return 错误响应
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<AppResponse<String>> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+    public ResponseEntity<AppResponse<String>> handleMissingServletRequestParameterException(
+            MissingServletRequestParameterException e) {
         log.warn("缺少请求参数异常: {}", e.getMessage());
         String message = String.format("缺少必需的请求参数: %s", e.getParameterName());
         AppResponse<String> response = AppResponse.error(ErrorCodeEnum.E_PARAM_LOSE.getCode(), message);
@@ -135,9 +136,11 @@ public class GlobalExceptionHandler {
      * @return 错误响应
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<AppResponse<String>> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+    public ResponseEntity<AppResponse<String>> handleMethodArgumentTypeMismatchException(
+            MethodArgumentTypeMismatchException e) {
         log.warn("方法参数类型不匹配异常: {}", e.getMessage());
-        String message = String.format("参数 '%s' 的值 '%s' 无法转换为类型 '%s'", 
+        String message = String.format(
+                "参数 '%s' 的值 '%s' 无法转换为类型 '%s'",
                 e.getName(), e.getValue(), e.getRequiredType().getSimpleName());
         AppResponse<String> response = AppResponse.error(ErrorCodeEnum.E_PARAM_PARSE.getCode(), message);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
@@ -150,10 +153,11 @@ public class GlobalExceptionHandler {
      * @return 错误响应
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<AppResponse<String>> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+    public ResponseEntity<AppResponse<String>> handleHttpRequestMethodNotSupportedException(
+            HttpRequestMethodNotSupportedException e) {
         log.warn("请求方法不支持异常: {}", e.getMessage());
-        String message = String.format("请求方法 '%s' 不支持，支持的方法: %s", 
-                e.getMethod(), String.join(", ", e.getSupportedMethods()));
+        String message =
+                String.format("请求方法 '%s' 不支持，支持的方法: %s", e.getMethod(), String.join(", ", e.getSupportedMethods()));
         AppResponse<String> response = AppResponse.error(ErrorCodeEnum.E_SERVICE_NOT_SUPPORT.getCode(), message);
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(response);
     }

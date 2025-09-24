@@ -55,5 +55,4 @@ public class S3Config {
     public void setMaxConnections(Integer maxConnections) {
         this.maxConnections = maxConnections;
     }
-
 }

@@ -3,9 +3,8 @@ package com.iflytek.rpa.resource.file.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.iflytek.rpa.resource.common.response.AppResponse;
 import com.iflytek.rpa.resource.file.entity.File;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 文件表 服务类

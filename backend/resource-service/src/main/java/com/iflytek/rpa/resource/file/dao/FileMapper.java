@@ -17,6 +17,4 @@ public interface FileMapper extends BaseMapper<File> {
 
     @Select("select * from file where deleted = 0 and file_id = #{fileId}")
     File getFile(@Param("fileId") String fileId);
-
-
 }
