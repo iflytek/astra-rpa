@@ -951,7 +951,7 @@
       "clientId": "e3ba6fec42cfe996121f",
       "clientSecret": "0c18bf2a11ffbb756ec6ce47dae9e09bdd48e3dd",
       "redirectUris": [
-        "http://localhost:9000/callback"
+        "https://tauri.localhost/","http://localhost:1420/"
       ],
       "forcedRedirectOrigin": "",
       "tokenFormat": "JWT",
