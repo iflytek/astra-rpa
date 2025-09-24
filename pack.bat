@@ -8,7 +8,7 @@ echo ========================================
 
 REM Handle command line arguments
 set "CUSTOM_7ZIP_PATH="
-set "PYTHON_7Z_FILE=Python313.7z"
+set "PYTHON_SOURCE_DIR="
 if not "%~1"=="" (
     set "CUSTOM_7ZIP_PATH=%~1"
     echo [INFO] Using custom 7-Zip path: %CUSTOM_7ZIP_PATH%
@@ -16,10 +16,19 @@ if not "%~1"=="" (
     echo [INFO] Using default 7-Zip paths
 )
 if not "%~2"=="" (
-    set "PYTHON_7Z_FILE=%~2"
-    echo [INFO] Using custom Python 7z file: %PYTHON_7Z_FILE%
+    set "PYTHON_SOURCE_DIR=%~2"
+    echo [INFO] Using custom Python source directory: %PYTHON_SOURCE_DIR%
 ) else (
-    echo [INFO] Using default Python 7z file: %PYTHON_7Z_FILE%
+    REM Try to find default Python directories
+    if exist "Python313" (
+        set "PYTHON_SOURCE_DIR=Python313"
+        echo [INFO] Found default Python directory: Python313
+    ) else if exist "C:\Python313" (
+        set "PYTHON_SOURCE_DIR=C:\Python313"
+        echo [INFO] Found system Python directory: C:\Python313
+    ) else (
+        echo [WARN] No default Python directory found, please specify one
+    )
 )
 
 REM Check/create pack_workspace folder
@@ -31,125 +40,101 @@ if not exist "pack_workspace" (
     echo [INFO] pack_workspace folder exists
 )
 
-REM Check if Python313 folder already exists
-if exist "pack_workspace\Python313" (
-    echo [INFO] pack_workspace\Python313 folder exists
-    echo [INFO] Skipping extraction, proceeding to next steps...
-    goto :extract_success
+echo.
+echo [INFO] Cleaning previous build artifacts...
+
+REM Clean wheels directory
+if exist "pack_workspace\wheels" (
+    echo [INFO] Cleaning pack_workspace\wheels directory...
+    rmdir /s /q "pack_workspace\wheels" >nul 2>&1
+    if exist "pack_workspace\wheels" (
+        echo [WARN] Cannot completely clean wheels directory, some files may be in use
+    ) else (
+        echo [DONE] wheels directory cleaned successfully
+    )
 )
 
-REM Check if Python 7z file exists
-if not exist "%PYTHON_7Z_FILE%" (
-    echo [ERROR] %PYTHON_7Z_FILE% file not found!
+REM Clean python_base directory
+if exist "pack_workspace\python_base" (
+    echo [INFO] Cleaning pack_workspace\python_base directory...
+    rmdir /s /q "pack_workspace\python_base" >nul 2>&1
+    if exist "pack_workspace\python_base" (
+        echo [WARN] Cannot completely clean python_base directory, some files may be in use
+    ) else (
+        echo [DONE] python_base directory cleaned successfully
+    )
+)
+
+REM Clean python_core directory
+if exist "pack_workspace\python_core" (
+    echo [INFO] Cleaning pack_workspace\python_core directory...
+    rmdir /s /q "pack_workspace\python_core" >nul 2>&1
+    if exist "pack_workspace\python_core" (
+        echo [WARN] Cannot completely clean python_core directory, some files may be in use
+    ) else (
+        echo [DONE] python_core directory cleaned successfully
+    )
+)
+
+echo [DONE] Previous build artifacts cleaning completed
+
+REM Check if Python source directory exists
+if "%PYTHON_SOURCE_DIR%"=="" (
+    echo [ERROR] No Python source directory specified!
+    echo [INFO] Please provide a valid Python installation directory path.
+    echo [INFO] Usage examples:
+    echo [INFO]   pack.bat "" "C:\Python313"
+    echo [INFO]   pack.bat "" "D:\Python" 
+    echo [INFO]   pack.bat "" "Python313"
     pause
     exit /b 1
 )
 
-echo [INFO] Extracting %PYTHON_7Z_FILE% to pack_workspace\Python313...
-
-
-REM Check custom 7-Zip path first
-if not "%CUSTOM_7ZIP_PATH%"=="" (
-    if exist "%CUSTOM_7ZIP_PATH%" (
-        echo [INFO] Using custom 7-Zip: "%CUSTOM_7ZIP_PATH%"
-        "%CUSTOM_7ZIP_PATH%" x "%PYTHON_7Z_FILE%" -o"pack_workspace\" -y
-        if !errorlevel! equ 0 (
-            echo [DONE] %PYTHON_7Z_FILE% extracted successfully
-            goto :extract_success
-        ) else (
-            echo [ERROR] Custom 7-Zip extraction failed, code: !errorlevel!
-            echo [INFO] Trying default paths...
-        )
-    ) else (
-        echo [WARN] Custom 7-Zip path not found: %CUSTOM_7ZIP_PATH%
-        echo [INFO] Trying default paths...
-    )
+if not exist "%PYTHON_SOURCE_DIR%" (
+    echo [ERROR] Python source directory "%PYTHON_SOURCE_DIR%" not found!
+    echo [INFO] Please provide a valid Python installation directory path.
+    echo [INFO] Usage examples:
+    echo [INFO]   pack.bat "" "C:\Python313"
+    echo [INFO]   pack.bat "" "D:\Python" 
+    echo [INFO]   pack.bat "" "Python313"
+    pause
+    exit /b 1
 )
-
-REM Try default 7-Zip paths
-if exist "C:\Program Files\7-Zip\7z.exe" (
-    echo [INFO] Using default path: "C:\Program Files\7-Zip\7z.exe"
-    "C:\Program Files\7-Zip\7z.exe" x "%PYTHON_7Z_FILE%" -o"pack_workspace\" -y
-    if !errorlevel! equ 0 (
-        echo [DONE] %PYTHON_7Z_FILE% extracted successfully
-        goto :extract_success
-    ) else (
-        echo [ERROR] Extraction failed, code: !errorlevel!
-    )
-) else if exist "C:\Program Files (x86)\7-Zip\7z.exe" (
-    echo [INFO] Using default path: "C:\Program Files (x86)\7-Zip\7z.exe"
-    "C:\Program Files (x86)\7-Zip\7z.exe" x "%PYTHON_7Z_FILE%" -o"pack_workspace\" -y
-    if !errorlevel! equ 0 (
-        echo [DONE] %PYTHON_7Z_FILE% extracted successfully
-        goto :extract_success
-    ) else (
-        echo [ERROR] Extraction failed, code: !errorlevel!
-    )
-) else (
-    REM Try PowerShell extraction
-    echo [INFO] 7-Zip not found, trying PowerShell...
-    powershell -Command "& {Add-Type -AssemblyName System.IO.Compression.FileSystem; [System.IO.Compression.ZipFile]::ExtractToDirectory('%PYTHON_7Z_FILE%', 'pack_workspace\Python313')}"
-    if !errorlevel! equ 0 (
-        echo [DONE] %PYTHON_7Z_FILE% extracted successfully
-        goto :extract_success
-    ) else (
-        echo [ERROR] PowerShell extraction failed
-        pause
-        exit /b 1
-    )
-)
-
-REM If we reach here, all extraction methods failed
-echo [ERROR] All extraction methods failed
-pause
-exit /b 1
-
-:extract_success
 
 echo.
-echo [INFO] Processing Python313 folder...
+echo [INFO] Creating Python environments from source directory...
 
-REM Check if Python313 folder exists after extraction
-if not exist "pack_workspace\Python313" (
-    echo [ERROR] Python313 folder not found after extraction!
-    pause
-    exit /b 1
-)
-
-echo [INFO] Python313 folder found, copying and renaming...
-
-REM Copy first copy as python_core
-if exist "pack_workspace\python_core" (
-    echo [INFO] python_core folder exists, skipping creation
-) else (
-    echo [INFO] Copying Python313 to python_core...
-    xcopy "pack_workspace\Python313" "pack_workspace\python_core" /e /i /h /y >nul
-    if !errorlevel! equ 0 (
-        echo [DONE] python_core folder created successfully
-    ) else (
-        echo [ERROR] Failed to create python_core folder, code: !errorlevel!
-        pause
-        exit /b 1
-    )
-)
-
-REM Copy second copy as python_base
+REM Copy first copy as python_base
 if exist "pack_workspace\python_base" (
     echo [INFO] python_base folder exists, skipping creation
 ) else (
-    echo [INFO] Copying Python313 to python_base...
-    xcopy "pack_workspace\Python313" "pack_workspace\python_base" /e /i /h /y >nul
+    echo [INFO] Copying "%PYTHON_SOURCE_DIR%" to python_base...
+    xcopy "%PYTHON_SOURCE_DIR%" "pack_workspace\python_base" /e /i /h /y >nul
     if !errorlevel! equ 0 (
         echo [DONE] python_base folder created successfully
     ) else (
         echo [ERROR] Failed to create python_base folder, code: !errorlevel!
+        echo [INFO] Please check if the source directory exists and is accessible
         pause
         exit /b 1
     )
 )
 
-REM Keep original Python313 folder
-echo [INFO] Keeping original Python313 folder
+REM Copy second copy as python_core
+if exist "pack_workspace\python_core" (
+    echo [INFO] python_core folder exists, skipping creation
+) else (
+    echo [INFO] Copying "%PYTHON_SOURCE_DIR%" to python_core...
+    xcopy "%PYTHON_SOURCE_DIR%" "pack_workspace\python_core" /e /i /h /y >nul
+    if !errorlevel! equ 0 (
+        echo [DONE] python_core folder created successfully
+    ) else (
+        echo [ERROR] Failed to create python_core folder, code: !errorlevel!
+        echo [INFO] Please check if the source directory exists and is accessible
+        pause
+        exit /b 1
+    )
+)
 
 echo.
 echo [INFO] Building shared packages and installing to python_core...
@@ -1065,9 +1050,9 @@ if exist "pack_workspace\engine" (
 echo.
 echo [DONE] All operations completed successfully!
 echo - pack_workspace folder is ready
-echo - Python313.7z extracted to pack_workspace
-echo - python_core folder created (copy of Python313)
-echo - python_base folder created (copy of Python313)
+echo - Python directory copied from "%PYTHON_SOURCE_DIR%" to pack_workspace
+echo - python_core folder created (copy of source Python)
+echo - python_base folder created (copy of source Python)
 echo - All shared packages built and installed to python_core and python_base
 echo - Dependent packages built and installed to python_core
 echo - Execkit packages built and installed to python_base
@@ -1132,9 +1117,14 @@ echo [DONE] Archives moved to tauri resources successfully!
 echo.
 echo ========================================
 echo Usage:
-echo   Default usage: pack.bat
-echo   Specify 7-Zip path: pack.bat "C:\path\to\7z.exe"
-echo   Example: pack.bat "D:\Tools\7-Zip\7z.exe"
+echo   Specify Python directory: pack.bat "" "PYTHON_DIRECTORY_PATH"
+echo   Specify 7-Zip path: pack.bat "7ZIP_PATH" ""
+echo   Both custom paths: pack.bat "7ZIP_PATH" "PYTHON_DIRECTORY_PATH"
+echo   Examples:
+echo     pack.bat "" "C:\Python313"
+echo     pack.bat "" "D:\Python"
+echo     pack.bat "" "Python313"
+echo     pack.bat "D:\Tools\7-Zip\7z.exe" "C:\Python313"
 echo ========================================
 echo.
 echo Please tell me what to do next...

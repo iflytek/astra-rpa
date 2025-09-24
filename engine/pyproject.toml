@@ -57,7 +57,7 @@ default = true
 
 [tool.black]
 line-length = 88
-target-version = ['py39', 'py310', 'py311']
+target-version = ['py313']
 include = '\.pyi?$'
 extend-exclude = '''
 /(

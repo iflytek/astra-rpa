@@ -153,7 +153,7 @@ AstronRPA 源自服务于数万家企业和数百万开发者的"科大讯飞 RP
 - **pnpm**：>= 9
 - **rustc**：>= 1.90.0
 - **UV**：Python 包管理工具
-- **7-Zip**：用于压缩解压
+- **7-Zip**：用于创建部署归档文件
 
 ### 使用 Docker
 
@@ -183,17 +183,23 @@ docker-compose ps
 
 1. **准备 Python 环境**
    ```bash
-   # 下载 Python 3.13.x 并压缩为 Python313.7z 放在项目根目录
-   # 或使用自定义文件名作为参数传入
+   # 准备一个 Python 3.13.x 安装目录
+   # 可以是本地文件夹或系统安装路径
+   # 脚本会复制该目录来创建 python_base 和 python_core
    ```
 
 2. **运行打包脚本**
    ```bash
-   # 默认使用 Python313.7z, 注意运行前清理pack_workspace下面的wheels包
+   # 使用本地 Python313 文件夹（自动检测）
    pack.bat
    
-   # 或使用自定义 Python 文件
-   pack.bat "" "Python3.13.5.7z"
+   # 指定自定义 Python 目录
+   pack.bat "" "C:\Python313"
+   pack.bat "" "D:\Python"
+   pack.bat "" "Python313"
+   
+   # 同时指定 7-Zip 路径和 Python 目录
+   pack.bat "D:\Tools\7-Zip\7z.exe" "C:\Python313"
    ```
 
 3. **构建前端应用**

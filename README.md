@@ -153,7 +153,7 @@ AstronRPA is derived from the "iFlytek RPA Platform" which has served tens of th
 - **pnpm**: >= 9
 - **rustc**：>= 1.90.0
 - **UV**: Python package management tool
-- **7-Zip**: For compression and extraction
+- **7-Zip**: For creating deployment archives
 
 ### Using Docker
 
@@ -183,17 +183,23 @@ docker-compose ps
 
 1. **Prepare Python Environment**
    ```bash
-   # Download Python 3.13.x and compress as Python313.7z in project root
-   # Or use custom filename as parameter
+   # Prepare a Python 3.13.x installation directory
+   # Can be a local folder or system installation path
+   # The script will copy this directory to create python_base and python_core
    ```
 
 2. **Run Packaging Script**
    ```bash
-   # Default using Python313.7z
+   # Using local Python313 folder (auto-detected)
    pack.bat
    
-   # Or use custom Python file
-   pack.bat "" "Python3.13.5.7z"
+   # Specify custom Python directory
+   pack.bat "" "C:\Python313"
+   pack.bat "" "D:\Python"
+   pack.bat "" "Python313"
+   
+   # With custom 7-Zip path and Python directory
+   pack.bat "D:\Tools\7-Zip\7z.exe" "C:\Python313"
    ```
 
 3. **Build Frontend Application**
