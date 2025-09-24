@@ -7,12 +7,11 @@ import com.iflytek.rpa.base.entity.dto.CGlobalDto;
 import com.iflytek.rpa.robot.entity.RobotDesign;
 import com.iflytek.rpa.robot.entity.RobotVersion;
 import com.iflytek.rpa.robot.entity.dto.RobotVersionDto;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-
-import java.util.List;
 
 /**
  * 客户端-全局变量(CGlobalVar)表数据库访问层
@@ -25,21 +24,20 @@ public interface CGlobalVarDao extends BaseMapper<CGlobalVar> {
 
     Integer createGlobalVarForCurrentVersion(RobotVersionDto robotVersionDto);
 
-    Integer createGlobalVarForObtainedVersion(@Param("obtainedRobotDesign") RobotDesign obtainedRobotDesign,
-                                              @Param("authorRobotVersion") RobotVersion authorRobotVersion);
+    Integer createGlobalVarForObtainedVersion(
+            @Param("obtainedRobotDesign") RobotDesign obtainedRobotDesign,
+            @Param("authorRobotVersion") RobotVersion authorRobotVersion);
 
     List<CGlobalVar> getGlobalVarInfoList(BaseDto baseDto);
 
-
-    @Update("update c_global_var " +
-            "set deleted = 1 " +
-            "where robot_id = #{robotId} and robot_version = 0 and creator_id = #{userId}")
+    @Update("update c_global_var " + "set deleted = 1 "
+            + "where robot_id = #{robotId} and robot_version = 0 and creator_id = #{userId}")
     boolean deleteOldEditVersion(@Param("robotId") String robotId, @Param("userId") String userId);
 
-    @Select("select * " +
-            "from c_global_var " +
-            "where robot_id = #{robotId} and robot_version = #{version} and creator_id = #{userId} and deleted = 0")
-    List<CGlobalVar> getGlobalVar(@Param("robotId") String robotId, @Param("version") Integer version, @Param("userId") String userId);
+    @Select("select * " + "from c_global_var "
+            + "where robot_id = #{robotId} and robot_version = #{version} and creator_id = #{userId} and deleted = 0")
+    List<CGlobalVar> getGlobalVar(
+            @Param("robotId") String robotId, @Param("version") Integer version, @Param("userId") String userId);
 
     Integer insertGloBatch(@Param("entities") List<CGlobalVar> entities);
 
@@ -55,4 +53,3 @@ public interface CGlobalVarDao extends BaseMapper<CGlobalVar> {
 
     boolean deleteGlobalVar(CGlobalDto globalDto);
 }
-

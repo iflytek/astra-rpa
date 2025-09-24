@@ -1,8 +1,7 @@
 package com.iflytek.rpa.component.entity.dto;
 
-import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 /**
  * 添加组件引用DTO

@@ -1,10 +1,8 @@
 package com.iflytek.rpa.robot.entity.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class RobotPageListDto {
@@ -19,7 +17,6 @@ public class RobotPageListDto {
      * 默认降序
      */
     String sortType = "desc";
-
 
     /**
      * 机器人名称

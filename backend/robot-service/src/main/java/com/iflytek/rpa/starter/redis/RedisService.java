@@ -17,7 +17,6 @@ public class RedisService {
         this.redisTemplate = redisTemplate;
     }
 
-
     public RedisTemplate<String, Object> getRedisTemplate() {
         return redisTemplate;
     }

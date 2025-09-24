@@ -13,6 +13,4 @@ public class RenameProcessDto {
     private String processId;
 
     private String processName;
-
-
 }

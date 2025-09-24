@@ -1,9 +1,8 @@
 package com.iflytek.rpa.robot.entity.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 /**
  * 共享变量保存结果VO
@@ -54,4 +53,4 @@ public class SharedVarSaveVo {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
-} 
+}

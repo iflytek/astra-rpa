@@ -5,15 +5,13 @@ package com.iflytek.rpa.auth.utils;
  * @author: weilai <laiwei3@iflytek.com>
  * @create: 2025/9/16 19:27
  */
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iflytek.rpa.auth.entity.Result;
+import java.io.PrintWriter;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 
 public class ResponseUtils {
 

@@ -12,7 +12,7 @@ import com.iflytek.rpa.starter.utils.response.AppResponse;
  */
 public interface CElementService {
 
-//    AppResponse<?> getElementNameList(BaseDto baseDto) throws NoLoginException;
+    //    AppResponse<?> getElementNameList(BaseDto baseDto) throws NoLoginException;
 
     AppResponse<?> getElementDetail(ServerBaseDto serverBaseDto) throws NoLoginException;
 
@@ -29,6 +29,4 @@ public interface CElementService {
     AppResponse<?> copyElement(ServerBaseDto serverBaseDto) throws NoLoginException;
 
     AppResponse<?> getAllGroupInfo(ServerBaseDto serverBaseDto);
-
-
 }

@@ -7,7 +7,6 @@ import com.iflytek.rpa.robot.entity.vo.SharedVarKeyVo;
 import com.iflytek.rpa.robot.entity.vo.SharedVarPageVo;
 import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
-
 import java.util.List;
 
 /**
@@ -62,13 +61,13 @@ public interface SharedVarService {
      */
     AppResponse<SharedVarKeyVo> getSharedVarKey() throws NoLoginException;
 
-//    /**
-//     * 客户端-查询该用户可用的所有共享变量
-//     *
-//     * @return 共享变量列表
-//     * @throws NoLoginException 未登录异常
-//     */
-//    AppResponse<List<ClientSharedVarVo>> getClientSharedVars() throws NoLoginException;
+    //    /**
+    //     * 客户端-查询该用户可用的所有共享变量
+    //     *
+    //     * @return 共享变量列表
+    //     * @throws NoLoginException 未登录异常
+    //     */
+    //    AppResponse<List<ClientSharedVarVo>> getClientSharedVars() throws NoLoginException;
 
     AppResponse<List<ClientSharedVarVo>> getBatchSharedVar(SharedVarBatchDto updateDto) throws NoLoginException;
 }

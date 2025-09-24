@@ -1,17 +1,16 @@
 package com.iflytek.rpa.base.service.handler;
 
+import static com.iflytek.rpa.robot.constants.RobotConstant.*;
+
 import com.iflytek.rpa.starter.exception.ServiceException;
 import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.iflytek.rpa.robot.constants.RobotConstant.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * @author mjren

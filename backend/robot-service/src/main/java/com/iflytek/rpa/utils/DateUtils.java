@@ -66,7 +66,6 @@ public class DateUtils {
         return days;
     }
 
-
     public static String getDayFormat() {
         return sdfday.format(new Date(System.currentTimeMillis()));
     }
@@ -119,14 +118,16 @@ public class DateUtils {
 
     // 获得某天最大时间 2020-02-19 23:59:59
     public static Date getEndOfDay(Date date) {
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+        LocalDateTime localDateTime =
+                LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
         LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
         return Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     // 获得某天最小时间 2020-02-19 00:00:00
     public static Date getStartOfDay(Date date) {
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+        LocalDateTime localDateTime =
+                LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
         LocalDateTime startOfDay = localDateTime.with(LocalTime.MIN);
         return Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant());
     }
@@ -136,11 +137,9 @@ public class DateUtils {
         return getEndHourTimeOfDay(getCalDay(date, -1));
     }
 
-    //date 转 localDateTime
+    // date 转 localDateTime
     public static LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
-        return dateToConvert.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
+        return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
     public static String localDateToYyyMdDdStr(LocalDateTime localDateTime) {
@@ -162,14 +161,13 @@ public class DateUtils {
         return dateFormat.format(date) + " 24:00:00"; // 直接拼接 24:00:00
     }
 
-    public static List<String> getStartAndEndOfDay(Date date){
-            // 获取当天的开始时间和结束时间
-            String startOfDay = getStartStrOfDay(date);
-            String endOfDay = getEndStrOfDay(date);
-            List<String> startAndEndOfDay = new ArrayList<>();
-            startAndEndOfDay.add(startOfDay);
-            startAndEndOfDay.add(endOfDay);
-            return startAndEndOfDay;
+    public static List<String> getStartAndEndOfDay(Date date) {
+        // 获取当天的开始时间和结束时间
+        String startOfDay = getStartStrOfDay(date);
+        String endOfDay = getEndStrOfDay(date);
+        List<String> startAndEndOfDay = new ArrayList<>();
+        startAndEndOfDay.add(startOfDay);
+        startAndEndOfDay.add(endOfDay);
+        return startAndEndOfDay;
     }
-
 }

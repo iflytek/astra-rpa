@@ -5,8 +5,7 @@ public class Role {
     private String name;
     private String nameZh;
 
-    public Role() {
-    }
+    public Role() {}
 
     public Integer getId() {
         return this.id;

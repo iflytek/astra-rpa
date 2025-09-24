@@ -4,11 +4,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.iflytek.rpa.robot.entity.SharedVar;
 import com.iflytek.rpa.robot.entity.SharedVarUser;
 import com.iflytek.rpa.robot.entity.vo.SharedSubVarVo;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
-
-import java.util.List;
 
 /**
  * 共享变量DAO
@@ -42,7 +41,8 @@ public interface SharedVarDao extends BaseMapper<SharedVar> {
      * @param userId 用户ID
      * @return 影响行数
      */
-    @Update("UPDATE shared_var SET deleted = 1, updater_id = #{userId}, update_time = NOW() WHERE id = #{id} AND deleted = 0")
+    @Update(
+            "UPDATE shared_var SET deleted = 1, updater_id = #{userId}, update_time = NOW() WHERE id = #{id} AND deleted = 0")
     int deleteSharedVar(@Param("id") Long id, @Param("userId") String userId);
 
     /**
@@ -60,8 +60,10 @@ public interface SharedVarDao extends BaseMapper<SharedVar> {
      * @param selectVarIds
      * @return 共享变量列表
      */
-    List<SharedVar> getAvailableSharedVars(@Param("tenantId") String tenantId, @Param("deptId") String deptId, @Param("selectVarIds") List<String> selectVarIds);
-
+    List<SharedVar> getAvailableSharedVars(
+            @Param("tenantId") String tenantId,
+            @Param("deptId") String deptId,
+            @Param("selectVarIds") List<String> selectVarIds);
 
     List<SharedVar> getAvailableByIds(@Param("ids") List<Long> ids);
-} 
+}

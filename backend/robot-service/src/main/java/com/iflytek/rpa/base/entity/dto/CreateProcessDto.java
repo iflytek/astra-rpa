@@ -15,6 +15,4 @@ public class CreateProcessDto {
     private String processName;
 
     private String processContent;
-
-
 }

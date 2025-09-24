@@ -9,5 +9,7 @@ public class AuthException extends Exception {
         super(message);
     }
 
-    public AuthException(Exception e){super(e);}
+    public AuthException(Exception e) {
+        super(e);
+    }
 }

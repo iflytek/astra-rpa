@@ -13,6 +13,4 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2021-10-08
  */
 @Mapper
-public interface TaskMailMapper extends BaseMapper<TaskMail> {
-
-}
+public interface TaskMailMapper extends BaseMapper<TaskMail> {}

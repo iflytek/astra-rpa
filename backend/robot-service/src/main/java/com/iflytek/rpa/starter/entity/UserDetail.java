@@ -29,8 +29,7 @@ public class UserDetail {
     private Boolean credentialsNonExpired;
     private List<String> userOwnedPath = new ArrayList();
 
-    public UserDetail() {
-    }
+    public UserDetail() {}
 
     public Long getId() {
         return this.id;
@@ -567,6 +566,16 @@ public class UserDetail {
     }
 
     public String toString() {
-        return "UserDetail(id=" + this.getId() + ", uuid=" + this.getUuid() + ", redisUUid=" + this.getRedisUUid() + ", username=" + this.getUsername() + ", phone=" + this.getPhone() + ", email=" + this.getEmail() + ", registerTime=" + this.getRegisterTime() + ", oauthTypeId=" + this.getOauthTypeId() + ", authFlag=" + this.getAuthFlag() + ", password=" + this.getPassword() + ", createTime=" + this.getCreateTime() + ", updateTime=" + this.getUpdateTime() + ", nickName=" + this.getNickName() + ", gender=" + this.getGender() + ", avatorUrl=" + this.getAvatorUrl() + ", lastLoginOauthTypeId=" + this.getLastLoginOauthTypeId() + ", lastLoginTime=" + this.getLastLoginTime() + ", deleted=" + this.getDeleted() + ", hasPassword=" + this.getHasPassword() + ", accountNonExpired=" + this.getAccountNonExpired() + ", accountNonLocked=" + this.getAccountNonLocked() + ", credentialsNonExpired=" + this.getCredentialsNonExpired() + ", userOwnedPath=" + this.getUserOwnedPath() + ")";
+        return "UserDetail(id=" + this.getId() + ", uuid=" + this.getUuid() + ", redisUUid=" + this.getRedisUUid()
+                + ", username=" + this.getUsername() + ", phone=" + this.getPhone() + ", email=" + this.getEmail()
+                + ", registerTime=" + this.getRegisterTime() + ", oauthTypeId=" + this.getOauthTypeId() + ", authFlag="
+                + this.getAuthFlag() + ", password=" + this.getPassword() + ", createTime=" + this.getCreateTime()
+                + ", updateTime=" + this.getUpdateTime() + ", nickName=" + this.getNickName() + ", gender="
+                + this.getGender() + ", avatorUrl=" + this.getAvatorUrl() + ", lastLoginOauthTypeId="
+                + this.getLastLoginOauthTypeId() + ", lastLoginTime=" + this.getLastLoginTime() + ", deleted="
+                + this.getDeleted() + ", hasPassword=" + this.getHasPassword() + ", accountNonExpired="
+                + this.getAccountNonExpired() + ", accountNonLocked=" + this.getAccountNonLocked()
+                + ", credentialsNonExpired=" + this.getCredentialsNonExpired() + ", userOwnedPath="
+                + this.getUserOwnedPath() + ")";
     }
 }

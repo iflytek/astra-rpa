@@ -1,5 +1,7 @@
 package com.iflytek.rpa.robot.service.impl;
 
+import static com.iflytek.rpa.robot.constants.RobotConstant.ROBOT_RESULT_EXECUTE;
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -18,17 +20,14 @@ import com.iflytek.rpa.task.dao.ScheduleTaskDao;
 import com.iflytek.rpa.utils.IdWorker;
 import com.iflytek.rpa.utils.TenantUtils;
 import com.iflytek.rpa.utils.UserUtils;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import static com.iflytek.rpa.robot.constants.RobotConstant.ROBOT_RESULT_EXECUTE;
 
 /**
  * 云端机器人执行记录表(RobotExecute)表服务实现类
@@ -38,16 +37,21 @@ import static com.iflytek.rpa.robot.constants.RobotConstant.ROBOT_RESULT_EXECUTE
  */
 @Slf4j
 @Service("robotExecuteRecordService")
-public class RobotExecuteRecordServiceImpl extends ServiceImpl<RobotExecuteRecordDao, RobotExecuteRecord> implements RobotExecuteRecordService {
+public class RobotExecuteRecordServiceImpl extends ServiceImpl<RobotExecuteRecordDao, RobotExecuteRecord>
+        implements RobotExecuteRecordService {
 
     @Autowired
     ScheduleTaskDao scheduleTaskDao;
+
     @Autowired
     private RobotExecuteRecordDao robotExecuteRecordDao;
+
     @Autowired
     private RobotExecuteDao robotExecuteDao;
+
     @Autowired
     private RobotVersionDao robotVersionDao;
+
     @Autowired
     private IdWorker idWorker;
 
@@ -97,7 +101,6 @@ public class RobotExecuteRecordServiceImpl extends ServiceImpl<RobotExecuteRecor
         return AppResponse.success(executeLog);
     }
 
-
     @Override
     @RobotVersionAnnotation(clazz = ExecuteRecordDto.class)
     public AppResponse<?> saveExecuteResult(ExecuteRecordDto recordDto, String currentRobotId) throws NoLoginException {
@@ -110,9 +113,9 @@ public class RobotExecuteRecordServiceImpl extends ServiceImpl<RobotExecuteRecor
         recordDto.setUpdaterId(userId);
         recordDto.setTenantId(tenantId);
         recordDto.setRobotId(currentRobotId);
-//        String deptIdPath = DeptUtils.getLevelCode();
-//        recordDto.setDeptIdPath(deptIdPath);
-        //根据executeId，是否是第一次，是第一次，设置开始时间
+        //        String deptIdPath = DeptUtils.getLevelCode();
+        //        recordDto.setDeptIdPath(deptIdPath);
+        // 根据executeId，是否是第一次，是第一次，设置开始时间
         if (null == executeId) {
             if (null == recordDto.getResult() || !ROBOT_RESULT_EXECUTE.equals(recordDto.getResult())) {
                 return AppResponse.error(ErrorCodeEnum.E_PARAM_LOSE, "执行结果为空或数据错误");
@@ -120,7 +123,7 @@ public class RobotExecuteRecordServiceImpl extends ServiceImpl<RobotExecuteRecor
             executeId = idWorker.nextId() + "";
             recordDto.setExecuteId(executeId);
             recordDto.setStartTime(new Date());
-            //插入
+            // 插入
             robotExecuteRecordDao.insertExecuteRecord(recordDto);
         } else {
             if (null == recordDto.getResult() || ROBOT_RESULT_EXECUTE.equals(recordDto.getResult())) {
@@ -133,8 +136,9 @@ public class RobotExecuteRecordServiceImpl extends ServiceImpl<RobotExecuteRecor
 
             Date endTime = new Date();
             recordDto.setEndTime(endTime);
-            //计算执行耗时
-            recordDto.setExecuteTime(endTime.toInstant().getEpochSecond() - executeRecord.getStartTime().toInstant().getEpochSecond());
+            // 计算执行耗时
+            recordDto.setExecuteTime(endTime.toInstant().getEpochSecond()
+                    - executeRecord.getStartTime().toInstant().getEpochSecond());
             robotExecuteRecordDao.updateExecuteRecord(recordDto);
         }
         return AppResponse.success(executeId);
@@ -156,27 +160,27 @@ public class RobotExecuteRecordServiceImpl extends ServiceImpl<RobotExecuteRecor
         return robotExecuteRecordDao.countTerminalTotalNumOfExecuted(startAndEndOfDay, lastProcessedId);
     }
 
-
     @Override
-    public List<RobotExecuteRecord> getExecutedRobotByPage(List<String> startAndEndOfDay, String lastProcessedId, Integer limit, Integer offset) {
+    public List<RobotExecuteRecord> getExecutedRobotByPage(
+            List<String> startAndEndOfDay, String lastProcessedId, Integer limit, Integer offset) {
         if (CollectionUtils.isEmpty(startAndEndOfDay) || StringUtils.isBlank(lastProcessedId)) {
             return new ArrayList<>();
         }
         return robotExecuteRecordDao.getExecutedRobotByPage(startAndEndOfDay, lastProcessedId, limit, offset);
     }
 
-
     // todo:dept
-//    @Override
-//    public List<HisBase> auditByDeptIdPath(String endOfDay, List<UapOrg> deptInfoList){
-//        if(CollectionUtils.isEmpty(deptInfoList) || StringUtils.isBlank(endOfDay)){
-//            return new ArrayList<>();
-//        }
-//        return robotExecuteRecordDao.auditByDeptIdPath(endOfDay,deptInfoList);
-//    }
+    //    @Override
+    //    public List<HisBase> auditByDeptIdPath(String endOfDay, List<UapOrg> deptInfoList){
+    //        if(CollectionUtils.isEmpty(deptInfoList) || StringUtils.isBlank(endOfDay)){
+    //            return new ArrayList<>();
+    //        }
+    //        return robotExecuteRecordDao.auditByDeptIdPath(endOfDay,deptInfoList);
+    //    }
 
     @Override
-    public AppResponse<String> deleteRobotExecuteRecords(RobotExecuteRecordsBatchDeleteDto batchDeleteDto) throws NoLoginException {
+    public AppResponse<String> deleteRobotExecuteRecords(RobotExecuteRecordsBatchDeleteDto batchDeleteDto)
+            throws NoLoginException {
         // 批量删除机器人执行记录
         String tenantId = TenantUtils.getTenantId();
         String userId = UserUtils.nowUserId();

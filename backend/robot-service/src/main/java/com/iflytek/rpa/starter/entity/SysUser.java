@@ -18,11 +18,13 @@ public class SysUser implements Serializable {
     private Boolean credentialsNonExpired;
     private List<String> userOwnedPath = new ArrayList();
 
-    public SysUser() {
-    }
+    public SysUser() {}
 
     public String toString() {
-        return "User{id=" + this.id + ", username='" + this.name + '\'' + ", password='" + this.password + '\'' + ", enabled=" + this.enabled + ", accountNonExpired=" + this.accountNonExpired + ", accountNonLocked=" + this.accountNonLocked + ", credentialsNonExpired=" + this.credentialsNonExpired + ", roles=" + this.userOwnedPath + '}';
+        return "User{id=" + this.id + ", username='" + this.name + '\'' + ", password='" + this.password + '\''
+                + ", enabled=" + this.enabled + ", accountNonExpired=" + this.accountNonExpired + ", accountNonLocked="
+                + this.accountNonLocked + ", credentialsNonExpired=" + this.credentialsNonExpired + ", roles="
+                + this.userOwnedPath + '}';
     }
 
     public Long getId() {

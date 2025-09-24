@@ -1,23 +1,22 @@
 package com.iflytek.rpa.starter.utils;
 
+import java.net.InetAddress;
+import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
-import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
-import java.util.Objects;
-
 public class IpUtil {
     public static final Logger LOGGER = LoggerFactory.getLogger(IpUtil.class);
-    static final String[] PROXYS = new String[]{"X-Real-IP", "X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP"};
+    static final String[] PROXYS =
+            new String[] {"X-Real-IP", "X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP"};
     static final String LOCALHOST_IP_V4 = "127.0.0.1";
     static final String LOCALHOST_IP_V6 = "0:0:0:0:0:0:0:1";
 
-    public IpUtil() {
-    }
+    public IpUtil() {}
 
     public static String getIpAddr(ServerHttpRequest request) {
         HttpHeaders headers = request.getHeaders();
@@ -34,7 +33,9 @@ public class IpUtil {
         }
 
         if (StringUtils.isEmpty(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)) {
-            ipAddress = Objects.requireNonNull(request.getRemoteAddress()).getAddress().getHostAddress();
+            ipAddress = Objects.requireNonNull(request.getRemoteAddress())
+                    .getAddress()
+                    .getHostAddress();
         }
 
         String ipSeparator = ",";

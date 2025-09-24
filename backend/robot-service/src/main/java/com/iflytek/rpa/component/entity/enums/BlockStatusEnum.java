@@ -54,4 +54,4 @@ public enum BlockStatusEnum {
     public static boolean isValidCode(Integer code) {
         return getByCode(code) != null;
     }
-} 
+}

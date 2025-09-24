@@ -2,10 +2,9 @@ package com.iflytek.rpa.base.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
  * 客户端-全局变量(CGlobalVar)实体类
@@ -45,7 +44,4 @@ public class CGlobalVar implements Serializable {
     private String robotId;
 
     private Integer robotVersion;
-
-
 }
-

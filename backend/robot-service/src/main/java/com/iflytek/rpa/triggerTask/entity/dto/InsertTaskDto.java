@@ -1,10 +1,9 @@
 package com.iflytek.rpa.triggerTask.entity.dto;
 
 import com.iflytek.rpa.task.entity.dto.RobotInfo;
-import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
 import java.util.List;
+import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
 public class InsertTaskDto {
@@ -51,5 +50,4 @@ public class InsertTaskDto {
      * 是否启用排队 1:启用 0:不启用
      */
     private Integer queueEnable;
-
 }

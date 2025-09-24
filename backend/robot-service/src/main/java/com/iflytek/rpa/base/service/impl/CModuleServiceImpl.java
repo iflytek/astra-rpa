@@ -1,5 +1,7 @@
 package com.iflytek.rpa.base.service.impl;
 
+import static com.iflytek.rpa.robot.constants.RobotConstant.EDITING;
+
 import com.iflytek.rpa.base.annotation.RobotVersionAnnotation;
 import com.iflytek.rpa.base.dao.CModuleDao;
 import com.iflytek.rpa.base.entity.CModule;
@@ -22,33 +24,37 @@ import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
 import com.iflytek.rpa.utils.IdWorker;
 import com.iflytek.rpa.utils.TenantUtils;
 import com.iflytek.rpa.utils.UserUtils;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-
-import javax.annotation.Resource;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.iflytek.rpa.robot.constants.RobotConstant.EDITING;
 
 @Service("CModuleService")
 public class CModuleServiceImpl extends NextName implements CModuleService {
 
     public final int CONTENT_MAX_LENGTH = 10000000; // 实际数据库中medium text 支持的最大长度是 16777215
     // 新生成的初始代码
-    public final String initContent = "from typing import Any\n" + "from rpahelper.helper import Helper, print, logger\n" + "\n" + "def main(*args, **kwargs) -> Any:\n" + "    h = Helper(**kwargs)\n" + "    params = h.params()\n" + "\n" + "    # 打印所有的变量key\n" + "    logger.info(params.keys())\n" + "\n" + "    return True";
+    public final String initContent =
+            "from typing import Any\n" + "from rpahelper.helper import Helper, print, logger\n" + "\n"
+                    + "def main(*args, **kwargs) -> Any:\n" + "    h = Helper(**kwargs)\n" + "    params = h.params()\n"
+                    + "\n" + "    # 打印所有的变量key\n" + "    logger.info(params.keys())\n" + "\n" + "    return True";
+
     @Resource
     private CModuleDao cModuleDao;
+
     @Resource
     private RobotDesignDao robotDesignDao;
+
     @Resource
     private IdWorker idWorker;
 
     @Override
-    public AppResponse<List<ProcessModuleListVo>> processModuleList(ProcessModuleListDto queryDto) throws NoLoginException {
+    public AppResponse<List<ProcessModuleListVo>> processModuleList(ProcessModuleListDto queryDto)
+            throws NoLoginException {
         String userId = UserUtils.nowUserId();
         String tenantId = TenantUtils.getTenantId();
 
@@ -189,8 +195,11 @@ public class CModuleServiceImpl extends NextName implements CModuleService {
         List<CModule> allModuleList = cModuleDao.getAllModuleList(robotId, robotVersion, userId);
 
         if (!CollectionUtils.isEmpty(allModuleList)) {
-            List<String> moduleNameList = allModuleList.stream().map(CModule::getModuleName).collect(Collectors.toList());
-            List<String> nameAfterFilter = moduleNameList.stream().filter(name -> name.contains("代码模块")).collect(Collectors.toList());
+            List<String> moduleNameList =
+                    allModuleList.stream().map(CModule::getModuleName).collect(Collectors.toList());
+            List<String> nameAfterFilter = moduleNameList.stream()
+                    .filter(name -> name.contains("代码模块"))
+                    .collect(Collectors.toList());
             newModuleName = newModuleName(nameAfterFilter);
         }
 
@@ -211,7 +220,8 @@ public class CModuleServiceImpl extends NextName implements CModuleService {
         return allModuleName.contains(newName);
     }
 
-    private List<ProcessModuleListVo> getResVoList(List<ModuleListVo> moduleList, String userId, ProcessModuleListDto queryDto) {
+    private List<ProcessModuleListVo> getResVoList(
+            List<ModuleListVo> moduleList, String userId, ProcessModuleListDto queryDto) {
         String robotId = queryDto.getRobotId();
         Integer robotVersion = 0;
 
@@ -244,7 +254,6 @@ public class CModuleServiceImpl extends NextName implements CModuleService {
         return resVoList;
     }
 
-
     private List<ModuleListVo> getModuleList(ProcessModuleListDto queryDto, String userId) {
         String robotId = queryDto.getRobotId();
         Integer robotVersion = 0;
@@ -265,9 +274,8 @@ public class CModuleServiceImpl extends NextName implements CModuleService {
         return res;
     }
 
-
     public Map<String, String> copyCodeModule(String robotId, String processOrModuleId) {
-        //查询原代码模块数据
+        // 查询原代码模块数据
         BaseDto baseDto = new BaseDto();
         baseDto.setRobotId(robotId);
         baseDto.setRobotVersion(0);
@@ -278,9 +286,9 @@ public class CModuleServiceImpl extends NextName implements CModuleService {
         }
         String moduleName = codeModule.getModuleName();
         baseDto.setName(moduleName);
-        //产生副本名称
+        // 产生副本名称
         String nextName = createNextName(baseDto, moduleName + "副本");
-        //复制流程
+        // 复制流程
         codeModule.setModuleId(idWorker.nextId() + "");
         codeModule.setModuleName(nextName);
         codeModule.setCreateTime(new Date());
@@ -296,5 +304,4 @@ public class CModuleServiceImpl extends NextName implements CModuleService {
     public List<String> getNameList(BaseDto baseDto) {
         return cModuleDao.getModuleNameListByPrefix(baseDto);
     }
-
 }

@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -29,7 +28,10 @@ public class UserController {
     private final AuthExtendService authExtendService;
     private final String redirectUrl;
 
-    public UserController(AuthService authService, AuthExtendService authExtendService, @Value("${casdoor.redirect-url}") String redirectUrl) {
+    public UserController(
+            AuthService authService,
+            AuthExtendService authExtendService,
+            @Value("${casdoor.redirect-url}") String redirectUrl) {
         this.authService = authService;
         this.authExtendService = authExtendService;
         this.redirectUrl = redirectUrl;
@@ -85,5 +87,4 @@ public class UserController {
             return Result.failure(e.getMessage());
         }
     }
-
 }

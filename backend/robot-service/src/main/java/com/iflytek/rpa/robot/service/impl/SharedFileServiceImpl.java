@@ -22,6 +22,9 @@ import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
 import com.iflytek.rpa.utils.IdWorker;
 import com.iflytek.rpa.utils.TenantUtils;
 import com.iflytek.rpa.utils.UserUtils;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,11 +35,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
-import java.util.stream.Collectors;
-
 
 /**
  * 共享文件服务实现类
@@ -49,13 +47,15 @@ import java.util.stream.Collectors;
 public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile> implements SharedFileService {
     @Autowired
     private IdWorker idWorker;
+
     @Autowired
     private SharedFileDao sharedFileDao;
+
     @Value("${uap.database.name:uap_db}")
     private String databaseName;
 
     @Override
-//    @Transactional(readOnly = true)
+    //    @Transactional(readOnly = true)
     public AppResponse<IPage<SharedFilePageVo>> getSharedFilePageList(SharedFilePageDto queryDto) {
         // 创建分页对象
         IPage<SharedFile> page = new Page<>(queryDto.getPageNo(), queryDto.getPageSize());
@@ -82,9 +82,8 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
 
                 // 查询并设置标签名称列表
                 List<SharedFileTag> tags = baseMapper.selectTagsByIds(tagIds, tenantId);
-                List<String> tagNames = tags.stream()
-                        .map(SharedFileTag::getTagName)
-                        .collect(Collectors.toList());
+                List<String> tagNames =
+                        tags.stream().map(SharedFileTag::getTagName).collect(Collectors.toList());
                 vo.setTagsNames(tagNames);
             }
             if (sharedFile.getTags() != null && !sharedFile.getTags().isEmpty()) {
@@ -95,19 +94,19 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
             vo.setFilePath("/api/resource/file/download?fileId=" + sharedFile.getFileId());
             // 填充creatorName, phone(账号), deptId, deptName
             String creatorId = sharedFile.getCreatorId();
-//            String deptId = DeptUtils.getDeptIdByUserId(creatorId, tenantId);
+            //            String deptId = DeptUtils.getDeptIdByUserId(creatorId, tenantId);
             vo.setCreatorName(UserUtils.getRealNameById(sharedFile.getCreatorId()));
             User userInfoById = UserUtils.getUserInfoById(creatorId);
             if (Objects.nonNull(userInfoById)) {
                 vo.setPhone(userInfoById.phone);
             }
-//            vo.setDeptId(deptId);
+            //            vo.setDeptId(deptId);
 
             // todo:dept
-//            UapOrg dept = DeptUtils.getDeptInfoByDeptId(deptId);
-//            if (dept != null) {
-//                vo.setDeptName(dept.getName());
-//            }
+            //            UapOrg dept = DeptUtils.getDeptInfoByDeptId(deptId);
+            //            if (dept != null) {
+            //                vo.setDeptName(dept.getName());
+            //            }
             return vo;
         });
 
@@ -117,8 +116,9 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public AppResponse<String> deleteSharedFile(HttpServletRequest request, SharedFileBatchDeleteDto batchDeleteDto) throws NoLoginException {
-        //判断用户权限
+    public AppResponse<String> deleteSharedFile(HttpServletRequest request, SharedFileBatchDeleteDto batchDeleteDto)
+            throws NoLoginException {
+        // 判断用户权限
         if (!hasFileManagementPermission(request)) return AppResponse.error(ErrorCodeEnum.E_PARAM, "没有文件管理权限");
 
         // 批量删除共享文件
@@ -131,8 +131,10 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
                 .eq(SharedFile::getDeleted, 0));
         if (existFiles.size() != fileIds.size()) {
             // 找出不存在的 fileId
-            List<String> existIds = existFiles.stream().map(SharedFile::getFileId).collect(Collectors.toList());
-            List<String> notExistIds = fileIds.stream().filter(id -> !existIds.contains(id)).collect(Collectors.toList());
+            List<String> existIds =
+                    existFiles.stream().map(SharedFile::getFileId).collect(Collectors.toList());
+            List<String> notExistIds =
+                    fileIds.stream().filter(id -> !existIds.contains(id)).collect(Collectors.toList());
             throw new ServiceException(ErrorCodeEnum.E_SQL_EMPTY.getCode(), "部分共享文件不存在或已被删除: " + notExistIds);
         }
 
@@ -144,7 +146,6 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
 
         return AppResponse.success("删除共享文件成功");
     }
-
 
     @Override
     public AppResponse<List<TagVo>> getTags(HttpServletRequest request) throws NoLoginException {
@@ -198,7 +199,8 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public AppResponse<String> updateTags(HttpServletRequest request, Long tagId, String tagName) throws NoLoginException {
+    public AppResponse<String> updateTags(HttpServletRequest request, Long tagId, String tagName)
+            throws NoLoginException {
         // 验证用户权限
         if (!hasFileManagementPermission(request)) {
             return AppResponse.error(ErrorCodeEnum.E_PARAM, "没有文件管理权限");
@@ -247,7 +249,7 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
         if (!baseMapper.containsTagById(tagId, tenantId)) {
             return AppResponse.error(ErrorCodeEnum.E_SQL_EXCEPTION, "标签id不存在");
         }
-        //获取标签原名
+        // 获取标签原名
         SharedFileTag existingTag = baseMapper.selectTagById(tagId, tenantId);
         String oldName = existingTag.getTagName();
         // 执行删除操作
@@ -260,7 +262,8 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
         List<SharedFile> filesToUpdate = baseMapper.selectFilesByTag(tagId.toString(), tenantId);
         for (SharedFile file : filesToUpdate) {
             if (StringUtils.isNotBlank(file.getTags())) {
-                List<String> tagIds = new ArrayList<>(Arrays.asList(file.getTags().split(",")));
+                List<String> tagIds =
+                        new ArrayList<>(Arrays.asList(file.getTags().split(",")));
                 // 从标签ID列表中移除要删除的标签ID
                 tagIds.removeIf(tagIdStr -> tagIdStr.equals(tagId.toString()));
                 // 更新文件的标签ID列表，如果标签列表为空则设置为空字符串
@@ -272,7 +275,7 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
         return AppResponse.success("删除标签成功，" + fileUpdated + "个文件标签引用受影响");
     }
 
-    //判断用户有无文件处理权限
+    // 判断用户有无文件处理权限
     private boolean hasFileManagementPermission(HttpServletRequest request) throws NoLoginException {
         // 如果是租户管理员，直接返回true
         User uapUser = UserUtils.nowLoginUser();
@@ -281,16 +284,17 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
         if (tenantUserType != null && tenantUserType == 1) {
             return true;
         }
-        //todo:role old:获取用户角色列表再根据角色获取权限列表 now：直接获取用户所有权限，用权限name匹配
+        // todo:role old:获取用户角色列表再根据角色获取权限列表 now：直接获取用户所有权限，用权限name匹配
         List<Permission> authList = UserUtils.getCurrentUserPermissionList();
-//        List<Role> roleList = UserUtils.getCurrentUserRoleList();
-//        List<UapAuthority> authList = roleList.stream()
-//                .map(role -> role.name)
-//                .flatMap(roleId -> {
-//                    List<UapAuthority> authorities = ClientManagementAPI.queryAuthorityListByRoleId(tenantId, roleId);
-//                    return authorities != null ? authorities.stream() : Stream.empty();
-//                })
-//                .collect(Collectors.toList());
+        //        List<Role> roleList = UserUtils.getCurrentUserRoleList();
+        //        List<UapAuthority> authList = roleList.stream()
+        //                .map(role -> role.name)
+        //                .flatMap(roleId -> {
+        //                    List<UapAuthority> authorities = ClientManagementAPI.queryAuthorityListByRoleId(tenantId,
+        // roleId);
+        //                    return authorities != null ? authorities.stream() : Stream.empty();
+        //                })
+        //                .collect(Collectors.toList());
         return authList.stream().anyMatch(auth -> "文件管理".equals(auth.name));
     }
 
@@ -301,7 +305,7 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
         }
         String tenantId = TenantUtils.getTenantId();
         String userId = UserUtils.nowUserId();
-//        String deptId = DeptUtils.getDeptIdByUserId(userId, tenantId);
+        //        String deptId = DeptUtils.getDeptIdByUserId(userId, tenantId);
         String fileId = dto.getFileId();
         String fileName = dto.getFileName();
 
@@ -313,14 +317,11 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
         List<Long> uniqueTagIds = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(dto.getTags())) {
             // 去重
-            uniqueTagIds = dto.getTags().stream()
-                    .distinct()
-                    .collect(Collectors.toList());
+            uniqueTagIds = dto.getTags().stream().distinct().collect(Collectors.toList());
             // 查询这些标签是否都存在
             List<SharedFileTag> existingTags = baseMapper.selectTagsByIds(uniqueTagIds, tenantId);
-            List<Long> existingTagIds = existingTags.stream()
-                    .map(SharedFileTag::getTagId)
-                    .collect(Collectors.toList());
+            List<Long> existingTagIds =
+                    existingTags.stream().map(SharedFileTag::getTagId).collect(Collectors.toList());
             // 检查是否有不存在的标签
             List<Long> nonExistingTagIds = uniqueTagIds.stream()
                     .filter(tagId -> !existingTagIds.contains(tagId))
@@ -332,15 +333,13 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
         } else {
             uniqueTagIds = new ArrayList<>();
         }
-        String tagsString = uniqueTagIds.stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining(","));
+        String tagsString = uniqueTagIds.stream().map(String::valueOf).collect(Collectors.joining(","));
         // 构造sharedFile对象
         SharedFile sharedFile = new SharedFile();
         sharedFile.setId(idWorker.nextId());
         sharedFile.setFileId(fileId);
         sharedFile.setFileName(fileName);
-//        sharedFile.setDeptId(deptId);
+        //        sharedFile.setDeptId(deptId);
         sharedFile.setFileType(dto.getFileType());
         sharedFile.setFileIndexStatus(FileIndexStatus.START.getValue());
         sharedFile.setTenantId(TenantUtils.getTenantId());
@@ -355,13 +354,14 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
     }
 
     @Override
-    public AppResponse<?> updateSharedFileInfo(HttpServletRequest request, UpdateSharedFileDto dto) throws NoLoginException {
+    public AppResponse<?> updateSharedFileInfo(HttpServletRequest request, UpdateSharedFileDto dto)
+            throws NoLoginException {
         if (!hasFileManagementPermission(request)) {
             return AppResponse.error(ErrorCodeEnum.E_PARAM, "没有文件管理权限");
         }
         String tenantId = TenantUtils.getTenantId();
         String userId = UserUtils.nowUserId();
-//        String deptId = DeptUtils.getDeptIdByUserId(userId, tenantId);
+        //        String deptId = DeptUtils.getDeptIdByUserId(userId, tenantId);
         String fileId = dto.getFileId();
         String fileName = dto.getFileName();
         SharedFile file = baseMapper.selectFileByName(fileName, userId, tenantId);
@@ -372,14 +372,15 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
         List<Long> uniqueTagIds = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(dto.getTags())) {
             // 去重
-            uniqueTagIds = dto.getTags().stream()
-                    .distinct()
-                    .collect(Collectors.toList());
+            uniqueTagIds = dto.getTags().stream().distinct().collect(Collectors.toList());
             // 查询这些标签是否都存在
             List<SharedFileTag> existingTags = baseMapper.selectTagsByIds(uniqueTagIds, tenantId);
-            List<Long> existingTagIds = existingTags.stream().map(SharedFileTag::getTagId).collect(Collectors.toList());
+            List<Long> existingTagIds =
+                    existingTags.stream().map(SharedFileTag::getTagId).collect(Collectors.toList());
             // 检查是否有不存在的标签
-            List<Long> nonExistingTagIds = uniqueTagIds.stream().filter(tagId -> !existingTagIds.contains(tagId)).collect(Collectors.toList());
+            List<Long> nonExistingTagIds = uniqueTagIds.stream()
+                    .filter(tagId -> !existingTagIds.contains(tagId))
+                    .collect(Collectors.toList());
 
             if (CollectionUtils.isNotEmpty(nonExistingTagIds)) {
                 return AppResponse.error(ErrorCodeEnum.E_PARAM, "标签不存在: " + nonExistingTagIds);
@@ -393,7 +394,7 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
         sharedFile.setId(dto.getId());
         sharedFile.setFileId(fileId);
         sharedFile.setFileName(fileName);
-//        sharedFile.setDeptId(deptId);
+        //        sharedFile.setDeptId(deptId);
         sharedFile.setFileType(dto.getFileType());
         sharedFile.setFileIndexStatus(FileIndexStatus.START.getValue());
         sharedFile.setTenantId(TenantUtils.getTenantId());
@@ -404,4 +405,3 @@ public class SharedFileServiceImpl extends ServiceImpl<SharedFileDao, SharedFile
         return AppResponse.success("修改成功");
     }
 }
-

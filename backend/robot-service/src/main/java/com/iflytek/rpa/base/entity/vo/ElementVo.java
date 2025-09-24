@@ -17,17 +17,17 @@ public class ElementVo {
      * 图标
      */
     private String icon;
-//    /**
-//     * 图片id
-//     */
-//    @JsonIgnore
-//    private String imageId;
-//
-//    /**
-//     * 元素的父级图片id
-//     */
-//    @JsonIgnore
-//    private String parentImageId;
+    //    /**
+    //     * 图片id
+    //     */
+    //    @JsonIgnore
+    //    private String imageId;
+    //
+    //    /**
+    //     * 元素的父级图片id
+    //     */
+    //    @JsonIgnore
+    //    private String parentImageId;
 
     /**
      * 图片下载地址
@@ -43,6 +43,4 @@ public class ElementVo {
      * 元素内容
      */
     private String elementData;
-
-
 }

@@ -1,9 +1,8 @@
 package com.iflytek.rpa.base.entity.dto;
 
 import com.iflytek.rpa.base.entity.Atomic;
-import lombok.Data;
-
 import java.util.Map;
+import lombok.Data;
 
 /**
  * @author mjren
@@ -16,5 +15,4 @@ public class SaveAtomicsDto {
     private Map<String, Atomic> atomMap;
 
     private String saveWay;
-
 }

@@ -1,5 +1,7 @@
 package com.iflytek.rpa.base.service.handler;
 
+import static com.iflytek.rpa.robot.constants.RobotConstant.DISPATCH;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,17 +15,14 @@ import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.exception.ServiceException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
 import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.iflytek.rpa.robot.constants.RobotConstant.DISPATCH;
 
 /**
  * @author jqfang3
@@ -56,7 +55,8 @@ public class DispatchModeHandler implements ParamModeHandler {
         return robotExecuteDao.getRobotExecuteByRobotId(robotId);
     }
 
-    private AppResponse<List<ParamDto>> handleDataSource(RobotExecute executeInfo, String processId, Integer enabledVersion) {
+    private AppResponse<List<ParamDto>> handleDataSource(
+            RobotExecute executeInfo, String processId, Integer enabledVersion) {
         // 指定版本
         executeInfo.setAppVersion(enabledVersion);
         executeInfo.setRobotVersion(enabledVersion);
@@ -75,10 +75,7 @@ public class DispatchModeHandler implements ParamModeHandler {
         String originRobotId = cParamDao.getDeployOriginalRobotId(executeInfo);
         String mainProcessId = cParamDao.getMianProcessId(originRobotId, executeInfo.getAppVersion());
         List<CParam> params = cParamDao.getAllParams(
-                processId != null ? processId : mainProcessId,
-                originRobotId,
-                executeInfo.getAppVersion()
-        );
+                processId != null ? processId : mainProcessId, originRobotId, executeInfo.getAppVersion());
         return AppResponse.success(convertParams(params));
     }
 
@@ -87,10 +84,7 @@ public class DispatchModeHandler implements ParamModeHandler {
         String originRobotId = cParamDao.getMarketRobotId(executeInfo);
         String mainProcessId = cParamDao.getMianProcessId(originRobotId, executeInfo.getAppVersion());
         List<CParam> params = cParamDao.getAllParams(
-                processId != null ? processId : mainProcessId,
-                originRobotId,
-                executeInfo.getAppVersion()
-        );
+                processId != null ? processId : mainProcessId, originRobotId, executeInfo.getAppVersion());
         return AppResponse.success(convertParams(params));
     }
 
@@ -100,8 +94,7 @@ public class DispatchModeHandler implements ParamModeHandler {
         List<CParam> params = cParamDao.getSelfRobotParam(
                 executeInfo.getRobotId(),
                 StringUtils.isNotBlank(processId) ? processId : mainProcessId,
-                enabledVersion
-        );
+                enabledVersion);
         return AppResponse.success(convertParams(params));
     }
 
@@ -113,8 +106,7 @@ public class DispatchModeHandler implements ParamModeHandler {
     }
 
     private AppResponse<List<ParamDto>> parseCustomParams(String paramDetail) throws JsonProcessingException {
-        List<CParam> params = objectMapper.readValue(paramDetail, new TypeReference<List<CParam>>() {
-        });
+        List<CParam> params = objectMapper.readValue(paramDetail, new TypeReference<List<CParam>>() {});
         return AppResponse.success(convertParams(params));
     }
 
@@ -122,10 +114,12 @@ public class DispatchModeHandler implements ParamModeHandler {
         if (CollectionUtils.isEmpty(params)) {
             return Collections.emptyList();
         }
-        return params.stream().map(p -> {
-            ParamDto dto = new ParamDto();
-            BeanUtils.copyProperties(p, dto);
-            return dto;
-        }).collect(Collectors.toList());
+        return params.stream()
+                .map(p -> {
+                    ParamDto dto = new ParamDto();
+                    BeanUtils.copyProperties(p, dto);
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 }

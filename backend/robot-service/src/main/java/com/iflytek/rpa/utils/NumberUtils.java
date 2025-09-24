@@ -5,7 +5,6 @@ import java.math.RoundingMode;
 
 public class NumberUtils {
 
-
     public static BigDecimal getRate(BigDecimal num, BigDecimal totalNum) {
         if (totalNum.equals(BigDecimal.ZERO)) {
             return new BigDecimal(0);
@@ -15,7 +14,6 @@ public class NumberUtils {
             return rate;
         }
     }
-
 
     public static BigDecimal DecimalDivide(BigDecimal num, BigDecimal totalNum) {
         if (totalNum.equals(BigDecimal.ZERO)) {

@@ -1,11 +1,10 @@
 package com.iflytek.rpa.auth.entity;
 
+import java.util.Collection;
 import org.casbin.casdoor.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
 
 /**
  * @desc: TODO

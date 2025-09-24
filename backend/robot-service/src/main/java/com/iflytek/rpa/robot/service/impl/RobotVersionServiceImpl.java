@@ -1,5 +1,7 @@
 package com.iflytek.rpa.robot.service.impl;
 
+import static com.iflytek.rpa.robot.constants.RobotConstant.*;
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -32,6 +34,9 @@ import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
 import com.iflytek.rpa.utils.IdWorker;
 import com.iflytek.rpa.utils.TenantUtils;
 import com.iflytek.rpa.utils.UserUtils;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +44,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-
-import javax.annotation.Resource;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.iflytek.rpa.robot.constants.RobotConstant.*;
 
 /**
  * 云端机器人版本表(RobotVersion)表服务实现类
@@ -101,23 +100,23 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
 
     @Autowired
     private RobotVersionService robotVersionService;
-/*    @Autowired
+    /*    @Autowired
     private CProcessDao cProcessDao;*/
 
     @Override
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public AppResponse<?> publishRobot(RobotVersionDto robotVersionDto) throws Exception {
-        //点击发版的时候，前端调接口已经把所有数据保存到v0了
+        // 点击发版的时候，前端调接口已经把所有数据保存到v0了
         String userId = UserUtils.nowUserId();
         String tenantId = TenantUtils.getTenantId();
         robotVersionDto.setCreatorId(userId);
         robotVersionDto.setUpdaterId(userId);
         robotVersionDto.setTenantId(tenantId);
         String name = robotVersionDto.getName();
-        //根据该字段，前端显示不同的成功提示
+        // 根据该字段，前端显示不同的成功提示
         String haveShared = CREATE;
         Integer enableLastVersion = robotVersionDto.getEnableLastVersion();
-        //检查版本号是否正确
+        // 检查版本号是否正确
         Integer nextVersion = robotVersionDto.getVersion();
         if (null == nextVersion || nextVersion <= 0) {
             return AppResponse.error(ErrorCodeEnum.E_PARAM, "版本号错误");
@@ -131,29 +130,29 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
         BeanUtils.copyProperties(robotVersionDto, robotExecute);
         // packageWebType(robotExecute);
         robotExecute.setDataSource(CREATE);
-//        String deptIdPath = DeptUtils.getLevelCode();
-//        robotExecute.setDeptIdPath(deptIdPath);
+        //        String deptIdPath = DeptUtils.getLevelCode();
+        //        robotExecute.setDeptIdPath(deptIdPath);
         Integer updateCount = null;
-        //第一次发布
+        // 第一次发布
         if (1 == nextVersion) {
-            //将状态改为已发布
+            // 将状态改为已发布
             updateCount = robotDesignDao.updateTransformStatus(userId, robotVersionDto.getRobotId(), name, PUBLISHED);
-            //插入执行器表
+            // 插入执行器表
             robotExecuteDao.insertRobot(robotExecute);
-            //插入版本表，默认启用
+            // 插入版本表，默认启用
             robotVersionDto.setOnline(1);
             robotVersionDao.addRobotVersion(robotVersionDto);
         } else {
-            //非第一次发布
+            // 非第一次发布
             // 更新执行器表
             robotExecuteDao.updateRobot(robotExecute);
-            //更新app_market_resource应用市场中的名字
-            //如果没分享过或者退出市场了，状态是已发版; 分享过，已上架
+            // 更新app_market_resource应用市场中的名字
+            // 如果没分享过或者退出市场了，状态是已发版; 分享过，已上架
             updateCount = robotDesignDao.updateTransformStatus(userId, robotVersionDto.getRobotId(), name, PUBLISHED);
 
-            //插入版本表，默认未启用
+            // 插入版本表，默认未启用
             robotVersionDto.setOnline(0);
-            //这里对paramDetail字段进行删除
+            // 这里对paramDetail字段进行删除
             robotVersionDao.addRobotVersion(robotVersionDto);
         }
         if (null == updateCount || 0 == updateCount) {
@@ -173,11 +172,11 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
     }
 
     public void createDataForNewVersion(RobotVersionDto robotVersionDto) {
-        //创建新版本的流程等数据
+        // 创建新版本的流程等数据
         processDao.createProcessForCurrentVersion(robotVersionDto);
-        //元素组数据
+        // 元素组数据
         groupDao.createGroupForCurrentVersion(robotVersionDto);
-        //元素数据
+        // 元素数据
         elementDao.createElementForCurrentVersion(robotVersionDto);
         // 全局变量数据
         globalVarDao.createGlobalVarForCurrentVersion(robotVersionDto);
@@ -191,14 +190,13 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
         createCompRobotUse4NewVer(robotVersionDto);
         // 组件屏蔽数据
         createCompRobotBlock4NewVer(robotVersionDto);
-
     }
 
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public void updateAppAndRobot(RobotExecute robotExecute, Integer nextVersion) throws NoLoginException {
-        robotDesignDao.updateTransformStatus(robotExecute.getCreatorId(), robotExecute.getRobotId(), robotExecute.getName(), SHARED);
+        robotDesignDao.updateTransformStatus(
+                robotExecute.getCreatorId(), robotExecute.getRobotId(), robotExecute.getName(), SHARED);
     }
-
 
     /**
      * 设计器不允许重名，执行器和市场允许重名
@@ -217,13 +215,12 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
         robotVersionDto.setCreatorId(UserUtils.nowUserId());
         robotVersionDto.setTenantId(TenantUtils.getTenantId());
         Integer countDesign = robotDesignDao.countByName(robotVersionDto);
-//        Integer countExecute = robotExecuteDao.countByName(robotVersionDto);
+        //        Integer countExecute = robotExecuteDao.countByName(robotVersionDto);
         if (countDesign > 0) {
             return AppResponse.success(true);
         }
         return AppResponse.success(false);
     }
-
 
     @Override
     public AppResponse<?> getLastRobotVersionInfo(RobotVersion robotVersionSearch) throws NoLoginException {
@@ -234,14 +231,14 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
             return AppResponse.error(ErrorCodeEnum.E_PARAM, "机器人id不能为空");
         }
         RobotVersionDto robotVersionDto = new RobotVersionDto();
-        //查设计器名字
+        // 查设计器名字
         RobotDesign robotDesign = robotDesignDao.getRobotDesignInfo(robotId, userId, tenantId);
         if (null == robotDesign) {
             return AppResponse.error(ErrorCodeEnum.E_SQL, "机器人不存在");
         }
         RobotVersion robotVersion = robotVersionDao.getLastRobotVersionInfo(robotId, userId, tenantId);
         if (null != robotVersion) {
-            //得到版本
+            // 得到版本
             Integer version = robotVersion.getVersion();
             if (version == null) {
                 return AppResponse.error(ErrorCodeEnum.E_SQL, "无历史版本号");
@@ -251,12 +248,13 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
             BeanUtils.copyProperties(robotVersion, robotVersionDto);
             String videoId = robotVersion.getVideoId();
             String appendixId = robotVersion.getAppendixId();
-            //获取名称
+            // 获取名称
             List<String> fileIdList = new ArrayList<>();
             fileIdList.add(videoId);
             fileIdList.add(appendixId);
             List<File> fileInfoList = robotVersionDao.getFileNameInfo(fileIdList);
-            Map<String, String> fileInfoMap = fileInfoList.stream().collect(Collectors.toMap(File::getFileId, File::getFileName));
+            Map<String, String> fileInfoMap =
+                    fileInfoList.stream().collect(Collectors.toMap(File::getFileId, File::getFileName));
             robotVersionDto.setVideoName(fileInfoMap.get(videoId));
             robotVersionDto.setAppendixName(fileInfoMap.get(appendixId));
             robotVersionDto.setName(robotDesign.getName());
@@ -266,7 +264,6 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
         }
         return AppResponse.success(robotVersionDto);
     }
-
 
     @Override
     public AppResponse<?> versionList(VersionListDto queryDto) throws NoLoginException {
@@ -320,7 +317,6 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
             resVo.setAnsPage(ansPage);
 
             return AppResponse.success(resVo);
-
         }
 
         return response;
@@ -344,7 +340,7 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
 
             // 清空robotExecute表的参数配置,使用启用版本的默认配置参数
             robotExecuteDao.updateParamToNUll(robotId, userId, tenantId);
-            //将历史启用版本下线
+            // 将历史启用版本下线
             robotVersionDao.unEnableAllVersion(robotId, userId, tenantId);
 
             // 上线指定版本
@@ -388,11 +384,11 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
         processRecover(robotId, version, userId);
         requireRecover(robotId, version, userId);
         moduleRecover(robotId, version, userId);
-        //恢复编辑参数
+        // 恢复编辑参数
         paramRecover(robotId, version, userId);
-        //恢复组件引用数据
+        // 恢复组件引用数据
         recoverComponentUse(robotId, version, userId);
-        //恢复组件屏蔽数据
+        // 恢复组件屏蔽数据
         recoverComponentBlock(robotId, version, userId);
 
         // 设计器状态更改为编辑中
@@ -487,23 +483,22 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
         requireDao.insertReqBatch(requireList);
     }
 
-    //参数恢复
+    // 参数恢复
     public void paramRecover(String robotId, Integer version, String userId) {
-        //删除0版本对应的参数
+        // 删除0版本对应的参数
         cParamDao.deleteParamByRobotId(robotId);
-        //查询当前版本对应参数
+        // 查询当前版本对应参数
         List<CParam> cParamList = cParamDao.getAllParams(null, robotId, version);
         for (CParam cParam : cParamList) {
             cParam.setUpdaterId(userId);
             cParam.setId(idWorker.nextId() + "");
         }
-        //批量插入版本参数
+        // 批量插入版本参数
         cParamList.removeIf(Objects::isNull);
         if (!cParamList.isEmpty()) {
             cParamDao.createParamForCurrentVersion(cParamList);
         }
     }
-
 
     @Override
     public AppResponse<?> list4Design(String robotId) throws NoLoginException {
@@ -525,8 +520,8 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
         return response;
     }
 
-    private List<VersionDetailVo> getAnsVersionList(List<RobotVersion> robotVersionList, String robotId, RobotDesign robotDesign) {
-
+    private List<VersionDetailVo> getAnsVersionList(
+            List<RobotVersion> robotVersionList, String robotId, RobotDesign robotDesign) {
 
         List<VersionDetailVo> ansVoList = new ArrayList<>();
 
@@ -561,9 +556,7 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
         return ansVoList;
     }
 
-
-    private IPage<VersionInfo> getVersionInfoPage(IPage<RobotVersion> rePage,
-                                                  Long pageNo, Long pageSize) {
+    private IPage<VersionInfo> getVersionInfoPage(IPage<RobotVersion> rePage, Long pageNo, Long pageSize) {
 
         List<RobotVersion> robotVersionList = rePage.getRecords();
 
@@ -601,7 +594,8 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
         String tenantId = robotVersionDto.getTenantId();
 
         // 根据robotId、robotVersion=0和creatorId查询所有的componentRobotUseList记录
-        List<ComponentRobotUse> componentRobotUseList = componentRobotUseDao.getByRobotIdAndVersion(robotId, 0, tenantId);
+        List<ComponentRobotUse> componentRobotUseList =
+                componentRobotUseDao.getByRobotIdAndVersion(robotId, 0, tenantId);
         if (CollectionUtils.isEmpty(componentRobotUseList)) return;
 
         List<ComponentRobotUse> newComponentRobotUseList = new ArrayList<>();
@@ -639,7 +633,8 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
         String tenantId = robotVersionDto.getTenantId();
 
         // 1. 根据robotId、robotVersion=0和creatorId查询所有的componentRobotBlockList记录
-        List<ComponentRobotBlock> componentRobotBlockList = componentRobotBlockDao.getBlocksByRobotId(robotId, tenantId);
+        List<ComponentRobotBlock> componentRobotBlockList =
+                componentRobotBlockDao.getBlocksByRobotId(robotId, tenantId);
 
         if (CollectionUtils.isEmpty(componentRobotBlockList)) return;
 
@@ -680,7 +675,8 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
         componentRobotUseDao.deleteOldEditVersion(robotId, userId);
 
         // 查询指定版本的组件引用记录
-        List<ComponentRobotUse> componentRobotUseList = componentRobotUseDao.getComponentRobotUse(robotId, version, userId);
+        List<ComponentRobotUse> componentRobotUseList =
+                componentRobotUseDao.getComponentRobotUse(robotId, version, userId);
         if (CollectionUtils.isEmpty(componentRobotUseList)) return;
 
         // 处理每条记录：id置为null，version改为0，更新时间
@@ -707,7 +703,8 @@ public class RobotVersionServiceImpl extends ServiceImpl<RobotVersionDao, RobotV
         componentRobotBlockDao.deleteOldEditVersion(robotId, userId);
 
         // 查询指定版本的组件屏蔽记录
-        List<ComponentRobotBlock> componentRobotBlockList = componentRobotBlockDao.getComponentRobotBlock(robotId, version, userId);
+        List<ComponentRobotBlock> componentRobotBlockList =
+                componentRobotBlockDao.getComponentRobotBlock(robotId, version, userId);
         if (CollectionUtils.isEmpty(componentRobotBlockList)) return;
 
         // 处理每条记录：id置为null，version改为0，更新时间

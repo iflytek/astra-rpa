@@ -1,9 +1,8 @@
 package com.iflytek.rpa.robot.entity.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class ExecuteListVo {
@@ -11,6 +10,7 @@ public class ExecuteListVo {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     Date updateTime; // 更新时间
+
     Integer version; // 版本号
     String sourceName; // 来源名称 : 市场名称(团队市场名称或者官方市场)、本地
     String robotId; // 机器人

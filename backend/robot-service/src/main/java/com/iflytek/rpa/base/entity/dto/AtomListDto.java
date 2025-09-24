@@ -1,8 +1,7 @@
 package com.iflytek.rpa.base.entity.dto;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class AtomListDto {

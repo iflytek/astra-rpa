@@ -40,7 +40,6 @@ public class File implements Serializable {
      */
     private String fileName;
 
-
     public Integer getId() {
         return id;
     }
@@ -96,6 +95,4 @@ public class File implements Serializable {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
-
 }
-

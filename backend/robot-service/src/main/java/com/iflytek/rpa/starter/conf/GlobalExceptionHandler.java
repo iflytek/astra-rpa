@@ -6,6 +6,10 @@ import com.iflytek.rpa.starter.exception.ServiceException;
 import com.iflytek.rpa.starter.utils.LoggerUtils;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
 import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
+import java.sql.SQLException;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -21,17 +25,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolationException;
-import java.sql.SQLException;
-import java.util.List;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    public GlobalExceptionHandler() {
-    }
+    public GlobalExceptionHandler() {}
 
     @ExceptionHandler({ServiceException.class})
     @ResponseBody
@@ -109,7 +107,9 @@ public class GlobalExceptionHandler {
     public AppResponse<String> handleException(Exception ex) {
         LOGGER.error("===========全局统一异常处理============");
         LOGGER.error(LoggerUtils.getExceptionInfo(ex));
-        return ex instanceof HttpRequestMethodNotSupportedException ? AppResponse.error("请求类型错误") : AppResponse.error(ErrorCodeEnum.E_EXCEPTION);
+        return ex instanceof HttpRequestMethodNotSupportedException
+                ? AppResponse.error("请求类型错误")
+                : AppResponse.error(ErrorCodeEnum.E_EXCEPTION);
     }
 
     @ExceptionHandler({Throwable.class})

@@ -3,12 +3,11 @@ package com.iflytek.rpa.component.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 机器人对组件屏蔽表(ComponentRobotBlock)实体类
@@ -74,4 +73,4 @@ public class ComponentRobotBlock implements Serializable {
      * 租户id
      */
     private String tenantId;
-} 
+}

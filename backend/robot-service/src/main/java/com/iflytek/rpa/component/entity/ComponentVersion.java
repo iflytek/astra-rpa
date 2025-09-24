@@ -3,12 +3,11 @@ package com.iflytek.rpa.component.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 组件版本表(ComponentVersion)实体类
@@ -94,4 +93,4 @@ public class ComponentVersion implements Serializable {
      * 图标
      */
     private String icon;
-} 
+}

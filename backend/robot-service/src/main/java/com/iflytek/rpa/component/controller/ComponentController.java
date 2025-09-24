@@ -10,11 +10,10 @@ import com.iflytek.rpa.component.entity.vo.*;
 import com.iflytek.rpa.component.service.ComponentService;
 import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
+import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
 
 /**
  * 组件表(Component)表控制层
@@ -61,7 +60,8 @@ public class ComponentController {
      * 重命名组件
      */
     @GetMapping("/rename")
-    public AppResponse<Boolean> renameComponent(@RequestParam String componentId, @RequestParam String newName) throws Exception {
+    public AppResponse<Boolean> renameComponent(@RequestParam String componentId, @RequestParam String newName)
+            throws Exception {
         return componentService.renameComponent(componentId, newName);
     }
 
@@ -87,7 +87,8 @@ public class ComponentController {
      * @throws NoLoginException
      */
     @GetMapping("/info")
-    public AppResponse<ComponentInfoVo> getComponentInfo(@RequestParam("componentId") String componentId) throws NoLoginException {
+    public AppResponse<ComponentInfoVo> getComponentInfo(@RequestParam("componentId") String componentId)
+            throws NoLoginException {
         return componentService.getComponentInfo(componentId);
     }
 
@@ -100,8 +101,8 @@ public class ComponentController {
      * @throws NoLoginException
      */
     @GetMapping("/copy")
-    public AppResponse<Boolean> copyComponent(@RequestParam("componentId") String componentId,
-                                              @RequestParam("name") String name) throws Exception {
+    public AppResponse<Boolean> copyComponent(
+            @RequestParam("componentId") String componentId, @RequestParam("name") String name) throws Exception {
         return componentService.copyComponent(componentId, name);
     }
 
@@ -126,7 +127,8 @@ public class ComponentController {
      * @throws Exception
      */
     @PostMapping("/page-list")
-    public AppResponse<IPage<ComponentVo>> getComponentPageList(@RequestBody @Valid ComponentListDto componentListDto) throws Exception {
+    public AppResponse<IPage<ComponentVo>> getComponentPageList(@RequestBody @Valid ComponentListDto componentListDto)
+            throws Exception {
         return componentService.getComponentPageList(componentListDto);
     }
 
@@ -138,7 +140,8 @@ public class ComponentController {
      * @throws Exception
      */
     @PostMapping("/editing/list")
-    public AppResponse<List<EditingPageCompVo>> getEditingPageCompList(@RequestBody GetComponentUseDto queryDto) throws Exception {
+    public AppResponse<List<EditingPageCompVo>> getEditingPageCompList(@RequestBody GetComponentUseDto queryDto)
+            throws Exception {
         return componentService.getEditingPageCompList(queryDto);
     }
 
@@ -149,7 +152,8 @@ public class ComponentController {
      * @return
      */
     @PostMapping("/editing/info")
-    public AppResponse<EditingPageCompInfoVo> editingPageCompInfo(@RequestBody EditPageCompInfoDto queryDto) throws Exception {
+    public AppResponse<EditingPageCompInfoVo> editingPageCompInfo(@RequestBody EditPageCompInfoDto queryDto)
+            throws Exception {
         return componentService.getEditingPageCompInfo(queryDto);
     }
 
@@ -164,6 +168,4 @@ public class ComponentController {
     public AppResponse<List<CompManageVo>> CompManageList(@RequestBody GetComponentUseDto queryDto) throws Exception {
         return componentService.getCompManageList(queryDto);
     }
-
-
 }

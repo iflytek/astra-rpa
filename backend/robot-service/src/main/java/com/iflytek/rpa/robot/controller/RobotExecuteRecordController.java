@@ -24,7 +24,6 @@ public class RobotExecuteRecordController {
     @Autowired
     private RobotExecuteRecordService robotExecuteRecordService;
 
-
     /**
      * 执行记录列表
      *
@@ -36,7 +35,6 @@ public class RobotExecuteRecordController {
     public AppResponse<?> recordList(@RequestBody ExecuteRecordDto recordDto) throws NoLoginException {
         return robotExecuteRecordService.recordList(recordDto);
     }
-
 
     /**
      * 查询执行日志
@@ -50,19 +48,17 @@ public class RobotExecuteRecordController {
         return robotExecuteRecordService.getExecuteLog(recordDto);
     }
 
-
-    //todo:0920
-//    /**
-//     * 执行器-机器人详情-执行概况
-//     * @paramMarketResourceDto
-//     * @return
-//     * @throws Exception
-//     */
-//    @PostMapping("/detail/overview")
-//    public AppResponse<?> getOverViewData(@RequestBody RobotMonitorDto robotMonitorDto){
-//        return robotExecuteRecordService.robotOverview(robotMonitorDto);
-//    }
-
+    // todo:0920
+    //    /**
+    //     * 执行器-机器人详情-执行概况
+    //     * @paramMarketResourceDto
+    //     * @return
+    //     * @throws Exception
+    //     */
+    //    @PostMapping("/detail/overview")
+    //    public AppResponse<?> getOverViewData(@RequestBody RobotMonitorDto robotMonitorDto){
+    //        return robotExecuteRecordService.robotOverview(robotMonitorDto);
+    //    }
 
     /**
      * 上传机器人执行结果
@@ -83,10 +79,10 @@ public class RobotExecuteRecordController {
      * @return
      * @throws NoLoginException
      */
-//    @PostMapping("/save-log")
-//    public AppResponse<?> saveExecuteLog(@RequestBody ExecuteRecordDto recordDto) throws NoLoginException {
-//        return robotExecuteRecordService.saveExecuteLog(recordDto);
-//    }
+    //    @PostMapping("/save-log")
+    //    public AppResponse<?> saveExecuteLog(@RequestBody ExecuteRecordDto recordDto) throws NoLoginException {
+    //        return robotExecuteRecordService.saveExecuteLog(recordDto);
+    //    }
 
     /**
      * 批量删除机器人执行记录
@@ -96,8 +92,8 @@ public class RobotExecuteRecordController {
      * @throws NoLoginException
      */
     @PostMapping("/delete-robot-execute-records")
-    public AppResponse<String> deleteRobotExecuteRecords(@RequestBody RobotExecuteRecordsBatchDeleteDto batchDeleteDto) throws NoLoginException {
+    public AppResponse<String> deleteRobotExecuteRecords(@RequestBody RobotExecuteRecordsBatchDeleteDto batchDeleteDto)
+            throws NoLoginException {
         return robotExecuteRecordService.deleteRobotExecuteRecords(batchDeleteDto);
     }
 }
-

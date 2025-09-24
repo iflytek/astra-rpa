@@ -1,13 +1,13 @@
 package com.iflytek.rpa.task.service.impl;
 
+import static com.iflytek.rpa.task.constants.TaskConstant.TASK_RESULT_EXECUTE;
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.iflytek.rpa.robot.dao.RobotExecuteRecordDao;
 import com.iflytek.rpa.robot.entity.RobotExecuteRecord;
 import com.iflytek.rpa.starter.exception.NoLoginException;
-import com.iflytek.rpa.utils.TenantUtils;
-import com.iflytek.rpa.utils.UserUtils;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
 import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
 import com.iflytek.rpa.task.dao.ScheduleTaskExecuteDao;
@@ -19,6 +19,11 @@ import com.iflytek.rpa.task.entity.vo.TaskRecordListVo;
 import com.iflytek.rpa.task.service.ScheduleTaskExecuteService;
 import com.iflytek.rpa.utils.DateUtils;
 import com.iflytek.rpa.utils.IdWorker;
+import com.iflytek.rpa.utils.TenantUtils;
+import com.iflytek.rpa.utils.UserUtils;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,12 +31,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-
-import javax.annotation.Resource;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.iflytek.rpa.task.constants.TaskConstant.TASK_RESULT_EXECUTE;
 
 /**
  * 计划任务执行记录(ScheduleTaskExecute)表服务实现类
@@ -41,7 +40,8 @@ import static com.iflytek.rpa.task.constants.TaskConstant.TASK_RESULT_EXECUTE;
  */
 @Slf4j
 @Service("scheduleTaskExecuteService")
-public class ScheduleTaskExecuteServiceImpl extends ServiceImpl<ScheduleTaskExecuteDao, ScheduleTaskExecute> implements ScheduleTaskExecuteService {
+public class ScheduleTaskExecuteServiceImpl extends ServiceImpl<ScheduleTaskExecuteDao, ScheduleTaskExecute>
+        implements ScheduleTaskExecuteService {
     @Resource
     private ScheduleTaskExecuteDao scheduleTaskExecuteDao;
 
@@ -59,9 +59,9 @@ public class ScheduleTaskExecuteServiceImpl extends ServiceImpl<ScheduleTaskExec
 
     @Override
     public AppResponse<?> setTaskExecuteStatus(TaskExecuteDto executeDto) throws NoLoginException {
-        
+
         // 原有业务逻辑
-        //生成executeId
+        // 生成executeId
         String userId = UserUtils.nowUserId();
         String tenantId = TenantUtils.getTenantId();
         String taskExecuteId = executeDto.getTaskExecuteId();
@@ -69,7 +69,7 @@ public class ScheduleTaskExecuteServiceImpl extends ServiceImpl<ScheduleTaskExec
             return AppResponse.error(ErrorCodeEnum.E_PARAM_LOSE, "任务ID不能为空");
         }
         if (null == taskExecuteId) {
-            //第一次执行
+            // 第一次执行
             taskExecuteId = idWorker.nextId() + "";
             ScheduleTaskExecute scheduleTaskExecute = new ScheduleTaskExecute();
             scheduleTaskExecute.setTaskId(executeDto.getTaskId());
@@ -79,23 +79,23 @@ public class ScheduleTaskExecuteServiceImpl extends ServiceImpl<ScheduleTaskExec
             scheduleTaskExecute.setCreatorId(userId);
             scheduleTaskExecute.setUpdaterId(userId);
             scheduleTaskExecute.setStartTime(new Date());
-            //获取最大批次号
+            // 获取最大批次号
             Integer maxBatch = scheduleTaskExecuteDao.getMaxBatch(executeDto.getTaskId());
             if (null == maxBatch || 0 == maxBatch) {
                 scheduleTaskExecute.setCount(1);
             } else {
                 scheduleTaskExecute.setCount(maxBatch + 1);
             }
-            //插入
+            // 插入
             scheduleTaskExecuteDao.insertExecuteRecord(scheduleTaskExecute);
-            //返回执行id
+            // 返回执行id
             return AppResponse.success(taskExecuteId);
         }
         Integer executeCount = scheduleTaskExecuteDao.countExecuteRecord(taskExecuteId);
         if (executeCount < 1) {
             return AppResponse.error(ErrorCodeEnum.E_SQL, "划任务执行记录数据异常");
         }
-        //不是第一次执行，更新执行状态
+        // 不是第一次执行，更新执行状态
         if (null == executeDto.getResult()) {
             return AppResponse.error(ErrorCodeEnum.E_PARAM, "计划任务执行结果不能为空");
         }
@@ -106,10 +106,9 @@ public class ScheduleTaskExecuteServiceImpl extends ServiceImpl<ScheduleTaskExec
         return AppResponse.success(taskExecuteId);
     }
 
-
     @Override
     public AppResponse<?> getTaskExecuteRecordList(TaskExecuteDto executeDto) throws NoLoginException {
-        //计划任务记录
+        // 计划任务记录
         IPage<TaskExecuteDto> pages = new Page<>();
         if (null == executeDto.getPageNo() || null == executeDto.getPageSize()) {
             return AppResponse.success(pages);
@@ -122,26 +121,28 @@ public class ScheduleTaskExecuteServiceImpl extends ServiceImpl<ScheduleTaskExec
         if (CollectionUtils.isEmpty(taskList)) {
             return AppResponse.success(pages);
         }
-        //设置序号,从1到n
+        // 设置序号,从1到n
         long offset = pageConfig.offset() + 1;
         for (int i = 0; i < taskList.size(); i++) {
             taskList.get(i).setId(offset + i);
         }
-        //获取执行id列表，查询执行记录
-        List<String> executeIdList = taskList.stream().map(TaskExecuteDto::getTaskExecuteId).collect(Collectors.toList());
+        // 获取执行id列表，查询执行记录
+        List<String> executeIdList =
+                taskList.stream().map(TaskExecuteDto::getTaskExecuteId).collect(Collectors.toList());
         executeIdList.removeIf(executeId -> null == executeId || executeId.isEmpty());
         if (CollectionUtils.isEmpty(executeIdList)) {
             return AppResponse.success(pages);
         }
         List<RobotExecuteRecord> executeRecordList = robotExecuteRecordDao.getRecordByExecuteIdList(executeIdList);
-        //根据执行id分组，按照开始时间正序排序
-        Map<String, List<RobotExecuteRecord>> executeRecordMap = executeRecordList.stream().collect(Collectors.groupingBy(RobotExecuteRecord::getTaskExecuteId, Collectors.toList()));
+        // 根据执行id分组，按照开始时间正序排序
+        Map<String, List<RobotExecuteRecord>> executeRecordMap = executeRecordList.stream()
+                .collect(Collectors.groupingBy(RobotExecuteRecord::getTaskExecuteId, Collectors.toList()));
         for (TaskExecuteDto task : taskList) {
             List<RobotExecuteRecord> executeRecordListByExecuteId = executeRecordMap.get(task.getTaskExecuteId());
             if (CollectionUtils.isEmpty(executeRecordListByExecuteId)) {
                 continue;
             }
-            //按照开始时间正序排序
+            // 按照开始时间正序排序
             executeRecordListByExecuteId.sort(Comparator.comparing(RobotExecuteRecord::getStartTime));
             task.setRobotExecuteRecordList(executeRecordListByExecuteId);
         }
@@ -181,12 +182,14 @@ public class ScheduleTaskExecuteServiceImpl extends ServiceImpl<ScheduleTaskExec
 
         if (!CollectionUtils.isEmpty(taskExecuteIdList)) {
             // 查询机器人执行记录
-            List<RobotExecuteRecord> executeRecordList = robotExecuteRecordDao.getRecordByExecuteIdList(taskExecuteIdList);
+            List<RobotExecuteRecord> executeRecordList =
+                    robotExecuteRecordDao.getRecordByExecuteIdList(taskExecuteIdList);
 
             // 将机器人执行记录分组并设置到对应的任务记录中
             if (!CollectionUtils.isEmpty(executeRecordList)) {
                 // 按任务执行ID分组
-                java.util.Map<String, List<RobotExecuteRecord>> recordMap = executeRecordList.stream().collect(Collectors.groupingBy(RobotExecuteRecord::getTaskExecuteId));
+                java.util.Map<String, List<RobotExecuteRecord>> recordMap =
+                        executeRecordList.stream().collect(Collectors.groupingBy(RobotExecuteRecord::getTaskExecuteId));
 
                 // 为每个任务记录设置对应的机器人执行记录
                 taskList.forEach(task -> {
@@ -213,7 +216,8 @@ public class ScheduleTaskExecuteServiceImpl extends ServiceImpl<ScheduleTaskExec
         String tenantId = TenantUtils.getTenantId();
 
         // 1. 逻辑删除 schedule_task_execute 表中的记录
-        Integer scheduleDeleted = scheduleTaskExecuteDao.batchDeleteByTaskExecuteIds(taskExecuteIdList, userId, tenantId);
+        Integer scheduleDeleted =
+                scheduleTaskExecuteDao.batchDeleteByTaskExecuteIds(taskExecuteIdList, userId, tenantId);
 
         // 2. 删除 robot_execute_record 表中的记录
         Integer robotDeleted = robotExecuteRecordDao.batchDeleteByTaskExecuteIds(taskExecuteIdList, userId, tenantId);
@@ -240,7 +244,8 @@ public class ScheduleTaskExecuteServiceImpl extends ServiceImpl<ScheduleTaskExec
                 return;
             }
             // 3. 提取ID列表
-            List<Long> idList = timeoutRecords.stream().map(ScheduleTaskExecute::getId).collect(Collectors.toList());
+            List<Long> idList =
+                    timeoutRecords.stream().map(ScheduleTaskExecute::getId).collect(Collectors.toList());
             // 4. 根据ID列表批量更新
             Integer updatedCount = scheduleTaskExecuteDao.updateExecutingRecordsToCancelByIds(idList);
             log.info("定时任务执行完成，共更新了 {} 条超时的执行记录为取消状态", updatedCount);

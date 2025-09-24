@@ -1,9 +1,8 @@
 package com.iflytek.rpa.robot.entity.vo;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import lombok.Data;
 
 @Data
 public class RobotExecutionData {
@@ -44,6 +43,8 @@ public class RobotExecutionData {
      * 获取执行时长（小时）
      */
     public BigDecimal getExecuteTimeHour() {
-        return executeTime == null ? BigDecimal.ZERO : new BigDecimal(executeTime).divide(new BigDecimal(3600), 2, RoundingMode.HALF_UP);
+        return executeTime == null
+                ? BigDecimal.ZERO
+                : new BigDecimal(executeTime).divide(new BigDecimal(3600), 2, RoundingMode.HALF_UP);
     }
 }

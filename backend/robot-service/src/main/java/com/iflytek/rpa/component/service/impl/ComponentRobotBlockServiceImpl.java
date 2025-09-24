@@ -14,12 +14,11 @@ import com.iflytek.rpa.starter.utils.response.AppResponse;
 import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
 import com.iflytek.rpa.utils.TenantUtils;
 import com.iflytek.rpa.utils.UserUtils;
+import java.util.Date;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * 机器人对组件屏蔽表(ComponentRobotBlock)表服务实现类
@@ -53,24 +52,22 @@ public class ComponentRobotBlockServiceImpl implements ComponentRobotBlockServic
         String userId = UserUtils.nowUserId();
         String tenantId = TenantUtils.getTenantId();
 
-        Integer robotVersion = getRobotVersion(addRobotBlockDto.getRobotId(), addRobotBlockDto.getMode(), addRobotBlockDto.getRobotVersion(), new BaseDto());
+        Integer robotVersion = getRobotVersion(
+                addRobotBlockDto.getRobotId(),
+                addRobotBlockDto.getMode(),
+                addRobotBlockDto.getRobotVersion(),
+                new BaseDto());
 
         // 检查componentRobotUse表中是否存在该记录
         ComponentRobotUse existingUse = componentRobotUseDao.getByRobotIdVersionAndComponentId(
-            addRobotBlockDto.getRobotId(), robotVersion,
-            addRobotBlockDto.getComponentId(), userId
-        );
-        if (existingUse != null)
-            throw new ServiceException(ErrorCodeEnum.E_SQL_REPEAT.getCode(), "该机器人已使用此组件，无法屏蔽");
+                addRobotBlockDto.getRobotId(), robotVersion,
+                addRobotBlockDto.getComponentId(), userId);
+        if (existingUse != null) throw new ServiceException(ErrorCodeEnum.E_SQL_REPEAT.getCode(), "该机器人已使用此组件，无法屏蔽");
 
         // 检查是否已经存在屏蔽记录
         Long existingCount = componentRobotBlockDao.checkBlockExists(
-            addRobotBlockDto.getRobotId(), robotVersion,
-            addRobotBlockDto.getComponentId(), 
-            userId
-        );
-        if (existingCount > 0)
-            throw new ServiceException(ErrorCodeEnum.E_SQL_REPEAT.getCode(), "该机器人已屏蔽此组件，无需重复添加");
+                addRobotBlockDto.getRobotId(), robotVersion, addRobotBlockDto.getComponentId(), userId);
+        if (existingCount > 0) throw new ServiceException(ErrorCodeEnum.E_SQL_REPEAT.getCode(), "该机器人已屏蔽此组件，无需重复添加");
 
         // 创建新的屏蔽记录
         ComponentRobotBlock block = new ComponentRobotBlock();
@@ -108,26 +105,23 @@ public class ComponentRobotBlockServiceImpl implements ComponentRobotBlockServic
         String userId = UserUtils.nowUserId();
         String tenantId = TenantUtils.getTenantId();
 
-        Integer robotVersion = getRobotVersion(addRobotBlockDto.getRobotId(), addRobotBlockDto.getMode(), addRobotBlockDto.getRobotVersion(), new BaseDto());
+        Integer robotVersion = getRobotVersion(
+                addRobotBlockDto.getRobotId(),
+                addRobotBlockDto.getMode(),
+                addRobotBlockDto.getRobotVersion(),
+                new BaseDto());
 
         // 检查是否已经存在屏蔽记录
         Long existingCount = componentRobotBlockDao.checkBlockExists(
-            addRobotBlockDto.getRobotId(), robotVersion,
-            addRobotBlockDto.getComponentId(),
-            userId
-        );
+                addRobotBlockDto.getRobotId(), robotVersion, addRobotBlockDto.getComponentId(), userId);
         if (existingCount == 0) {
             throw new ServiceException(ErrorCodeEnum.E_SQL_EMPTY.getCode(), "该机器人未屏蔽此组件，无需删除");
         }
 
         // 逻辑删除屏蔽记录
         int result = componentRobotBlockDao.deleteBlockByRobotAndComponent(
-            addRobotBlockDto.getRobotId(), robotVersion,
-            addRobotBlockDto.getComponentId(),
-            userId,
-            tenantId
-        );
-        
+                addRobotBlockDto.getRobotId(), robotVersion, addRobotBlockDto.getComponentId(), userId, tenantId);
+
         if (result > 0) {
             return AppResponse.success(true);
         } else {
@@ -147,10 +141,12 @@ public class ComponentRobotBlockServiceImpl implements ComponentRobotBlockServic
         // 获取当前租户ID
         String tenantId = TenantUtils.getTenantId();
 
-        Integer robotVersion = getRobotVersion(queryDto.getRobotId(), queryDto.getMode(), queryDto.getRobotVersion(), new BaseDto());
+        Integer robotVersion =
+                getRobotVersion(queryDto.getRobotId(), queryDto.getMode(), queryDto.getRobotVersion(), new BaseDto());
 
         // 查询屏蔽的组件ID列表
-        List<String> blockedComponentIds = componentRobotBlockDao.getBlockedComponentIds(queryDto.getRobotId(), robotVersion, tenantId);
+        List<String> blockedComponentIds =
+                componentRobotBlockDao.getBlockedComponentIds(queryDto.getRobotId(), robotVersion, tenantId);
 
         return AppResponse.success(blockedComponentIds);
     }
@@ -167,7 +163,5 @@ public class ComponentRobotBlockServiceImpl implements ComponentRobotBlockServic
     }
 
     @RobotVersionAnnotation
-    public void getVersion(BaseDto baseDto) {
-    }
-
+    public void getVersion(BaseDto baseDto) {}
 }

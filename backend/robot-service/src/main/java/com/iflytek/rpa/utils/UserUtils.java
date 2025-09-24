@@ -5,6 +5,10 @@ import com.iflytek.rpa.auth.service.UserExtendService;
 import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
 import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
+import java.io.IOException;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.casbin.casdoor.entity.Permission;
@@ -21,11 +25,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
-
 /**
  * @desc: 用户工具类
  * @author: weilai <laiwei3@iflytek.com>
@@ -37,12 +36,16 @@ public class UserUtils {
 
     @Autowired
     private AuthService authService;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private UserExtendService userExtendService;
+
     @Autowired
     private ResourceService resourceService;
+
     @Autowired
     private RoleService roleService;
 
@@ -172,10 +175,7 @@ public class UserUtils {
             return Collections.emptyList();
         }
         // 限制最多100个ID，去重后组织成Set
-        Set<String> limitedUserIds = userIdList.stream()
-                .distinct()
-                .limit(100)
-                .collect(Collectors.toSet());
+        Set<String> limitedUserIds = userIdList.stream().distinct().limit(100).collect(Collectors.toSet());
 
         List<User> allUsers = staticUserService.getUsers();
         List<User> userPage = allUsers.stream()
@@ -193,9 +193,9 @@ public class UserUtils {
     public static boolean isCurrentUserLogin() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            return authentication != null && 
-                   authentication.isAuthenticated() && 
-                   authentication.getPrincipal() instanceof CustomUserDetails;
+            return authentication != null
+                    && authentication.isAuthenticated()
+                    && authentication.getPrincipal() instanceof CustomUserDetails;
         } catch (Exception e) {
             log.warn("检查用户登录状态失败", e);
             return false;
@@ -283,5 +283,4 @@ public class UserUtils {
 
         return user.roles;
     }
-
 }

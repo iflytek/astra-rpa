@@ -14,4 +14,3 @@ public interface ScheduleTaskPullLogDao {
 
     Integer insetLog(ScheduleTask task);
 }
-

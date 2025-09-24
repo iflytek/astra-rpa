@@ -1,13 +1,12 @@
 package com.iflytek.rpa.utils;
 
 import com.iflytek.rpa.auth.entity.CustomUserDetails;
+import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
 import org.casbin.casdoor.entity.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
 
 /**
  * @desc: 租户工具类

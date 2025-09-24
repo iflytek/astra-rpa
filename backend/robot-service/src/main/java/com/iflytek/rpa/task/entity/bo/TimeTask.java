@@ -1,9 +1,8 @@
 package com.iflytek.rpa.task.entity.bo;
 
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotBlank;
 
 @Data
 public class TimeTask {
@@ -35,5 +34,4 @@ public class TimeTask {
      * cron表达式
      */
     private String cronExpression;
-
 }

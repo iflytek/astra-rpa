@@ -7,8 +7,7 @@ public class DataAuthDetailDo {
     private List<String> deptIdList;
     private List<String> deptIdPathList;
 
-    public DataAuthDetailDo() {
-    }
+    public DataAuthDetailDo() {}
 
     public String getDataAuthType() {
         return this.dataAuthType;
@@ -95,6 +94,7 @@ public class DataAuthDetailDo {
     }
 
     public String toString() {
-        return "DataAuthDetailDo(dataAuthType=" + this.getDataAuthType() + ", deptIdList=" + this.getDeptIdList() + ", deptIdPathList=" + this.getDeptIdPathList() + ")";
+        return "DataAuthDetailDo(dataAuthType=" + this.getDataAuthType() + ", deptIdList=" + this.getDeptIdList()
+                + ", deptIdPathList=" + this.getDeptIdPathList() + ")";
     }
 }

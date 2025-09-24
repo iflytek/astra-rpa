@@ -17,12 +17,11 @@ import com.iflytek.rpa.starter.utils.response.AppResponse;
 import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
 import com.iflytek.rpa.utils.TenantUtils;
 import com.iflytek.rpa.utils.UserUtils;
+import java.util.Date;
+import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
-import java.util.Date;
 
 /**
  * 组件版本表(ComponentVersion)表服务实现类
@@ -31,7 +30,8 @@ import java.util.Date;
  * @since 2024-12-19
  */
 @Service("componentVersionService")
-public class ComponentVersionServiceImpl extends ServiceImpl<ComponentVersionDao, ComponentVersion> implements ComponentVersionService {
+public class ComponentVersionServiceImpl extends ServiceImpl<ComponentVersionDao, ComponentVersion>
+        implements ComponentVersionService {
 
     @Resource
     private ComponentVersionDao componentVersionDao;
@@ -99,11 +99,11 @@ public class ComponentVersionServiceImpl extends ServiceImpl<ComponentVersionDao
         robotVersionDto.setRobotId(componentId);
         robotVersionDto.setCreatorId(userId);
 
-        //创建新版本的流程等数据
+        // 创建新版本的流程等数据
         processDao.createProcessForCurrentVersion(robotVersionDto);
-        //元素组数据
+        // 元素组数据
         groupDao.createGroupForCurrentVersion(robotVersionDto);
-        //元素数据
+        // 元素数据
         elementDao.createElementForCurrentVersion(robotVersionDto);
         // 全局变量数据
         globalVarDao.createGlobalVarForCurrentVersion(robotVersionDto);
@@ -150,7 +150,6 @@ public class ComponentVersionServiceImpl extends ServiceImpl<ComponentVersionDao
         return save(componentVersion);
     }
 
-
     @Override
     public AppResponse<Integer> getNextVersionNumber(String componentId) throws NoLoginException {
         String tenantId = TenantUtils.getTenantId();
@@ -160,4 +159,4 @@ public class ComponentVersionServiceImpl extends ServiceImpl<ComponentVersionDao
         Integer nextVersion = (latestVersion == null) ? 1 : latestVersion + 1;
         return AppResponse.success(nextVersion);
     }
-} 
+}

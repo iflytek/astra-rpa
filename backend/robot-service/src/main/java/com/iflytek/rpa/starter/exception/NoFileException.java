@@ -17,5 +17,7 @@ public class NoFileException extends Exception {
         super(message);
     }
 
-    public NoFileException(Exception e){super(e);}
+    public NoFileException(Exception e) {
+        super(e);
+    }
 }

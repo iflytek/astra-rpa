@@ -1,9 +1,8 @@
 package com.iflytek.rpa.robot.entity.dto;
 
-import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
 import java.util.List;
+import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
 public class SharedFileSaveDto {
@@ -23,5 +22,4 @@ public class SharedFileSaveDto {
      * 标签/别名
      */
     private List<Long> tags;
-
 }

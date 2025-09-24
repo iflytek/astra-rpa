@@ -3,10 +3,9 @@ package com.iflytek.rpa.robot.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
  * 共享变量信息(SharedVar)实体类
@@ -83,4 +82,4 @@ public class SharedVar implements Serializable {
      * 是否删除 0：未删除，1：已删除
      */
     private Integer deleted;
-} 
+}

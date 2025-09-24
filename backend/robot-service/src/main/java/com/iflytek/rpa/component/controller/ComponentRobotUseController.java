@@ -10,11 +10,10 @@ import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.exception.ServiceException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
 import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 机器人对组件引用表(ComponentRobotUse)表控制层
@@ -37,7 +36,8 @@ public class ComponentRobotUseController {
      * @throws NoLoginException
      */
     @PostMapping("/component-use")
-    public AppResponse<List<ComponentUseVo>> getComponentUse(@RequestBody GetComponentUseDto getComponentUseDto) throws NoLoginException {
+    public AppResponse<List<ComponentUseVo>> getComponentUse(@RequestBody GetComponentUseDto getComponentUseDto)
+            throws NoLoginException {
         return componentRobotUseService.getComponentUse(getComponentUseDto);
     }
 
@@ -61,7 +61,8 @@ public class ComponentRobotUseController {
      * @throws NoLoginException
      */
     @PostMapping("/delete")
-    public AppResponse<String> deleteComponentUse(@RequestBody DelComponentUseDto delComponentUseDto) throws NoLoginException {
+    public AppResponse<String> deleteComponentUse(@RequestBody DelComponentUseDto delComponentUseDto)
+            throws NoLoginException {
         return componentRobotUseService.deleteComponentUse(delComponentUseDto);
     }
 
@@ -73,7 +74,8 @@ public class ComponentRobotUseController {
      * @throws NoLoginException
      */
     @PostMapping("/update")
-    public AppResponse<String> updateComponentUse(@RequestBody UpdateComponentUseDto updateComponentUseDto) throws NoLoginException {
+    public AppResponse<String> updateComponentUse(@RequestBody UpdateComponentUseDto updateComponentUseDto)
+            throws NoLoginException {
         return componentRobotUseService.updateComponentUse(updateComponentUseDto);
     }
 
@@ -87,8 +89,8 @@ public class ComponentRobotUseController {
      */
     @GetMapping("/process-id")
     public AppResponse<String> getProcessIdByComponentIdAndVersion(
-            @RequestParam("componentId") String componentId,
-            @RequestParam("componentVersion") Integer componentVersion) throws NoLoginException {
+            @RequestParam("componentId") String componentId, @RequestParam("componentVersion") Integer componentVersion)
+            throws NoLoginException {
 
         if (StringUtils.isBlank(componentId)) {
             throw new ServiceException(ErrorCodeEnum.E_PARAM_LOSE.getCode(), "组件ID不能为空");
@@ -99,5 +101,4 @@ public class ComponentRobotUseController {
 
         return componentRobotUseService.getProcessId(componentId, componentVersion);
     }
-
 }

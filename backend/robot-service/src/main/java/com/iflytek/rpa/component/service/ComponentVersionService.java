@@ -21,4 +21,4 @@ public interface ComponentVersionService {
      * 获取组件下一个版本号（最新版本号+1，如果没有版本则返回1）
      */
     AppResponse<Integer> getNextVersionNumber(String componentId) throws NoLoginException;
-} 
+}

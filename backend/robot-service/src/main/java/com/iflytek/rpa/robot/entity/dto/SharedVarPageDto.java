@@ -30,4 +30,4 @@ public class SharedVarPageDto {
      * 页面大小
      */
     private Long pageSize;
-} 
+}

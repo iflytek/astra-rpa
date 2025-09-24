@@ -17,14 +17,13 @@ import com.iflytek.rpa.task.entity.dto.TaskDto;
  */
 public interface ScheduleTaskService extends IService<ScheduleTask> {
 
-
     AppResponse<?> getTaskList(TaskDto taskDto) throws NoLoginException;
 
     AppResponse<?> saveTask(ScheduleTaskDto task) throws NoLoginException;
 
     AppResponse<?> getTaskInfoByTaskId(String taskId) throws NoLoginException;
 
-    AppResponse<?>  getNextTimeInfoAndUpdate() throws NoLoginException;
+    AppResponse<?> getNextTimeInfoAndUpdate() throws NoLoginException;
 
     AppResponse<?> enableTask(ScheduleTask task);
 

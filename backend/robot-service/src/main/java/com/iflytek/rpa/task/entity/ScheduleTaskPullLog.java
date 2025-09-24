@@ -1,7 +1,6 @@
 package com.iflytek.rpa.task.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -43,7 +42,6 @@ public class ScheduleTaskPullLog implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date pullTime;
-
 
     public Long getId() {
         return id;
@@ -100,6 +98,4 @@ public class ScheduleTaskPullLog implements Serializable {
     public void setPullTime(Date pullTime) {
         this.pullTime = pullTime;
     }
-
 }
-

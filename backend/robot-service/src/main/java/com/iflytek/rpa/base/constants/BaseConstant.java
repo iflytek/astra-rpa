@@ -11,5 +11,4 @@ public class BaseConstant {
     public static final String PROCESS_TYPE_PROCESS = "process";
 
     public static final String PROCESS_TYPE_MODULE = "module";
-
 }

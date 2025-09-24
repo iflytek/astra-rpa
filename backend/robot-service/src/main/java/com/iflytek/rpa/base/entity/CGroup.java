@@ -34,7 +34,6 @@ public class CGroup implements Serializable {
 
     private String elementType;
 
-
     public Long getId() {
         return id;
     }
@@ -123,4 +122,3 @@ public class CGroup implements Serializable {
         this.elementType = elementType;
     }
 }
-

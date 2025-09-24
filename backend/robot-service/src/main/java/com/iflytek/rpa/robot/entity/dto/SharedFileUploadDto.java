@@ -1,9 +1,8 @@
 package com.iflytek.rpa.robot.entity.dto;
 
+import java.util.List;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Data
 public class SharedFileUploadDto {
@@ -21,6 +20,5 @@ public class SharedFileUploadDto {
     /*
      *标签ids
      */
-    private List<Long> tags;         // 标签ID列表（字符串形式，如"1,2,3"）
-
+    private List<Long> tags; // 标签ID列表（字符串形式，如"1,2,3"）
 }

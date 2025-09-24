@@ -4,14 +4,13 @@ import com.iflytek.rpa.component.entity.dto.AddRobotBlockDto;
 import com.iflytek.rpa.component.entity.dto.GetRobotBlockDto;
 import com.iflytek.rpa.component.service.ComponentRobotBlockService;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
+import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
-import java.util.List;
 
 /**
  * 机器人对组件屏蔽表(ComponentRobotBlock)表控制层
@@ -46,7 +45,8 @@ public class ComponentRobotBlockController {
      * @throws Exception 异常信息
      */
     @PostMapping("/delete")
-    public AppResponse<Boolean> deleteRobotBlock(@RequestBody @Valid AddRobotBlockDto addRobotBlockDto) throws Exception {
+    public AppResponse<Boolean> deleteRobotBlock(@RequestBody @Valid AddRobotBlockDto addRobotBlockDto)
+            throws Exception {
         return componentRobotBlockService.deleteRobotBlock(addRobotBlockDto);
     }
 
@@ -58,8 +58,8 @@ public class ComponentRobotBlockController {
      * @throws Exception 异常信息
      */
     @PostMapping("/blocked-components")
-    public AppResponse<List<String>> getBlockedComponentIds(@RequestBody @Valid GetRobotBlockDto queryDto) throws Exception {
+    public AppResponse<List<String>> getBlockedComponentIds(@RequestBody @Valid GetRobotBlockDto queryDto)
+            throws Exception {
         return componentRobotBlockService.getBlockedComponentIds(queryDto);
     }
-
-} 
+}

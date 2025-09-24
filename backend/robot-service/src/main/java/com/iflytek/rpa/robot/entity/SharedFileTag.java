@@ -3,9 +3,8 @@ package com.iflytek.rpa.robot.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class SharedFileTag {
@@ -52,5 +51,4 @@ public class SharedFileTag {
      * 更新者id
      */
     private String updaterId;
-
 }

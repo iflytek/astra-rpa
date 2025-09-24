@@ -30,4 +30,4 @@ public class ClientSharedSubVarVo {
      * 子变量值（加密后的数据）
      */
     private String varValue;
-} 
+}

@@ -7,7 +7,6 @@ import com.iflytek.rpa.base.entity.dto.CreateProcessDto;
 import com.iflytek.rpa.base.entity.dto.RenameProcessDto;
 import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
-
 import java.util.Map;
 
 /**
@@ -17,7 +16,6 @@ import java.util.Map;
  * @since 2024-10-09 17:11:14
  */
 public interface CProcessService {
-
 
     AppResponse<String> getProcessNextName(String robotId);
 
@@ -32,7 +30,6 @@ public interface CProcessService {
     AppResponse<?> getProcessDataByProcessId(BaseDto baseDto) throws NoLoginException;
 
     AppResponse<?> getProcessNameList(BaseDto baseDto) throws NoLoginException;
-
 
     AppResponse<?> copySubProcess(String robotId, String processId, String type);
 

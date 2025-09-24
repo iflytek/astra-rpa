@@ -1,11 +1,10 @@
 package com.iflytek.rpa.task.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.validation.constraints.NotNull;
 
 /**
  * 调度任务(ScheduleTask)实体类
@@ -33,11 +32,10 @@ public class ScheduleTask implements Serializable {
     /**
      * 执行机器人序列
      */
-//    @JsonSerialize(using = ListRobotJsonSerializer.class)
+    //    @JsonSerialize(using = ListRobotJsonSerializer.class)
     private List<String> executeSequence;
 
     private String allRobotName;
-
 
     /**
      * 异常处理方式：stop停止  skip跳过
@@ -379,4 +377,3 @@ public class ScheduleTask implements Serializable {
         this.logEnable = logEnable;
     }
 }
-

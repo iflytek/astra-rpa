@@ -1,9 +1,8 @@
 package com.iflytek.rpa.task.entity.vo;
 
 import com.iflytek.rpa.robot.entity.RobotExecuteRecord;
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 /**
  * 计划任务执行记录列表VO

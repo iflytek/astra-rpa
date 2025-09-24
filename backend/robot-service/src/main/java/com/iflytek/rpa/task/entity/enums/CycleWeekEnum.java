@@ -1,9 +1,8 @@
 package com.iflytek.rpa.task.entity.enums;
 
-import lombok.Getter;
-
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Getter;
 
 /**
  * @author keler
@@ -47,5 +46,4 @@ public enum CycleWeekEnum {
     public static String getCodeByNum(Integer num) {
         return weekNumCodeMap.getOrDefault(num, MON.getCode());
     }
-
 }

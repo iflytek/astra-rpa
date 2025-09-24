@@ -1,8 +1,7 @@
 package com.iflytek.rpa.robot.entity.dto;
 
-import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 /**
  * @author mjren
@@ -18,5 +17,5 @@ public class QueryUnDeployedUserDto {
     @NotBlank(message = "机器人id不能为空")
     private String robotId;
 
-//    private
+    //    private
 }

@@ -2,11 +2,10 @@ package com.iflytek.rpa.robot.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.iflytek.rpa.robot.entity.SharedVarKeyTenant;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
-
-import java.util.List;
 
 /**
  * 共享变量租户密钥DAO
@@ -35,4 +34,4 @@ public interface SharedVarKeyTenantDao extends BaseMapper<SharedVarKeyTenant> {
      * @return 密钥实体
      */
     SharedVarKeyTenant selectByTenantId(@Param("tenantId") String tenantId);
-} 
+}

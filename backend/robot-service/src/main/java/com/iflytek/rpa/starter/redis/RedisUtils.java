@@ -1,19 +1,17 @@
 package com.iflytek.rpa.starter.redis;
 
 import com.iflytek.rpa.starter.utils.LoggerUtils;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.util.CollectionUtils;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.util.CollectionUtils;
 
 public class RedisUtils {
     public static RedisTemplate<String, Object> redisTemplate;
 
-    public RedisUtils() {
-    }
+    public RedisUtils() {}
 
     public static boolean expire(String key, long time) {
         try {
@@ -49,7 +47,6 @@ public class RedisUtils {
                 redisTemplate.delete(CollectionUtils.arrayToList(key));
             }
         }
-
     }
 
     public static Object get(String key) {

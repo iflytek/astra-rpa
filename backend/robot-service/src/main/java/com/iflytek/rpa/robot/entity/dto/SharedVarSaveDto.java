@@ -1,11 +1,10 @@
 package com.iflytek.rpa.robot.entity.dto;
 
-import lombok.Data;
-
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import lombok.Data;
 
 /**
  * 共享变量保存DTO
@@ -70,8 +69,10 @@ public class SharedVarSaveDto {
     public static class SelectedUser {
         @NotBlank(message = "userId不能为空")
         private String userId; // 用户ID
+
         @NotBlank(message = "userName不能为空")
         private String userName; // 用户名
+
         @NotBlank(message = "userPhone不能为空")
         private String userPhone; // 用户手机号
     }
@@ -83,9 +84,11 @@ public class SharedVarSaveDto {
     public static class VarGroupItem {
         @NotBlank(message = "变量名不能为空")
         private String varName; // 变量名
+
         @NotBlank(message = "变量类型不能为空")
         private String varType; // 变量类型 text/password/array
+
         private String varValue; // 变量值
         private Integer encrypt; // 是否加密：1-加密，0-不加密
     }
-} 
+}

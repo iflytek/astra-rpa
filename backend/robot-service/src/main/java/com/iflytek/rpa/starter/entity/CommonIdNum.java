@@ -5,8 +5,7 @@ public class CommonIdNum<T> {
     private Long num;
     private T target;
 
-    public CommonIdNum() {
-    }
+    public CommonIdNum() {}
 
     public Long getId() {
         return this.id;

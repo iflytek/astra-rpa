@@ -1,10 +1,9 @@
 package com.iflytek.rpa.task.controller;
 
 import com.iflytek.rpa.task.service.ScheduleTaskRobotService;
+import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * 计划任务机器人列表(ScheduleTaskRobot)表控制层
@@ -20,7 +19,4 @@ public class ScheduleTaskRobotController {
      */
     @Resource
     private ScheduleTaskRobotService scheduleTaskRobotService;
-
-
 }
-

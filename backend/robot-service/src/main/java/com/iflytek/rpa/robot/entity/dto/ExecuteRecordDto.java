@@ -1,9 +1,8 @@
 package com.iflytek.rpa.robot.entity.dto;
 
 import com.iflytek.rpa.robot.entity.RobotExecuteRecord;
-import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
 public class ExecuteRecordDto extends RobotExecuteRecord {

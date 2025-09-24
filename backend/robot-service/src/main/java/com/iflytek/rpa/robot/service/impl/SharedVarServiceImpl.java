@@ -25,6 +25,10 @@ import com.iflytek.rpa.utils.EncryptionUtil;
 import com.iflytek.rpa.utils.IdWorker;
 import com.iflytek.rpa.utils.TenantUtils;
 import com.iflytek.rpa.utils.UserUtils;
+import java.security.SecureRandom;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeanUtils;
@@ -35,11 +39,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-
-import javax.annotation.Resource;
-import java.security.SecureRandom;
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 共享变量服务实现类
@@ -52,14 +51,19 @@ import java.util.stream.Collectors;
 public class SharedVarServiceImpl extends ServiceImpl<SharedVarDao, SharedVar> implements SharedVarService {
     @Resource
     private SharedVarDao sharedVarDao;
+
     @Resource
     private SharedSubVarDao sharedSubVarDao;
+
     @Resource
     private SharedVarUserDao sharedVarUserDao;
+
     @Value("${uap.database.name:uap_db}")
     private String databaseName;
+
     @Resource
     private SharedVarKeyTenantDao sharedVarKeyTenantDao;
+
     @Autowired
     private IdWorker idWorker;
 
@@ -90,18 +94,21 @@ public class SharedVarServiceImpl extends ServiceImpl<SharedVarDao, SharedVar> i
                 .eq(SharedVar::getDeleted, 0)
                 .eq(StringUtils.hasText(queryDto.getDeptId()), SharedVar::getDeptId, queryDto.getDeptId())
                 .eq(queryDto.getStatus() != null, SharedVar::getStatus, queryDto.getStatus())
-                .apply(StringUtils.hasText(queryDto.getSharedVarName()), "UPPER(shared_var_name) LIKE concat('%', UPPER({0}), '%')", queryDto.getSharedVarName())
+                .apply(
+                        StringUtils.hasText(queryDto.getSharedVarName()),
+                        "UPPER(shared_var_name) LIKE concat('%', UPPER({0}), '%')",
+                        queryDto.getSharedVarName())
                 .orderByDesc(SharedVar::getCreateTime);
 
         IPage<SharedVar> page = this.page(pageConfig, wrapper);
         List<SharedVar> records = page.getRecords();
-        List<SharedVarPageVo> pageList = records.stream().map(
-                record -> {
+        List<SharedVarPageVo> pageList = records.stream()
+                .map(record -> {
                     SharedVarPageVo sharedVarPageVo = new SharedVarPageVo();
                     BeanUtils.copyProperties(record, sharedVarPageVo);
                     return sharedVarPageVo;
-                }
-        ).collect(Collectors.toList());
+                })
+                .collect(Collectors.toList());
 
         if (!pageList.isEmpty()) {
             // 获取子变量列表
@@ -110,7 +117,7 @@ public class SharedVarServiceImpl extends ServiceImpl<SharedVarDao, SharedVar> i
             packageUserList(pageList);
             // 获取部门名称
             // todo:dept
-//            packageDeptNameList(pageList);
+            //            packageDeptNameList(pageList);
         }
 
         IPage<SharedVarPageVo> resultPage = new Page<>();
@@ -131,7 +138,8 @@ public class SharedVarServiceImpl extends ServiceImpl<SharedVarDao, SharedVar> i
             return;
         }
         List<SharedSubVarVo> subVarList = baseMapper.getSubVarListBySharedVarIds(sharedVarIds);
-        Map<Long, List<SharedSubVarVo>> sharedVarId2SubVarMap = subVarList.stream().collect(Collectors.groupingBy(SharedSubVarVo::getSharedVarId));
+        Map<Long, List<SharedSubVarVo>> sharedVarId2SubVarMap =
+                subVarList.stream().collect(Collectors.groupingBy(SharedSubVarVo::getSharedVarId));
         for (SharedVarPageVo record : records) {
             List<SharedSubVarVo> subVars = sharedVarId2SubVarMap.get(record.getId());
             // 变量组类型
@@ -143,7 +151,6 @@ public class SharedVarServiceImpl extends ServiceImpl<SharedVarDao, SharedVar> i
                 record.setSharedVarEncrypt(sharedSubVarVo.getEncrypt());
                 record.setSharedVarValue(sharedSubVarVo.getVarValue());
             }
-
         }
     }
 
@@ -156,20 +163,21 @@ public class SharedVarServiceImpl extends ServiceImpl<SharedVarDao, SharedVar> i
             return;
         }
         List<SharedVarUser> userList = baseMapper.getUserListBySharedVarIds(sharedVarIds);
-        Map<Long, List<SharedVarUser>> sharedVarId2UserMap = userList.stream().collect(Collectors.groupingBy(SharedVarUser::getSharedVarId));
+        Map<Long, List<SharedVarUser>> sharedVarId2UserMap =
+                userList.stream().collect(Collectors.groupingBy(SharedVarUser::getSharedVarId));
         for (SharedVarPageVo record : records) {
             List<SharedVarUser> users = sharedVarId2UserMap.get(record.getId());
-//            if (users != null && !users.isEmpty()) {
-//                List<UserVo> userVoList = users.stream()
-//                        .map(user -> {
-//                                    UserVo userVo = new UserVo();
-//                                    BeanUtils.copyProperties(user, userVo);
-//                                    return userVo;
-//                                }
-//                        )
-//                        .collect(Collectors.toList());
-//                record.setUserList(userVoList);
-//            }
+            //            if (users != null && !users.isEmpty()) {
+            //                List<UserVo> userVoList = users.stream()
+            //                        .map(user -> {
+            //                                    UserVo userVo = new UserVo();
+            //                                    BeanUtils.copyProperties(user, userVo);
+            //                                    return userVo;
+            //                                }
+            //                        )
+            //                        .collect(Collectors.toList());
+            //                record.setUserList(userVoList);
+            //            }
         }
     }
 
@@ -177,18 +185,18 @@ public class SharedVarServiceImpl extends ServiceImpl<SharedVarDao, SharedVar> i
      * 包装部门名称列表
      */
     // todo:dept
-//    private void packageDeptNameList(List<SharedVarPageVo> records) {
-//        records.forEach(record -> {
-//            record.setDeptName("");
-//            if (StringUtils.hasText(record.getDeptId())) {
-//                UapOrg deptInfoByDeptId = DeptUtils.getDeptInfoByDeptId(record.getDeptId());
-//                if (deptInfoByDeptId != null) {
-//                    String deptName = deptInfoByDeptId.getName();
-//                    record.setDeptName(deptName);
-//                }
-//            }
-//        });
-//    }
+    //    private void packageDeptNameList(List<SharedVarPageVo> records) {
+    //        records.forEach(record -> {
+    //            record.setDeptName("");
+    //            if (StringUtils.hasText(record.getDeptId())) {
+    //                UapOrg deptInfoByDeptId = DeptUtils.getDeptInfoByDeptId(record.getDeptId());
+    //                if (deptInfoByDeptId != null) {
+    //                    String deptName = deptInfoByDeptId.getName();
+    //                    record.setDeptName(deptName);
+    //                }
+    //            }
+    //        });
+    //    }
     @Override
     @Transactional(rollbackFor = Exception.class)
     public AppResponse<String> saveSharedVar(SharedVarSaveDto saveDto) throws NoLoginException {
@@ -236,8 +244,7 @@ public class SharedVarServiceImpl extends ServiceImpl<SharedVarDao, SharedVar> i
      */
     private void checkSaveParam(SharedVarSaveDto saveDto) {
         // 变量类型校验
-        boolean a = Arrays
-                .stream(SharedVarTypeEnum.values())
+        boolean a = Arrays.stream(SharedVarTypeEnum.values())
                 .anyMatch(varType -> varType.getCode().equals(saveDto.getVarType()));
         if (!a) throw new ServiceException(ErrorCodeEnum.E_PARAM_CHECK.getCode(), "变量类型类型错误");
 
@@ -247,16 +254,16 @@ public class SharedVarServiceImpl extends ServiceImpl<SharedVarDao, SharedVar> i
         }
 
         // 可使用账号类型校验
-//        boolean b = Arrays
-//                .stream(UsageTypeEnum.values())
-//                .anyMatch(usageType -> usageType.getCode().equals(saveDto.getUsageType()));
-//        if (!b) throw new ServiceException(ErrorCodeEnum.E_PARAM_CHECK.getCode(), "可使用账号类型错误");
+        //        boolean b = Arrays
+        //                .stream(UsageTypeEnum.values())
+        //                .anyMatch(usageType -> usageType.getCode().equals(saveDto.getUsageType()));
+        //        if (!b) throw new ServiceException(ErrorCodeEnum.E_PARAM_CHECK.getCode(), "可使用账号类型错误");
 
         // 如果可使用账号类型为指定人，用户列表不能为空
-//        if (saveDto.getUsageType().equals(UsageTypeEnum.SELECT.getCode())
-//                && CollectionUtils.isEmpty(saveDto.getSelectedUserList())) {
-//            throw new ServiceException(ErrorCodeEnum.E_PARAM_LOSE.getCode(), "可使用账号类型为指定人时，用户列表不能为空");
-//        }
+        //        if (saveDto.getUsageType().equals(UsageTypeEnum.SELECT.getCode())
+        //                && CollectionUtils.isEmpty(saveDto.getSelectedUserList())) {
+        //            throw new ServiceException(ErrorCodeEnum.E_PARAM_LOSE.getCode(), "可使用账号类型为指定人时，用户列表不能为空");
+        //        }
     }
 
     /**
@@ -380,9 +387,10 @@ public class SharedVarServiceImpl extends ServiceImpl<SharedVarDao, SharedVar> i
             saveSubVarList(sharedVarId, updateDto.getVarList());
         }
         // 5. 如果可使用账号类型为指定人，重新插入shared_var_user数据
-//        if (UsageTypeEnum.SELECT.getCode().equals(updateDto.getUsageType()) && !CollectionUtils.isEmpty(updateDto.getSelectedUserList())) {
-//            saveUserList(sharedVarId, updateDto.getSelectedUserList());
-//        }
+        //        if (UsageTypeEnum.SELECT.getCode().equals(updateDto.getUsageType()) &&
+        // !CollectionUtils.isEmpty(updateDto.getSelectedUserList())) {
+        //            saveUserList(sharedVarId, updateDto.getSelectedUserList());
+        //        }
 
         return AppResponse.success("更新成功");
     }
@@ -417,32 +425,32 @@ public class SharedVarServiceImpl extends ServiceImpl<SharedVarDao, SharedVar> i
         }
     }
 
-//    @Override
-//    public AppResponse<List<ClientSharedVarVo>> getClientSharedVars() throws NoLoginException {
-//        String tenantId = TenantUtils.getTenantId();
-//        if (tenantId == null) {
-//            throw new ServiceException(ErrorCodeEnum.E_PARAM_CHECK.getCode(), "缺少租户信息");
-//        }
-//        String userId = UserUtils.nowUserId();
-////        String deptId = DeptUtils.getDeptId();
-//        SharedVarKeyTenant keyTenant = sharedVarKeyTenantDao.selectByTenantId(tenantId);
-//        if (keyTenant == null) {
-//            throw new ServiceException(ErrorCodeEnum.E_SQL_EMPTY.getCode(), "租户密钥不存在");
-//        }
-//        String aesKey = keyTenant.getKey();
-//
-//        // 3. 查询三种类型的共享变量
-//        List<String> selectVarIds = sharedVarUserDao.getAvailableSharedVarIds(userId);
-//        List<SharedVar> availableVars = sharedVarDao.getAvailableSharedVars(tenantId, deptId, selectVarIds);
-//        if (availableVars.isEmpty()) {
-//            return AppResponse.success(new ArrayList<>());
-//        }
-//
-//        // 4. 封装结果
-//        List<ClientSharedVarVo> result = packageResultVo(availableVars, aesKey);
-//
-//        return AppResponse.success(result);
-//    }
+    //    @Override
+    //    public AppResponse<List<ClientSharedVarVo>> getClientSharedVars() throws NoLoginException {
+    //        String tenantId = TenantUtils.getTenantId();
+    //        if (tenantId == null) {
+    //            throw new ServiceException(ErrorCodeEnum.E_PARAM_CHECK.getCode(), "缺少租户信息");
+    //        }
+    //        String userId = UserUtils.nowUserId();
+    ////        String deptId = DeptUtils.getDeptId();
+    //        SharedVarKeyTenant keyTenant = sharedVarKeyTenantDao.selectByTenantId(tenantId);
+    //        if (keyTenant == null) {
+    //            throw new ServiceException(ErrorCodeEnum.E_SQL_EMPTY.getCode(), "租户密钥不存在");
+    //        }
+    //        String aesKey = keyTenant.getKey();
+    //
+    //        // 3. 查询三种类型的共享变量
+    //        List<String> selectVarIds = sharedVarUserDao.getAvailableSharedVarIds(userId);
+    //        List<SharedVar> availableVars = sharedVarDao.getAvailableSharedVars(tenantId, deptId, selectVarIds);
+    //        if (availableVars.isEmpty()) {
+    //            return AppResponse.success(new ArrayList<>());
+    //        }
+    //
+    //        // 4. 封装结果
+    //        List<ClientSharedVarVo> result = packageResultVo(availableVars, aesKey);
+    //
+    //        return AppResponse.success(result);
+    //    }
 
     /**
      * 获取共享变量租户密钥
@@ -469,7 +477,8 @@ public class SharedVarServiceImpl extends ServiceImpl<SharedVarDao, SharedVar> i
     private List<ClientSharedVarVo> packageResultVo(List<SharedVar> availableVars, String aesKey) {
         List<Long> sharedVarIds = availableVars.stream().map(SharedVar::getId).collect(Collectors.toList());
         List<SharedSubVarVo> subVarList = baseMapper.getSubVarListBySharedVarIds(sharedVarIds);
-        Map<Long, List<SharedSubVarVo>> sharedVarId2SubVarMap = subVarList.stream().collect(Collectors.groupingBy(SharedSubVarVo::getSharedVarId));
+        Map<Long, List<SharedSubVarVo>> sharedVarId2SubVarMap =
+                subVarList.stream().collect(Collectors.groupingBy(SharedSubVarVo::getSharedVarId));
 
         List<ClientSharedVarVo> result = new ArrayList<>();
         for (SharedVar sharedVar : availableVars) {

@@ -1,8 +1,7 @@
 package com.iflytek.rpa.base.entity;
 
-import lombok.Data;
-
 import java.util.Map;
+import lombok.Data;
 
 /**
  * @author mjren
@@ -13,6 +12,4 @@ import java.util.Map;
 public class Atomics {
 
     private Map<String, Object> atomMap;
-
-
 }

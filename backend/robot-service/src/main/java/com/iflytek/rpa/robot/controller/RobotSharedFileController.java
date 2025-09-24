@@ -10,11 +10,10 @@ import com.iflytek.rpa.robot.entity.vo.TagVo;
 import com.iflytek.rpa.robot.service.SharedFileService;
 import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * 共享文件管理
@@ -36,10 +35,10 @@ public class RobotSharedFileController {
      * @throws NoLoginException 如果用户未登录
      */
     @PostMapping("/page")
-    public AppResponse<IPage<SharedFilePageVo>> getSharedFilePageList(@RequestBody SharedFilePageDto queryDto) throws NoLoginException {
+    public AppResponse<IPage<SharedFilePageVo>> getSharedFilePageList(@RequestBody SharedFilePageDto queryDto)
+            throws NoLoginException {
         return sharedFileService.getSharedFilePageList(queryDto);
     }
-
 
     /**
      * 删除共享文件
@@ -49,7 +48,8 @@ public class RobotSharedFileController {
      * @throws NoLoginException 如果用户未登录
      */
     @PostMapping("/delete")
-    public AppResponse<String> deleteSharedFile(HttpServletRequest request, @RequestBody SharedFileBatchDeleteDto batchDeleteDto) throws NoLoginException {
+    public AppResponse<String> deleteSharedFile(
+            HttpServletRequest request, @RequestBody SharedFileBatchDeleteDto batchDeleteDto) throws NoLoginException {
         return sharedFileService.deleteSharedFile(request, batchDeleteDto);
     }
 
@@ -62,7 +62,8 @@ public class RobotSharedFileController {
      * @throws NoLoginException
      */
     @PostMapping("/addSharedFileInfo")
-    public AppResponse<?> addSharedFileInfo(HttpServletRequest request, @RequestBody SharedFileDto dto) throws NoLoginException {
+    public AppResponse<?> addSharedFileInfo(HttpServletRequest request, @RequestBody SharedFileDto dto)
+            throws NoLoginException {
         return sharedFileService.addSharedFileInfo(request, dto);
     }
 
@@ -75,7 +76,8 @@ public class RobotSharedFileController {
      * @throws NoLoginException
      */
     @PostMapping("/updateSharedFileInfo")
-    public AppResponse<?> updateSharedFileInfo(HttpServletRequest request, @RequestBody UpdateSharedFileDto dto) throws NoLoginException {
+    public AppResponse<?> updateSharedFileInfo(HttpServletRequest request, @RequestBody UpdateSharedFileDto dto)
+            throws NoLoginException {
         return sharedFileService.updateSharedFileInfo(request, dto);
     }
 
@@ -98,7 +100,8 @@ public class RobotSharedFileController {
      * @throws NoLoginException 如果用户未登录
      */
     @PostMapping("/tags/add")
-    public AppResponse<String> addTags(HttpServletRequest request, @RequestParam String tagName) throws NoLoginException {
+    public AppResponse<String> addTags(HttpServletRequest request, @RequestParam String tagName)
+            throws NoLoginException {
         return sharedFileService.addTags(request, tagName);
     }
 
@@ -111,7 +114,9 @@ public class RobotSharedFileController {
      * @throws NoLoginException 如果用户未登录
      */
     @PostMapping("/tags/update")
-    public AppResponse<String> updateTags(HttpServletRequest request, @RequestParam Long tagId, @RequestParam String tagName) throws NoLoginException {
+    public AppResponse<String> updateTags(
+            HttpServletRequest request, @RequestParam Long tagId, @RequestParam String tagName)
+            throws NoLoginException {
         return sharedFileService.updateTags(request, tagId, tagName);
     }
 
@@ -123,7 +128,8 @@ public class RobotSharedFileController {
      * @throws NoLoginException 如果用户未登录
      */
     @PostMapping("/tags/delete")
-    public AppResponse<String> deleteTags(HttpServletRequest request, @RequestParam Long tagId) throws NoLoginException {
+    public AppResponse<String> deleteTags(HttpServletRequest request, @RequestParam Long tagId)
+            throws NoLoginException {
         return sharedFileService.deleteTags(request, tagId);
     }
 }

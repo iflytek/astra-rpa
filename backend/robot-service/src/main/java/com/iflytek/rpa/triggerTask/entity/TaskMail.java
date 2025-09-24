@@ -1,10 +1,9 @@
 package com.iflytek.rpa.triggerTask.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
 
 /**
  * <p>
@@ -47,5 +46,4 @@ public class TaskMail implements Serializable {
 
     @TableLogic(value = "0", delval = "1")
     private Integer deleted; // 是否删除 0：未删除，1：已删除
-
 }

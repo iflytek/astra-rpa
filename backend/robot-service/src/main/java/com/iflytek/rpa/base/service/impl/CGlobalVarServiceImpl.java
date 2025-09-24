@@ -10,12 +10,11 @@ import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
 import com.iflytek.rpa.utils.IdWorker;
 import com.iflytek.rpa.utils.UserUtils;
+import java.util.List;
+import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * 客户端-全局变量(CGlobalVar)表服务实现类

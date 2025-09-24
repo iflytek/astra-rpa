@@ -4,17 +4,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
 import com.iflytek.rpa.task.entity.enums.SourceTypeEnum;
 import com.iflytek.rpa.task.entity.enums.TerminalTypeEnum;
+import java.io.PrintWriter;
+import java.util.Objects;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.PrintWriter;
-import java.util.Objects;
 
 /**
  * @Author: wyzhou3
@@ -24,8 +23,7 @@ import java.util.Objects;
 public class HttpUtils extends com.iflytek.rpa.starter.utils.HttpUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(com.iflytek.rpa.starter.utils.HttpUtils.class);
 
-    public HttpUtils() {
-    }
+    public HttpUtils() {}
 
     public static String getSsoSessionId() {
         return getHeader("ssoSessionId");
@@ -48,7 +46,8 @@ public class HttpUtils extends com.iflytek.rpa.starter.utils.HttpUtils {
     }
 
     public static HttpServletRequest getRequest() {
-        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes()))
+                .getRequest();
     }
 
     public static HttpSession getSession() {
@@ -61,14 +60,13 @@ public class HttpUtils extends com.iflytek.rpa.starter.utils.HttpUtils {
 
     public static String getTerminalType() {
         String terminalType = HttpUtils.getHeader("terminalType");
-        return org.apache.commons.lang3.StringUtils.isEmpty(terminalType) ?
-                TerminalTypeEnum.PRIVATE.getCode():terminalType;
-
+        return org.apache.commons.lang3.StringUtils.isEmpty(terminalType)
+                ? TerminalTypeEnum.PRIVATE.getCode()
+                : terminalType;
     }
 
     public static String getAppId() {
         return HttpUtils.getHeader("appId");
-
     }
 
     public static String getSourceType() {
@@ -77,7 +75,6 @@ public class HttpUtils extends com.iflytek.rpa.starter.utils.HttpUtils {
             return SourceTypeEnum.CLIENT.getCode();
         }
         return SourceTypeEnum.WEB.getCode();
-
     }
 
     public static void print(AppResponse<String> response, ServletResponse servletResponse) {
@@ -99,8 +96,6 @@ public class HttpUtils extends com.iflytek.rpa.starter.utils.HttpUtils {
                 out.flush();
                 out.close();
             }
-
         }
-
     }
 }

@@ -8,12 +8,11 @@ import com.iflytek.rpa.task.entity.dto.ScheduleTaskRecordDto;
 import com.iflytek.rpa.task.entity.dto.TaskExecuteDto;
 import com.iflytek.rpa.task.entity.vo.TaskRecordListVo;
 import com.iflytek.rpa.task.service.ScheduleTaskExecuteService;
+import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * 计划任务执行记录
@@ -30,7 +29,6 @@ public class ScheduleTaskExecuteController {
     @Resource
     private ScheduleTaskExecuteService scheduleTaskExecuteService;
 
-
     /**
      * 计划任务-执行状态上报
      *
@@ -43,7 +41,6 @@ public class ScheduleTaskExecuteController {
         return scheduleTaskExecuteService.setTaskExecuteStatus(executeDto);
     }
 
-
     /**
      * 计划任务-执行记录列表
      *
@@ -51,11 +48,10 @@ public class ScheduleTaskExecuteController {
      * @return
      * @throws NoLoginException
      */
-/*    @PostMapping("/list")
+    /*    @PostMapping("/list")
     public AppResponse<?> getTaskExecuteRecordList(@Valid @RequestBody TaskExecuteDto executeDto) throws NoLoginException {
         return scheduleTaskExecuteService.getTaskExecuteRecordList(executeDto);
     }*/
-
 
     /**
      * 计划任务执行记录
@@ -65,7 +61,8 @@ public class ScheduleTaskExecuteController {
      * @throws NoLoginException
      */
     @PostMapping("/list")
-    public AppResponse<IPage<TaskRecordListVo>> getRecordList(@RequestBody ScheduleTaskRecordDto recordDto) throws NoLoginException {
+    public AppResponse<IPage<TaskRecordListVo>> getRecordList(@RequestBody ScheduleTaskRecordDto recordDto)
+            throws NoLoginException {
         return scheduleTaskExecuteService.getRecordList(recordDto);
     }
 
@@ -81,4 +78,3 @@ public class ScheduleTaskExecuteController {
         return scheduleTaskExecuteService.batchDelete(dto);
     }
 }
-

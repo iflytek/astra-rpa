@@ -3,12 +3,11 @@ package com.iflytek.rpa.base.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.util.Date;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Null;
+import lombok.Data;
 
 /**
  * 流程项id数据(CProcess)实体类
@@ -55,7 +54,4 @@ public class CProcess implements Serializable {
 
     @NotBlank
     private Integer robotVersion;
-
-
 }
-

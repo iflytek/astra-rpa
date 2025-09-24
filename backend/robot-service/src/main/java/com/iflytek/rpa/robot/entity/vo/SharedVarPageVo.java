@@ -1,10 +1,9 @@
 package com.iflytek.rpa.robot.entity.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.util.Date;
 import java.util.List;
+import lombok.Data;
 
 /**
  * 共享变量分页查询返回VO
@@ -72,8 +71,8 @@ public class SharedVarPageVo {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
-//    /**
-//     * 用户列表
-//     */
-//    private List<UserVo> userList;
-} 
+    //    /**
+    //     * 用户列表
+    //     */
+    //    private List<UserVo> userList;
+}

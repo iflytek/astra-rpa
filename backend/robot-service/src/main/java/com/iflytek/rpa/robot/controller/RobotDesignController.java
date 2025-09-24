@@ -7,10 +7,9 @@ import com.iflytek.rpa.robot.entity.dto.ShareDesignDto;
 import com.iflytek.rpa.robot.service.RobotDesignService;
 import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
-import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 云端机器人表(RobotDesign)表控制层
@@ -24,7 +23,6 @@ public class RobotDesignController {
 
     @Resource
     private RobotDesignService robotDesignService;
-
 
     /**
      * 创建机器人
@@ -70,7 +68,8 @@ public class RobotDesignController {
      * @throws NoLoginException
      */
     @GetMapping("/rename")
-    public AppResponse<?> rename(@RequestParam("newName") String newName, @RequestParam("robotId") String robotId) throws NoLoginException {
+    public AppResponse<?> rename(@RequestParam("newName") String newName, @RequestParam("robotId") String robotId)
+            throws NoLoginException {
         return robotDesignService.rename(newName, robotId);
     }
 
@@ -82,7 +81,8 @@ public class RobotDesignController {
      * @throws NoLoginException
      */
     @GetMapping("/design-name-dup")
-    public AppResponse<?> designNameDup(@RequestParam("newName") String newName, @RequestParam("robotId") String robotId) throws NoLoginException {
+    public AppResponse<?> designNameDup(
+            @RequestParam("newName") String newName, @RequestParam("robotId") String robotId) throws NoLoginException {
 
         return robotDesignService.designNameDup(newName, robotId);
     }
@@ -119,7 +119,8 @@ public class RobotDesignController {
      * @throws NoLoginException
      */
     @GetMapping("/copy-design-robot")
-    public AppResponse<?> copyRobot(@RequestParam("robotId") String robotId, @RequestParam("robotName") String robotName) throws Exception {
+    public AppResponse<?> copyRobot(
+            @RequestParam("robotId") String robotId, @RequestParam("robotName") String robotName) throws Exception {
         return robotDesignService.copyDesignRobot(robotId, robotName);
     }
 
@@ -158,6 +159,4 @@ public class RobotDesignController {
     public AppResponse<?> shareRobot(@RequestBody ShareDesignDto queryDto) throws Exception {
         return robotDesignService.shareRobot(queryDto);
     }
-
 }
-

@@ -5,13 +5,12 @@ import com.iflytek.rpa.base.entity.dto.CRequireDeleteDto;
 import com.iflytek.rpa.base.entity.dto.CRequireDto;
 import com.iflytek.rpa.base.service.CRequireService;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
 
 /**
  * python依赖管理(CRequire)表控制层
@@ -27,7 +26,6 @@ public class CRequireController {
      */
     @Resource
     private CRequireService cRequireService;
-
 
     @PostMapping("/list")
     public AppResponse<?> getRequireInfoList(@RequestBody @Valid BaseDto baseDto) throws Exception {
@@ -67,4 +65,3 @@ public class CRequireController {
         return cRequireService.updateRequire(crequireDto);
     }
 }
-

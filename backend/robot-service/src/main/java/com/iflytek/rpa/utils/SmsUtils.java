@@ -4,13 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.iflytek.rpa.starter.utils.StringUtils;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
 import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
+import java.util.*;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.*;
 
 /**
  * @author jqfang3
@@ -20,10 +19,13 @@ import java.util.*;
 public class SmsUtils {
     @Value("${sms.apiUrl:https://dripsms.xfpaas.com/sms}")
     public String apiSendSms;
+
     @Value("${sms.secretKey:9a530169680ac3428c7ae3125391b5e8}")
     public String secretKey;
+
     @Value("${sms.appId:KVQ8D5K11R}")
     public String appId;
+
     @Value("${sms.tid:16696}")
     public String tid;
 
@@ -42,7 +44,6 @@ public class SmsUtils {
         tpMap.put("sendContent", text);
         return sendSms(phone, tid, tpMap);
     }
-
 
     /**
      * 发送短信
@@ -84,7 +85,6 @@ public class SmsUtils {
         ResponseEntity<String> response = restTemplate.exchange(apiSendSms, method, requestEntity, String.class);
         return JSONObject.parseObject(response.getBody(), AppResponse.class);
     }
-
 
     /**
      * 获取签名

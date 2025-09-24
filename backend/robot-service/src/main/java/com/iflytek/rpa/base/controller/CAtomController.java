@@ -7,11 +7,10 @@ import com.iflytek.rpa.base.entity.dto.AtomListDto;
 import com.iflytek.rpa.base.entity.dto.SaveAtomicsDto;
 import com.iflytek.rpa.base.service.CAtomMetaService;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
+import java.util.Map;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.Map;
 
 /**
  * 原子能力定义信息
@@ -39,7 +38,6 @@ public class CAtomController {
         return cAtomMetaService.getAtomListByParentKey(parentKey);
     }
 
-
     /**
      * 根据key和version列表批量获取原子能力定义
      */
@@ -64,7 +62,6 @@ public class CAtomController {
         return cAtomMetaService.getLatestAtomsByList(dto);
     }
 
-
     /**
      * 新增原子能力公共数据（types、commonAdvancedParameter、atomicTree、atomicTreeExtend）
      */
@@ -75,7 +72,6 @@ public class CAtomController {
         return cAtomMetaService.addAtomCommonInfo(atomCommon);
     }
 
-
     /**
      * 更新原子能力公共数据（types、commonAdvancedParameter、atomicTree、atomicTreeExtend）
      *
@@ -83,7 +79,8 @@ public class CAtomController {
      * @return
      */
     @PostMapping("/update-common")
-    public AppResponse<?> updateAtomCommonInfo(@Valid @RequestBody AtomCommon atomCommon) throws JsonProcessingException {
+    public AppResponse<?> updateAtomCommonInfo(@Valid @RequestBody AtomCommon atomCommon)
+            throws JsonProcessingException {
         // todo 加密码，限流
         return cAtomMetaService.updateAtomCommonInfo(atomCommon);
     }

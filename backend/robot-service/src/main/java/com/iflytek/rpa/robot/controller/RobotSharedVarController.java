@@ -8,10 +8,9 @@ import com.iflytek.rpa.robot.entity.vo.SharedVarPageVo;
 import com.iflytek.rpa.robot.service.SharedVarService;
 import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
 import java.util.List;
+import javax.annotation.Resource;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 共享变量管理
@@ -34,7 +33,8 @@ public class RobotSharedVarController {
      * @throws NoLoginException 未登录异常
      */
     @PostMapping("/page-list")
-    public AppResponse<IPage<SharedVarPageVo>> getSharedVarPageList(@RequestBody SharedVarPageDto queryDto) throws NoLoginException {
+    public AppResponse<IPage<SharedVarPageVo>> getSharedVarPageList(@RequestBody SharedVarPageDto queryDto)
+            throws NoLoginException {
         return sharedVarService.getSharedVarPageList(queryDto);
     }
 
@@ -62,7 +62,6 @@ public class RobotSharedVarController {
         return sharedVarService.deleteSharedVar(deleteDto);
     }
 
-
     /**
      * 卓越中心-变量管理-编辑共享变量
      *
@@ -86,16 +85,16 @@ public class RobotSharedVarController {
         return sharedVarService.getSharedVarKey();
     }
 
-//    /**
-//     * 客户端-查询该用户可用的所有共享变量
-//     *
-//     * @return 共享变量列表
-//     * @throws NoLoginException 未登录异常
-//     */
-//    @GetMapping("/get-shared-var")
-//    public AppResponse<List<ClientSharedVarVo>> getClientSharedVars() throws NoLoginException {
-//        return sharedVarService.getClientSharedVars();
-//    }
+    //    /**
+    //     * 客户端-查询该用户可用的所有共享变量
+    //     *
+    //     * @return 共享变量列表
+    //     * @throws NoLoginException 未登录异常
+    //     */
+    //    @GetMapping("/get-shared-var")
+    //    public AppResponse<List<ClientSharedVarVo>> getClientSharedVars() throws NoLoginException {
+    //        return sharedVarService.getClientSharedVars();
+    //    }
 
     /**
      * 客户端-根据id批量查询共享变量
@@ -105,7 +104,8 @@ public class RobotSharedVarController {
      * @throws NoLoginException
      */
     @PostMapping("/get-batch-shared-var")
-    public AppResponse<List<ClientSharedVarVo>> getBatchSharedVar(@RequestBody SharedVarBatchDto dto) throws NoLoginException {
+    public AppResponse<List<ClientSharedVarVo>> getBatchSharedVar(@RequestBody SharedVarBatchDto dto)
+            throws NoLoginException {
         return sharedVarService.getBatchSharedVar(dto);
     }
 }

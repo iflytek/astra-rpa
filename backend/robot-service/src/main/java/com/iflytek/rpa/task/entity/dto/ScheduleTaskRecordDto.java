@@ -1,9 +1,8 @@
 package com.iflytek.rpa.task.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 /**
  * 计划任务执行记录列表DTO

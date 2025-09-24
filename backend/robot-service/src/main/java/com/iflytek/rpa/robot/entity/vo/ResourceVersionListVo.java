@@ -1,9 +1,8 @@
 package com.iflytek.rpa.robot.entity.vo;
 
-import lombok.Data;
-
 import java.util.Date;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class ResourceVersionListVo {

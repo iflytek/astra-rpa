@@ -5,8 +5,7 @@ public class Actor {
     private String account;
     private String name;
 
-    public Actor() {
-    }
+    public Actor() {}
 
     public Long getId() {
         return this.id;

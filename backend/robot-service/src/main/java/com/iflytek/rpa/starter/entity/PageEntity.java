@@ -4,8 +4,7 @@ public class PageEntity {
     private Long pageNo = 1L;
     private Long pageSize = 10L;
 
-    public PageEntity() {
-    }
+    public PageEntity() {}
 
     public Long getPageNo() {
         return this.pageNo;

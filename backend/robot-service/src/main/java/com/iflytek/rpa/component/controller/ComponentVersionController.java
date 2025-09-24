@@ -4,9 +4,8 @@ import com.iflytek.rpa.component.entity.dto.CreateVersionDto;
 import com.iflytek.rpa.component.service.ComponentVersionService;
 import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
-import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 组件版本表(ComponentVersion)表控制层
@@ -29,7 +28,8 @@ public class ComponentVersionController {
      * @throws NoLoginException
      */
     @PostMapping("create")
-    AppResponse<Boolean> createComponentVersion(@RequestBody CreateVersionDto createVersionDto) throws NoLoginException {
+    AppResponse<Boolean> createComponentVersion(@RequestBody CreateVersionDto createVersionDto)
+            throws NoLoginException {
 
         return componentVersionService.createComponentVersion(createVersionDto);
     }
@@ -45,5 +45,4 @@ public class ComponentVersionController {
     AppResponse<Integer> getNextVersionNumber(@RequestParam("componentId") String componentId) throws NoLoginException {
         return componentVersionService.getNextVersionNumber(componentId);
     }
-
-} 
+}

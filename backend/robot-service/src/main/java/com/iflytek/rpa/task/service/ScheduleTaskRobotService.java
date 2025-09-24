@@ -1,8 +1,6 @@
 package com.iflytek.rpa.task.service;
 
 import com.iflytek.rpa.task.entity.ScheduleTaskRobot;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 /**
  * 计划任务机器人列表(ScheduleTaskRobot)表服务接口
@@ -19,6 +17,4 @@ public interface ScheduleTaskRobotService {
      * @return 实例对象
      */
     ScheduleTaskRobot queryById(Long id);
-
-
 }

@@ -3,14 +3,13 @@ package com.iflytek.rpa.component.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
+import java.util.Date;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 组件表(Component)实体类
@@ -108,4 +107,4 @@ public class Component implements Serializable {
      * editing 编辑中，published 已发版，shared 已上架，locked锁定（无法编辑）
      */
     private String transformStatus;
-} 
+}

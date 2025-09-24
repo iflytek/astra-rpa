@@ -1,9 +1,8 @@
 package com.iflytek.rpa.robot.entity.dto;
 
-import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 import java.util.List;
+import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 /**
  * 共享变量更新DTO
@@ -19,4 +18,4 @@ public class SharedVarBatchDto {
      */
     @NotNull(message = "共享变量ID-List不能为空")
     private List<Long> ids;
-} 
+}

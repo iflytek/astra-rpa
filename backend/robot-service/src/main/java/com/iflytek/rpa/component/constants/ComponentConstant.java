@@ -72,4 +72,4 @@ public class ComponentConstant {
      * 是否删除：已删除
      */
     public static final Integer DELETED_YES = 1;
-} 
+}

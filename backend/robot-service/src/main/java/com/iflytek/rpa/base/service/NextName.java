@@ -1,7 +1,6 @@
 package com.iflytek.rpa.base.service;
 
 import com.iflytek.rpa.base.entity.dto.BaseDto;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +35,5 @@ public abstract class NextName {
         return nameBase + nameIndex;
     }
 
-
     protected abstract List<String> getNameList(BaseDto baseDto);
-
 }

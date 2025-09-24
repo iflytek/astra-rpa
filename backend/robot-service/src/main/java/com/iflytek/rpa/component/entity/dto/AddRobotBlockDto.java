@@ -1,10 +1,9 @@
 package com.iflytek.rpa.component.entity.dto;
 
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotBlank;
 
 /**
  * 添加机器人屏蔽记录数据传输对象
@@ -39,4 +38,4 @@ public class AddRobotBlockDto {
      */
     @NotBlank(message = "组件ID不能为空")
     private String componentId;
-} 
+}

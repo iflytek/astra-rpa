@@ -11,7 +11,6 @@ import com.iflytek.rpa.triggerTask.entity.vo.Executor;
 import com.iflytek.rpa.triggerTask.entity.vo.TaskPage4TriggerVo;
 import com.iflytek.rpa.triggerTask.entity.vo.TaskPageVo;
 import com.iflytek.rpa.triggerTask.entity.vo.TriggerTaskVo;
-
 import java.util.List;
 
 public interface TriggerTaskService {
@@ -35,5 +34,4 @@ public interface TriggerTaskService {
     AppResponse<IPage<TaskPageVo>> triggerTaskPage(TaskPageDto queryDto) throws NoLoginException;
 
     AppResponse<IPage<TaskPage4TriggerVo>> triggerTaskPage4Trigger(TaskPageDto queryDto) throws NoLoginException;
-
 }

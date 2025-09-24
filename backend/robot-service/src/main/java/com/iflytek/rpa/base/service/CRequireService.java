@@ -5,7 +5,6 @@ import com.iflytek.rpa.base.entity.dto.CRequireDeleteDto;
 import com.iflytek.rpa.base.entity.dto.CRequireDto;
 import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
-
 import javax.validation.Valid;
 
 /**
@@ -14,7 +13,6 @@ import javax.validation.Valid;
  * @author mjren
  * @since 2024-10-14 17:21:35
  */
-
 public interface CRequireService {
 
     AppResponse<?> getRequireInfoList(BaseDto baseDto) throws NoLoginException;

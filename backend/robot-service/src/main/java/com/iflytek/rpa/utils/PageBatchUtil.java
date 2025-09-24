@@ -11,7 +11,7 @@ public class PageBatchUtil {
      * @param consumer  处理函数，接收 limit 和 offset
      */
     public static void process(int total, int batchSize, BiConsumer<Integer, Integer> consumer) {
-        //todo offset改成long
+        // todo offset改成long
         if (total < 0 || batchSize <= 0) {
             throw new IllegalArgumentException("Total must be non-negative and batchSize must be positive.");
         }

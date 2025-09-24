@@ -6,11 +6,10 @@ import com.iflytek.rpa.task.entity.ScheduleTaskExecute;
 import com.iflytek.rpa.task.entity.dto.ScheduleTaskRecordDto;
 import com.iflytek.rpa.task.entity.dto.TaskExecuteDto;
 import com.iflytek.rpa.task.entity.vo.TaskRecordListVo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.Date;
 import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 计划任务执行记录(ScheduleTaskExecute)表数据库访问层
@@ -21,20 +20,16 @@ import java.util.List;
 @Mapper
 public interface ScheduleTaskExecuteDao extends BaseMapper<ScheduleTaskExecute> {
 
-
     void insertExecuteRecord(ScheduleTaskExecute scheduleTaskExecute);
-
 
     Integer countExecuteRecord(@Param("taskExecuteId") String executeId);
 
     Integer getMaxBatch(@Param("taskId") String taskId);
 
-
     Integer updateExecuteStatus(@Param("entity") TaskExecuteDto taskExecuteDto);
 
-
-    IPage<TaskExecuteDto> getTaskExecuteRecordList(IPage<TaskExecuteDto> pageConfig,
-                                                   @Param("entity") TaskExecuteDto executeDto);
+    IPage<TaskExecuteDto> getTaskExecuteRecordList(
+            IPage<TaskExecuteDto> pageConfig, @Param("entity") TaskExecuteDto executeDto);
 
     /**
      * 分页查询计划任务执行记录列表
@@ -43,7 +38,8 @@ public interface ScheduleTaskExecuteDao extends BaseMapper<ScheduleTaskExecute> 
      * @param recordDto  查询参数
      * @return 分页结果
      */
-    IPage<TaskRecordListVo> getTaskRecordList(IPage<TaskRecordListVo> pageConfig, @Param("dto") ScheduleTaskRecordDto recordDto);
+    IPage<TaskRecordListVo> getTaskRecordList(
+            IPage<TaskRecordListVo> pageConfig, @Param("dto") ScheduleTaskRecordDto recordDto);
 
     /**
      * 批量逻辑删除计划任务执行记录
@@ -53,7 +49,10 @@ public interface ScheduleTaskExecuteDao extends BaseMapper<ScheduleTaskExecute> 
      * @param tenantId          租户ID
      * @return 删除的记录数
      */
-    Integer batchDeleteByTaskExecuteIds(@Param("taskExecuteIdList") List<String> taskExecuteIdList, @Param("userId") String userId, @Param("tenantId") String tenantId);
+    Integer batchDeleteByTaskExecuteIds(
+            @Param("taskExecuteIdList") List<String> taskExecuteIdList,
+            @Param("userId") String userId,
+            @Param("tenantId") String tenantId);
 
     /**
      * 查询超时的执行记录
@@ -71,6 +70,4 @@ public interface ScheduleTaskExecuteDao extends BaseMapper<ScheduleTaskExecute> 
      * @return 更新的记录数
      */
     Integer updateExecutingRecordsToCancelByIds(@Param("idList") List<Long> idList);
-
 }
-

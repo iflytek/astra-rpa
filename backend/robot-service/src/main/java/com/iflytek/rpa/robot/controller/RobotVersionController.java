@@ -7,10 +7,9 @@ import com.iflytek.rpa.robot.entity.dto.VersionListDto;
 import com.iflytek.rpa.robot.service.RobotVersionService;
 import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
-import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 云端机器人版本表(RobotVersion)表控制层
@@ -27,7 +26,6 @@ public class RobotVersionController {
      */
     @Resource
     private RobotVersionService robotVersionService;
-
 
     /**
      * 机器人发版-重名校验
@@ -54,7 +52,6 @@ public class RobotVersionController {
         return robotVersionService.publishRobot(robotVersionDto);
     }
 
-
     /**
      * 机器人发版-上次发版信息回显
      *
@@ -65,7 +62,6 @@ public class RobotVersionController {
     public AppResponse<?> getRobotVersionInfo(@RequestBody RobotVersion robotVersion) throws NoLoginException {
         return robotVersionService.getLastRobotVersionInfo(robotVersion);
     }
-
 
     /**
      * 执行器里查询指定机器人所有版本
@@ -103,7 +99,6 @@ public class RobotVersionController {
         return robotVersionService.recoverVersion(queryDto);
     }
 
-
     /**
      * 设计器版本管理列表
      *
@@ -116,4 +111,3 @@ public class RobotVersionController {
         return robotVersionService.list4Design(robotId);
     }
 }
-

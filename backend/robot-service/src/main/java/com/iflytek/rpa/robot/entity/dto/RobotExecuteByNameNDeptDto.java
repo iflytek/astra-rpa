@@ -1,8 +1,7 @@
 package com.iflytek.rpa.robot.entity.dto;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class RobotExecuteByNameNDeptDto {

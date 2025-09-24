@@ -1,5 +1,9 @@
 package com.iflytek.rpa.base.service.impl;
 
+import static com.iflytek.rpa.base.constants.BaseConstant.PROCESS_TYPE_MODULE;
+import static com.iflytek.rpa.base.constants.BaseConstant.PROCESS_TYPE_PROCESS;
+import static com.iflytek.rpa.robot.constants.RobotConstant.EDITING;
+
 import com.iflytek.rpa.base.annotation.RobotVersionAnnotation;
 import com.iflytek.rpa.base.dao.CProcessDao;
 import com.iflytek.rpa.base.entity.CProcess;
@@ -23,19 +27,14 @@ import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
 import com.iflytek.rpa.utils.IdWorker;
 import com.iflytek.rpa.utils.TenantUtils;
 import com.iflytek.rpa.utils.UserUtils;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.iflytek.rpa.base.constants.BaseConstant.PROCESS_TYPE_MODULE;
-import static com.iflytek.rpa.base.constants.BaseConstant.PROCESS_TYPE_PROCESS;
-import static com.iflytek.rpa.robot.constants.RobotConstant.EDITING;
 
 /**
  * 流程项id数据(CProcess)表服务实现类
@@ -66,7 +65,6 @@ public class CProcessServiceImpl extends NextName implements CProcessService {
     @Autowired
     private IdWorker idWorker;
 
-
     @Override
     public AppResponse<String> getProcessNextName(String robotId) {
         BaseDto baseDto = new BaseDto();
@@ -89,7 +87,6 @@ public class CProcessServiceImpl extends NextName implements CProcessService {
         }
         return AppResponse.success(nextName);
     }
-
 
     public AppResponse<Map> createNewProcess(CreateProcessDto processDto) throws NoLoginException {
         CProcess searchDto = new CProcess();
@@ -124,7 +121,6 @@ public class CProcessServiceImpl extends NextName implements CProcessService {
         return AppResponse.success(responseData);
     }
 
-
     @Override
     public AppResponse<Boolean> renameProcess(RenameProcessDto processDto) throws NoLoginException {
         CProcess searchDto = new CProcess();
@@ -140,7 +136,6 @@ public class CProcessServiceImpl extends NextName implements CProcessService {
         cProcessDao.renameProcess(searchDto);
         return AppResponse.success(true);
     }
-
 
     @Override
     public AppResponse<?> getAllProcessData(CProcess process) {
@@ -167,11 +162,10 @@ public class CProcessServiceImpl extends NextName implements CProcessService {
         String oldProcessContent = oldProcess.getProcessContent();
         String newProcessContent = process.getProcessJson();
         if ((null == oldProcessContent || null == newProcessContent) || !oldProcessContent.equals(newProcessContent)) {
-            //内容发生了变化
-            //将设计器机器人或组件的状态设置为编辑中
+            // 内容发生了变化
+            // 将设计器机器人或组件的状态设置为编辑中
             robotDesignDao.updateTransformStatus(userId, process.getRobotId(), null, EDITING);
             Integer i = componentDao.updateTransformStatus(userId, process.getRobotId(), null, EDITING);
-
         }
         if (null != newProcessContent) {
             // 限制流程数据的大小
@@ -183,7 +177,7 @@ public class CProcessServiceImpl extends NextName implements CProcessService {
                 return AppResponse.error(ErrorCodeEnum.E_PARAM, "流程数据不能超过15M");
             }
         }
-        //如果没有更改，则不更改编辑状态
+        // 如果没有更改，则不更改编辑状态
         cProcessDao.updateProcessContent(process);
         return AppResponse.success(true);
     }
@@ -233,14 +227,13 @@ public class CProcessServiceImpl extends NextName implements CProcessService {
         return AppResponse.success("权限检查通过");
     }
 
-
     @Override
     @RobotVersionAnnotation
     public AppResponse<?> getProcessNameList(BaseDto baseDto) throws NoLoginException {
         String userId = UserUtils.nowUserId();
         baseDto.setCreatorId(userId);
         List<CProcess> processNameList = cProcessDao.getProcessNameList(baseDto);
-        //将主流程排在第一个
+        // 将主流程排在第一个
         processNameList.sort((p1, p2) -> {
             if ("主流程".equals(p1.getProcessName())) {
                 // p1 是 "主流程"，放在前面
@@ -256,12 +249,11 @@ public class CProcessServiceImpl extends NextName implements CProcessService {
         return AppResponse.success(processNameList);
     }
 
-
     @Override
     public AppResponse<?> copySubProcess(String robotId, String processId, String type) {
         Map<String, String> result = new HashMap<>();
         if (PROCESS_TYPE_PROCESS.equals(type)) {
-            //查询原流程数据
+            // 查询原流程数据
             BaseDto baseDto = new BaseDto();
             baseDto.setRobotId(robotId);
             baseDto.setRobotVersion(0);
@@ -272,9 +264,9 @@ public class CProcessServiceImpl extends NextName implements CProcessService {
             }
             String processName = process.getProcessName();
             baseDto.setName(processName);
-            //产生副本名称
+            // 产生副本名称
             String nextName = createNextName(baseDto, processName + "副本");
-            //复制流程
+            // 复制流程
             process.setProcessId(idWorker.nextId() + "");
             process.setProcessName(nextName);
             process.setCreateTime(new Date());
@@ -288,7 +280,6 @@ public class CProcessServiceImpl extends NextName implements CProcessService {
 
         return AppResponse.success(result);
     }
-
 
     @Override
     public List<String> getNameList(BaseDto baseDto) {

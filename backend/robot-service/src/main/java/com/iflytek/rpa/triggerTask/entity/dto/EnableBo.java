@@ -9,8 +9,9 @@ public class EnableBo {
     private String name;
     private String userId;
 
-    public EnableBo(){}
-    public EnableBo(String resourceId, Boolean enable){
+    public EnableBo() {}
+
+    public EnableBo(String resourceId, Boolean enable) {
         this.resourceId = resourceId;
         this.enable = enable;
     }

@@ -45,4 +45,4 @@ public class ComponentRobotUseUpdateBo {
      * 更新人ID
      */
     private String updaterId;
-} 
+}

@@ -1,8 +1,7 @@
 package com.iflytek.rpa.robot.entity.dto;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class UpdateSharedFileDto {
@@ -23,5 +22,4 @@ public class UpdateSharedFileDto {
      * 标签ID列表（字符串形式，如"1,2,3"）
      */
     private List<Long> tags;
-
 }

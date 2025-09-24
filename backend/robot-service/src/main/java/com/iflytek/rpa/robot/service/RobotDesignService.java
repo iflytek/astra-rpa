@@ -15,12 +15,11 @@ import com.iflytek.rpa.starter.utils.response.AppResponse;
  */
 public interface RobotDesignService {
 
-
     AppResponse<?> createRobot(RobotDesign robot) throws NoLoginException;
 
     AppResponse<?> createRobotName() throws NoLoginException;
 
-//    AppResponse<?> updateRobotByPull(MarketResourceDto marketResourceDto);
+    //    AppResponse<?> updateRobotByPull(MarketResourceDto marketResourceDto);
 
     AppResponse<?> designList(DesignListDto queryDto) throws NoLoginException;
 

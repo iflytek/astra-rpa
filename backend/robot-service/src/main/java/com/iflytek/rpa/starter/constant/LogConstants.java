@@ -9,6 +9,7 @@ public class LogConstants {
      * 日志操作类型
      */
     public static final String LOG_CREATE = "CREATE";
+
     public static final String LOG_UPDATE = "UPDATE";
     public static final String LOG_DELETE = "DELETE";
     public static final String LOG_RESTORE = "RESTORE";

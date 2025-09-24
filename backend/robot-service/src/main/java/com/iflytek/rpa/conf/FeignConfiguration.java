@@ -1,16 +1,15 @@
 package com.iflytek.rpa.conf;
 
+import static com.iflytek.rpa.conf.ApiContext.*;
+
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static com.iflytek.rpa.conf.ApiContext.*;
 
 @Configuration
 public class FeignConfiguration implements RequestInterceptor {
@@ -27,6 +26,5 @@ public class FeignConfiguration implements RequestInterceptor {
             template.header(CURRENT_TERMINAL_MAC_KEY, request.getHeader(CURRENT_TERMINAL_MAC_KEY));
             template.header(CURRENT_TERMINAL_NAME_KEY, request.getHeader(CURRENT_TERMINAL_NAME_KEY));
         }
-
     }
 }

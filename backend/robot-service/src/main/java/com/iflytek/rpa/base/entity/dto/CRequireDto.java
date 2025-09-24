@@ -1,11 +1,8 @@
 package com.iflytek.rpa.base.entity.dto;
 
-
-import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
-
+import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
 public class CRequireDto {
@@ -54,5 +51,4 @@ public class CRequireDto {
      * 删除标志（0代表存在 1代表删除）
      */
     private Integer deleted = 0;
-
 }

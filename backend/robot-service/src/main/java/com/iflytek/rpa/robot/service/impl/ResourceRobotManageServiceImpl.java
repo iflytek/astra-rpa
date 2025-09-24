@@ -20,6 +20,13 @@ import com.iflytek.rpa.task.entity.ScheduleTaskRobot;
 import com.iflytek.rpa.utils.IdWorker;
 import com.iflytek.rpa.utils.TenantUtils;
 import com.iflytek.rpa.utils.UserUtils;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.casbin.casdoor.entity.User;
@@ -30,42 +37,41 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 @Slf4j
 @Service
 public class ResourceRobotManageServiceImpl implements ResourceRobotManageService {
     private final String filePathPrefix = "/api/resource/file/download?fileId=";
+
     @Resource
     ResourceRobotManageDao resourceRobotManageDao;
+
     @Resource
     RobotDesignServiceImpl robotDesignService;
+
     @Resource
     RobotExecuteRecordDao robotExecuteRecordDao;
+
     @Resource
     private RobotExecuteDao robotExecuteDao;
+
     @Resource
     private ScheduleTaskRobotDao scheduleTaskRobotDao;
+
     @Resource
     private RobotDesignDao robotDesignDao;
+
     @Resource
     private RobotVersionDao robotVersionDao;
+
     @Value("${uap.database.name:uap_db}")
     private String databaseName;
-
 
     @Autowired
     private IdWorker idWorker;
 
-
     @Override
-    public AppResponse<IPage<RobotPageListVo>> getRobotPageList(RobotPageListDto queryDto) throws NoLoginException, IOException {
+    public AppResponse<IPage<RobotPageListVo>> getRobotPageList(RobotPageListDto queryDto)
+            throws NoLoginException, IOException {
         IPage<RobotPageListVo> pageConfig = new Page<>(queryDto.getPageNo(), queryDto.getPageSize(), true);
         IPage<RobotPageListVo> resPage = resourceRobotManageDao.getRobotPageList(pageConfig, queryDto);
         resPackage(resPage.getRecords());
@@ -79,7 +85,8 @@ public class ResourceRobotManageServiceImpl implements ResourceRobotManageServic
 
     private void packageVersion(List<RobotPageListVo> records) {
         for (RobotPageListVo record : records) {
-            RobotVersion enableVersion = robotVersionDao.getOriEnableVersion(record.getRobotId(), record.getCreatorId(), record.getTenantId());
+            RobotVersion enableVersion = robotVersionDao.getOriEnableVersion(
+                    record.getRobotId(), record.getCreatorId(), record.getTenantId());
             if (enableVersion == null) {
                 record.setVersion(record.getAppVersion());
             } else {
@@ -89,22 +96,21 @@ public class ResourceRobotManageServiceImpl implements ResourceRobotManageServic
     }
 
     private void packageUserInfo(List<RobotPageListVo> recordList) throws IOException {
-        List<String> userIds = recordList.stream().map(RobotPageListVo::getCreatorId).collect(Collectors.toList());
+        List<String> userIds =
+                recordList.stream().map(RobotPageListVo::getCreatorId).collect(Collectors.toList());
         userIds.removeIf(Objects::isNull);
         if (userIds.isEmpty()) {
             return;
         }
         List<User> uapUsers = UserUtils.queryUserPageList(userIds);
         Map<String, User> userMap = UserUtils.getUserMap(uapUsers);
-        recordList.forEach(
-                record -> {
-                    User uapUser = userMap.get(record.getCreatorId());
-                    if (uapUser != null) {
-                        record.setCreatorName(uapUser.name);
-                        record.setCreatorPhone(uapUser.phone);
-                    }
-                }
-        );
+        recordList.forEach(record -> {
+            User uapUser = userMap.get(record.getCreatorId());
+            if (uapUser != null) {
+                record.setCreatorName(uapUser.name);
+                record.setCreatorPhone(uapUser.phone);
+            }
+        });
     }
 
     @Override
@@ -112,7 +118,8 @@ public class ResourceRobotManageServiceImpl implements ResourceRobotManageServic
         String robotId = dto.getRobotId();
         String tenantId = TenantUtils.getTenantId();
         LambdaQueryWrapper<RobotExecute> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(RobotExecute::getRobotId, robotId)
+        queryWrapper
+                .eq(RobotExecute::getRobotId, robotId)
                 .eq(RobotExecute::getDeleted, 0)
                 .eq(RobotExecute::getTenantId, tenantId)
                 .last("LIMIT 1");
@@ -142,7 +149,8 @@ public class ResourceRobotManageServiceImpl implements ResourceRobotManageServic
         String robotId = dto.getRobotId();
         String tenantId = TenantUtils.getTenantId();
         LambdaQueryWrapper<RobotExecute> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(RobotExecute::getRobotId, robotId)
+        queryWrapper
+                .eq(RobotExecute::getRobotId, robotId)
                 .eq(RobotExecute::getTenantId, tenantId)
                 .eq(RobotExecute::getDeleted, 0)
                 .last("LIMIT 1");
@@ -237,7 +245,8 @@ public class ResourceRobotManageServiceImpl implements ResourceRobotManageServic
     public AppResponse<IPage<RecordBaseInfoVo>> getRecordBaseInfo(ExecuteRecordPageDto queryDto) {
         String tenantId = TenantUtils.getTenantId();
         IPage<RecordBaseInfoVo> pageConfig = new Page<>(queryDto.getPageNo(), queryDto.getPageSize(), true);
-        IPage<RecordBaseInfoVo> recordList = robotExecuteRecordDao.getRecordBaseInfoPage(pageConfig, queryDto, tenantId);
+        IPage<RecordBaseInfoVo> recordList =
+                robotExecuteRecordDao.getRecordBaseInfoPage(pageConfig, queryDto, tenantId);
         if (recordList == null) {
             return AppResponse.error(ErrorCodeEnum.E_PARAM, "未查询到相关执行记录");
         }
@@ -262,4 +271,3 @@ public class ResourceRobotManageServiceImpl implements ResourceRobotManageServic
         return AppResponse.success(logVo);
     }
 }
-

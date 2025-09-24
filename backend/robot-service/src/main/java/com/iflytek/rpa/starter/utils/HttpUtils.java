@@ -2,22 +2,20 @@ package com.iflytek.rpa.starter.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
+import java.io.PrintWriter;
+import java.util.Objects;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.PrintWriter;
-import java.util.Objects;
-
 public class HttpUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtils.class);
 
-    public HttpUtils() {
-    }
+    public HttpUtils() {}
 
     public static String getAuthToken() {
         return getHeader("auth-token");
@@ -36,7 +34,8 @@ public class HttpUtils {
     }
 
     public static HttpServletRequest getRequest() {
-        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes()))
+                .getRequest();
     }
 
     public static HttpSession getSession() {
@@ -62,8 +61,6 @@ public class HttpUtils {
                 out.flush();
                 out.close();
             }
-
         }
-
     }
 }

@@ -1,10 +1,9 @@
 package com.iflytek.rpa.base.entity;
 
-import lombok.Data;
-
+import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import lombok.Data;
 
 /**
  * @author mjren

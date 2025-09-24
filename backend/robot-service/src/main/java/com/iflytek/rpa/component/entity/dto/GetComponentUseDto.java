@@ -1,8 +1,7 @@
 package com.iflytek.rpa.component.entity.dto;
 
-import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 /**
  * 查询组件使用情况DTO
@@ -29,4 +28,4 @@ public class GetComponentUseDto {
      * 机器人版本（允许为空）
      */
     private Integer version;
-} 
+}

@@ -8,11 +8,11 @@ import com.iflytek.rpa.robot.entity.dto.RobotPageListDto;
 import com.iflytek.rpa.robot.entity.vo.*;
 import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
-
 import java.io.IOException;
 
 public interface ResourceRobotManageService {
-    AppResponse<IPage<RobotPageListVo>> getRobotPageList(RobotPageListDto queryDto) throws NoLoginException, IOException;
+    AppResponse<IPage<RobotPageListVo>> getRobotPageList(RobotPageListDto queryDto)
+            throws NoLoginException, IOException;
 
     AppResponse<DelResourceRobotVo> deleteRobotCheck(RobotDeleteCheckDto dto) throws Exception;
 

@@ -6,6 +6,9 @@
 package com.iflytek.rpa.starter.conf;
 
 import com.alibaba.fastjson.JSON;
+import java.util.*;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -19,16 +22,11 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
-import java.util.stream.Collectors;
-
 @Aspect
 public class RequestLogAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestLogAspect.class);
 
-    public RequestLogAspect() {
-    }
+    public RequestLogAspect() {}
 
     public static <T> List<T> castList(Object obj, Class<T> clazz) {
         List<T> result = new ArrayList();
@@ -47,8 +45,7 @@ public class RequestLogAspect {
     }
 
     @Pointcut("execution(* com.iflytek.rpa.monitor..controller..*(..))")
-    public void requestServer() {
-    }
+    public void requestServer() {}
 
     @Around("requestServer() && !@annotation(SkipAop)")
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
@@ -60,7 +57,10 @@ public class RequestLogAspect {
         requestInfo.setIp(request.getRemoteAddr());
         requestInfo.setUrl(request.getRequestURL().toString());
         requestInfo.setHttpMethod(request.getMethod());
-        requestInfo.setClassMethod(String.format("%s.%s", proceedingJoinPoint.getSignature().getDeclaringTypeName(), proceedingJoinPoint.getSignature().getName()));
+        requestInfo.setClassMethod(String.format(
+                "%s.%s",
+                proceedingJoinPoint.getSignature().getDeclaringTypeName(),
+                proceedingJoinPoint.getSignature().getName()));
         requestInfo.setRequestParams(this.getRequestParamsByProceedingJoinPoint(proceedingJoinPoint));
         requestInfo.setTimeCost(System.currentTimeMillis() - start);
         LOGGER.info("Request Info      : {}", JSON.toJSONString(requestInfo));
@@ -75,7 +75,10 @@ public class RequestLogAspect {
         requestErrorInfo.setIp(request.getRemoteAddr());
         requestErrorInfo.setUrl(request.getRequestURL().toString());
         requestErrorInfo.setHttpMethod(request.getMethod());
-        requestErrorInfo.setClassMethod(String.format("%s.%s", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName()));
+        requestErrorInfo.setClassMethod(String.format(
+                "%s.%s",
+                joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName()));
         requestErrorInfo.setRequestParams(this.getRequestParamsByJoinPoint(joinPoint));
         requestErrorInfo.setException(e);
         LOGGER.info("Error Request Info      : {}", JSON.toJSONString(requestErrorInfo));
@@ -105,7 +108,9 @@ public class RequestLogAspect {
 
             if (value instanceof MultipartFile[]) {
                 MultipartFile[] files = (MultipartFile[]) value;
-                value = Arrays.stream(files).map(MultipartFile::getOriginalFilename).collect(Collectors.joining(","));
+                value = Arrays.stream(files)
+                        .map(MultipartFile::getOriginalFilename)
+                        .collect(Collectors.joining(","));
             }
 
             if (value instanceof List) {
@@ -141,8 +146,7 @@ public class RequestLogAspect {
         private Object requestParams;
         private RuntimeException exception;
 
-        public RequestErrorInfo() {
-        }
+        public RequestErrorInfo() {}
 
         public String getIp() {
             return this.ip;
@@ -294,7 +298,9 @@ public class RequestLogAspect {
         }
 
         public String toString() {
-            return "RequestLogAspect.RequestErrorInfo(ip=" + this.getIp() + ", url=" + this.getUrl() + ", httpMethod=" + this.getHttpMethod() + ", classMethod=" + this.getClassMethod() + ", requestParams=" + this.getRequestParams() + ", exception=" + this.getException() + ")";
+            return "RequestLogAspect.RequestErrorInfo(ip=" + this.getIp() + ", url=" + this.getUrl() + ", httpMethod="
+                    + this.getHttpMethod() + ", classMethod=" + this.getClassMethod() + ", requestParams="
+                    + this.getRequestParams() + ", exception=" + this.getException() + ")";
         }
     }
 
@@ -307,8 +313,7 @@ public class RequestLogAspect {
         private Object result;
         private Long timeCost;
 
-        public RequestInfo() {
-        }
+        public RequestInfo() {}
 
         public String getIp() {
             return this.ip;
@@ -485,7 +490,10 @@ public class RequestLogAspect {
         }
 
         public String toString() {
-            return "RequestLogAspect.RequestInfo(ip=" + this.getIp() + ", url=" + this.getUrl() + ", httpMethod=" + this.getHttpMethod() + ", classMethod=" + this.getClassMethod() + ", requestParams=" + this.getRequestParams() + ", result=" + this.getResult() + ", timeCost=" + this.getTimeCost() + ")";
+            return "RequestLogAspect.RequestInfo(ip=" + this.getIp() + ", url=" + this.getUrl() + ", httpMethod="
+                    + this.getHttpMethod() + ", classMethod=" + this.getClassMethod() + ", requestParams="
+                    + this.getRequestParams() + ", result=" + this.getResult() + ", timeCost=" + this.getTimeCost()
+                    + ")";
         }
     }
 }

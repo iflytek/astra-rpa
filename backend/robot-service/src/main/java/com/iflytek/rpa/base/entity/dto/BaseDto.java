@@ -1,10 +1,9 @@
 package com.iflytek.rpa.base.entity.dto;
 
-import lombok.Data;
+import static com.iflytek.rpa.robot.constants.RobotConstant.EDIT_PAGE;
 
 import javax.validation.constraints.NotBlank;
-
-import static com.iflytek.rpa.robot.constants.RobotConstant.EDIT_PAGE;
+import lombok.Data;
 
 @Data
 public class BaseDto {

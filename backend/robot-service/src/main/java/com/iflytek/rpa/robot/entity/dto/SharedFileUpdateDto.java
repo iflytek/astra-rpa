@@ -1,9 +1,8 @@
 package com.iflytek.rpa.robot.entity.dto;
 
-import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
 import java.util.List;
+import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
 public class SharedFileUpdateDto {

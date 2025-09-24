@@ -3,10 +3,9 @@ package com.iflytek.rpa.robot.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /*
  * 共享文件实体类
@@ -14,6 +13,7 @@ import java.util.Date;
 @Data
 public class SharedFile implements Serializable {
     private static final long serialVersionUID = -491204885219115201L;
+
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 

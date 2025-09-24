@@ -1,21 +1,18 @@
 package com.iflytek.rpa.starter.utils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 public class LoggerUtils {
-    public LoggerUtils() {
-    }
+    public LoggerUtils() {}
 
     public static void error(Logger logger, String message, Exception ex) {
         logger.error(message);
         if (ex != null) {
             logger.error(getExceptionInfo(ex));
         }
-
     }
 
     public static void error(String message, Exception ex) {
@@ -35,7 +32,6 @@ public class LoggerUtils {
         if (ex != null) {
             logger.warn(getExceptionInfo(ex));
         }
-
     }
 
     public static void warn(String message, Exception ex) {
@@ -55,7 +51,6 @@ public class LoggerUtils {
         if (ex != null) {
             logger.info(getExceptionInfo(ex));
         }
-
     }
 
     public static void info(String message, Exception ex) {
@@ -75,7 +70,6 @@ public class LoggerUtils {
         if (ex != null) {
             logger.debug(getExceptionInfo(ex));
         }
-
     }
 
     public static void debug(String message, Exception ex) {
@@ -108,11 +102,15 @@ public class LoggerUtils {
 
     public static Logger getLoggerBySelf() {
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-        return stackTraceElements.length >= 4 ? LoggerFactory.getLogger(stackTraceElements[3].getClassName()) : LoggerFactory.getLogger(LoggerUtils.class);
+        return stackTraceElements.length >= 4
+                ? LoggerFactory.getLogger(stackTraceElements[3].getClassName())
+                : LoggerFactory.getLogger(LoggerUtils.class);
     }
 
     public static Logger getLogger() {
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-        return stackTraceElements.length >= 3 ? LoggerFactory.getLogger(stackTraceElements[2].getClassName()) : LoggerFactory.getLogger(LoggerUtils.class);
+        return stackTraceElements.length >= 3
+                ? LoggerFactory.getLogger(stackTraceElements[2].getClassName())
+                : LoggerFactory.getLogger(LoggerUtils.class);
     }
 }

@@ -1,10 +1,9 @@
 package com.iflytek.rpa.base.entity.dto;
 
-import lombok.Data;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class AtomTreeDto {
@@ -39,14 +38,13 @@ public class AtomTreeDto {
         return propertyNames;
     }
 
-
-//    /**
-//     * 节点key
-//     */
-//    private String key;
-//
-//    /**
-//     * 原子能力内容
-//     */
-//    private String atomContent;
+    //    /**
+    //     * 节点key
+    //     */
+    //    private String key;
+    //
+    //    /**
+    //     * 原子能力内容
+    //     */
+    //    private String atomContent;
 }

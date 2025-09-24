@@ -1,7 +1,6 @@
 package com.iflytek.rpa.task.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -66,7 +65,6 @@ public class ScheduleTaskExecute implements Serializable {
      */
     private String taskExecuteId;
 
-
     public Long getId() {
         return id;
     }
@@ -74,7 +72,6 @@ public class ScheduleTaskExecute implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public Integer getCount() {
         return count;
@@ -172,4 +169,3 @@ public class ScheduleTaskExecute implements Serializable {
         this.deleted = deleted;
     }
 }
-

@@ -1,11 +1,10 @@
 package com.iflytek.rpa.component.entity.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 /**
  * 机器人对组件屏蔽视图对象
@@ -89,4 +88,4 @@ public class ComponentRobotBlockVo {
      * 租户id
      */
     private String tenantId;
-} 
+}

@@ -3,7 +3,6 @@ package com.iflytek.rpa.component.service;
 import com.iflytek.rpa.component.entity.dto.AddRobotBlockDto;
 import com.iflytek.rpa.component.entity.dto.GetRobotBlockDto;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
-
 import java.util.List;
 
 /**
@@ -40,5 +39,4 @@ public interface ComponentRobotBlockService {
      * @throws Exception 异常信息
      */
     AppResponse<List<String>> getBlockedComponentIds(GetRobotBlockDto queryDto) throws Exception;
-
 }

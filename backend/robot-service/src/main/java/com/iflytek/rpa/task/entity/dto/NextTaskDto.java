@@ -1,10 +1,9 @@
 package com.iflytek.rpa.task.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.util.Date;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class NextTaskDto {
@@ -19,6 +18,4 @@ public class NextTaskDto {
     private Date nextTime;
 
     private String exceptionHandleWay;
-
-
 }

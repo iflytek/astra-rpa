@@ -8,12 +8,11 @@ import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
 import com.iflytek.rpa.triggerTask.entity.TaskMail;
 import com.iflytek.rpa.triggerTask.entity.dto.EnableBo;
 import com.iflytek.rpa.triggerTask.service.ITaskMailService;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/taskMail")
@@ -33,11 +32,11 @@ public class TaskMailController {
      */
     @GetMapping("/page/list")
     public AppResponse<IPage<TaskMail>> getTaskExecute(
-            @RequestParam(value = "pageNo",defaultValue = "1") Long pageNo ,
-            @RequestParam(value = "pageSize",defaultValue = "20") Long pageSize,
-            @RequestParam(value = "userId",required = false) String userId
-    ) throws NoLoginException {
-        return AppResponse.success(taskMailService.getTaskMailPage(pageNo,pageSize,userId));
+            @RequestParam(value = "pageNo", defaultValue = "1") Long pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "20") Long pageSize,
+            @RequestParam(value = "userId", required = false) String userId)
+            throws NoLoginException {
+        return AppResponse.success(taskMailService.getTaskMailPage(pageNo, pageSize, userId));
     }
 
     /**
@@ -49,11 +48,13 @@ public class TaskMailController {
     @PostMapping("/connect")
     public Map<String, String> connectMail(@RequestBody TaskMail mail) {
         String msg = taskMailService.connectMail(mail);
-        return new HashMap<String, String>() {{
-            put("code", "000000");
-            put("data", StringUtils.isEmpty(msg) ? "1" : "0");
-            put("message", msg);
-        }};
+        return new HashMap<String, String>() {
+            {
+                put("code", "000000");
+                put("data", StringUtils.isEmpty(msg) ? "1" : "0");
+                put("message", msg);
+            }
+        };
     }
 
     /**
@@ -82,5 +83,4 @@ public class TaskMailController {
         }
         throw new ServiceException("邮箱被计划任务占用");
     }
-
 }

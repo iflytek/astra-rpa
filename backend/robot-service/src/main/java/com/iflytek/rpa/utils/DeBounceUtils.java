@@ -1,11 +1,10 @@
 package com.iflytek.rpa.utils;
 
+import static com.iflytek.rpa.starter.redis.RedisUtils.redisTemplate;
+
 import com.iflytek.rpa.starter.exception.ServiceException;
 import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
-
 import java.util.concurrent.TimeUnit;
-
-import static com.iflytek.rpa.starter.redis.RedisUtils.redisTemplate;
 
 /**
  * 防抖相关
@@ -28,5 +27,4 @@ public class DeBounceUtils {
         // 不存在
         redisTemplate.opsForValue().set(createLikeKey, "1", deBounceWindow, TimeUnit.MILLISECONDS);
     }
-
 }

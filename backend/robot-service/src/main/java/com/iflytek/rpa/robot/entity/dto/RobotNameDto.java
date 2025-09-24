@@ -13,5 +13,4 @@ public class RobotNameDto {
     private String id;
 
     private String name;
-
 }

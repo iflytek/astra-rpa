@@ -10,16 +10,15 @@ import com.iflytek.rpa.starter.exception.ServiceException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
 import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
 import com.iflytek.rpa.utils.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 资源管理 - 机器人管理
@@ -36,7 +35,6 @@ public class ResourceRobotManageController {
     @Autowired
     private RobotExecuteService robotExecuteService;
 
-
     /**
      * 机器人管理 - 列表
      *
@@ -45,7 +43,8 @@ public class ResourceRobotManageController {
      * @throws NoLoginException
      */
     @PostMapping("/robot-page-list")
-    public AppResponse<IPage<RobotPageListVo>> getRobotPageList(@RequestBody RobotPageListDto queryDto) throws NoLoginException, IOException {
+    public AppResponse<IPage<RobotPageListVo>> getRobotPageList(@RequestBody RobotPageListDto queryDto)
+            throws NoLoginException, IOException {
         paramCheck(queryDto);
         return resourceRobotManageService.getRobotPageList(queryDto);
     }
@@ -140,7 +139,8 @@ public class ResourceRobotManageController {
      * @param robotId 机器人ID
      */
     @PostMapping("/robot-versions")
-    public AppResponse<ResourceVersionListVo> getRobotVersions(@RequestParam("robotId") String robotId) throws Exception {
+    public AppResponse<ResourceVersionListVo> getRobotVersions(@RequestParam("robotId") String robotId)
+            throws Exception {
         return resourceRobotManageService.getRobotVersions(robotId);
     }
 
@@ -151,7 +151,8 @@ public class ResourceRobotManageController {
      * @throws Exception 异常
      */
     @PostMapping("/record-baseinfo")
-    public AppResponse<IPage<RecordBaseInfoVo>> getRecordBaseInfo(@RequestBody ExecuteRecordPageDto queryDto) throws Exception {
+    public AppResponse<IPage<RecordBaseInfoVo>> getRecordBaseInfo(@RequestBody ExecuteRecordPageDto queryDto)
+            throws Exception {
         return resourceRobotManageService.getRecordBaseInfo(queryDto);
     }
 
@@ -162,8 +163,8 @@ public class ResourceRobotManageController {
      * @param executeId 执行ID
      */
     @PostMapping("/record-log")
-    public AppResponse<RecordLogVo> getRecordLog(@RequestParam("robotId") String robotId, @RequestParam("executeId") String executeId) throws Exception {
+    public AppResponse<RecordLogVo> getRecordLog(
+            @RequestParam("robotId") String robotId, @RequestParam("executeId") String executeId) throws Exception {
         return resourceRobotManageService.getRecordLog(robotId, executeId);
     }
 }
-

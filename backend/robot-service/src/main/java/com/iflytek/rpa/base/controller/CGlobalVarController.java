@@ -1,18 +1,17 @@
 package com.iflytek.rpa.base.controller;
 
+import static com.iflytek.rpa.robot.constants.RobotConstant.EDIT_PAGE;
+
 import com.iflytek.rpa.base.entity.dto.BaseDto;
 import com.iflytek.rpa.base.entity.dto.CGlobalDto;
 import com.iflytek.rpa.base.service.CGlobalVarService;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
 import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
 import com.iflytek.rpa.utils.UserUtils;
+import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-
-import static com.iflytek.rpa.robot.constants.RobotConstant.EDIT_PAGE;
 
 /**
  * 客户端-全局变量(CGlobalVar)表控制层
@@ -31,9 +30,11 @@ public class CGlobalVarController {
     private CGlobalVarService cGlobalVarService;
 
     @PostMapping("/all")
-    public AppResponse<?> getGlobalVarInfoList(@RequestParam("robotId") String robotId,
-                                               @RequestParam(required = false, name = "mode", defaultValue = EDIT_PAGE) String mode,
-                                               @RequestParam(required = false, name = "robotVersion") Integer robotVersion) throws Exception {
+    public AppResponse<?> getGlobalVarInfoList(
+            @RequestParam("robotId") String robotId,
+            @RequestParam(required = false, name = "mode", defaultValue = EDIT_PAGE) String mode,
+            @RequestParam(required = false, name = "robotVersion") Integer robotVersion)
+            throws Exception {
         BaseDto baseDto = new BaseDto();
         baseDto.setRobotId(robotId);
         baseDto.setMode(mode);
@@ -69,7 +70,6 @@ public class CGlobalVarController {
         globalDto.setUpdaterId(String.valueOf(UserUtils.nowUserId()));
 
         return cGlobalVarService.saveGlobalVar(globalDto);
-
     }
 
     /**

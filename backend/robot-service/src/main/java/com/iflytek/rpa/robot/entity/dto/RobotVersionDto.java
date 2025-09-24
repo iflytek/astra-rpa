@@ -4,7 +4,7 @@ import com.iflytek.rpa.robot.entity.RobotVersion;
 import lombok.Data;
 
 @Data
-//@ToString(callSuper = true)
+// @ToString(callSuper = true)
 public class RobotVersionDto extends RobotVersion {
 
     private String name;
@@ -15,14 +15,14 @@ public class RobotVersionDto extends RobotVersion {
 
     private Integer enableLastVersion;
 
-//    @Valid
-//    private List<CProcess> processInfo;
-//
-//    public @Valid List<CProcess> getProcessInfo() {
-//        return processInfo;
-//    }
-//
-//    public void setProcessInfo(@Valid List<CProcess> processInfo) {
-//        this.processInfo = processInfo;
-//    }
+    //    @Valid
+    //    private List<CProcess> processInfo;
+    //
+    //    public @Valid List<CProcess> getProcessInfo() {
+    //        return processInfo;
+    //    }
+    //
+    //    public void setProcessInfo(@Valid List<CProcess> processInfo) {
+    //        this.processInfo = processInfo;
+    //    }
 }

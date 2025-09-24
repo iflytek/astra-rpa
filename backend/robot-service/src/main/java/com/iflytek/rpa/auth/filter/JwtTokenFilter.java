@@ -3,6 +3,12 @@ package com.iflytek.rpa.auth.filter;
 import com.iflytek.rpa.auth.constants.enums.AuthEnum;
 import com.iflytek.rpa.auth.entity.CustomUserDetails;
 import com.iflytek.rpa.starter.redis.RedisUtils;
+import java.io.IOException;
+import java.util.Objects;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.casbin.casdoor.entity.User;
 import org.casbin.casdoor.exception.AuthException;
 import org.casbin.casdoor.service.AuthService;
@@ -15,13 +21,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Objects;
 
 /**
  * @desc: TODO
@@ -38,9 +37,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain chain)
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         // get authorization header and validate
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -65,16 +62,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                AuthorityUtils.createAuthorityList("ROLE_casdoor")
-        );
+                userDetails, null, AuthorityUtils.createAuthorityList("ROLE_casdoor"));
 
-        authentication.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
-        );
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         // 将token存到redis中，key为CASDOOR_CURRENT_USER_TOKEN，value为token
-        if (Objects.nonNull(user)){
+        if (Objects.nonNull(user)) {
             String redisKey = AuthEnum.CASDOOR_CURRENT_USER_TOKEN.getCode() + "_" + user.name;
             RedisUtils.redisTemplate.opsForValue().set(redisKey, token);
         }
@@ -82,5 +74,4 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
     }
-
 }

@@ -2,10 +2,9 @@ package com.iflytek.rpa.utils;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.beans.BeanUtils;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.beans.BeanUtils;
 
 /**
  * 分页结果转换工具类
@@ -27,15 +26,17 @@ public class PageConvertUtils {
         }
 
         // 转换记录列表
-        List<R> records = page.getRecords().stream().map(source -> {
-            try {
-                R target = targetClass.newInstance();
-                BeanUtils.copyProperties(source, target);
-                return target;
-            } catch (Exception e) {
-                throw new RuntimeException("对象转换失败", e);
-            }
-        }).collect(Collectors.toList());
+        List<R> records = page.getRecords().stream()
+                .map(source -> {
+                    try {
+                        R target = targetClass.newInstance();
+                        BeanUtils.copyProperties(source, target);
+                        return target;
+                    } catch (Exception e) {
+                        throw new RuntimeException("对象转换失败", e);
+                    }
+                })
+                .collect(Collectors.toList());
 
         // 创建新的分页对象
         IPage<R> resultPage = new Page<>();
@@ -63,9 +64,7 @@ public class PageConvertUtils {
         }
 
         // 转换记录列表
-        List<R> records = page.getRecords().stream()
-                .map(converter)
-                .collect(Collectors.toList());
+        List<R> records = page.getRecords().stream().map(converter).collect(Collectors.toList());
 
         // 创建新的分页对象
         IPage<R> resultPage = new Page<>();

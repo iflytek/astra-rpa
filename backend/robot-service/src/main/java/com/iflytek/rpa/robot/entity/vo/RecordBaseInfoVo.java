@@ -1,9 +1,8 @@
 package com.iflytek.rpa.robot.entity.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 @Data
 public class RecordBaseInfoVo {
@@ -40,5 +39,4 @@ public class RecordBaseInfoVo {
      * 执行id
      */
     private String executeId;
-
 }

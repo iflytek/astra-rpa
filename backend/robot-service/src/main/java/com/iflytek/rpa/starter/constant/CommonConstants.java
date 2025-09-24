@@ -15,6 +15,7 @@ public class CommonConstants {
      * 是否删除 1是 0否
      */
     public static final int DELETED = 1;
+
     public static final int NOT_DELETED = 0;
 
     public static final int CODE_YES = 1;

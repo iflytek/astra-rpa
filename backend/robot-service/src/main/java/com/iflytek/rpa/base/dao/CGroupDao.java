@@ -5,10 +5,9 @@ import com.iflytek.rpa.base.entity.CGroup;
 import com.iflytek.rpa.robot.entity.RobotDesign;
 import com.iflytek.rpa.robot.entity.RobotVersion;
 import com.iflytek.rpa.robot.entity.dto.RobotVersionDto;
+import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * 元素或图像的分组(CGroup)表数据库访问层
@@ -31,17 +30,25 @@ public interface CGroupDao extends BaseMapper<CGroup> {
 
     CGroup getGroupById(CGroup cGroup);
 
-    List<CGroup> getGroupByRobotId(@Param("robotId") String robotId,
-                                   @Param("robotVersion") Integer robotVersion,
-                                   @Param("elementType") String elementType);
+    List<CGroup> getGroupByRobotId(
+            @Param("robotId") String robotId,
+            @Param("robotVersion") Integer robotVersion,
+            @Param("elementType") String elementType);
 
     Integer createGroupForCurrentVersion(RobotVersionDto robotVersionDto);
 
-    Integer createGroupForObtainedVersion(@Param("obtainedRobotDesign") RobotDesign obtainedRobotDesign,
-                                          @Param("authorRobotVersion") RobotVersion authorRobotVersion);
+    Integer createGroupForObtainedVersion(
+            @Param("obtainedRobotDesign") RobotDesign obtainedRobotDesign,
+            @Param("authorRobotVersion") RobotVersion authorRobotVersion);
 
-    Integer copyGroupBatch(@Param("oldRobotId") String oldRobotId, @Param("newRobotId") String newRobotId, @Param("userId") String userId);
+    Integer copyGroupBatch(
+            @Param("oldRobotId") String oldRobotId,
+            @Param("newRobotId") String newRobotId,
+            @Param("userId") String userId);
 
-    Integer shareGroupBatch(@Param("oldRobotId") String oldRobotId, @Param("sharedUserId") String sharedUserId, @Param("newRobotId") String newRobotId, @Param("receivedUserId") String receivedUserId);
+    Integer shareGroupBatch(
+            @Param("oldRobotId") String oldRobotId,
+            @Param("sharedUserId") String sharedUserId,
+            @Param("newRobotId") String newRobotId,
+            @Param("receivedUserId") String receivedUserId);
 }
-

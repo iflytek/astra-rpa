@@ -1,14 +1,13 @@
 package com.iflytek.rpa.base.entity;
 
-import lombok.Data;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 /**
  * @author mjren
@@ -94,6 +93,4 @@ public class AtomCommon {
         @NotBlank(message = "funcList.useSrc 不能为空")
         private String useSrc;
     }
-
-
 }

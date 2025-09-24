@@ -40,4 +40,4 @@ public class SharedSubVarVo {
      * 是否加密:1-加密
      */
     private Integer encrypt;
-} 
+}

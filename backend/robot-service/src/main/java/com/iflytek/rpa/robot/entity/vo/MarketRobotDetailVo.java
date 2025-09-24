@@ -1,8 +1,7 @@
 package com.iflytek.rpa.robot.entity.vo;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class MarketRobotDetailVo {
@@ -12,5 +11,4 @@ public class MarketRobotDetailVo {
     // 原版本信息
     String sourceName;
     List<VersionInfo> versionInfoList;
-
 }

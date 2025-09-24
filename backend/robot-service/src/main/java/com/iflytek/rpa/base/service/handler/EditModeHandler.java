@@ -1,21 +1,20 @@
 package com.iflytek.rpa.base.service.handler;
 
+import static com.iflytek.rpa.robot.constants.RobotConstant.EDIT_PAGE;
+import static com.iflytek.rpa.robot.constants.RobotConstant.PROJECT_LIST;
+
 import com.iflytek.rpa.base.dao.CParamDao;
 import com.iflytek.rpa.base.entity.CParam;
 import com.iflytek.rpa.base.entity.dto.ParamDto;
 import com.iflytek.rpa.base.entity.dto.QueryParamDto;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
+import java.util.*;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.iflytek.rpa.robot.constants.RobotConstant.EDIT_PAGE;
-import static com.iflytek.rpa.robot.constants.RobotConstant.PROJECT_LIST;
 
 /**
  * @author mjren
@@ -42,14 +41,10 @@ public class EditModeHandler implements ParamModeHandler {
         }
         String processId = dto.getProcessId();
         if (StringUtils.isBlank(dto.getProcessId())) {
-            //默认查主流程参数
+            // 默认查主流程参数
             processId = cParamDao.getMianProcessId(dto.getRobotId(), robotVersion);
         }
-        List<CParam> params = cParamDao.getAllParams(
-                processId,
-                dto.getRobotId(),
-                robotVersion
-        );
+        List<CParam> params = cParamDao.getAllParams(processId, dto.getRobotId(), robotVersion);
         return AppResponse.success(convertParams(params));
     }
 
@@ -57,10 +52,12 @@ public class EditModeHandler implements ParamModeHandler {
         if (CollectionUtils.isEmpty(params)) {
             return Collections.emptyList();
         }
-        return params.stream().map(p -> {
-            ParamDto dto = new ParamDto();
-            BeanUtils.copyProperties(p, dto);
-            return dto;
-        }).collect(Collectors.toList());
+        return params.stream()
+                .map(p -> {
+                    ParamDto dto = new ParamDto();
+                    BeanUtils.copyProperties(p, dto);
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 }

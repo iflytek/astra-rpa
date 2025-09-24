@@ -3,10 +3,9 @@ package com.iflytek.rpa.base.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
  * 流程参数表
@@ -66,6 +65,4 @@ public class CParam implements Serializable {
     private String robotId;
 
     private Integer robotVersion;
-
-
 }

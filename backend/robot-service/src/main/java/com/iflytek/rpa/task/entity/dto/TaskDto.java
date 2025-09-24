@@ -13,10 +13,9 @@ public class TaskDto {
 
     private Long pageSize;
 
-    //如update_time
+    // 如update_time
     private String sortBy;
 
-    //desc或asc
+    // desc或asc
     private String sortType;
-
 }

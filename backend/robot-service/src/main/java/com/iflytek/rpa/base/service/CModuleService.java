@@ -10,7 +10,6 @@ import com.iflytek.rpa.base.entity.vo.ProcessModuleListVo;
 import com.iflytek.rpa.robot.entity.dto.SaveModuleDto;
 import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -34,5 +33,4 @@ public interface CModuleService {
     AppResponse<Boolean> rename(RenameModuleDto queryDto) throws NoLoginException;
 
     Map<String, String> copyCodeModule(String robotId, String processOrModuleId);
-
 }

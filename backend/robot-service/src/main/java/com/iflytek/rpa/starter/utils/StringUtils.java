@@ -1,8 +1,7 @@
 package com.iflytek.rpa.starter.utils;
 
-import org.springframework.util.DigestUtils;
-
 import java.time.LocalDate;
+import org.springframework.util.DigestUtils;
 
 /**
  * @author keler
@@ -57,7 +56,6 @@ public class StringUtils extends org.springframework.util.StringUtils {
 
         return sb.toString();
     }
-
 
     /**
      * 下划线 转 驼峰

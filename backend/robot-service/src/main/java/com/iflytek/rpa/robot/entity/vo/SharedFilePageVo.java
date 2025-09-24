@@ -1,10 +1,9 @@
 package com.iflytek.rpa.robot.entity.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.util.Date;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class SharedFilePageVo {
@@ -12,11 +11,11 @@ public class SharedFilePageVo {
     /*
      *  文件ID
      */
-    private String fileId;       // 文件ID
+    private String fileId; // 文件ID
     /*
      *  文件名
      */
-    private String fileName;    // 文件名
+    private String fileName; // 文件名
     /**
      * 文件类型
      */
@@ -25,7 +24,7 @@ public class SharedFilePageVo {
      * 创建时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime;    // 创建时间
+    private Date createTime; // 创建时间
     /*
      *  更新时间
      */
@@ -34,7 +33,7 @@ public class SharedFilePageVo {
     /*
      *  创建者名称
      */
-    private String creatorName;     // 创建者
+    private String creatorName; // 创建者
     /*
      *  账号
      */
@@ -59,5 +58,5 @@ public class SharedFilePageVo {
     /*
      * 文件路径
      */
-    private String filePath;     // 文件路径
+    private String filePath; // 文件路径
 }

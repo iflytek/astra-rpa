@@ -17,5 +17,4 @@ public class ScheduleRule {
     private Integer minute; // 定时：分
 
     private Integer second; // 定时：秒
-
 }

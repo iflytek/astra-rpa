@@ -13,7 +13,6 @@ import com.iflytek.rpa.starter.utils.response.AppResponse;
  */
 public interface CGlobalVarService {
 
-
     AppResponse<?> getGlobalVarInfoList(BaseDto baseDto) throws NoLoginException;
 
     AppResponse<?> createGlobalVar(CGlobalDto globalDto) throws NoLoginException;

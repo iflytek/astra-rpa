@@ -1,5 +1,7 @@
 package com.iflytek.rpa.base.service.handler;
 
+import static com.iflytek.rpa.robot.constants.RobotConstant.CRONTAB;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,17 +19,14 @@ import com.iflytek.rpa.task.entity.ScheduleTaskRobot;
 import com.iflytek.rpa.task.service.ScheduleTaskRobotService;
 import com.iflytek.rpa.utils.TenantUtils;
 import com.iflytek.rpa.utils.UserUtils;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.iflytek.rpa.robot.constants.RobotConstant.CRONTAB;
 
 /**
  * @author mjren
@@ -75,11 +74,8 @@ public class TriggerModeHandler implements ParamModeHandler {
     }
 
     private RobotExecute getRobotExecute(String robotId) throws NoLoginException {
-        RobotExecute executeInfo = robotExecuteDao.getRobotInfoByRobotId(
-                robotId,
-                UserUtils.nowUserId(),
-                TenantUtils.getTenantId()
-        );
+        RobotExecute executeInfo =
+                robotExecuteDao.getRobotInfoByRobotId(robotId, UserUtils.nowUserId(), TenantUtils.getTenantId());
         if (executeInfo == null) {
             throw new ServiceException(ErrorCodeEnum.E_SQL.getCode(), "无法获取执行器机器人信息");
         }
@@ -102,10 +98,7 @@ public class TriggerModeHandler implements ParamModeHandler {
         String originRobotId = cParamDao.getMarketRobotId(executeInfo);
         String mainProcessId = cParamDao.getMianProcessId(originRobotId, executeInfo.getAppVersion());
         List<CParam> params = cParamDao.getAllParams(
-                processId != null ? processId : mainProcessId,
-                originRobotId,
-                executeInfo.getAppVersion()
-        );
+                processId != null ? processId : mainProcessId, originRobotId, executeInfo.getAppVersion());
         return AppResponse.success(convertParams(params));
     }
 
@@ -118,14 +111,12 @@ public class TriggerModeHandler implements ParamModeHandler {
         List<CParam> params = cParamDao.getSelfRobotParam(
                 executeInfo.getRobotId(),
                 StringUtils.isNotBlank(processId) ? processId : mainProcessId,
-                enabledVersion
-        );
+                enabledVersion);
         return AppResponse.success(convertParams(params));
     }
 
     private AppResponse<List<ParamDto>> parseCustomParams(String paramJson) throws JsonProcessingException {
-        List<CParam> params = objectMapper.readValue(paramJson, new TypeReference<List<CParam>>() {
-        });
+        List<CParam> params = objectMapper.readValue(paramJson, new TypeReference<List<CParam>>() {});
         return AppResponse.success(convertParams(params));
     }
 
@@ -133,11 +124,13 @@ public class TriggerModeHandler implements ParamModeHandler {
         if (CollectionUtils.isEmpty(params)) {
             return Collections.emptyList();
         }
-        return params.stream().map(p -> {
-            ParamDto dto = new ParamDto();
-            BeanUtils.copyProperties(p, dto);
-            return dto;
-        }).collect(Collectors.toList());
+        return params.stream()
+                .map(p -> {
+                    ParamDto dto = new ParamDto();
+                    BeanUtils.copyProperties(p, dto);
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     private void validateMarketInfo(RobotExecute executeInfo) {
@@ -146,5 +139,4 @@ public class TriggerModeHandler implements ParamModeHandler {
             throw new ServiceException(ErrorCodeEnum.E_SQL.getCode(), "机器人市场信息异常");
         }
     }
-
 }

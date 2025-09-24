@@ -1,10 +1,9 @@
 package com.iflytek.rpa.base.entity.dto;
 
-import lombok.Data;
+import static com.iflytek.rpa.robot.constants.RobotConstant.EDIT_PAGE;
 
 import javax.validation.constraints.NotBlank;
-
-import static com.iflytek.rpa.robot.constants.RobotConstant.EDIT_PAGE;
+import lombok.Data;
 
 /**
  * @author mjren
@@ -14,10 +13,8 @@ import static com.iflytek.rpa.robot.constants.RobotConstant.EDIT_PAGE;
 @Data
 public class QueryParamDto {
 
-
     @NotBlank(message = "机器人ID不能为空")
     private String robotId;
-
 
     /**
      * 运行位置，默认编辑页，EDIT_PAGE编辑页,PROJECT_LIST设计器列表页,EXECUTOR执行器机器人列表页,CRONTAB触发器（本地计划任务）

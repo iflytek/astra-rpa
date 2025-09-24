@@ -2,7 +2,6 @@ package com.iflytek.rpa.base.entity.vo;
 
 import lombok.Data;
 
-
 /**
  * 收藏的原子能力vo
  */

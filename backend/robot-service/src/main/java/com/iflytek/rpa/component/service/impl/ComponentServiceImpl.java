@@ -30,14 +30,13 @@ import com.iflytek.rpa.starter.utils.response.ErrorCodeEnum;
 import com.iflytek.rpa.utils.IdWorker;
 import com.iflytek.rpa.utils.TenantUtils;
 import com.iflytek.rpa.utils.UserUtils;
+import java.util.*;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 组件表(Component)表服务实现类
@@ -103,7 +102,7 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
         int insert = baseMapper.insert(component);
         if (insert < 1) throw new ServiceException(ErrorCodeEnum.E_SQL_EXCEPTION.getCode(), "组件创建失败");
 
-        //新建默认流程,机器人版本是0
+        // 新建默认流程,机器人版本是0
         CProcess cProcess = new CProcess();
         cProcess.setRobotId(componentId);
         cProcess.setProcessId(idWorker.nextId() + "");
@@ -119,7 +118,6 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
         cProcess1.setProcessId(cProcess.getProcessId());
         return AppResponse.success(cProcess1);
     }
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -140,9 +138,7 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
         } else {
             throw new ServiceException(ErrorCodeEnum.E_SQL_EXCEPTION.getCode(), "删除组件失败");
         }
-
     }
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -234,7 +230,8 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
         }
 
         // 获取组件版本列表
-        List<ComponentVersion> componentVersionList = componentVersionDao.getVersionsByComponentId(componentId, tenantId);
+        List<ComponentVersion> componentVersionList =
+                componentVersionDao.getVersionsByComponentId(componentId, tenantId);
 
         // 获取最新版本号
         Integer latestVersion = componentVersionDao.getLatestVersion(componentId, tenantId);
@@ -366,7 +363,6 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
         robotDesignServiceImpl.moduleCopy(oldComponentId, newComponentId, userId);
     }
 
-
     /**
      * 生成副本组件名称
      *
@@ -410,13 +406,12 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
 
         // 调用 DAO 进行分页查询
         IPage<ComponentVo> result = componentDao.getComponentPageList(
-            page,
-            componentListDto.getName(),
-            componentListDto.getDataSource(),
-            componentListDto.getSortType(),
-            tenantId,
-            userId
-        );
+                page,
+                componentListDto.getName(),
+                componentListDto.getDataSource(),
+                componentListDto.getSortType(),
+                tenantId,
+                userId);
 
         return AppResponse.success(result);
     }
@@ -427,7 +422,8 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
         String userId = UserUtils.nowUserId();
         String tenantId = TenantUtils.getTenantId();
 
-        Integer robotVersion = getRobotVersion(queryDto.getRobotId(), queryDto.getMode(), queryDto.getVersion(), new BaseDto());
+        Integer robotVersion =
+                getRobotVersion(queryDto.getRobotId(), queryDto.getMode(), queryDto.getVersion(), new BaseDto());
         queryDto.setVersion(robotVersion);
 
         // 1. 获取用户权限内可获取的组件（shown = 1）
@@ -452,7 +448,8 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
         }
 
         // 3. 根据robotId和version获取屏蔽的blockComponentIdList
-        List<String> blockedComponentIds = getBlockedComponentIds(queryDto.getRobotId(), queryDto.getVersion(), tenantId);
+        List<String> blockedComponentIds =
+                getBlockedComponentIds(queryDto.getRobotId(), queryDto.getVersion(), tenantId);
 
         // 4. 根据robotId和version获取引用的useComponentIdList
         List<String> usedComponentIds = getUsedComponentIds(queryDto.getRobotId(), queryDto.getVersion(), tenantId);
@@ -461,8 +458,7 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
         List<String> finalComponentIds = getFinalComponentIds(
                 publishedComponents.stream().map(Component::getComponentId).collect(Collectors.toList()),
                 blockedComponentIds,
-                usedComponentIds
-        );
+                usedComponentIds);
 
         // 6. 组装成 List<EditingPageCompVo> 返回
         List<EditingPageCompVo> result = buildEditingPageCompVoList(finalComponentIds, tenantId);
@@ -490,21 +486,19 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
         if (StringUtils.isBlank(robotId) || version == null) {
             return Collections.emptyList();
         }
-        List<ComponentRobotUse> usedComponents = componentRobotUseDao.getByRobotIdAndVersion(robotId, version, tenantId);
+        List<ComponentRobotUse> usedComponents =
+                componentRobotUseDao.getByRobotIdAndVersion(robotId, version, tenantId);
         if (CollectionUtils.isEmpty(usedComponents)) {
             return Collections.emptyList();
         }
-        return usedComponents.stream()
-                .map(ComponentRobotUse::getComponentId)
-                .collect(Collectors.toList());
+        return usedComponents.stream().map(ComponentRobotUse::getComponentId).collect(Collectors.toList());
     }
 
     /**
      * 计算最终的组件ID列表
      */
-    private List<String> getFinalComponentIds(List<String> publishedComponentIds, 
-                                            List<String> blockedComponentIds, 
-                                            List<String> usedComponentIds) {
+    private List<String> getFinalComponentIds(
+            List<String> publishedComponentIds, List<String> blockedComponentIds, List<String> usedComponentIds) {
         // 移除屏蔽的组件
         List<String> result = publishedComponentIds.stream()
                 .filter(id -> !blockedComponentIds.contains(id))
@@ -533,9 +527,7 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
             return Collections.emptyList();
         }
 
-        return components.stream()
-                .map(this::convertToEditingPageCompVo)
-                .collect(Collectors.toList());
+        return components.stream().map(this::convertToEditingPageCompVo).collect(Collectors.toList());
     }
 
     /**
@@ -551,18 +543,19 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
     /**
      * 设置组件的icon和isLatest字段
      */
-    private void setIconAndIsLatest(List<EditingPageCompVo> componentVoList, String robotId, Integer robotVersion, String tenantId) {
+    private void setIconAndIsLatest(
+            List<EditingPageCompVo> componentVoList, String robotId, Integer robotVersion, String tenantId) {
         if (CollectionUtils.isEmpty(componentVoList)) {
             return;
         }
 
         // 获取所有组件的ID列表
-        List<String> componentIds = componentVoList.stream()
-                .map(EditingPageCompVo::getComponentId)
-                .collect(Collectors.toList());
+        List<String> componentIds =
+                componentVoList.stream().map(EditingPageCompVo::getComponentId).collect(Collectors.toList());
 
         // 批量获取组件的最新版本信息（包含icon）
-        List<ComponentVersion> latestVersionInfoList = componentVersionDao.getLatestVersionInfoBatch(componentIds, tenantId);
+        List<ComponentVersion> latestVersionInfoList =
+                componentVersionDao.getLatestVersionInfoBatch(componentIds, tenantId);
         if (CollectionUtils.isEmpty(latestVersionInfoList)) {
             return;
         }
@@ -572,15 +565,15 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
                 .collect(Collectors.toMap(ComponentVersion::getComponentId, version -> version));
 
         // 获取机器人在指定版本下使用的组件版本信息
-        List<ComponentRobotUse> usedComponents = componentRobotUseDao.getByRobotIdAndVersion(robotId, robotVersion, tenantId);
+        List<ComponentRobotUse> usedComponents =
+                componentRobotUseDao.getByRobotIdAndVersion(robotId, robotVersion, tenantId);
         Map<String, ComponentRobotUse> usedComponentMap = new HashMap<>();
         if (!CollectionUtils.isEmpty(usedComponents)) {
             usedComponentMap = usedComponents.stream()
                     .collect(Collectors.toMap(
-                        ComponentRobotUse::getComponentId,
-                        usedComponent -> usedComponent,
-                        (existing, replacement) -> existing
-                    ));
+                            ComponentRobotUse::getComponentId,
+                            usedComponent -> usedComponent,
+                            (existing, replacement) -> existing));
         }
 
         // 设置icon和isLatest字段
@@ -610,14 +603,16 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
         String tenantId = TenantUtils.getTenantId();
 
         // 获取机器人版本号
-        Integer robotVersion = getRobotVersion(queryDto.getRobotId(), queryDto.getMode(), queryDto.getRobotVersion(), new BaseDto());
+        Integer robotVersion =
+                getRobotVersion(queryDto.getRobotId(), queryDto.getMode(), queryDto.getRobotVersion(), new BaseDto());
 
         // 查询组件引用记录
         ComponentRobotUse componentRobotUse = componentRobotUseDao.getByRobotIdVersionAndComponentId(
                 queryDto.getRobotId(), robotVersion, queryDto.getComponentId(), userId);
 
         // 构建组件详情VO
-        EditingPageCompInfoVo result = buildEditingPageCompInfoVo(queryDto.getComponentId(), componentRobotUse, tenantId);
+        EditingPageCompInfoVo result =
+                buildEditingPageCompInfoVo(queryDto.getComponentId(), componentRobotUse, tenantId);
 
         return AppResponse.success(result);
     }
@@ -625,7 +620,8 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
     /**
      * 构建编辑页组件详情VO
      */
-    private EditingPageCompInfoVo buildEditingPageCompInfoVo(String componentId, ComponentRobotUse componentRobotUse, String tenantId) throws NoLoginException {
+    private EditingPageCompInfoVo buildEditingPageCompInfoVo(
+            String componentId, ComponentRobotUse componentRobotUse, String tenantId) throws NoLoginException {
         EditingPageCompInfoVo vo = new EditingPageCompInfoVo();
         vo.setComponentId(componentId);
 
@@ -636,8 +632,7 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
 
         // 获取组件最新版本信息（包含版本号和简介）
         ComponentVersion latestVersionInfo = componentVersionDao.getLatestVersionInfo(componentId, tenantId);
-        if (latestVersionInfo == null)
-            throw new ServiceException(ErrorCodeEnum.E_SQL_EMPTY.getCode(), "组件未发过版本，数据异常");
+        if (latestVersionInfo == null) throw new ServiceException(ErrorCodeEnum.E_SQL_EMPTY.getCode(), "组件未发过版本，数据异常");
 
         Integer latestVersion = latestVersionInfo.getVersion();
         vo.setLatestVersion(latestVersion);
@@ -675,8 +670,7 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
     }
 
     @RobotVersionAnnotation
-    public void getVersion(BaseDto baseDto) {
-    }
+    public void getVersion(BaseDto baseDto) {}
 
     @Override
     public AppResponse<List<CompManageVo>> getCompManageList(GetComponentUseDto queryDto) throws Exception {
@@ -684,7 +678,8 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
         String tenantId = TenantUtils.getTenantId();
 
         // 获取机器人版本号
-        Integer robotVersion = getRobotVersion(queryDto.getRobotId(), queryDto.getMode(), queryDto.getVersion(), new BaseDto());
+        Integer robotVersion =
+                getRobotVersion(queryDto.getRobotId(), queryDto.getMode(), queryDto.getVersion(), new BaseDto());
 
         // 1. 根据robotId和robotVersion查询所有的shown = 1的component，联componentVersion表
         List<CompManageVo> resVoList = getComponentInfoList(tenantId, userId);
@@ -727,10 +722,10 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
         }
 
         // 批量获取所有组件的最新版本信息，避免重复IO
-        List<String> componentIds = publishedComponents.stream()
-                .map(Component::getComponentId)
-                .collect(Collectors.toList());
-        List<ComponentVersion> latestVersionInfoList = componentVersionDao.getLatestVersionInfoBatch(componentIds, tenantId);
+        List<String> componentIds =
+                publishedComponents.stream().map(Component::getComponentId).collect(Collectors.toList());
+        List<ComponentVersion> latestVersionInfoList =
+                componentVersionDao.getLatestVersionInfoBatch(componentIds, tenantId);
 
         if (CollectionUtils.isEmpty(latestVersionInfoList)) {
             return Collections.emptyList();
@@ -765,8 +760,10 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
     /**
      * 设置屏蔽状态
      */
-    private void setBlockedStatus(List<CompManageVo> componentInfoList, String robotId, Integer robotVersion, String tenantId) {
-        List<String> blockedComponentIds = componentRobotBlockDao.getBlockedComponentIds(robotId, robotVersion, tenantId);
+    private void setBlockedStatus(
+            List<CompManageVo> componentInfoList, String robotId, Integer robotVersion, String tenantId) {
+        List<String> blockedComponentIds =
+                componentRobotBlockDao.getBlockedComponentIds(robotId, robotVersion, tenantId);
         if (CollectionUtils.isEmpty(blockedComponentIds)) {
             return;
         }
@@ -781,8 +778,10 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
     /**
      * 设置使用信息
      */
-    private void setUsageInfo(List<CompManageVo> componentInfoList, String robotId, Integer robotVersion, String tenantId) {
-        List<ComponentRobotUse> usedComponents = componentRobotUseDao.getByRobotIdAndVersion(robotId, robotVersion, tenantId);
+    private void setUsageInfo(
+            List<CompManageVo> componentInfoList, String robotId, Integer robotVersion, String tenantId) {
+        List<ComponentRobotUse> usedComponents =
+                componentRobotUseDao.getByRobotIdAndVersion(robotId, robotVersion, tenantId);
         if (CollectionUtils.isEmpty(usedComponents)) {
             return;
         }
@@ -790,11 +789,10 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
         // 将使用信息转换为Map，避免嵌套循环，提高性能
         Map<String, ComponentRobotUse> usedComponentMap = usedComponents.stream()
                 .collect(Collectors.toMap(
-                    ComponentRobotUse::getComponentId,
-                    usedComponent -> usedComponent,
-                    // 如果有重复的componentId，保留第一个（理论上不应该有重复）
-                    (existing, replacement) -> existing
-                ));
+                        ComponentRobotUse::getComponentId,
+                        usedComponent -> usedComponent,
+                        // 如果有重复的componentId，保留第一个（理论上不应该有重复）
+                        (existing, replacement) -> existing));
 
         // 处理被引用了的component
         for (CompManageVo vo : componentInfoList) {
@@ -814,5 +812,4 @@ public class ComponentServiceImpl extends ServiceImpl<ComponentDao, Component> i
             }
         }
     }
-
-} 
+}

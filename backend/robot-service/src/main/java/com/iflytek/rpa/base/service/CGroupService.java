@@ -17,5 +17,4 @@ public interface CGroupService {
     AppResponse<?> renameGroup(ServerBaseDto serverBaseDto) throws NoLoginException;
 
     AppResponse<?> deleteGroup(ServerBaseDto serverBaseDto) throws NoLoginException;
-
 }

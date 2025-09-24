@@ -2,11 +2,10 @@ package com.iflytek.rpa.triggerTask.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
+import javax.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Data
 public class TriggerTask implements Serializable {
@@ -57,7 +56,6 @@ public class TriggerTask implements Serializable {
      * 是否启用排队 1:启用 0:不启用
      */
     private Integer queueEnable;
-
 
     private Integer deleted = 0;
 

@@ -19,7 +19,6 @@ public class PrePage<T> extends Page<T> implements IPage<T> {
         super(current, size, isSearchCount);
     }
 
-
     public long offset() {
         return this.getCurrent() > 0L ? (this.getCurrent() - 1L) * this.getSize() - this.preNum : 0L;
     }

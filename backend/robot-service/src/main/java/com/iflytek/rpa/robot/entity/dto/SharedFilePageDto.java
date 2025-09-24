@@ -1,9 +1,8 @@
 package com.iflytek.rpa.robot.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 /**
  * 共享文件分页查询DTO
@@ -13,7 +12,7 @@ import java.util.Date;
  */
 @Data
 public class SharedFilePageDto {
-    //文件名、创建时间、所有者、所属部门、更新时间、标签、分页信息
+    // 文件名、创建时间、所有者、所属部门、更新时间、标签、分页信息
     /**
      * 共享文件名
      */
@@ -67,5 +66,4 @@ public class SharedFilePageDto {
      * 每页大小
      */
     private Integer pageSize = 10;
-
 }

@@ -1,16 +1,14 @@
 package com.iflytek.rpa.starter.utils.response;
 
-import org.springframework.util.StringUtils;
-
 import java.io.Serializable;
+import org.springframework.util.StringUtils;
 
 public class AppResponse<T> implements Serializable {
     private String code;
     private T data;
     private String message;
 
-    private AppResponse() {
-    }
+    private AppResponse() {}
 
     public static <T> AppResponse<T> error(ErrorCodeEnum codeEnum) {
         return error(codeEnum, null);

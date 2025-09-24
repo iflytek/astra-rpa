@@ -9,9 +9,8 @@ import com.iflytek.rpa.robot.entity.vo.SharedFilePageVo;
 import com.iflytek.rpa.robot.entity.vo.TagVo;
 import com.iflytek.rpa.starter.exception.NoLoginException;
 import com.iflytek.rpa.starter.utils.response.AppResponse;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 共享文件服务接口
@@ -22,7 +21,8 @@ import java.util.List;
 public interface SharedFileService {
     AppResponse<IPage<SharedFilePageVo>> getSharedFilePageList(SharedFilePageDto queryDto);
 
-    AppResponse<String> deleteSharedFile(HttpServletRequest request, SharedFileBatchDeleteDto batchDeleteDto) throws NoLoginException;
+    AppResponse<String> deleteSharedFile(HttpServletRequest request, SharedFileBatchDeleteDto batchDeleteDto)
+            throws NoLoginException;
 
     AppResponse<?> addSharedFileInfo(HttpServletRequest request, SharedFileDto dto) throws NoLoginException;
 

@@ -1,8 +1,7 @@
 package com.iflytek.rpa.robot.entity.dto;
 
-import lombok.Data;
-
 import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 /**
  * 共享变量删除DTO
@@ -18,4 +17,4 @@ public class SharedVarDeleteDto {
      */
     @NotNull(message = "共享变量ID不能为空")
     private Long id;
-} 
+}

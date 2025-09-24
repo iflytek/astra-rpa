@@ -1,9 +1,8 @@
 package com.iflytek.rpa.robot.entity.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-
 import java.util.Date;
+import lombok.Data;
 
 /**
  * @author mjren
@@ -19,5 +18,4 @@ public class RobotVersionHistoryDto {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
-
 }
