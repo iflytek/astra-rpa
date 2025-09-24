@@ -1,3 +1,5 @@
+# English | [简体中文](./README.zh.md)
+
 # Repository Description
 
 This repository is for the RPA browser plugin, which handles web-related automation.
