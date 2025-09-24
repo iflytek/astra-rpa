@@ -187,6 +187,26 @@
                 <version>2.8.2</version>
             </plugin>
 
+            <!--spotless plugin code formatter-->
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>2.43.0</version> <!-- 请检查最新版本：https://github.com/diffplug/spotless -->
+                <configuration>
+                    <java>
+                        <palantirJavaFormat/>
+                    </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal> <!-- 检查格式，CI 中使用 -->
+                            <goal>apply</goal> <!-- 自动修复格式，本地开发使用 -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
         <!-- 将文件打入jar包中 -->
         <resources>
