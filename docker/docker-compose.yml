@@ -123,7 +123,7 @@ services:
       - rpa-opensource-network
 
   openresty-nginx:
-    image: openresty/openresty:latest
+    image: openresty/openresty:1.27.1.1-alpine
     container_name: rpa-opensource-openresty-nginx
     restart: always
     ports:
@@ -147,7 +147,7 @@ services:
       - rpa-opensource-network
 
   casdoor:
-    image: casbin/casdoor:latest
+    image: casbin/casdoor:v2.67.0
     container_name: rpa-opensource-casdoor
     restart: always
     env_file: *env_file
