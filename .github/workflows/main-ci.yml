@@ -1,0 +1,99 @@
+name: Main CI Pipeline
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: write
+  statuses: write
+
+concurrency:
+  group: main-ci-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  # Check which paths were changed to determine which tests to run
+  check-changes:
+    name: Check Changed Files
+    runs-on: ubuntu-latest
+    outputs:
+      engine-changed: ${{ steps.changes.outputs.engine }}
+      frontend-changed: ${{ steps.changes.outputs.frontend }}
+      backend-changed: ${{ steps.changes.outputs.backend }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            engine:
+              - 'engine/**'
+            frontend:
+              - 'frontend/**'
+            backend:
+              - 'backend/**'
+
+  # Run tests in parallel
+  style-check:
+    name: Style Check
+    uses: ./.github/workflows/style.yml
+    needs: check-changes
+    if: needs.check-changes.outputs.engine-changed == 'true'
+
+  # ============================================================================
+  # Summary Stage
+  # ============================================================================
+  summary:
+    name: 📊 CI Pipeline Summary
+    runs-on: ubuntu-latest
+    needs: [check-changes, style-check]
+    if: always()
+    timeout-minutes: 2
+    steps:
+      - name: Generate CI Summary
+        run: |
+          echo "=== 🚀 Astron RPA CI Pipeline Summary ==="
+          echo ""
+          echo "📁 Changed Components:"
+          echo "  🔧 Engine: ${{ needs.check-changes.outputs.engine-changed }}"
+          echo "  🎨 Frontend: ${{ needs.check-changes.outputs.frontend-changed }}"
+          echo "  ⚙️ Backend: ${{ needs.check-changes.outputs.backend-changed }}"
+          echo ""
+          echo "🔍 Job Results:"
+          echo "  📋 Change Detection: ${{ needs.check-changes.result }}"
+          echo "  ✨ Style Check: ${{ needs.style-check.result }}"
+          echo ""
+
+          # Determine overall status
+          overall_success=true
+          
+          # Check required jobs
+          if [[ "${{ needs.check-changes.result }}" != "success" ]]; then
+            echo "❌ Change detection failed"
+            overall_success=false
+          fi
+          
+          # Only check style if engine changed
+          if [[ "${{ needs.check-changes.outputs.engine-changed }}" == "true" ]]; then
+            if [[ "${{ needs.style-check.result }}" != "success" ]]; then
+              echo "❌ Style check failed"
+              overall_success=false
+            fi
+          else
+            echo "ℹ️ Style check skipped (no engine changes)"
+          fi
+
+          echo ""
+          if [[ "$overall_success" == "true" ]]; then
+            echo "✅ 🎉 All checks passed! Ready for merge."
+            echo "🚀 Your code looks great!"
+          else
+            echo "❌ 🚨 Some checks failed. Please review the logs above."
+            echo "🔧 Fix the issues and push again."
+            exit 1
+          fi
