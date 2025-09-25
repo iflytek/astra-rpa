@@ -15,7 +15,7 @@ permissions:
 jobs:
   python-style:
     name: Python Style
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
