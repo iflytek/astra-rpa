@@ -20,16 +20,13 @@ WinEleCore: IWinEleCore = WinEleCore()
 
 
 class WinEle:
-
     @staticmethod
     @atomicMg.atomic(
         "WinEle",
         inputList=[
             atomicMg.param(
                 "pick",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.PICK.value, params={"use": "ELEMENT"}
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.PICK.value, params={"use": "ELEMENT"}),
             ),
         ],
     )
@@ -42,7 +39,6 @@ class WinEle:
         verticals_offset=0,
         keyboard_input: MouseClickKeyboard = MouseClickKeyboard.NONE,
     ):
-
         locator = WinEleCore.find(pick, wait_time)
         point = locator.point()
 
@@ -50,9 +46,7 @@ class WinEle:
         if keyboard_input != MouseClickKeyboard.NONE:
             pyautogui.keyDown(keyboard_input.value)
         try:
-            locator.move(
-                Point(point.x + horizontals_offset, point.y + verticals_offset)
-            )
+            locator.move(Point(point.x + horizontals_offset, point.y + verticals_offset))
             pyautogui.click(
                 clicks=1 if click_type == MouseClickType.CLICK else 2,
                 button=click_button.value,
@@ -70,9 +64,7 @@ class WinEle:
         inputList=[
             atomicMg.param(
                 "pick",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.PICK.value, params={"use": "ELEMENT"}
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.PICK.value, params={"use": "ELEMENT"}),
             ),
             atomicMg.param(
                 "file_path",
@@ -89,7 +81,6 @@ class WinEle:
         file_name: str = "桌面元素截图",
         exist_type: FileExistenceType = FileExistenceType.RENAME,
     ):
-
         if not file_name.endswith(".png"):
             file_name += ".png"
 
@@ -114,9 +105,7 @@ class WinEle:
         inputList=[
             atomicMg.param(
                 "pick",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.PICK.value, params={"use": "ELEMENT"}
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.PICK.value, params={"use": "ELEMENT"}),
             ),
         ],
     )
@@ -130,18 +119,14 @@ class WinEle:
         inputList=[
             atomicMg.param(
                 "pick",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.PICK.value, params={"use": "ELEMENT"}
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.PICK.value, params={"use": "ELEMENT"}),
             ),
             atomicMg.param(
                 "text",
                 dynamics=[
                     DynamicsItem(
                         key="$this.text.show",
-                        expression="return $this.input_type.value == '{}'".format(
-                            ElementInputType.KEYBOARD.value
-                        ),
+                        expression="return $this.input_type.value == '{}'".format(ElementInputType.KEYBOARD.value),
                     )
                 ],
             ),
@@ -154,11 +139,8 @@ class WinEle:
         clear_first: bool = True,
         wait_time: float = 10.0,
     ):
-
         if pick.get("type", None) not in [PickerDomain.UIA.value]:
-            raise BaseException(
-                UNPICKABLE, "类型不支持{}".format(pick.get("type", None))
-            )
+            raise BaseException(UNPICKABLE, "类型不支持{}".format(pick.get("type", None)))
 
         locator = WinEleCore.find(pick, wait_time)
         locator.move()
@@ -168,10 +150,7 @@ class WinEle:
 
         if clear_first:
             window_control = locator.control()
-            if (
-                window_control.ControlTypeName
-                == uiautomation.EditControl.ControlTypeName
-            ):
+            if window_control.ControlTypeName == uiautomation.EditControl.ControlTypeName:
                 window_control.GetValuePattern().SetValue("")
             else:
                 pyautogui.press("home")
@@ -191,9 +170,7 @@ class WinEle:
         inputList=[
             atomicMg.param(
                 "pick",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.PICK.value, params={"use": "ELEMENT"}
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.PICK.value, params={"use": "ELEMENT"}),
             ),
         ],
         outputList=[atomicMg.param("ele_text", types="Str")],
@@ -210,11 +187,8 @@ class WinEle:
         ],
     )
     def similar(pick: WinPick, wait_time: int = 10) -> list:
-
         if pick.get("type", None) not in [PickerDomain.UIA.value]:
-            raise BaseException(
-                UNPICKABLE, "类型不支持{}".format(pick.get("type", None))
-            )
+            raise BaseException(UNPICKABLE, "类型不支持{}".format(pick.get("type", None)))
 
         locator_list = WinEleCore.find(pick, wait_time)
         res_list = []

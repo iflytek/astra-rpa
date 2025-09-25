@@ -15,9 +15,7 @@ route.handler(app)
 
 def start():
     # 1. 初始化配置
-    parser = argparse.ArgumentParser(
-        description="{} service".format("rpa-browser-connector")
-    )
+    parser = argparse.ArgumentParser(description="{} service".format("rpa-browser-connector"))
     parser.add_argument("--f", default="service.yaml", help="配置文件")
     parser.add_argument("--port", default="19082", help="本地端口号")
     parser.add_argument("--gateway_port", default="", help="网关端口", required=False)
@@ -34,11 +32,7 @@ def start():
     svc.set_config(conf)
 
     # 3. FastApi启动
-    logger.info(
-        "{} service[:{}] start".format(
-            conf.app_settings.app_name, conf.http_settings.app_port
-        )
-    )
+    logger.info("{} service[:{}] start".format(conf.app_settings.app_name, conf.http_settings.app_port))
     logger.info("swagger urL:{}".format("/docs"))
     uvicorn.run(
         app="browser_connector.start:app",

@@ -8,9 +8,7 @@ from rpadataprocess import AddSubType, MathOperatorType, MathRoundType, NumberTy
 from rpadataprocess.error import *
 
 
-def random_number(
-    start, end, number_type: NumberType = NumberType.INTEGER, size: int = 1
-) -> list:
+def random_number(start, end, number_type: NumberType = NumberType.INTEGER, size: int = 1) -> list:
     """随机数生成"""
     import numpy
 
@@ -21,7 +19,6 @@ def random_number(
 
 
 class MathProcess:
-
     @staticmethod
     @atomicMg.atomic(
         "MathProcess",
@@ -38,9 +35,7 @@ class MathProcess:
         生成随机数，可以指定整数，小数
         """
         if start > end:
-            raise BaseException(
-                INVALID_NUMBER_RANGE_ERROR_FORMAT, "开始值必须小于结束值"
-            )
+            raise BaseException(INVALID_NUMBER_RANGE_ERROR_FORMAT, "开始值必须小于结束值")
         res = random_number(number_type=number_type, start=start, end=end, size=size)
         if len(res) == 1:
             return res[0]
@@ -48,9 +43,7 @@ class MathProcess:
             return res
 
     @staticmethod
-    @atomicMg.atomic(
-        "MathProcess", outputList=[atomicMg.param("rounding_number", types="Any")]
-    )
+    @atomicMg.atomic("MathProcess", outputList=[atomicMg.param("rounding_number", types="Any")])
     def get_rounding_number(number: float, precision: int = 2):
         """
         四舍五入
@@ -68,9 +61,7 @@ class MathProcess:
         "MathProcess",
         outputList=[atomicMg.param("self_calculation_number", types="Int")],
     )
-    def self_calculation_number(
-        number: int, add_sub: AddSubType = AddSubType.ADD, add_sub_number: int = 1
-    ):
+    def self_calculation_number(number: int, add_sub: AddSubType = AddSubType.ADD, add_sub_number: int = 1):
         """
         自增自减
         """
@@ -96,9 +87,7 @@ class MathProcess:
             elif re.match(r"^-?\d+\.\d+$", raw_number):
                 raw_number = float(raw_number)
             else:
-                raise BaseException(
-                    INVALID_NUMBER_FORMAT_ERROR_FORMAT, "请输入整数或浮点数"
-                )
+                raise BaseException(INVALID_NUMBER_FORMAT_ERROR_FORMAT, "请输入整数或浮点数")
         return abs(raw_number)
 
     @staticmethod
@@ -111,9 +100,7 @@ class MathProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.precision.show",
-                        expression="return $this.handle_method.value == '{}'".format(
-                            MathRoundType.ROUND.value
-                        ),
+                        expression="return $this.handle_method.value == '{}'".format(MathRoundType.ROUND.value),
                     )
                 ],
             )

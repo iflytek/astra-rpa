@@ -11,7 +11,6 @@ ScreenShotCore = ScreenShotCore()
 
 
 class System:
-
     @staticmethod
     @atomicMg.atomic(
         "System",
@@ -32,9 +31,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.top_left_x.show",
-                        expression="return $this.screen_type.value == '{}'".format(
-                            ScreenType.REGION.value
-                        ),
+                        expression="return $this.screen_type.value == '{}'".format(ScreenType.REGION.value),
                     )
                 ],
                 required=True,
@@ -45,9 +42,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.top_left_y.show",
-                        expression="return $this.screen_type.value == '{}'".format(
-                            ScreenType.REGION.value
-                        ),
+                        expression="return $this.screen_type.value == '{}'".format(ScreenType.REGION.value),
                     )
                 ],
                 required=True,
@@ -58,9 +53,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.bottom_right_x.show",
-                        expression="return $this.screen_type.value == '{}'".format(
-                            ScreenType.REGION.value
-                        ),
+                        expression="return $this.screen_type.value == '{}'".format(ScreenType.REGION.value),
                     )
                 ],
                 required=True,
@@ -71,9 +64,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.bottom_right_y.show",
-                        expression="return $this.screen_type.value == '{}'".format(
-                            ScreenType.REGION.value
-                        ),
+                        expression="return $this.screen_type.value == '{}'".format(ScreenType.REGION.value),
                     )
                 ],
                 required=True,
@@ -107,10 +98,7 @@ class System:
             else:
                 raise NotImplementedError()
 
-        if not (
-            os.path.splitext(png_name)[1] == ".png"
-            or os.path.splitext(png_name)[1] == ".jpg"
-        ):
+        if not (os.path.splitext(png_name)[1] == ".png" or os.path.splitext(png_name)[1] == ".jpg"):
             png_name = png_name + ".png"
         screenshot_path = os.path.join(png_path, png_name)
         if screen_type == ScreenType.FULL:
@@ -173,9 +161,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.password_text.show",
-                        expression="return $this.pwd_type.value == '{}'".format(
-                            PwdType.PASSWORD.value
-                        ),
+                        expression="return $this.pwd_type.value == '{}'".format(PwdType.PASSWORD.value),
                     )
                 ],
                 required=True,
@@ -185,9 +171,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.password_rsa.show",
-                        expression="return $this.pwd_type.value == '{}'".format(
-                            PwdType.RSA.value
-                        ),
+                        expression="return $this.pwd_type.value == '{}'".format(PwdType.RSA.value),
                     )
                 ],
                 required=True,
@@ -218,9 +202,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_path.show",
-                        expression="return $this.batch_print.value == '{}'".format(
-                            BatchType.SINGLE.value
-                        ),
+                        expression="return $this.batch_print.value == '{}'".format(BatchType.SINGLE.value),
                     )
                 ],
             ),
@@ -233,9 +215,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.folder_path.show",
-                        expression="return $this.batch_print.value == '{}'".format(
-                            BatchType.BATCH.value
-                        ),
+                        expression="return $this.batch_print.value == '{}'".format(BatchType.BATCH.value),
                     )
                 ],
             ),
@@ -246,9 +226,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.paper_size.show",
-                        expression="return $this.printer_type.value == '{}'".format(
-                            PrinterType.CUSTOM.value
-                        ),
+                        expression="return $this.printer_type.value == '{}'".format(PrinterType.CUSTOM.value),
                     )
                 ],
             ),
@@ -258,9 +236,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.page_weight.show",
-                        expression="return $this.paper_size.value == '{}'".format(
-                            PaperType.CUSTOM.value
-                        ),
+                        expression="return $this.paper_size.value == '{}'".format(PaperType.CUSTOM.value),
                     )
                 ],
             ),
@@ -270,9 +246,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.page_height.show",
-                        expression="return $this.paper_size.value == '{}'".format(
-                            PaperType.CUSTOM.value
-                        ),
+                        expression="return $this.paper_size.value == '{}'".format(PaperType.CUSTOM.value),
                     )
                 ],
             ),
@@ -281,9 +255,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.print_num.show",
-                        expression="return $this.printer_type.value == '{}'".format(
-                            PrinterType.CUSTOM.value
-                        ),
+                        expression="return $this.printer_type.value == '{}'".format(PrinterType.CUSTOM.value),
                     )
                 ],
             ),
@@ -292,9 +264,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.orientation_type.show",
-                        expression="return $this.printer_type.value == '{}'".format(
-                            PrinterType.CUSTOM.value
-                        ),
+                        expression="return $this.printer_type.value == '{}'".format(PrinterType.CUSTOM.value),
                     )
                 ],
             ),
@@ -303,9 +273,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.scale.show",
-                        expression="return $this.printer_type.value == '{}'".format(
-                            PrinterType.CUSTOM.value
-                        ),
+                        expression="return $this.printer_type.value == '{}'".format(PrinterType.CUSTOM.value),
                     )
                 ],
             ),
@@ -314,9 +282,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.margin_type.show",
-                        expression="return $this.printer_type.value == '{}'".format(
-                            PrinterType.CUSTOM.value
-                        ),
+                        expression="return $this.printer_type.value == '{}'".format(PrinterType.CUSTOM.value),
                     )
                 ],
             ),
@@ -325,9 +291,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.left_margin.show",
-                        expression="return $this.margin_type.value == '{}'".format(
-                            MarginType.CUSTOM.value
-                        ),
+                        expression="return $this.margin_type.value == '{}'".format(MarginType.CUSTOM.value),
                     )
                 ],
             ),
@@ -336,9 +300,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.right_margin.show",
-                        expression="return $this.margin_type.value == '{}'".format(
-                            MarginType.CUSTOM.value
-                        ),
+                        expression="return $this.margin_type.value == '{}'".format(MarginType.CUSTOM.value),
                     )
                 ],
             ),
@@ -347,9 +309,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.top_margin.show",
-                        expression="return $this.margin_type.value == '{}'".format(
-                            MarginType.CUSTOM.value
-                        ),
+                        expression="return $this.margin_type.value == '{}'".format(MarginType.CUSTOM.value),
                     )
                 ],
             ),
@@ -358,9 +318,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.bottom_margin.show",
-                        expression="return $this.margin_type.value == '{}'".format(
-                            MarginType.CUSTOM.value
-                        ),
+                        expression="return $this.margin_type.value == '{}'".format(MarginType.CUSTOM.value),
                     )
                 ],
             ),
@@ -370,9 +328,7 @@ class System:
                 dynamics=[
                     DynamicsItem(
                         key="$this.page.show",
-                        expression="return $this.file_type.value == '{}'".format(
-                            FileType.EXCEL.value
-                        ),
+                        expression="return $this.file_type.value == '{}'".format(FileType.EXCEL.value),
                     )
                 ],
                 required=False,

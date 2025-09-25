@@ -11,7 +11,6 @@ from rpaexcel.core import IExcelCore
 
 
 class SheetCore(IExcelCore):
-
     excel_obj = None
 
     @staticmethod
@@ -38,9 +37,7 @@ class SheetCore(IExcelCore):
         return excel.Worksheets(sheet_name)
 
     @staticmethod
-    def get_worksheet_names(
-        excel: object, sheet_range: SheetRangeType = SheetRangeType.ACTIVATED
-    ):
+    def get_worksheet_names(excel: object, sheet_range: SheetRangeType = SheetRangeType.ACTIVATED):
         """
         sheet_range: "0":当前sheet页名称; "1":所有sheet页名称
         return:返回所有sheet名
@@ -106,7 +103,6 @@ class SheetCore(IExcelCore):
         excel_obj:excel对象
         """
         try:
-
             move_sheet_obj = cls._get_ws_obj(excel, move_sheet)
 
             if move_to_sheet:
@@ -119,9 +115,7 @@ class SheetCore(IExcelCore):
             if move_type == MoveSheetType.MOVE_TO_FIRST:
                 move_sheet_obj.Move(Before=excel.Worksheets(1), After=None)
             if move_type == MoveSheetType.MOVE_TO_LAST:
-                move_sheet_obj.Move(
-                    After=excel.Worksheets(excel.Sheets.Count), Before=None
-                )
+                move_sheet_obj.Move(After=excel.Worksheets(excel.Sheets.Count), Before=None)
 
         except Exception as err:
             raise err
@@ -142,9 +136,7 @@ class SheetCore(IExcelCore):
             raise err
 
     @classmethod
-    def rename_worksheet(
-        cls, excel: object, source_sheet_name: str, new_sheet_name: str
-    ):
+    def rename_worksheet(cls, excel: object, source_sheet_name: str, new_sheet_name: str):
         """
         重命名sheet
         excel_obj:
@@ -187,9 +179,7 @@ class SheetCore(IExcelCore):
                 if new_sheet_name in sheet_names and not is_cover:
                     raise ValueError("复制sheet名称已存在")
             else:
-                other_sheet_names = cls.get_worksheet_names(
-                    other_excel_obj, sheet_range=SheetRangeType.ALL
-                )
+                other_sheet_names = cls.get_worksheet_names(other_excel_obj, sheet_range=SheetRangeType.ALL)
                 if new_sheet_name in other_sheet_names and not is_cover:
                     raise ValueError("复制sheet名称已存在")
             if len(new_sheet_name) >= 31:
@@ -217,16 +207,12 @@ class SheetCore(IExcelCore):
             else:
                 if location == CopySheetLocationType.BEFORE:
                     ws_obj.Copy(
-                        Before=other_excel_obj.Worksheets(
-                            other_excel_obj.ActiveSheet.Name
-                        ),
+                        Before=other_excel_obj.Worksheets(other_excel_obj.ActiveSheet.Name),
                         After=None,
                     )
                 if location == CopySheetLocationType.AFTER:
                     ws_obj.Copy(
-                        After=other_excel_obj.Worksheets(
-                            other_excel_obj.ActiveSheet.Name
-                        ),
+                        After=other_excel_obj.Worksheets(other_excel_obj.ActiveSheet.Name),
                         Before=None,
                     )
                 if location == CopySheetLocationType.FIRST:

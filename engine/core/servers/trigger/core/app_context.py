@@ -49,9 +49,7 @@ class AppContext:
 
     async def _init_trigger(self):
         """初始化触发器"""
-        self.trigger = (
-            Trigger()
-        )  # 一定要在异步里面启动Trigger，他会New一个AsyncIOScheduler()
+        self.trigger = Trigger()  # 一定要在异步里面启动Trigger，他会New一个AsyncIOScheduler()
         logger.info("trigger初始化成功")
 
     def _init_task_queue_manager(self):
@@ -60,17 +58,15 @@ class AppContext:
             raise RuntimeError("trigger必须在task_queue_manager之前初始化")
 
         self.task_queue_mgr = TaskQueueManager(
-            self.task_queue_monitor, self.trigger.queue, self  # 传入 self (app_context)
+            self.task_queue_monitor,
+            self.trigger.queue,
+            self,  # 传入 self (app_context)
         )
         self.task_queue_mgr.set_trigger(self.trigger)
 
         # 启动任务队列管理线程
-        fetch_thread = threading.Thread(
-            target=self.task_queue_mgr.fetch_tasks, daemon=True
-        )
-        process_thread = threading.Thread(
-            target=self.task_queue_mgr.process_tasks, daemon=True
-        )
+        fetch_thread = threading.Thread(target=self.task_queue_mgr.fetch_tasks, daemon=True)
+        process_thread = threading.Thread(target=self.task_queue_mgr.process_tasks, daemon=True)
 
         fetch_thread.start()
         process_thread.start()
@@ -86,9 +82,7 @@ class AppContext:
         self.trigger.delete_all_tasks()
 
         if not self.terminal:
-            self.terminal = Terminal(
-                self.task_queue_monitor, self.trigger.queue, self.trigger.scheduler
-            )
+            self.terminal = Terminal(self.task_queue_monitor, self.trigger.queue, self.trigger.scheduler)
             logger.info("terminal初始化成功")
 
         self.terminal.start_poll()  # 启动terminal轮询线程
@@ -104,9 +98,7 @@ class AppContext:
 
         if config.TERMINAL_MODE:
             if not self.terminal:
-                self.terminal = Terminal(
-                    self.task_queue_monitor, self.trigger.queue, self.trigger.scheduler
-                )
+                self.terminal = Terminal(self.task_queue_monitor, self.trigger.queue, self.trigger.scheduler)
                 logger.info("terminal重新初始化成功")
             self.terminal.start_poll()
         else:

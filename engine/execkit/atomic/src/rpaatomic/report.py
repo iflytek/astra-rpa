@@ -3,7 +3,6 @@ from typing import Optional
 
 
 class IReport(ABC):
-
     @abstractmethod
     def info(self, message):
         pass
@@ -18,7 +17,6 @@ class IReport(ABC):
 
 
 class SimpleReport(IReport):
-
     def __init__(self):
         self.code: Optional[IReport] = None
 

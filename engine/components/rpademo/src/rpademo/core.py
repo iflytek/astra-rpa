@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 
 class IDemoCore(ABC):
-
     @staticmethod
     @abstractmethod
     def print(msg: str = "") -> str:

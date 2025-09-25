@@ -6,7 +6,6 @@ from rpanetwork.utils import is_json
 
 
 class NetworkCore:
-
     @staticmethod
     def post_request(
         url: str = "",
@@ -49,7 +48,6 @@ class NetworkCore:
 
     @staticmethod
     def get_request(url: str = "", header: str = "", timeout: int = 60):
-
         headers = json.loads(header) if header else {}
 
         try:
@@ -113,9 +111,7 @@ class NetworkCore:
             else:
                 header["Content-Type"] = "application/x-www-form-urlencoded"
         try:
-            res = requests.put(
-                url=url, headers=header, data=body, json=json_body, timeout=timeout
-            )
+            res = requests.put(url=url, headers=header, data=body, json=json_body, timeout=timeout)
             return res.text
         except requests.RequestException as e:
             raise Exception(f"Request failed: {e}")
@@ -170,9 +166,7 @@ class NetworkCore:
             raise Exception(f"Request failed: {e}")
 
     @staticmethod
-    def patch_request(
-        url: str = "", header: str = "", body: str = "", timeout: int = 60
-    ):
+    def patch_request(url: str = "", header: str = "", body: str = "", timeout: int = 60):
         # 设置默认超时时间
         timeout = timeout or 60
 
@@ -187,16 +181,13 @@ class NetworkCore:
                 headers["Content-Type"] = "application/x-www-form-urlencoded"
         try:
             # 发送 PATCH 请求
-            response = requests.patch(
-                url, data=body, headers=headers, json=json_body, timeout=timeout
-            )
+            response = requests.patch(url, data=body, headers=headers, json=json_body, timeout=timeout)
             return response.json()
         except requests.RequestException as e:
             raise Exception(f"Request failed: {e}")
 
     @staticmethod
     def http_download(url: str = "", dst_path: str = ""):
-
         with requests.get(url=url, stream=True) as response:
             response.raise_for_status()
             with open(dst_path, "wb") as f:

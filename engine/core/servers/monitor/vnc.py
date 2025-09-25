@@ -174,9 +174,7 @@ class VNCServer:
                 logger.error("VNC进程启动失败")
                 return False
 
-            logger.info(
-                "VNC服务器启动成功，进程ID: {}".format(self.vnc_process.proc.pid)
-            )
+            logger.info("VNC服务器启动成功，进程ID: {}".format(self.vnc_process.proc.pid))
             return True
 
         except Exception as e:
@@ -230,9 +228,7 @@ class VNCServer:
                 return False
 
             logger.info(
-                "WebSocket代理启动成功，VNC端口: {}, WebSocket端口: {}".format(
-                    self.vnc_port, self.websocket_port
-                )
+                "WebSocket代理启动成功，VNC端口: {}, WebSocket端口: {}".format(self.vnc_port, self.websocket_port)
             )
             return True
 

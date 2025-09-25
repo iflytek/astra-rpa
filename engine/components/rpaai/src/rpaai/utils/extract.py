@@ -1,5 +1,4 @@
 class FileExtractor:
-
     def __init__(self, file_path: str):
         self.file_path = file_path
 
@@ -31,12 +30,7 @@ class FileExtractor:
         import pypdf
 
         pdf_reader = pypdf.PdfReader(path)
-        return "\n".join(
-            [
-                pdf_reader.pages[page_num].extract_text()
-                for page_num in range(len(pdf_reader.pages))
-            ]
-        )
+        return "\n".join([pdf_reader.pages[page_num].extract_text() for page_num in range(len(pdf_reader.pages))])
 
     @staticmethod
     def extract_docx(path: str) -> str:

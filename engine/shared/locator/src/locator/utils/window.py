@@ -256,9 +256,7 @@ def show_desktop_rect(rect: Rect, desktop_handle=None):
             continue
 
         # 桌面窗口不能最小化，最小化导致桌面被隐藏
-        if (
-            desktop_handle and window._hWnd == desktop_handle
-        ) or window._hWnd in DESKTOP_WINDOW_HANDLES:  # noqa
+        if (desktop_handle and window._hWnd == desktop_handle) or window._hWnd in DESKTOP_WINDOW_HANDLES:  # noqa
             continue
 
         # 窗口挡住桌面元素，最小化窗口
@@ -314,9 +312,7 @@ def find_window(cls_name: str, name: str, app_name: str = None) -> int:
 
     # 优先检查win32gui.GetParent(handle) == 0，如果都为空就剔除这个优先选项
     match_list_lv2 = [item for item in match_list if item[3]]
-    logger.info(
-        f"优先检查win32gui.GetParent(handle) == 0，如果都为空就剔除这个优先选项: {match_list_lv2}"
-    )
+    logger.info(f"优先检查win32gui.GetParent(handle) == 0，如果都为空就剔除这个优先选项: {match_list_lv2}")
     if not match_list_lv2:
         match_list_lv2 = match_list
 
@@ -337,9 +333,7 @@ def find_window(cls_name: str, name: str, app_name: str = None) -> int:
     return 0
 
 
-def find_window_handles_list(
-    cls_name: str, name: str, app_name: str = None, picker_type=None
-) -> List[int]:
+def find_window_handles_list(cls_name: str, name: str, app_name: str = None, picker_type=None) -> List[int]:
     """
     获取指定窗口的handle列表，包含cls完全一致的handle和窗口name最长并且一致的handle
 
@@ -396,9 +390,7 @@ def find_window_handles_list(
 
     # 优先检查win32gui.GetParent(handle) == 0，如果都为空就剔除这个优先选项
     match_list_lv2 = [item for item in match_list if item[3]]
-    logger.info(
-        f"优先检查win32gui.GetParent(handle) == 0，如果都为空就剔除这个优先选项: {match_list_lv2}"
-    )
+    logger.info(f"优先检查win32gui.GetParent(handle) == 0，如果都为空就剔除这个优先选项: {match_list_lv2}")
     if not match_list_lv2:
         match_list_lv2 = match_list
 
@@ -539,9 +531,7 @@ def find_window_by_enum(cls: str, name: str, app_name: str = None) -> int:
     return 0
 
 
-def find_window_by_enum_list(
-    cls: str, name: str, app_name: str = None, picker_type=None
-) -> int:
+def find_window_by_enum_list(cls: str, name: str, app_name: str = None, picker_type=None) -> int:
     """
     通过枚举窗口 classname 和 name属性获得窗口，返回如果是0则窗口不存在
     与find_window的区别是使用EnumWindows枚举所有窗口，能找到更多窗口

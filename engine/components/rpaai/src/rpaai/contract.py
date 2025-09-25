@@ -10,7 +10,6 @@ from rpaatomic.types import PATH
 
 
 class ContractAI:
-
     @staticmethod
     @atomicMg.atomic(
         "ContractAI",
@@ -20,9 +19,7 @@ class ContractAI:
                 dynamics=[
                     DynamicsItem(
                         key="$this.contract_path.show",
-                        expression="return $this.contract_type.value == '{}'".format(
-                            InputType.FILE.value
-                        ),
+                        expression="return $this.contract_type.value == '{}'".format(InputType.FILE.value),
                     )
                 ],
                 formType=AtomicFormTypeMeta(
@@ -35,9 +32,7 @@ class ContractAI:
                 dynamics=[
                     DynamicsItem(
                         key="$this.contract_content.show",
-                        expression="return $this.contract_type.value == '{}'".format(
-                            InputType.TEXT.value
-                        ),
+                        expression="return $this.contract_type.value == '{}'".format(InputType.TEXT.value),
                     )
                 ],
             ),
@@ -72,9 +67,7 @@ class ContractAI:
             ),
             atomicMg.param(
                 "contract_validate",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.MODALBUTTON.value, params={"loading": False}
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.MODALBUTTON.value, params={"loading": False}),
                 required=False,
             ),
         ],
@@ -87,7 +80,6 @@ class ContractAI:
         custom_factors: str = "",
         contract_validate: str = "",
     ):
-
         if contract_type == InputType.FILE:
             contract_content = FileExtractor(contract_path).extract_text()
 

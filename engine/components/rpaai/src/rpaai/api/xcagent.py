@@ -4,7 +4,6 @@ import ssl
 
 
 class xcAgent:
-
     def __init__(self, api_key, api_secret):
         self.headers = {
             "Content-Type": "application/json",

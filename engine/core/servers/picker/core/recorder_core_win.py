@@ -92,12 +92,8 @@ class RecordPickerAdapter:
         """使用缓存的拾取结果"""
         if self.picker_core.last_valid_rect:
             # 有缓存结果，重新绘制
-            logger.info(
-                f"当前落点是{process_name} 缓存结果是 {self.picker_core.last_valid_rect.to_json()}"
-            )
-            highlight_client.draw_wnd(
-                self.picker_core.last_valid_rect, msgs=self.picker_core.last_valid_tag
-            )
+            logger.info(f"当前落点是{process_name} 缓存结果是 {self.picker_core.last_valid_rect.to_json()}")
+            highlight_client.draw_wnd(self.picker_core.last_valid_rect, msgs=self.picker_core.last_valid_tag)
             return DrawResult(
                 success=True,
                 rect=self.picker_core.last_valid_rect,
@@ -105,7 +101,7 @@ class RecordPickerAdapter:
                 domain=self.picker_core.last_valid_domain,
             )
         else:
-            logger.info(f"缓存结果是{process_name} {-1,-1,-1,-1}")
+            logger.info(f"缓存结果是{process_name} {-1, -1, -1, -1}")
             # 没有缓存结果，返回占位符
             placeholder_rect = Rect(-1, -1, -1, -1)
             return DrawResult(
@@ -198,9 +194,7 @@ class RecordManager:
         self.push_callbacks["on_mouse_out"] = on_mouse_out
         logger.info("录制管理器：设置推送回调函数，f4...esc...on_hover")
 
-    async def handle_record_action(
-        self, action: RecordAction, ws, svc, input_data
-    ) -> Dict[str, Any]:
+    async def handle_record_action(self, action: RecordAction, ws, svc, input_data) -> Dict[str, Any]:
         """处理录制动作"""
         self.initialize(svc)  # 确保svc是最新的
         try:
@@ -217,7 +211,6 @@ class RecordManager:
             elif action == RecordAction.AUTOMIC_END:
                 return await self._handle_atomic_end(input_data)
             elif action == RecordAction.END:
-
                 return await self._handle_end()
             else:
                 return OperationResult.error(f"未知的录制动作: {action}").to_dict()
@@ -232,9 +225,7 @@ class RecordManager:
     async def _handle_listening(self, ws) -> Dict[str, Any]:
         """处理监听动作"""
         if self.state != RecordingState.IDLE:
-            return OperationResult.error(
-                f"无法开始监听，当前状态: {self.state.value}"
-            ).to_dict()
+            return OperationResult.error(f"无法开始监听，当前状态: {self.state.value}").to_dict()
 
         is_start = self.svc.event_core.start(domain=MKSign.RECORD)
         if is_start:
@@ -253,9 +244,7 @@ class RecordManager:
     async def _handle_start(self) -> Dict[str, Any]:
         """处理开始录制动作"""
         if self.state not in [RecordingState.LISTENING, RecordingState.PAUSED]:
-            return OperationResult.error(
-                f"无法开始录制，当前状态: {self.state.value}"
-            ).to_dict()
+            return OperationResult.error(f"无法开始录制，当前状态: {self.state.value}").to_dict()
 
         try:
             self.state = RecordingState.RECORDING
@@ -269,9 +258,7 @@ class RecordManager:
     async def _handle_pause(self) -> Dict[str, Any]:
         """处理暂停录制动作"""
         if self.state != RecordingState.RECORDING:
-            return OperationResult.error(
-                f"无法暂停录制，当前状态: {self.state.value}"
-            ).to_dict()
+            return OperationResult.error(f"无法暂停录制，当前状态: {self.state.value}").to_dict()
 
         self.state = RecordingState.PAUSED
         self._stop_continuous_drawing()
@@ -282,9 +269,7 @@ class RecordManager:
     async def _handle_hover_start(self) -> Dict[str, Any]:
         """处理暂停录制动作"""
         if self.state != RecordingState.RECORDING:
-            return OperationResult.error(
-                f"无法暂停录制过程的拾取，当前状态: {self.state.value}"
-            ).to_dict()
+            return OperationResult.error(f"无法暂停录制过程的拾取，当前状态: {self.state.value}").to_dict()
 
         self.is_hover_paused = True
         self.state = RecordingState.PAUSED
@@ -296,9 +281,7 @@ class RecordManager:
     async def _handle_hover_end(self) -> Dict[str, Any]:
         """处理暂停录制动作"""
         if self.state not in [RecordingState.PAUSED] and not self.is_hover_paused:
-            return OperationResult.error(
-                f"无法开始录制，当前状态: {self.state.value}"
-            ).to_dict()
+            return OperationResult.error(f"无法开始录制，当前状态: {self.state.value}").to_dict()
 
         self.state = RecordingState.RECORDING
         self._start_continuous_drawing()
@@ -374,9 +357,7 @@ class RecordManager:
             self.record_adapter.picker_core.last_valid_tag = ""
             logger.debug("已清理绘框缓存，将从当前鼠标位置重新开始")
 
-        self.drawing_thread = threading.Thread(
-            target=self._continuous_drawing_loop, daemon=True
-        )
+        self.drawing_thread = threading.Thread(target=self._continuous_drawing_loop, daemon=True)
         self.drawing_thread.start()
         logger.info("启动持续绘框线程")
 
@@ -400,9 +381,7 @@ class RecordManager:
                 }
 
                 if self.record_adapter:
-                    result: DrawResult = self.record_adapter.draw_for_record(
-                        self.svc, self.highlight_client, draw_data
-                    )
+                    result: DrawResult = self.record_adapter.draw_for_record(self.svc, self.highlight_client, draw_data)
                 else:
                     raise Exception("缺少拾取转换器。。。")
 
@@ -486,10 +465,7 @@ class RecordManager:
             if not hasattr(self, "cur_rect") or self.cur_rect is None:
                 raise ValueError("cur_rect 未初始化")
             # 判断鼠标是否在矩形范围内
-            if not (
-                self.cur_rect.left <= x <= self.cur_rect.right
-                and self.cur_rect.top <= y <= self.cur_rect.bottom
-            ):
+            if not (self.cur_rect.left <= x <= self.cur_rect.right and self.cur_rect.top <= y <= self.cur_rect.bottom):
                 raise ValueError("鼠标点位不在当前元素范围内")
             final_record_rect = {
                 "left": self.cur_rect.left,
@@ -556,35 +532,25 @@ class RecordManager:
                     # 持续在区域内，检查悬停时间
                     hover_duration = current_time - self.hover_start_time
                     if hover_duration >= self.hover_threshold:
-                        logger.info(
-                            f"检测到鼠标悬停{hover_duration:.1f}秒，触发automic_start信号"
-                        )
+                        logger.info(f"检测到鼠标悬停{hover_duration:.1f}秒，触发automic_start信号")
                         self.hover_triggered = True
                         rect_data = self._get_current_element_rect()
 
                         # 触发回调  注意黑名单悬停多少秒都不该发送数据
                         if self.push_callbacks["on_hover"] and (
-                            not self.enable_record_blacklist
-                            or self.cur_app not in RECORDING_BLACKLIST
+                            not self.enable_record_blacklist or self.cur_app not in RECORDING_BLACKLIST
                         ):
-                            await self.push_callbacks["on_hover"](
-                                self.ws_connection, rect_data
-                            )
-                        self.last_element = self.svc.picker_core.element(
-                            self.svc, {"pick_type": PickerType.ELEMENT}
-                        )
+                            await self.push_callbacks["on_hover"](self.ws_connection, rect_data)
+                        self.last_element = self.svc.picker_core.element(self.svc, {"pick_type": PickerType.ELEMENT})
             else:
                 # 鼠标离开区域，重置所有状态
                 if self.hover_start_time is not None:
                     logger.debug("鼠标离开draw区域，重置悬停状态")
                 if self.hover_triggered and (
-                    not self.enable_record_blacklist
-                    or self.cur_app not in RECORDING_BLACKLIST
+                    not self.enable_record_blacklist or self.cur_app not in RECORDING_BLACKLIST
                 ):  # 还要判断当前的应用是不是iflyrpa是的话就不要通知
                     await self.push_callbacks["on_mouse_out"](self.ws_connection)
-                    logger.debug(
-                        f"鼠标悬停后离开draw区域，通知前端收敛红框 当前红框是{self.cur_app}"
-                    )
+                    logger.debug(f"鼠标悬停后离开draw区域，通知前端收敛红框 当前红框是{self.cur_app}")
                 self.hover_start_time = None
                 self.hover_triggered = False
 

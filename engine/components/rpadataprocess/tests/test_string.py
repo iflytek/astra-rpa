@@ -137,37 +137,27 @@ class TestStringProcess(unittest.TestCase):
 
     def test_merge_list_to_string(self):
         """测试列表合并为字符串"""
-        result = StringProcess.merge_list_to_string(
-            list_data=["Hello", "World", "Python"], separator=" "
-        )
+        result = StringProcess.merge_list_to_string(list_data=["Hello", "World", "Python"], separator=" ")
         self.assertEqual(result, "Hello World Python")
 
     def test_merge_list_to_string_empty_separator(self):
         """测试空分隔符合并"""
-        result = StringProcess.merge_list_to_string(
-            list_data=["Hello", "World"], separator=""
-        )
+        result = StringProcess.merge_list_to_string(list_data=["Hello", "World"], separator="")
         self.assertEqual(result, "HelloWorld")
 
     def test_merge_list_to_string_with_numbers(self):
         """测试数字列表合并"""
-        result = StringProcess.merge_list_to_string(
-            list_data=[1, 2, 3, 4, 5], separator="-"
-        )
+        result = StringProcess.merge_list_to_string(list_data=[1, 2, 3, 4, 5], separator="-")
         self.assertEqual(result, "1-2-3-4-5")
 
     def test_split_string_to_list(self):
         """测试字符串分割为列表"""
-        result = StringProcess.split_string_to_list(
-            string_data="Hello,World,Python", separator=","
-        )
+        result = StringProcess.split_string_to_list(string_data="Hello,World,Python", separator=",")
         self.assertEqual(result, ["Hello", "World", "Python"])
 
     def test_split_string_to_list_space_separator(self):
         """测试空格分隔符分割"""
-        result = StringProcess.split_string_to_list(
-            string_data="Hello World Python", separator=" "
-        )
+        result = StringProcess.split_string_to_list(string_data="Hello World Python", separator=" ")
         self.assertEqual(result, ["Hello", "World", "Python"])
 
     def test_split_string_to_list_empty_separator(self):
@@ -273,53 +263,37 @@ class TestStringProcess(unittest.TestCase):
     def test_fill_string_to_length_invalid_input(self):
         """测试无效输入"""
         with self.assertRaises(ValueError):
-            StringProcess.fill_string_to_length(
-                string_data="", add_str="*", total_length="10"
-            )
+            StringProcess.fill_string_to_length(string_data="", add_str="*", total_length="10")
 
         with self.assertRaises(ValueError):
-            StringProcess.fill_string_to_length(
-                string_data="Hello", add_str="", total_length="10"
-            )
+            StringProcess.fill_string_to_length(string_data="Hello", add_str="", total_length="10")
 
         with self.assertRaises(ValueError):
-            StringProcess.fill_string_to_length(
-                string_data="Hello", add_str="*", total_length="-1"
-            )
+            StringProcess.fill_string_to_length(string_data="Hello", add_str="*", total_length="-1")
 
     def test_strip_string_both(self):
         """测试两端去除空格"""
-        result = StringProcess.strip_string(
-            string_data="  Hello World  ", strip_method=StripStringType.BOTH
-        )
+        result = StringProcess.strip_string(string_data="  Hello World  ", strip_method=StripStringType.BOTH)
         self.assertEqual(result, "Hello World")
 
     def test_strip_string_left(self):
         """测试左端去除空格"""
-        result = StringProcess.strip_string(
-            string_data="  Hello World  ", strip_method=StripStringType.LEFT
-        )
+        result = StringProcess.strip_string(string_data="  Hello World  ", strip_method=StripStringType.LEFT)
         self.assertEqual(result, "Hello World  ")
 
     def test_strip_string_right(self):
         """测试右端去除空格"""
-        result = StringProcess.strip_string(
-            string_data="  Hello World  ", strip_method=StripStringType.RIGHT
-        )
+        result = StringProcess.strip_string(string_data="  Hello World  ", strip_method=StripStringType.RIGHT)
         self.assertEqual(result, "  Hello World")
 
     def test_strip_string_empty(self):
         """测试空字符串"""
-        result = StringProcess.strip_string(
-            string_data="", strip_method=StripStringType.BOTH
-        )
+        result = StringProcess.strip_string(string_data="", strip_method=StripStringType.BOTH)
         self.assertEqual(result, "")
 
     def test_cut_string_to_length_first(self):
         """测试从第一个字符开始截取"""
-        result = StringProcess.cut_string_to_length(
-            string_data="Hello World", length=5, cut_type=CutStringType.FIRST
-        )
+        result = StringProcess.cut_string_to_length(string_data="Hello World", length=5, cut_type=CutStringType.FIRST)
         self.assertEqual(result, "Hello")
 
     def test_cut_string_to_length_index(self):
@@ -357,30 +331,22 @@ class TestStringProcess(unittest.TestCase):
 
     def test_change_case_of_string_upper(self):
         """测试转换为大写"""
-        result = StringProcess.change_case_of_string(
-            string_data="Hello World", case_type=CaseChangeType.UPPER
-        )
+        result = StringProcess.change_case_of_string(string_data="Hello World", case_type=CaseChangeType.UPPER)
         self.assertEqual(result, "HELLO WORLD")
 
     def test_change_case_of_string_lower(self):
         """测试转换为小写"""
-        result = StringProcess.change_case_of_string(
-            string_data="Hello World", case_type=CaseChangeType.LOWER
-        )
+        result = StringProcess.change_case_of_string(string_data="Hello World", case_type=CaseChangeType.LOWER)
         self.assertEqual(result, "hello world")
 
     def test_change_case_of_string_caps(self):
         """测试首字母大写"""
-        result = StringProcess.change_case_of_string(
-            string_data="hello world", case_type=CaseChangeType.CAPS
-        )
+        result = StringProcess.change_case_of_string(string_data="hello world", case_type=CaseChangeType.CAPS)
         self.assertEqual(result, "Hello world")
 
     def test_change_case_of_string_empty(self):
         """测试空字符串"""
-        result = StringProcess.change_case_of_string(
-            string_data="", case_type=CaseChangeType.UPPER
-        )
+        result = StringProcess.change_case_of_string(string_data="", case_type=CaseChangeType.UPPER)
         self.assertEqual(result, "")
 
     def test_get_string_length(self):

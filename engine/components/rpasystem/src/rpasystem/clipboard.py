@@ -17,7 +17,6 @@ ClipBoardCore: IClipBoardCore = ClipBoardCore()
 
 
 class Clipboard:
-
     @staticmethod
     @atomicMg.atomic(
         "System",
@@ -30,9 +29,7 @@ class Clipboard:
                 dynamics=[
                     DynamicsItem(
                         key="$this.message.show",
-                        expression="return $this.content_type.value == '{}'".format(
-                            ContentType.MSG.value
-                        ),
+                        expression="return $this.content_type.value == '{}'".format(ContentType.MSG.value),
                     )
                 ],
             ),
@@ -45,9 +42,7 @@ class Clipboard:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_path.show",
-                        expression="return $this.content_type.value == '{}'".format(
-                            ContentType.FILE.value
-                        ),
+                        expression="return $this.content_type.value == '{}'".format(ContentType.FILE.value),
                     )
                 ],
             ),
@@ -60,9 +55,7 @@ class Clipboard:
                 dynamics=[
                     DynamicsItem(
                         key="$this.folder_path.show",
-                        expression="return $this.content_type.value == '{}'".format(
-                            ContentType.FOLDER.value
-                        ),
+                        expression="return $this.content_type.value == '{}'".format(ContentType.FOLDER.value),
                     )
                 ],
             ),
@@ -145,9 +138,7 @@ class Clipboard:
                 dynamics=[
                     DynamicsItem(
                         key="$this.dst_file_name.show",
-                        expression="return $this.content_type.value == '{}'".format(
-                            ContentType.FILE.value
-                        ),
+                        expression="return $this.content_type.value == '{}'".format(ContentType.FILE.value),
                     )
                 ],
                 required=False,
@@ -158,9 +149,7 @@ class Clipboard:
                 dynamics=[
                     DynamicsItem(
                         key="$this.dst_folder_name.show",
-                        expression="return $this.content_type.value == '{}'".format(
-                            ContentType.FOLDER.value
-                        ),
+                        expression="return $this.content_type.value == '{}'".format(ContentType.FOLDER.value),
                     )
                 ],
                 required=False,

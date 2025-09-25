@@ -33,34 +33,18 @@ VIDEO_RECORDING_WAIT = _("录屏数据处理中，可能时间较长，请稍等
 CODE_OK: ErrorCode = ErrorCode(BizCode.OK, "ok", 200)
 ERROR_FORMAT: ErrorCode = ErrorCode(BizCode.LocalErr, _("错误") + ": {}")
 CODE_INNER: ErrorCode = ErrorCode(BizCode.LocalErr, _("内部错误"))
-TASK_RUNNING_CANNOT_EXECUTE: ErrorCode = ErrorCode(
-    BizCode.LocalErr, _("已有任务正在执行，‌当前任务无法执行")
-)
+TASK_RUNNING_CANNOT_EXECUTE: ErrorCode = ErrorCode(BizCode.LocalErr, _("已有任务正在执行，‌当前任务无法执行"))
 SERVER_ERROR_FORMAT: ErrorCode = ErrorCode(BizCode.LocalErr, _("服务器错误") + ": {}")
 ENGINEERING_DATA_ERROR: ErrorCode = ErrorCode(BizCode.LocalErr, _("工程数据异常"))
-RECURSIVE_CALL_MAX_FORMAT: ErrorCode = ErrorCode(
-    BizCode.LocalErr, _("加载子流程超过{}上限，可能是循环引用")
-)
+RECURSIVE_CALL_MAX_FORMAT: ErrorCode = ErrorCode(BizCode.LocalErr, _("加载子流程超过{}上限，可能是循环引用"))
 RECURSIVE_CALL: ErrorCode = ErrorCode(BizCode.LocalErr, _("循环引用"))
 SYNTAX_ERROR_FORMAT: ErrorCode = ErrorCode(BizCode.LocalErr, _("语法错误") + ": {}")
-CONDITION_ILLEGAL_FORMAL: ErrorCode = ErrorCode(
-    BizCode.LocalErr, _("条件解析非法") + ": {}"
-)
-ELEMENT_FAIL_GET_FORMAL: ErrorCode = ErrorCode(
-    BizCode.LocalErr, _("元素获取异常") + ": {}"
-)
-REMOTE_VARIABLE_FAIL_FORMAT: ErrorCode = ErrorCode(
-    BizCode.LocalErr, _("远程参数获取异常") + ": {}"
-)
-MODULE_FAIL_GET_FORMAL: ErrorCode = ErrorCode(
-    BizCode.LocalErr, _("模块获取异常") + ": {}"
-)
-SPECIAL_PARSE_FORMAL: ErrorCode = ErrorCode(
-    BizCode.LocalErr, _("特殊元素处理异常") + ": {}"
-)
-CHILD_PROCESS_PARAM_NOT_VALID: ErrorCode = ErrorCode(
-    BizCode.LocalErr, _("子流程参数不合法")
-)
+CONDITION_ILLEGAL_FORMAL: ErrorCode = ErrorCode(BizCode.LocalErr, _("条件解析非法") + ": {}")
+ELEMENT_FAIL_GET_FORMAL: ErrorCode = ErrorCode(BizCode.LocalErr, _("元素获取异常") + ": {}")
+REMOTE_VARIABLE_FAIL_FORMAT: ErrorCode = ErrorCode(BizCode.LocalErr, _("远程参数获取异常") + ": {}")
+MODULE_FAIL_GET_FORMAL: ErrorCode = ErrorCode(BizCode.LocalErr, _("模块获取异常") + ": {}")
+SPECIAL_PARSE_FORMAL: ErrorCode = ErrorCode(BizCode.LocalErr, _("特殊元素处理异常") + ": {}")
+CHILD_PROCESS_PARAM_NOT_VALID: ErrorCode = ErrorCode(BizCode.LocalErr, _("子流程参数不合法"))
 TYPE_KIND_ERROR_FORMAT: ErrorCode = ErrorCode(BizCode.LocalErr, _("类型错误") + ": {}")
 VALUE_NOT_PARSE: ErrorCode = ErrorCode(BizCode.LocalErr, _("参数解析失败"))
 
@@ -178,10 +162,7 @@ def python_base_error(func):
                     error_str = translation.format(*match.groups())
             raise BaseException(ERROR_FORMAT.format(error_str), error_str) from e
         except SyntaxError as e:
-            error_str = (
-                f"语法错误, 文件名: '{e.filename}', 行号: {e.lineno}, "
-                f"列号: {e.offset}, 代码行: {repr(e.text)}"
-            )
+            error_str = f"语法错误, 文件名: '{e.filename}', 行号: {e.lineno}, 列号: {e.offset}, 代码行: {repr(e.text)}"
             raise BaseException(ERROR_FORMAT.format(error_str), error_str) from e
         except CloseError as e:
             raise e

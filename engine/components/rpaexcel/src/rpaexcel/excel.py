@@ -24,16 +24,12 @@ if sys.platform == "win32":
 elif platform.system() == "Linux":
     from rpaexcel.core_unix import ExcelCore
 else:
-    raise NotImplementedError(
-        "Your platform (%s) is not supported by (%s)."
-        % (platform.system(), "clipboard")
-    )
+    raise NotImplementedError("Your platform (%s) is not supported by (%s)." % (platform.system(), "clipboard"))
 
 ExcelCore: IExcelCore = ExcelCore()
 
 
 class Excel:
-
     @staticmethod
     @atomicMg.atomic(
         "Excel",
@@ -63,9 +59,7 @@ class Excel:
                 FILE_PATH_ERROR_FORMAT.format(file_path),
                 "填写的文件路径有误，请输入正确的路径！",
             )
-        open_excel_obj = ExcelCore.open(
-            file_path, default_application, visible_flag, password, update_links
-        )
+        open_excel_obj = ExcelCore.open(file_path, default_application, visible_flag, password, update_links)
         return ExcelObj(open_excel_obj, file_path)
 
     @staticmethod
@@ -137,9 +131,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_path.show",
-                        expression="return $this.save_type.value == '{}'".format(
-                            SaveType.SAVE_AS.value
-                        ),
+                        expression="return $this.save_type.value == '{}'".format(SaveType.SAVE_AS.value),
                     )
                 ],
                 required=False,
@@ -153,9 +145,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_name.show",
-                        expression="return $this.save_type.value == '{}'".format(
-                            SaveType.SAVE_AS.value
-                        ),
+                        expression="return $this.save_type.value == '{}'".format(SaveType.SAVE_AS.value),
                     )
                 ],
                 required=False,
@@ -165,9 +155,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.exist_handle_type.show",
-                        expression="return $this.save_type.value == '{}'".format(
-                            SaveType.SAVE_AS.value
-                        ),
+                        expression="return $this.save_type.value == '{}'".format(SaveType.SAVE_AS.value),
                     )
                 ],
             ),
@@ -183,9 +171,7 @@ class Excel:
         close_flag: bool = False,
     ):
         if not excel:
-            raise BaseException(
-                EXCEL_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！"
-            )
+            raise BaseException(EXCEL_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！")
         try:
             ExcelCore.save(
                 excel.obj,
@@ -210,9 +196,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.excel.show",
-                        expression="return $this.close_range_flag.value == '{}'".format(
-                            CloseRangeType.ONE.value
-                        ),
+                        expression="return $this.close_range_flag.value == '{}'".format(CloseRangeType.ONE.value),
                     )
                 ],
             ),
@@ -221,9 +205,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.pkill_flag.show",
-                        expression="return $this.close_range_flag.value == '{}'".format(
-                            CloseRangeType.ALL.value
-                        ),
+                        expression="return $this.close_range_flag.value == '{}'".format(CloseRangeType.ALL.value),
                     )
                 ],
             ),
@@ -232,9 +214,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.save_type_one.show",
-                        expression="return $this.close_range_flag.value == '{}'".format(
-                            CloseRangeType.ONE.value
-                        ),
+                        expression="return $this.close_range_flag.value == '{}'".format(CloseRangeType.ONE.value),
                     )
                 ],
             ),
@@ -243,9 +223,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.save_type_all.show",
-                        expression="return $this.close_range_flag.value == '{}'".format(
-                            CloseRangeType.ALL.value
-                        ),
+                        expression="return $this.close_range_flag.value == '{}'".format(CloseRangeType.ALL.value),
                     )
                 ],
             ),
@@ -269,9 +247,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_name.show",
-                        expression="return $this.save_type_one.value == '{}'".format(
-                            SaveType.SAVE_AS.value
-                        ),
+                        expression="return $this.save_type_one.value == '{}'".format(SaveType.SAVE_AS.value),
                     )
                 ],
             ),
@@ -280,9 +256,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.exist_handle_type.show",
-                        expression="return $this.close_range_flag.value == '{}'".format(
-                            CloseRangeType.ONE.value
-                        ),
+                        expression="return $this.close_range_flag.value == '{}'".format(CloseRangeType.ONE.value),
                     )
                 ],
             ),
@@ -318,9 +292,7 @@ class Excel:
                     try:
                         if proc.info["name"].lower() in ["excel.exe", "et.exe"]:
                             # 获取Excel应用程序实例
-                            excel_app = win32com.client.GetObject(
-                                Class="Excel.Application"
-                            )
+                            excel_app = win32com.client.GetObject(Class="Excel.Application")
                             # 根据save_type_all处理所有工作簿
                             for workbook in excel_app.Workbooks:
                                 if save_type_all == SaveType_ALL.SAVE:
@@ -339,9 +311,7 @@ class Excel:
             else:
                 # 关闭单个Excel文件
                 if not excel:
-                    raise BaseException(
-                        EXCEL_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！"
-                    )
+                    raise BaseException(EXCEL_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！")
                 try:
                     ExcelCore.close(
                         excel.obj,
@@ -406,9 +376,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.cell.show",
-                        expression="return $this.read_range.value == '{}'".format(
-                            ReadRangeType.CELL.value
-                        ),
+                        expression="return $this.read_range.value == '{}'".format(ReadRangeType.CELL.value),
                     )
                 ],
             ),
@@ -417,9 +385,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.row.show",
-                        expression="return $this.read_range.value == '{}'".format(
-                            ReadRangeType.ROW.value
-                        ),
+                        expression="return $this.read_range.value == '{}'".format(ReadRangeType.ROW.value),
                     )
                 ],
             ),
@@ -428,9 +394,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.column.show",
-                        expression="return $this.read_range.value == '{}'".format(
-                            ReadRangeType.COLUMN.value
-                        ),
+                        expression="return $this.read_range.value == '{}'".format(ReadRangeType.COLUMN.value),
                     )
                 ],
             ),
@@ -439,9 +403,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.start_row.show",
-                        expression="return $this.read_range.value == '{}'".format(
-                            ReadRangeType.AREA.value
-                        ),
+                        expression="return $this.read_range.value == '{}'".format(ReadRangeType.AREA.value),
                     )
                 ],
             ),
@@ -450,9 +412,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.end_row.show",
-                        expression="return $this.read_range.value == '{}'".format(
-                            ReadRangeType.AREA.value
-                        ),
+                        expression="return $this.read_range.value == '{}'".format(ReadRangeType.AREA.value),
                     )
                 ],
             ),
@@ -461,9 +421,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.start_col.show",
-                        expression="return $this.read_range.value == '{}'".format(
-                            ReadRangeType.AREA.value
-                        ),
+                        expression="return $this.read_range.value == '{}'".format(ReadRangeType.AREA.value),
                     )
                 ],
             ),
@@ -472,9 +430,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.end_col.show",
-                        expression="return $this.read_range.value == '{}'".format(
-                            ReadRangeType.AREA.value
-                        ),
+                        expression="return $this.read_range.value == '{}'".format(ReadRangeType.AREA.value),
                     )
                 ],
             ),
@@ -525,9 +481,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.cell_position.show",
-                        expression="return $this.design_type.value == '{}'".format(
-                            ReadRangeType.CELL.value
-                        ),
+                        expression="return $this.design_type.value == '{}'".format(ReadRangeType.CELL.value),
                     )
                 ],
             ),
@@ -536,9 +490,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.range_position.show",
-                        expression="return $this.design_type.value == '{}'".format(
-                            ReadRangeType.AREA.value
-                        ),
+                        expression="return $this.design_type.value == '{}'".format(ReadRangeType.AREA.value),
                     )
                 ],
             ),
@@ -547,9 +499,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.col.show",
-                        expression="return $this.design_type.value == '{}'".format(
-                            ReadRangeType.COLUMN.value
-                        ),
+                        expression="return $this.design_type.value == '{}'".format(ReadRangeType.COLUMN.value),
                     )
                 ],
             ),
@@ -558,9 +508,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.row.show",
-                        expression="return $this.design_type.value == '{}'".format(
-                            ReadRangeType.ROW.value
-                        ),
+                        expression="return $this.design_type.value == '{}'".format(ReadRangeType.ROW.value),
                     )
                 ],
             ),
@@ -569,16 +517,12 @@ class Excel:
             atomicMg.param(
                 "bg_color",
                 required=False,
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.INPUT_VARIABLE_COLOR.value
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.INPUT_VARIABLE_COLOR.value),
             ),
             atomicMg.param(
                 "font_color",
                 required=False,
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.INPUT_VARIABLE_COLOR.value
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.INPUT_VARIABLE_COLOR.value),
             ),
             atomicMg.param("font_size", required=False),
             atomicMg.param(
@@ -586,9 +530,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.numberformat_other.show",
-                        expression="return $this.numberformat.value == '{}'".format(
-                            NumberFormatType.CUSTOM.value
-                        ),
+                        expression="return $this.numberformat.value == '{}'".format(NumberFormatType.CUSTOM.value),
                     )
                 ],
                 required=False,
@@ -598,9 +540,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.auto_row_height.show",
-                        expression="return $this.design_type.value == '{}'".format(
-                            ReadRangeType.ROW.value
-                        ),
+                        expression="return $this.design_type.value == '{}'".format(ReadRangeType.ROW.value),
                     )
                 ],
             ),
@@ -609,9 +549,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.auto_column_width.show",
-                        expression="return $this.design_type.value == '{}'".format(
-                            ReadRangeType.COLUMN.value
-                        ),
+                        expression="return $this.design_type.value == '{}'".format(ReadRangeType.COLUMN.value),
                     )
                 ],
             ),
@@ -673,9 +611,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.cell_position.show",
-                        expression="return $this.copy_range_type.value == '{}'".format(
-                            ReadRangeType.CELL.value
-                        ),
+                        expression="return $this.copy_range_type.value == '{}'".format(ReadRangeType.CELL.value),
                     )
                 ],
             ),
@@ -684,9 +620,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.range_position.show",
-                        expression="return $this.copy_range_type.value == '{}'".format(
-                            ReadRangeType.AREA.value
-                        ),
+                        expression="return $this.copy_range_type.value == '{}'".format(ReadRangeType.AREA.value),
                     )
                 ],
             ),
@@ -695,9 +629,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.col.show",
-                        expression="return $this.copy_range_type.value == '{}'".format(
-                            ReadRangeType.COLUMN.value
-                        ),
+                        expression="return $this.copy_range_type.value == '{}'".format(ReadRangeType.COLUMN.value),
                     )
                 ],
             ),
@@ -706,9 +638,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.row.show",
-                        expression="return $this.copy_range_type.value == '{}'".format(
-                            ReadRangeType.ROW.value
-                        ),
+                        expression="return $this.copy_range_type.value == '{}'".format(ReadRangeType.ROW.value),
                     )
                 ],
             ),
@@ -753,9 +683,7 @@ class Excel:
         skip_blanks: bool = False,
         transpose: bool = False,
     ):
-        ExcelCore.paste(
-            excel.obj, start_location, sheet_name, paste_type, skip_blanks, transpose
-        )
+        ExcelCore.paste(excel.obj, start_location, sheet_name, paste_type, skip_blanks, transpose)
 
     @staticmethod
     @atomicMg.atomic(
@@ -767,9 +695,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.coordinate.show",
-                        expression="return $this.delete_range_excel.value == '{}'".format(
-                            ReadRangeType.CELL.value
-                        ),
+                        expression="return $this.delete_range_excel.value == '{}'".format(ReadRangeType.CELL.value),
                     )
                 ],
             ),
@@ -778,9 +704,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.data_region.show",
-                        expression="return $this.delete_range_excel.value == '{}'".format(
-                            ReadRangeType.AREA.value
-                        ),
+                        expression="return $this.delete_range_excel.value == '{}'".format(ReadRangeType.AREA.value),
                     )
                 ],
             ),
@@ -789,9 +713,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.col.show",
-                        expression="return $this.delete_range_excel.value == '{}'".format(
-                            ReadRangeType.COLUMN.value
-                        ),
+                        expression="return $this.delete_range_excel.value == '{}'".format(ReadRangeType.COLUMN.value),
                     )
                 ],
             ),
@@ -800,9 +722,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.row.show",
-                        expression="return $this.delete_range_excel.value == '{}'".format(
-                            ReadRangeType.ROW.value
-                        ),
+                        expression="return $this.delete_range_excel.value == '{}'".format(ReadRangeType.ROW.value),
                     )
                 ],
             ),
@@ -851,9 +771,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.cell_location.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            ReadRangeType.CELL.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(ReadRangeType.CELL.value),
                     )
                 ],
             ),
@@ -862,9 +780,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.row.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            ReadRangeType.ROW.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(ReadRangeType.ROW.value),
                     )
                 ],
             ),
@@ -873,9 +789,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.col.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            ReadRangeType.COLUMN.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(ReadRangeType.COLUMN.value),
                     )
                 ],
             ),
@@ -884,9 +798,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.data_range.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            ReadRangeType.AREA.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(ReadRangeType.AREA.value),
                     )
                 ],
             ),
@@ -924,9 +836,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.row.show",
-                        expression="return $this.insert_type.value == '{}'".format(
-                            EnhancedInsertType.ROW.value
-                        ),
+                        expression="return $this.insert_type.value == '{}'".format(EnhancedInsertType.ROW.value),
                     )
                 ],
             ),
@@ -935,9 +845,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.row_direction.show",
-                        expression="return $this.insert_type.value == '{}'".format(
-                            EnhancedInsertType.ROW.value
-                        ),
+                        expression="return $this.insert_type.value == '{}'".format(EnhancedInsertType.ROW.value),
                     )
                 ],
             ),
@@ -946,9 +854,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.col.show",
-                        expression="return $this.insert_type.value == '{}'".format(
-                            EnhancedInsertType.COLUMN.value
-                        ),
+                        expression="return $this.insert_type.value == '{}'".format(EnhancedInsertType.COLUMN.value),
                     )
                 ],
             ),
@@ -957,9 +863,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.col_direction.show",
-                        expression="return $this.insert_type.value == '{}'".format(
-                            EnhancedInsertType.COLUMN.value
-                        ),
+                        expression="return $this.insert_type.value == '{}'".format(EnhancedInsertType.COLUMN.value),
                     )
                 ],
             ),
@@ -996,7 +900,6 @@ class Excel:
         insert_num: int = 1,
         insert_content: str = "",
     ):
-
         ExcelCore.insert_row_or_column(
             excel.obj,
             sheet_name,
@@ -1020,9 +923,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.col.show",
-                        expression="return $this.get_col_type.value == '{}'".format(
-                            ColumnType.ONE_COLUMN.value
-                        ),
+                        expression="return $this.get_col_type.value == '{}'".format(ColumnType.ONE_COLUMN.value),
                     )
                 ],
             ),
@@ -1058,9 +959,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.row.show",
-                        expression="return $this.get_row_type.value == '{}'".format(
-                            RowType.ONE_ROW.value
-                        ),
+                        expression="return $this.get_row_type.value == '{}'".format(RowType.ONE_ROW.value),
                     )
                 ],
             ),
@@ -1076,9 +975,7 @@ class Excel:
         row: str = "",
         output_type: ColumnOutputType = ColumnOutputType.NUMBER,
     ):
-        col_num = ExcelCore.get_col_num(
-            excel.obj, sheet_name, get_row_type, row, output_type
-        )
+        col_num = ExcelCore.get_col_num(excel.obj, sheet_name, get_row_type, row, output_type)
         return col_num
 
     @staticmethod
@@ -1110,13 +1007,9 @@ class Excel:
         sheet_name: str = "",
         output_type: ColumnOutputType = ColumnOutputType.LETTER,
     ):
-        first_available_col = ExcelCore.get_first_available_column(
-            excel.obj, sheet_name, output_type
-        )
+        first_available_col = ExcelCore.get_first_available_column(excel.obj, sheet_name, output_type)
         # 如果 output_type 是 LETTER 且返回值是数字，则转换为字母列号
-        if output_type == ColumnOutputType.LETTER and isinstance(
-            first_available_col, int
-        ):
+        if output_type == ColumnOutputType.LETTER and isinstance(first_available_col, int):
             # 将数字列号转换为字母列号 (1->A, 2->B, ..., 26->Z, 27->AA, ...)
             col_num = first_available_col
             letter = ""
@@ -1244,9 +1137,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.merge_cell_range.show",
-                        expression="return $this.job_type.value == '{}'".format(
-                            MergeOrSplitType.MERGE.value
-                        ),
+                        expression="return $this.job_type.value == '{}'".format(MergeOrSplitType.MERGE.value),
                     )
                 ],
             ),
@@ -1255,9 +1146,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.split_cell_range.show",
-                        expression="return $this.job_type.value == '{}'".format(
-                            MergeOrSplitType.SPLIT.value
-                        ),
+                        expression="return $this.job_type.value == '{}'".format(MergeOrSplitType.SPLIT.value),
                     )
                 ],
             ),
@@ -1271,9 +1160,7 @@ class Excel:
         merge_cell_range: str = "A1:B2",
         split_cell_range: str = "A1:B2",
     ):
-        ExcelCore.merge_split(
-            excel.obj, sheet_name, merge_cell_range, split_cell_range, job_type
-        )
+        ExcelCore.merge_split(excel.obj, sheet_name, merge_cell_range, split_cell_range, job_type)
 
     @staticmethod
     @atomicMg.atomic(
@@ -1300,9 +1187,7 @@ class Excel:
         insert_type: SheetInsertType = SheetInsertType.FIRST,
         relative_sheet_name: str = "",
     ):
-        SheetCore.create_worksheet(
-            excel.obj, sheet_name, insert_type, relative_sheet_name
-        )
+        SheetCore.create_worksheet(excel.obj, sheet_name, insert_type, relative_sheet_name)
 
     @staticmethod
     @atomicMg.atomic(
@@ -1338,9 +1223,7 @@ class Excel:
 
     @staticmethod
     @atomicMg.atomic("Excel", inputList=[], outputList=[])
-    def rename_excel_worksheet(
-        excel: ExcelObj, source_sheet_name: str, new_sheet_name: str
-    ):
+    def rename_excel_worksheet(excel: ExcelObj, source_sheet_name: str, new_sheet_name: str):
         SheetCore.rename_worksheet(excel.obj, source_sheet_name, new_sheet_name)
 
     @staticmethod
@@ -1352,9 +1235,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.other_excel_obj.show",
-                        expression="return $this.copy_type.value == '{}'".format(
-                            CopySheetType.OTHER_WORKBOOK.value
-                        ),
+                        expression="return $this.copy_type.value == '{}'".format(CopySheetType.OTHER_WORKBOOK.value),
                     )
                 ],
             ),
@@ -1388,9 +1269,7 @@ class Excel:
             atomicMg.param("sheet_names", types="Str"),
         ],
     )
-    def get_excel_worksheet_names(
-        excel: ExcelObj, sheet_range: SheetRangeType = SheetRangeType.ACTIVATED
-    ):
+    def get_excel_worksheet_names(excel: ExcelObj, sheet_range: SheetRangeType = SheetRangeType.ACTIVATED):
         sheet_names = ExcelCore.get_worksheet_names(excel.obj, sheet_range)
         return sheet_names
 
@@ -1404,9 +1283,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.sheet_name.show",
-                        expression="return $this.lookup_range_excel.value == '{}'".format(
-                            SearchSheetType.ONE.value
-                        ),
+                        expression="return $this.lookup_range_excel.value == '{}'".format(SearchSheetType.ONE.value),
                     )
                 ],
             ),
@@ -1424,9 +1301,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.row.show",
-                        expression="return $this.search_range.value == '{}'".format(
-                            SearchRangeType.ROW.value
-                        ),
+                        expression="return $this.search_range.value == '{}'".format(SearchRangeType.ROW.value),
                     )
                 ],
             ),
@@ -1435,9 +1310,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.col.show",
-                        expression="return $this.search_range.value == '{}'".format(
-                            SearchRangeType.COLUMN.value
-                        ),
+                        expression="return $this.search_range.value == '{}'".format(SearchRangeType.COLUMN.value),
                     )
                 ],
             ),
@@ -1446,9 +1319,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.start_row.show",
-                        expression="return $this.search_range.value == '{}'".format(
-                            SearchRangeType.AREA.value
-                        ),
+                        expression="return $this.search_range.value == '{}'".format(SearchRangeType.AREA.value),
                     )
                 ],
             ),
@@ -1457,9 +1328,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.end_row.show",
-                        expression="return $this.search_range.value == '{}'".format(
-                            SearchRangeType.AREA.value
-                        ),
+                        expression="return $this.search_range.value == '{}'".format(SearchRangeType.AREA.value),
                     )
                 ],
             ),
@@ -1468,9 +1337,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.start_col.show",
-                        expression="return $this.search_range.value == '{}'".format(
-                            SearchRangeType.AREA.value
-                        ),
+                        expression="return $this.search_range.value == '{}'".format(SearchRangeType.AREA.value),
                     )
                 ],
             ),
@@ -1479,9 +1346,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.end_col.show",
-                        expression="return $this.search_range.value == '{}'".format(
-                            SearchRangeType.AREA.value
-                        ),
+                        expression="return $this.search_range.value == '{}'".format(SearchRangeType.AREA.value),
                     )
                 ],
             ),
@@ -1561,9 +1426,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.pic_height.show",
-                        expression="return $this.pic_size_type.value == '{}'".format(
-                            ImageSizeType.NUMBER.value
-                        ),
+                        expression="return $this.pic_size_type.value == '{}'".format(ImageSizeType.NUMBER.value),
                     )
                 ],
             ),
@@ -1572,9 +1435,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.pic_width.show",
-                        expression="return $this.pic_size_type.value == '{}'".format(
-                            ImageSizeType.NUMBER.value
-                        ),
+                        expression="return $this.pic_size_type.value == '{}'".format(ImageSizeType.NUMBER.value),
                     )
                 ],
             ),
@@ -1583,9 +1444,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.pic_scale.show",
-                        expression="return $this.pic_size_type.value == '{}'".format(
-                            ImageSizeType.SCALE.value
-                        ),
+                        expression="return $this.pic_size_type.value == '{}'".format(ImageSizeType.SCALE.value),
                     )
                 ],
             ),
@@ -1732,9 +1591,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.cell_position.show",
-                        expression="return $this.comment_type.value == '{}'".format(
-                            CreateCommentType.POSITION.value
-                        ),
+                        expression="return $this.comment_type.value == '{}'".format(CreateCommentType.POSITION.value),
                     )
                 ],
             ),
@@ -1743,9 +1600,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.find_str.show",
-                        expression="return $this.comment_type.value == '{}'".format(
-                            CreateCommentType.CONTENT.value
-                        ),
+                        expression="return $this.comment_type.value == '{}'".format(CreateCommentType.CONTENT.value),
                     )
                 ],
             ),
@@ -1766,9 +1621,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.comment_range.show",
-                        expression="return $this.comment_type.value == '{}'".format(
-                            CreateCommentType.CONTENT.value
-                        ),
+                        expression="return $this.comment_type.value == '{}'".format(CreateCommentType.CONTENT.value),
                     )
                 ],
             ),
@@ -1777,9 +1630,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.comment_all.show",
-                        expression="return $this.comment_type.value == '{}'".format(
-                            CreateCommentType.CONTENT.value
-                        ),
+                        expression="return $this.comment_type.value == '{}'".format(CreateCommentType.CONTENT.value),
                     )
                 ],
             ),
@@ -1860,9 +1711,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.cell_position.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            ReadRangeType.CELL.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(ReadRangeType.CELL.value),
                     )
                 ],
             ),
@@ -1871,9 +1720,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.row.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            ReadRangeType.ROW.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(ReadRangeType.ROW.value),
                     )
                 ],
             ),
@@ -1882,9 +1729,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.col.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            ReadRangeType.COLUMN.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(ReadRangeType.COLUMN.value),
                     )
                 ],
             ),
@@ -1893,9 +1738,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.range_location.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            ReadRangeType.AREA.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(ReadRangeType.AREA.value),
                     )
                 ],
             ),
@@ -1941,9 +1784,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.cell_position.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            ReadRangeType.CELL.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(ReadRangeType.CELL.value),
                     )
                 ],
             ),
@@ -1952,9 +1793,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.row.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            ReadRangeType.ROW.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(ReadRangeType.ROW.value),
                     )
                 ],
             ),
@@ -1963,9 +1802,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.col.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            ReadRangeType.COLUMN.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(ReadRangeType.COLUMN.value),
                     )
                 ],
             ),
@@ -1974,9 +1811,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.range_location.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            ReadRangeType.AREA.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(ReadRangeType.AREA.value),
                     )
                 ],
             ),
@@ -2022,9 +1857,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.width.show",
-                        expression="return $this.set_type.value == '{}'".format(
-                            SetType.VALUE.value
-                        ),
+                        expression="return $this.set_type.value == '{}'".format(SetType.VALUE.value),
                     )
                 ],
             ),
@@ -2065,9 +1898,7 @@ class Excel:
                 dynamics=[
                     DynamicsItem(
                         key="$this.height.show",
-                        expression="return $this.set_type.value == '{}'".format(
-                            SetType.VALUE.value
-                        ),
+                        expression="return $this.set_type.value == '{}'".format(SetType.VALUE.value),
                     )
                 ],
             ),

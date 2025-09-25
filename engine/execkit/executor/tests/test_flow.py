@@ -7,9 +7,7 @@ from rpa_executor.flow.syntax.parser import Parser
 
 
 class TestFlow(TestCase):
-
     def test_flow_if_1(self):
-
         json_str = """
         [
     {

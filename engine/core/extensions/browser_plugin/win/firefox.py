@@ -19,9 +19,7 @@ class FirefoxPluginManager(PluginManagerCore):
     @staticmethod
     def get_browser_path():
         try:
-            with winreg.OpenKey(
-                winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\\Mozilla\\Mozilla Firefox"
-            ) as key:
+            with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\\Mozilla\\Mozilla Firefox") as key:
                 # 获取当前安装的版本
                 version, _ = winreg.QueryValueEx(key, "CurrentVersion")
                 # 使用版本信息获取安装路径

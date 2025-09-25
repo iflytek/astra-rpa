@@ -33,10 +33,7 @@ if sys.platform == "win32":
 elif platform.system() == "Linux":
     from cv_picker.core.core_unix import PickCore, RectHandler
 else:
-    raise NotImplementedError(
-        "Your platform (%s) is not supported by (%s)."
-        % (platform.system(), "clipboard")
-    )
+    raise NotImplementedError("Your platform (%s) is not supported by (%s)." % (platform.system(), "clipboard"))
 
 PickCore: IPickCore = PickCore()
 RectHandler: IRectHandler = RectHandler()
@@ -95,9 +92,7 @@ class Socket:
             right = box.get("Right") if box else None
             bottom = box.get("Bottom") if box else None
 
-            print(
-                f"Received coordinates:operation={operation} left={left}, top={top}, right={right}, bottom={bottom}"
-            )
+            print(f"Received coordinates:operation={operation} left={left}, top={top}, right={right}, bottom={bottom}")
             return operation, (left, top, right, bottom)
 
         except json.JSONDecodeError as e:
@@ -204,9 +199,7 @@ class CVPicker:
         self.run_signal = True
 
     def start_keyboard_listener(self):
-        self.keyboard_listener = keyboard.Listener(
-            on_press=self.on_press, on_release=self.on_release
-        )
+        self.keyboard_listener = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
         self.keyboard_listener.start()
 
     # 停止键盘监听
@@ -277,10 +270,7 @@ class CVPicker:
             logger.info("按下ESC：{}".format(self.__status))
 
         if (
-            (
-                {keyboard.Key.ctrl_l} == self.current_keys
-                or {keyboard.Key.ctrl_r} == self.current_keys
-            )
+            ({keyboard.Key.ctrl_l} == self.current_keys or {keyboard.Key.ctrl_r} == self.current_keys)
             and len(self.current_keys) == 1
             and self.__status == Status.WAIT_SIGNAL
         ):
@@ -290,10 +280,7 @@ class CVPicker:
             self.desktop_image = pyautogui.screenshot()
 
         if (
-            (
-                {keyboard.Key.alt_l} == self.current_keys
-                or {keyboard.Key.alt_gr} == self.current_keys
-            )
+            ({keyboard.Key.alt_l} == self.current_keys or {keyboard.Key.alt_gr} == self.current_keys)
             and len(self.current_keys) == 1
             and self.__status == Status.WAIT_SIGNAL
         ):
@@ -302,10 +289,7 @@ class CVPicker:
             logger.info("按下ALT：{}".format(self.__status))
 
         if (
-            (
-                {keyboard.Key.shift_l} == self.current_keys
-                or {keyboard.Key.shift_r} == self.current_keys
-            )
+            ({keyboard.Key.shift_l} == self.current_keys or {keyboard.Key.shift_r} == self.current_keys)
             and len(self.current_keys) == 1
             and self.pick_type == PickType.TARGET
         ):
@@ -332,17 +316,13 @@ class CVPicker:
             if not desktop_image:
                 raise NotImplementedError("桌面截图不存在")
             self.desktop_image = desktop_image
-            print(
-                f"锚点拾取桌面截图尺寸：{self.desktop_image.width, self.desktop_image.height}"
-            )
+            print(f"锚点拾取桌面截图尺寸：{self.desktop_image.width, self.desktop_image.height}")
 
         self.screen_width, self.screen_height = self.desktop_image.size
 
         if self.__status == Status.CV_ALT:
             if self.pick_type == PickType.TARGET:
-                self.activate_win, title, self.win_rect = (
-                    RectHandler.get_foreground_window_rect()
-                )
+                self.activate_win, title, self.win_rect = RectHandler.get_foreground_window_rect()
                 logger.info("智能拾取模式激活窗口截图：{}".format(self.win_rect))
                 logger.info("智能拾取模式激活窗口名称：{}".format(title))
                 x = max(self.win_rect[0], 0)
@@ -377,9 +357,7 @@ class CVPicker:
                     self.selected_boxes[box][2],
                     self.selected_boxes[box][3],
                 )
-            self.bboxes = sorted(
-                self.selected_boxes, key=lambda bbox: bbox[2] * bbox[3]
-            )
+            self.bboxes = sorted(self.selected_boxes, key=lambda bbox: bbox[2] * bbox[3])
 
         elif self.__status == Status.CV_CTRL:
             # 普通模式，仅保存界面截图
@@ -492,9 +470,7 @@ class CVPicker:
         # self.send_rect = queue.Queue(maxsize=2)
         self.send_rect = deque(maxlen=1)
         send_time = time.time()
-        while self.__status == Status.SEND_TARGET and not self.check_timeout(
-            self.start_time
-        ):
+        while self.__status == Status.SEND_TARGET and not self.check_timeout(self.start_time):
             if self.operation in ["confirm", "stop"]:
                 self.__status = Status.CONFIRM
             time.sleep(0.1)
@@ -543,9 +519,7 @@ class CVPicker:
             pass
 
     def handle_cv_wait_target(self, hl):
-        while self.__status == Status.CV_WAIT_TARGET and not self.check_timeout(
-            self.start_time
-        ):
+        while self.__status == Status.CV_WAIT_TARGET and not self.check_timeout(self.start_time):
             if self.operation == "confirm" and self.target_rect is not None:
                 self.pick_res = self.check_target(self.target_rect)
                 if self.pick_res:
@@ -583,36 +557,22 @@ class CVPicker:
             target_img.save(target_filepath)
             res = None
 
-            if not AnchorMatch.check_if_multiple_elements(
-                self.desktop_image, target_img, match_similarity=0.80
-            ):
+            if not AnchorMatch.check_if_multiple_elements(self.desktop_image, target_img, match_similarity=0.80):
                 print("元素不唯一，自动选取锚点")
                 if not self.bboxes:
                     picker_cv = ImageDetector(self.partial_screenshot)
-                    output_img, self.selected_boxes = picker_cv.detect_objects(
-                        "#00FF00", 1
-                    )
-                    self.bboxes = sorted(
-                        self.selected_boxes, key=lambda bbox: bbox[2] * bbox[3]
-                    )
+                    output_img, self.selected_boxes = picker_cv.detect_objects("#00FF00", 1)
+                    self.bboxes = sorted(self.selected_boxes, key=lambda bbox: bbox[2] * bbox[3])
 
                 for box in self.bboxes[::-1]:
-                    anchor_img = self.desktop_image.crop(
-                        (box[0], box[1], box[0] + box[2], box[1] + box[3])
-                    )
-                    if AnchorMatch.check_if_multiple_elements(
-                        self.desktop_image, anchor_img, match_similarity=0.95
-                    ):
+                    anchor_img = self.desktop_image.crop((box[0], box[1], box[0] + box[2], box[1] + box[3]))
+                    if AnchorMatch.check_if_multiple_elements(self.desktop_image, anchor_img, match_similarity=0.95):
                         self.anchor_rect = box
                         anchor_img.save(anchor_filepath)
-                        res = PickCore.json_res(
-                            target_img, target_rect, anchor_img, box, self.desktop_image
-                        )
+                        res = PickCore.json_res(target_img, target_rect, anchor_img, box, self.desktop_image)
                         break
             else:
-                res = PickCore.json_res(
-                    target_img, target_rect, None, None, self.desktop_image
-                )
+                res = PickCore.json_res(target_img, target_rect, None, None, self.desktop_image)
         else:
             raise NotImplementedError("目标元素坐标为空")
         return res
@@ -624,14 +584,10 @@ class CVPicker:
             anchor_img = self.desktop_image.crop(anchor_rect)
             anchor_img.save(anchor_filepath)
             res = None
-            if not AnchorMatch.check_if_multiple_elements(
-                self.desktop_image, anchor_img, match_similarity=0.95
-            ):
+            if not AnchorMatch.check_if_multiple_elements(self.desktop_image, anchor_img, match_similarity=0.95):
                 print("锚点必须为唯一元素，请重新选取")
             else:
-                res = PickCore.json_res(
-                    None, None, anchor_img, anchor_rect, self.desktop_image
-                )
+                res = PickCore.json_res(None, None, anchor_img, anchor_rect, self.desktop_image)
 
             print("锚点唯一校验结束:{}".format(time.time() - start_time))
             return res

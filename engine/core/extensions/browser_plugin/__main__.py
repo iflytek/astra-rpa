@@ -13,9 +13,7 @@ from .constants import OP, BrowserType
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--browser", type=str, choices=["chrome", "edge", "firefox"], default="chrome"
-    )  # 指定浏览器
+    parser.add_argument("--browser", type=str, choices=["chrome", "edge", "firefox"], default="chrome")  # 指定浏览器
     parser.add_argument(
         "--op",
         type=str,

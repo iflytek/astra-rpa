@@ -11,9 +11,7 @@ router = APIRouter()
 @router.post("/session")
 async def create_session(req: SessionOptions, svc: Svc = Depends(get_svc)):
     if req.project_id is None:
-        raise HTTPException(
-            status_code=400, detail={"message": "project_id is required"}
-        )
+        raise HTTPException(status_code=400, detail={"message": "project_id is required"})
 
     try:
         create_project_venv(svc, req.project_id)
@@ -21,9 +19,7 @@ async def create_session(req: SessionOptions, svc: Svc = Depends(get_svc)):
         return {"sessionId": session_id}
     except Exception as err:
         logger.error(f"createNewSession returning a 500: ", exc_info=err)
-        raise HTTPException(
-            status_code=500, detail={"message": err or "An unexpected error occurred"}
-        )
+        raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})
 
 
 @router.delete("/session/{sid}")
@@ -43,9 +39,7 @@ async def get_diagnostics(sid: str, req: SessionOptions):
         return {"diagnostics": diagnostics}
     except Exception as err:
         logger.error(f"getDiagnostics returning a 500: ", exc_info=err)
-        raise HTTPException(
-            status_code=500, detail={"message": err or "An unexpected error occurred"}
-        )
+        raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})
 
 
 @router.post("/session/{sid}/hover")
@@ -60,9 +54,7 @@ async def get_hover_info(sid: str, req: SessionOptions):
         return {"hover": hover}
     except Exception as err:
         logger.error(f"getHoverInfo returning a 500: ", exc_info=err)
-        raise HTTPException(
-            status_code=500, detail={"message": err or "An unexpected error occurred"}
-        )
+        raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})
 
 
 @router.post("/session/{sid}/rename")
@@ -77,9 +69,7 @@ async def get_rename_edits(sid: str, req: SessionOptions):
         return {"edits": edits}
     except Exception as err:
         logger.error(f"getRenameEdits returning a 500: ", exc_info=err)
-        raise HTTPException(
-            status_code=500, detail={"message": err or "An unexpected error occurred"}
-        )
+        raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})
 
 
 @router.post("/session/{sid}/signature")
@@ -94,9 +84,7 @@ async def get_signature_help(sid: str, req: SessionOptions):
         return {"signatureHelp": signature_help}
     except Exception as err:
         logger.error(f"getSignatureHelp returning a 500: ", exc_info=err)
-        raise HTTPException(
-            status_code=500, detail={"message": err or "An unexpected error occurred"}
-        )
+        raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})
 
 
 @router.post("/session/{sid}/completion")
@@ -111,9 +99,7 @@ async def get_completion(sid: str, req: SessionOptions):
         return {"completionList": completion_list}
     except Exception as err:
         logger.error(f"getCompletion returning a 500: ", exc_info=err)
-        raise HTTPException(
-            status_code=500, detail={"message": err or "An unexpected error occurred"}
-        )
+        raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})
 
 
 @router.post("/session/{sid}/completionresolve")
@@ -128,6 +114,4 @@ async def resolve_completion(sid: str, req: SessionOptions):
         return {"completionItem": completion_item}
     except Exception as err:
         logger.error(f"resolveCompletion returning a 500: ", exc_info=err)
-        raise HTTPException(
-            status_code=500, detail={"message": err or "An unexpected error occurred"}
-        )
+        raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})

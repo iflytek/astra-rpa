@@ -8,7 +8,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 def handler(app: FastAPI):
-
     # 添加全局错误处理
     app.add_exception_handler(BaseException, http_base_exception)
     app.add_exception_handler(Exception, http_exception)
@@ -23,9 +22,7 @@ def handler(app: FastAPI):
     )
 
     # 绑定websocket路由
-    app.include_router(
-        ws_route.router, prefix="/ws", tags=["ws"], dependencies=[Depends(get_svc)]
-    )
+    app.include_router(ws_route.router, prefix="/ws", tags=["ws"], dependencies=[Depends(get_svc)])
 
     # 绑定http路由
     app.include_router(

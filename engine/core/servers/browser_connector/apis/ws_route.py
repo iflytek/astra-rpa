@@ -52,7 +52,6 @@ inject_path = os.path.join(inject_path, "inject")
 
 
 class WsSocket(IWebSocket):
-
     def __init__(self, ws: WebSocket):
         self.ws = ws
 
@@ -95,9 +94,7 @@ async def browser_init_inject(ws: IWebSocket, uuid: str):
 
 
 @router.websocket("")
-async def websocket_endpoint(
-    ws: WebSocket, svc: ServiceContext = Depends(get_svc), token: str = None
-):
+async def websocket_endpoint(ws: WebSocket, svc: ServiceContext = Depends(get_svc), token: str = None):
     await ws.accept()
     if not token:
         token = ws.headers.get("token", "")
@@ -112,6 +109,4 @@ async def websocket_endpoint(
 
     ws = WsSocket(ws)
     await browser_init_inject(ws, uuid)
-    await asyncio.gather(
-        wsmg.listen(uuid, Conn(ws=ws), svc), wsmg.start_ping(), wsmg.clear_watch()
-    )
+    await asyncio.gather(wsmg.listen(uuid, Conn(ws=ws), svc), wsmg.start_ping(), wsmg.clear_watch())

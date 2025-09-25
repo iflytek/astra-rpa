@@ -17,9 +17,7 @@ def handler(app: FastAPI):
     )
 
     # 绑定tools路由
-    app.include_router(
-        tools.router, prefix="", tags=["tools"], dependencies=[Depends(get_svc)]
-    )
+    app.include_router(tools.router, prefix="", tags=["tools"], dependencies=[Depends(get_svc)])
 
     # 绑定终端
     app.include_router(
@@ -46,11 +44,7 @@ def handler(app: FastAPI):
     )
 
     # 绑定全局ws
-    app.include_router(
-        ws.router, prefix="/ws", tags=["ws"], dependencies=[Depends(get_svc)]
-    )
+    app.include_router(ws.router, prefix="/ws", tags=["ws"], dependencies=[Depends(get_svc)])
 
     # 绑定lsp路由
-    app.include_router(
-        lsp_router, prefix="/lsp", tags=["lsp"], dependencies=[Depends(get_svc)]
-    )
+    app.include_router(lsp_router, prefix="/lsp", tags=["lsp"], dependencies=[Depends(get_svc)])

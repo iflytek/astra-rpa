@@ -35,10 +35,7 @@ def find_version(lib, ver, ver_strict) -> bool:
             if not ver_strict:
                 # 宽松模式
                 v1 = [[int(x) for x in ver.split(".")][0]]
-                if (
-                    compare_versions(v0, v1) >= 0
-                    and compare_versions([v1[0] + 1], v0) > 0
-                ):
+                if compare_versions(v0, v1) >= 0 and compare_versions([v1[0] + 1], v0) > 0:
                     return True
             else:
                 # 严格模式
@@ -54,7 +51,6 @@ def find_version(lib, ver, ver_strict) -> bool:
 
 
 class Atomic(Job):
-
     def __init__(self, report: SimpleReport, storage):
         self.library_cache = {}
         self.report: SimpleReport = report
@@ -218,9 +214,7 @@ class Atomic(Job):
             else:
                 raise e
 
-        self.report.info(
-            ReportTip(msg_str=DOWNLOAD_ATOMIC_SUCCESS_FORMAT.format(library))
-        )
+        self.report.info(ReportTip(msg_str=DOWNLOAD_ATOMIC_SUCCESS_FORMAT.format(library)))
 
     def run(self, token: Token, svc, env: Environment, params: dict = None) -> Any:
         """原子能力执行阶段"""

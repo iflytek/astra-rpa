@@ -165,9 +165,7 @@ class IAElement(Object):
 
     def __init__(self, IAccessible, iObjectId):
         if not isinstance(iObjectId, int):
-            error_msg = (
-                "MSAAElement(IAccessible,iObjectId) second argument type must be int"
-            )
+            error_msg = "MSAAElement(IAccessible,iObjectId) second argument type must be int"
             raise TypeError(error_msg)
         self.IAccessible = IAccessible
         self.iObjectId = iObjectId
@@ -199,9 +197,7 @@ class IAElement(Object):
         objChildId.value = self.iObjectId
         if objValue is None:
             objName = comtypes.automation.BSTR()
-            self.IAccessible._IAccessible__com__get_accName(
-                objChildId, ctypes.byref(objName)
-            )
+            self.IAccessible._IAccessible__com__get_accName(objChildId, ctypes.byref(objName))
             return objName.value
         else:
             self.IAccessible._IAccessible__com__set_accName(objChildId, objValue)
@@ -229,9 +225,7 @@ class IAElement(Object):
         objChildId.value = self.iObjectId
         objBSTRValue = comtypes.automation.BSTR()
         if objValue is None:
-            self.IAccessible._IAccessible__com__get_accValue(
-                objChildId, ctypes.byref(objBSTRValue)
-            )
+            self.IAccessible._IAccessible__com__get_accValue(objChildId, ctypes.byref(objBSTRValue))
             return objBSTRValue.value
         else:
             objBSTRValue.value = objValue
@@ -244,9 +238,7 @@ class IAElement(Object):
         objChildId.vt = comtypes.automation.VT_I4
         objChildId.value = self.iObjectId
         objDefaultAction = comtypes.automation.BSTR()
-        self.IAccessible._IAccessible__com__get_accDefaultAction(
-            objChildId, ctypes.byref(objDefaultAction)
-        )
+        self.IAccessible._IAccessible__com__get_accDefaultAction(objChildId, ctypes.byref(objDefaultAction))
         return objDefaultAction.value
 
     def accDescription(self):
@@ -255,9 +247,7 @@ class IAElement(Object):
         objChildId.vt = comtypes.automation.VT_I4
         objChildId.value = self.iObjectId
         objDescription = comtypes.automation.BSTR()
-        self.IAccessible._IAccessible__com__get_accDescription(
-            objChildId, ctypes.byref(objDescription)
-        )
+        self.IAccessible._IAccessible__com__get_accDescription(objChildId, ctypes.byref(objDescription))
         return objDescription.value
 
     def accState(self):
@@ -266,9 +256,7 @@ class IAElement(Object):
         objChildId.vt = comtypes.automation.VT_I4
         objChildId.value = self.iObjectId
         objState = comtypes.automation.VARIANT()
-        self.IAccessible._IAccessible__com__get_accState(
-            objChildId, ctypes.byref(objState)
-        )
+        self.IAccessible._IAccessible__com__get_accState(objChildId, ctypes.byref(objState))
         return objState.value
 
     def accParent(self):
@@ -295,18 +283,14 @@ class IAElement(Object):
     def accHwnd(self):
         """获取元素句柄"""
         hwnd = ctypes.c_long()
-        ctypes.oledll.oleacc.WindowFromAccessibleObject(
-            self.IAccessible, ctypes.byref(hwnd)
-        )
+        ctypes.oledll.oleacc.WindowFromAccessibleObject(self.IAccessible, ctypes.byref(hwnd))
         return hwnd.value
 
     def __iter__(self):
         """迭代所有子元素"""
         if self.iObjectId > 0:
             return
-        objAccChildArray = (
-            comtypes.automation.VARIANT * self.IAccessible.accChildCount
-        )()
+        objAccChildArray = (comtypes.automation.VARIANT * self.IAccessible.accChildCount)()
         objAccChildCount = ctypes.c_long()
         ctypes.oledll.oleacc.AccessibleChildren(
             self.IAccessible,
@@ -318,9 +302,7 @@ class IAElement(Object):
         for i in range(objAccChildCount.value):
             objAccChild = objAccChildArray[i]
             if objAccChild.vt == comtypes.automation.VT_DISPATCH:
-                accessible_obj = objAccChild.value.QueryInterface(
-                    comtypes.gen.Accessibility.IAccessible
-                )
+                accessible_obj = objAccChild.value.QueryInterface(comtypes.gen.Accessibility.IAccessible)
                 yield IAElement(accessible_obj, 0)
             else:
                 yield IAElement(self.IAccessible, objAccChild.value)
@@ -344,12 +326,7 @@ class IAElement(Object):
             rect = self.accLocation()
             if rect[2] <= 0 or rect[3] <= 0:
                 bMatched = False
-            if (
-                (rect[0] > x)
-                or ((rect[0] + rect[2]) < x)
-                or (rect[1] > y)
-                or ((rect[1] + rect[3]) < y)
-            ):
+            if (rect[0] > x) or ((rect[0] + rect[2]) < x) or (rect[1] > y) or ((rect[1] + rect[3]) < y):
                 bMatched = False
         except Exception as ex:
             logger.info(f"通过match_by_rect匹配出错{ex}")
@@ -383,9 +360,7 @@ class MSAAPickerUtil:
         objPoint.y = y
         IAccessible = ctypes.POINTER(comtypes.gen.Accessibility.IAccessible)()
         objChildId = comtypes.automation.VARIANT()
-        ctypes.oledll.oleacc.AccessibleObjectFromPoint(
-            objPoint, ctypes.byref(IAccessible), ctypes.byref(objChildId)
-        )
+        ctypes.oledll.oleacc.AccessibleObjectFromPoint(objPoint, ctypes.byref(IAccessible), ctypes.byref(objChildId))
         return IAElement(IAccessible, objChildId.value or 0)
 
     @staticmethod
@@ -395,9 +370,9 @@ class MSAAPickerUtil:
             objElement = MSAAPickerUtil.window(ctypes.windll.user32.GetDesktopWindow())
         elif isinstance(objHandle, str):
             objHandle = str(objHandle)
-            iHwnd = ctypes.windll.user32.FindWindowW(
-                objHandle, None
-            ) or ctypes.windll.user32.FindWindowW(None, objHandle)
+            iHwnd = ctypes.windll.user32.FindWindowW(objHandle, None) or ctypes.windll.user32.FindWindowW(
+                None, objHandle
+            )
             assert iHwnd > 0, "Cannot FindWindow %r" % objHandle
             objElement = MSAAPickerUtil.window(iHwnd)
         elif isinstance(objHandle, int):
@@ -411,10 +386,7 @@ class MSAAPickerUtil:
             )
             objElement = IAElement(IAccessible, 0)
         else:
-            raise TypeError(
-                "window argument objHandle must be a int/str/unicode, not %r"
-                % objHandle
-            )
+            raise TypeError("window argument objHandle must be a int/str/unicode, not %r" % objHandle)
         return objElement
 
     @staticmethod
@@ -520,9 +492,7 @@ class MSAAPickerUtil:
             for sibling in parent:
                 sibling_count += 1
                 sibling_name = sibling.accName() or ""
-                sibling_role = (
-                    sibling.accRole() if hasattr(sibling, "accRole") else None
-                )
+                sibling_role = sibling.accRole() if hasattr(sibling, "accRole") else None
                 sibling_location = None
                 try:
                     sibling_location = sibling.accLocation()
@@ -543,24 +513,16 @@ class MSAAPickerUtil:
                 # 方法2: 如果位置不可用，使用角色+名称+对象地址组合
                 elif not is_match:
                     if (
-                        current_name == sibling_name
-                        and current_role == sibling_role
-                        and current_name != ""
+                        current_name == sibling_name and current_role == sibling_role and current_name != ""
                     ):  # 避免空名称的误匹配
                         # 进一步验证：检查是否是同一个对象
-                        if (
-                            sibling.IAccessible == element.IAccessible
-                            and sibling.iObjectId == element.iObjectId
-                        ):
+                        if sibling.IAccessible == element.IAccessible and sibling.iObjectId == element.iObjectId:
                             is_match = True
                             # logger.info(f"调试: 通过角色+名称+对象地址匹配找到元素，索引: {index}")
 
                 # 方法3: 如果名称为空，仅使用对象地址和ID比较
                 elif not is_match and current_name == "":
-                    if (
-                        sibling.IAccessible == element.IAccessible
-                        and sibling.iObjectId == element.iObjectId
-                    ):
+                    if sibling.IAccessible == element.IAccessible and sibling.iObjectId == element.iObjectId:
                         is_match = True
                         # logger.info(f"调试: 通过对象地址匹配找到元素，索引: {index}")
 
@@ -625,10 +587,7 @@ class MSAAPickerUtil:
                 if not parent or MSAAPickerUtil.get_type(current) == "Window":
                     ancestor = current
                     break
-                if (
-                    MSAAPickerUtil.get_type(current) == "Document"
-                    and MSAAPickerUtil.get_type(parent) == "Window"
-                ):
+                if MSAAPickerUtil.get_type(current) == "Document" and MSAAPickerUtil.get_type(parent) == "Window":
                     ancestor = current
                     path.append(info)
                     break
@@ -649,7 +608,6 @@ class MSAAPickerUtil:
                 # 获取MSAA控件的句柄
                 bottom_hwnd = MSAAPickerUtil.get_hwnd(ancestor)
                 if bottom_hwnd:
-
                     # 转换为UIA控件
                     uia_ele = auto.ControlFromHandle(bottom_hwnd)
                     if uia_ele:

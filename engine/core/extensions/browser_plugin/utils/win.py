@@ -6,7 +6,6 @@ import psutil
 
 
 class Registry(object):
-
     @staticmethod
     def exist(key_path) -> bool:
         """
@@ -127,11 +126,7 @@ def check_chrome_plugin(preferences_path_list, extension_id):
                 try:
                     extension_info = dict_msg["extensions"]["settings"]
                     if extension_id in extension_info:
-                        version = (
-                            extension_info[extension_id]
-                            .get("manifest", {})
-                            .get("version", "")
-                        )
+                        version = extension_info[extension_id].get("manifest", {}).get("version", "")
                         return True, version
                     else:
                         return False, None
@@ -152,9 +147,7 @@ def remove_browser_setting(preferences_path_list, secure_preferences, extension_
                 content = f.read()
                 dict_msg = json.loads(content)
                 uninstall_list = (
-                    dict_msg.get("extensions").get("external_uninstalls", [])
-                    if dict_msg.get("extensions")
-                    else []
+                    dict_msg.get("extensions").get("external_uninstalls", []) if dict_msg.get("extensions") else []
                 )
                 is_update = False
                 if extension_id in uninstall_list:
@@ -170,11 +163,7 @@ def remove_browser_setting(preferences_path_list, secure_preferences, extension_
                     invalid_ids.remove(extension_id)
                     is_update = True
 
-                apps = (
-                    dict_msg.get("updateclientdata").get("apps", {})
-                    if dict_msg.get("updateclientdata")
-                    else {}
-                )
+                apps = dict_msg.get("updateclientdata").get("apps", {}) if dict_msg.get("updateclientdata") else {}
                 if extension_id in apps:
                     del apps[extension_id]
                     is_update = True

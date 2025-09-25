@@ -12,8 +12,16 @@ GOLANGCI_LINT := golangci-lint
 
 # Go project variables
 GO := go
-GOFILES := $(shell find backend-go -name "*.go" 2>/dev/null || true)
-GOMODULES := $(shell cd backend-go && $(GO) list -m 2>/dev/null || echo "No Go module")
+ifeq ($(OS),Windows_NT)
+    GOFILES := $(shell dir /s /b backend-go\*.go 2>nul)
+else
+    GOFILES := $(shell find backend-go -name "*.go" 2>/dev/null || true)
+endif
+ifeq ($(OS),Windows_NT)
+    GOMODULES := $(shell cd backend-go 2>nul && $(GO) list -m 2>nul || echo "No Go module")
+else
+    GOMODULES := $(shell cd backend-go && $(GO) list -m 2>/dev/null || echo "No Go module")
+endif
 
 # =============================================================================
 # Go Tool Installation

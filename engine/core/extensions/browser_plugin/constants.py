@@ -5,6 +5,7 @@ Author: chaowang46
 Date: 2024/10/8 15:01
 docs:
 """
+
 from dataclasses import dataclass
 from enum import Enum
 

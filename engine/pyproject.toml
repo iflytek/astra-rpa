@@ -45,6 +45,16 @@ dependencies = [
     "isort>=6.0.1",
 ]
 
+[dependency-groups]
+
+############################################################
+# [ Dev ] dependency group
+# Required for development and running tests
+############################################################
+dev = [
+  "ruff~=0.12.3"
+]
+
 
 [tool.uv.sources]
 rpaframe = { path = "shared/rpaframe" }

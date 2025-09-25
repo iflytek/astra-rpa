@@ -32,11 +32,7 @@ class PipManager:
 
         current_dir = os.path.dirname(os.path.dirname(__file__))
         cmd = [exec_python, os.path.join(current_dir, "pip_all_version_script.py")]
-        _, err = (
-            SubPopen(cmd=cmd)
-            .run(log=True)
-            .logger_handler(output_callback=default_output_callback)
-        )
+        _, err = SubPopen(cmd=cmd).run(log=True).logger_handler(output_callback=default_output_callback)
         if err:
             logger.error("get_installed_packages error:{}".format(err))
         return packages
@@ -51,9 +47,7 @@ class PipManager:
         cmd = [
             exec_python,
             "-c",
-            "from importlib_metadata import version; print(version('{}'))".format(
-                package_name
-            ),
+            "from importlib_metadata import version; print(version('{}'))".format(package_name),
         ]
         stdout, stderr = SubPopen(cmd=cmd).run(log=True).proc.communicate()
         if stderr:
@@ -70,9 +64,7 @@ class PipManager:
             return None
 
     @staticmethod
-    def download_pip_cmd(
-        package, ver, mirror, exec_python=None, pip_cache_dir="pip_cache"
-    ):
+    def download_pip_cmd(package, ver, mirror, exec_python=None, pip_cache_dir="pip_cache"):
         pck = package
         if ver:
             pck = "{}=={}".format(package, ver)
@@ -95,9 +87,7 @@ class PipManager:
         ]
 
     @staticmethod
-    def download_pip(
-        package, ver, mirror, exec_python=None, pip_cache_dir="pip_cache", time_out=30
-    ):
+    def download_pip(package, ver, mirror, exec_python=None, pip_cache_dir="pip_cache", time_out=30):
         # 下载缓存
         pck = package
         if ver:

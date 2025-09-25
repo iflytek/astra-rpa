@@ -76,16 +76,12 @@ def terminal_ping(svc: Svc = Depends(get_svc)):
                 "width": screenshot.width,  # 屏幕框
                 "height": screenshot.height,  # 屏幕高
                 "terminal_mod": svc.terminal_mod,  # 模式
-                "vnc_port": (
-                    svc.vnc_server.vnc_ws_port if svc.vnc_server else ""
-                ),  # 端口
+                "vnc_port": (svc.vnc_server.vnc_ws_port if svc.vnc_server else ""),  # 端口
                 "curr_status": svc.executor_mg.status(),  # 当前状态
                 "curr_task_name": (
                     svc.executor_mg.curr_task_name if curr_status else ""
                 ),  # 只有curr_status为true才有效
-                "curr_project_name": (
-                    svc.executor_mg.curr_project_name if curr_status else ""
-                ),
+                "curr_project_name": (svc.executor_mg.curr_project_name if curr_status else ""),
                 "curr_log_name": svc.executor_mg.curr_log_name if curr_status else "",
                 "base64": f"data:image/png;base64,{img_base64}",  # 渲染图片
             },

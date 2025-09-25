@@ -43,17 +43,13 @@ class Network:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_path.show",
-                        expression="return $this.request_type.value == '{}'".format(
-                            RequestType.POST.value
-                        ),
+                        expression="return $this.request_type.value == '{}'".format(RequestType.POST.value),
                     )
                 ],
                 required=False,
             ),
             atomicMg.param("time_out", types="Int", required=False),
-            atomicMg.param(
-                "save_type", required=False, level=AtomicLevel.ADVANCED.value
-            ),
+            atomicMg.param("save_type", required=False, level=AtomicLevel.ADVANCED.value),
             atomicMg.param(
                 "save_path",
                 formType=AtomicFormTypeMeta(
@@ -64,9 +60,7 @@ class Network:
                 dynamics=[
                     DynamicsItem(
                         key="$this.save_path.show",
-                        expression="return $this.save_type.value == '{}'".format(
-                            SaveType.YES.value
-                        ),
+                        expression="return $this.save_type.value == '{}'".format(SaveType.YES.value),
                     )
                 ],
             ),
@@ -76,9 +70,7 @@ class Network:
                 dynamics=[
                     DynamicsItem(
                         key="$this.save_name.show",
-                        expression="return $this.save_type.value == '{}'".format(
-                            SaveType.YES.value
-                        ),
+                        expression="return $this.save_type.value == '{}'".format(SaveType.YES.value),
                     )
                 ],
             ),
@@ -112,37 +104,21 @@ class Network:
                 url=url, header=headers, body=body, files=file_path, timeout=time_out
             )
         elif request_type == RequestType.GET:
-            http_response = NetworkCore.get_request(
-                url=url, header=headers, timeout=time_out
-            )
+            http_response = NetworkCore.get_request(url=url, header=headers, timeout=time_out)
         elif request_type == RequestType.CONNECT:
-            http_response = NetworkCore.connect_request(
-                url=url, header=headers, timeout=time_out
-            )
+            http_response = NetworkCore.connect_request(url=url, header=headers, timeout=time_out)
         elif request_type == RequestType.HEAD:
-            http_response = NetworkCore.head_request(
-                url=url, header=headers, timeout=time_out
-            )
+            http_response = NetworkCore.head_request(url=url, header=headers, timeout=time_out)
         elif request_type == RequestType.PUT:
-            http_response = NetworkCore.put_request(
-                url=url, header=headers, body=body, timeout=time_out
-            )
+            http_response = NetworkCore.put_request(url=url, header=headers, body=body, timeout=time_out)
         elif request_type == RequestType.DELETE:
-            http_response = NetworkCore.delete_request(
-                url=url, header=headers, timeout=time_out
-            )
+            http_response = NetworkCore.delete_request(url=url, header=headers, timeout=time_out)
         elif request_type == RequestType.OPTIONS:
-            http_response = NetworkCore.options_request(
-                url=url, header=headers, timeout=time_out
-            )
+            http_response = NetworkCore.options_request(url=url, header=headers, timeout=time_out)
         elif request_type == RequestType.TRACE:
-            http_response = NetworkCore.trace_request(
-                url=url, header=headers, timeout=time_out
-            )
+            http_response = NetworkCore.trace_request(url=url, header=headers, timeout=time_out)
         elif request_type == RequestType.PATCH:
-            http_response = NetworkCore.patch_request(
-                url=url, header=headers, body=body, timeout=time_out
-            )
+            http_response = NetworkCore.patch_request(url=url, header=headers, body=body, timeout=time_out)
         else:
             raise NotImplementedError()
 
@@ -180,9 +156,7 @@ class Network:
                 dynamics=[
                     DynamicsItem(
                         key="$this.rename.show",
-                        expression="return $this.state_type.value == '{}'".format(
-                            StateType.CREATE.value
-                        ),
+                        expression="return $this.state_type.value == '{}'".format(StateType.CREATE.value),
                     )
                 ],
                 required=False,
@@ -232,9 +206,7 @@ class Network:
         download_path = os.path.join(dst_dir, file_name)
 
         try:
-            http_download_path = NetworkCore.http_download(
-                url=url, dst_path=download_path
-            )
+            http_download_path = NetworkCore.http_download(url=url, dst_path=download_path)
             return http_download_path
         except BaseException as e:
             raise BaseException(HTTP_DOWNLOAD_FORMAT.format(e), "文件下载失败")

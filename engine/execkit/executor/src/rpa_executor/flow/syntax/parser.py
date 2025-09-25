@@ -29,7 +29,6 @@ from rpa_executor.flow.syntax.token import (
 
 
 class Parser:
-
     def __init__(
         self,
         lexer: Lexer,
@@ -101,10 +100,7 @@ class Parser:
         elif block.token.type in for_atomic_dict:
             end_list = special_token_type_end[TokenType.ForStep.value]
 
-        while (
-            self.cur_token.type not in end_list
-            and self.cur_token.type != TokenType.EOF.value
-        ):
+        while self.cur_token.type not in end_list and self.cur_token.type != TokenType.EOF.value:
             stmt = self.parse_statement()
             if stmt is not None:
                 block.statements.append(stmt)
@@ -165,10 +161,7 @@ class Parser:
         elif program.token.type in for_atomic_dict:
             end_list = special_token_type_end[TokenType.ForStep.value]
 
-        while (
-            self.cur_token.type not in end_list
-            and self.cur_token.type != TokenType.EOF.value
-        ):
+        while self.cur_token.type not in end_list and self.cur_token.type != TokenType.EOF.value:
             stmt = self.parse_statement()
             if stmt is not None:
                 program.statements.append(stmt)
@@ -190,10 +183,7 @@ class Parser:
         elif program.token.type in for_atomic_dict:
             end_list = special_token_type_end[TokenType.ForStep.value]
 
-        while (
-            self.cur_token.type not in end_list
-            and self.cur_token.type != TokenType.EOF.value
-        ):
+        while self.cur_token.type not in end_list and self.cur_token.type != TokenType.EOF.value:
             stmt = self.parse_statement()
             if stmt is not None:
                 program.statements.append(stmt)

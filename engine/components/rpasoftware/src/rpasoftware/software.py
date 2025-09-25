@@ -18,16 +18,12 @@ if sys.platform == "win32":
 elif platform.system() == "Linux":
     from rpasoftware.core_unix import SoftwareCore
 else:
-    raise NotImplementedError(
-        "Your platform (%s) is not supported by (%s)."
-        % (platform.system(), "clipboard")
-    )
+    raise NotImplementedError("Your platform (%s) is not supported by (%s)." % (platform.system(), "clipboard"))
 
 SoftwareCore: ISoftwareCore = SoftwareCore()
 
 
 class Software:
-
     @staticmethod
     @atomicMg.atomic(
         "Software",
@@ -58,9 +54,7 @@ class Software:
             )
 
         warnings.filterwarnings("ignore", category=ResourceWarning)
-        process = subprocess.Popen(
-            [app_abs_path] + app_args.split(), start_new_session=True
-        )
+        process = subprocess.Popen([app_abs_path] + app_args.split(), start_new_session=True)
         while not process.pid:
             time.sleep(0.3)
         return app_abs_path
@@ -148,9 +142,7 @@ class Software:
     @staticmethod
     @atomicMg.atomic("Software", outputList=[atomicMg.param("exec_cmd", types="Dict")])
     def cmd(cmd: str) -> dict:
-        p = subprocess.Popen(
-            cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
+        p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = p.communicate()
         p.terminate()
         return {

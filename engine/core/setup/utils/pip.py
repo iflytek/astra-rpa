@@ -21,9 +21,7 @@ class PipManager:
             return None
 
     @staticmethod
-    def download_pip(
-        package, ver, mirror, exec_python=None, pip_cache_dir="pip_cache", time_out=30
-    ):
+    def download_pip(package, ver, mirror, exec_python=None, pip_cache_dir="pip_cache", time_out=30):
         # 下载缓存
         pck = package
         if ver:

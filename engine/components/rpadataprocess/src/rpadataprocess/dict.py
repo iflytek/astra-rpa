@@ -6,7 +6,6 @@ from rpadataprocess import NoKeyOptionType
 
 
 class DictProcess:
-
     @staticmethod
     @atomicMg.atomic(
         "DictProcess",

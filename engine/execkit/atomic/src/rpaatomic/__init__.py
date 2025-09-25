@@ -155,9 +155,7 @@ class AtomicMeta:
     def tojson(self, filtered_none=True):
         data = self.__dict__
         if filtered_none:
-            data = {
-                k: v for k, v in data.items() if v is not None and not k.startswith("_")
-            }
+            data = {k: v for k, v in data.items() if v is not None and not k.startswith("_")}
         return data
 
     def init(self):
@@ -237,9 +235,7 @@ class AtomicParamMeta:
     def tojson(self, filtered_none=True):
         data = self.__dict__
         if filtered_none:
-            data = {
-                k: v for k, v in data.items() if v is not None and not k.startswith("_")
-            }
+            data = {k: v for k, v in data.items() if v is not None and not k.startswith("_")}
         return data
 
     def update(
@@ -262,9 +258,7 @@ class AtomicParamMeta:
         if self.formType is None:
             self.formType = formType
             if self.formType.type.startswith("INPUT"):
-                self.value = [
-                    {"type": "str", "value": ""}
-                ]  # input开头的传递过来都是数组，做一个初始化操作
+                self.value = [{"type": "str", "value": ""}]  # input开头的传递过来都是数组，做一个初始化操作
         if self.default is None:
             self.default = default
         if self.required is None:

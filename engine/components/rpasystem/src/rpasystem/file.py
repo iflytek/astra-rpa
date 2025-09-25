@@ -9,7 +9,6 @@ from rpasystem.utils import *
 
 
 class File:
-
     @staticmethod
     @atomicMg.atomic(
         "File",
@@ -25,9 +24,7 @@ class File:
             atomicMg.param("exist_type", required=False),
         ],
     )
-    def file_exist(
-        file_path: str = "", exist_type: ExistType = ExistType.EXIST
-    ) -> bool:
+    def file_exist(file_path: str = "", exist_type: ExistType = ExistType.EXIST) -> bool:
         """
         判断文件是否存在
         """
@@ -117,16 +114,12 @@ class File:
             atomicMg.param("delete_file_result", types="Str"),
         ],
     )
-    def file_delete(
-        file_path: str = "", delete_options: DeleteType = DeleteType.DELETE
-    ):
+    def file_delete(file_path: str = "", delete_options: DeleteType = DeleteType.DELETE):
         """
         删除指定文件
         """
         if not os.path.isfile(file_path):
-            raise BaseException(
-                FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查文件路径！"
-            )
+            raise BaseException(FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查文件路径！")
         if delete_options == DeleteType.DELETE:
             try:
                 os.remove(file_path)
@@ -196,9 +189,7 @@ class File:
         复制文件到指定目录
         """
         if not os.path.isfile(file_path):
-            raise BaseException(
-                FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查文件路径！"
-            )
+            raise BaseException(FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查文件路径！")
         if not folder_is_exists(target_path):
             if state_type == StateType.ERROR:
                 raise BaseException(
@@ -347,9 +338,7 @@ class File:
         :return: file_encoding_type: 编码类型
         """
         if not os.path.isfile(file_path):
-            raise BaseException(
-                FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查路径信息！"
-            )
+            raise BaseException(FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查路径信息！")
         file_encoding_type = get_file_encoding_type(file_path)
         return file_encoding_type
 
@@ -385,9 +374,7 @@ class File:
         """
         SUPPORT_FORMAT = [".txt", ".docx", ".md", ".py", ".json", ".csv"]
         if not os.path.isfile(file_path):
-            raise BaseException(
-                FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查路径信息！"
-            )
+            raise BaseException(FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查路径信息！")
 
         file_ext = os.path.splitext(file_path)[1]
         if not file_ext or file_ext not in SUPPORT_FORMAT:
@@ -417,9 +404,7 @@ class File:
             elif read_type == ReadType.List:
                 with open(file_path, "r", encoding=encoding) as f:
                     read_file_content = f.readlines()
-                    read_file_content = [
-                        line.rstrip("\r\n") for line in read_file_content
-                    ]
+                    read_file_content = [line.rstrip("\r\n") for line in read_file_content]
             elif read_type == ReadType.BYTE:
                 with open(file_path, "rb") as f:
                     read_file_content = f.read()
@@ -478,9 +463,7 @@ class File:
         移动文件到目标文件夹。
         """
         if not os.path.isfile(file_path):
-            raise BaseException(
-                FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查文件路径"
-            )
+            raise BaseException(FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查文件路径")
         if not folder_is_exists(target_folder):
             if state_type == StateType.CREATE:
                 os.makedirs(target_folder, exist_ok=True)
@@ -562,9 +545,7 @@ class File:
         :return: 重命名后文件路径
         """
         if not os.path.isfile(file_path):
-            raise BaseException(
-                FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查文件路径"
-            )
+            raise BaseException(FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查文件路径")
 
         if new_name == get_file_name_only(file_path):
             raise BaseException(
@@ -607,9 +588,7 @@ class File:
                 formType=AtomicFormTypeMeta(AtomicFormType.INPUT_VARIABLE_PYTHON.value),
                 required=True,
             ),
-            atomicMg.param(
-                "traverse_subfolder", level=AtomicLevel.ADVANCED.value, required=False
-            ),
+            atomicMg.param("traverse_subfolder", level=AtomicLevel.ADVANCED.value, required=False),
         ],
         outputList=[
             atomicMg.param("find_file_result", types="List"),
@@ -721,9 +700,7 @@ class File:
         获取文件信息
         """
         if not os.path.isfile(file_path):
-            raise BaseException(
-                FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查路径信息"
-            )
+            raise BaseException(FILE_PATH_ERROR_FORMAT.format(file_path), "文件不存在，请检查路径信息")
 
         abs_path = os.path.abspath(file_path)
         file_info = {
@@ -765,9 +742,7 @@ class File:
                 dynamics=[
                     DynamicsItem(
                         key="$this.excel_path.show",
-                        expression="return $this.output_type.value == '{}'".format(
-                            OutputType.EXCEL.value
-                        ),
+                        expression="return $this.output_type.value == '{}'".format(OutputType.EXCEL.value),
                     )
                 ],
                 required=True,
@@ -778,9 +753,7 @@ class File:
                 dynamics=[
                     DynamicsItem(
                         key="$this.state_type.show",
-                        expression="return $this.output_type.value == '{}'".format(
-                            OutputType.EXCEL.value
-                        ),
+                        expression="return $this.output_type.value == '{}'".format(OutputType.EXCEL.value),
                     )
                 ],
             ),
@@ -790,16 +763,12 @@ class File:
                 dynamics=[
                     DynamicsItem(
                         key="$this.excel_name.show",
-                        expression="return $this.output_type.value == '{}'".format(
-                            OutputType.EXCEL.value
-                        ),
+                        expression="return $this.output_type.value == '{}'".format(OutputType.EXCEL.value),
                     )
                 ],
             ),
             atomicMg.param("output_type", required=False),
-            atomicMg.param(
-                "sort_method", level=AtomicLevel.ADVANCED.value, required=False
-            ),
+            atomicMg.param("sort_method", level=AtomicLevel.ADVANCED.value, required=False),
             atomicMg.param(
                 "sort_type",
                 dynamics=[
@@ -841,17 +810,12 @@ class File:
         file_list = []
         if traverse_subfolder == TraverseType.YES:
             for root, _, files in os.walk(folder_path, topdown=True):
-                file_list.extend(
-                    os.path.join(root, file)
-                    for file in files
-                    if not file.startswith(".")
-                )
+                file_list.extend(os.path.join(root, file) for file in files if not file.startswith("."))
         elif traverse_subfolder == TraverseType.NO:
             file_list = [
                 os.path.join(folder_path, file)
                 for file in os.listdir(folder_path)
-                if (os.path.isfile(os.path.join(folder_path, file)))
-                and not file.startswith(".")
+                if (os.path.isfile(os.path.join(folder_path, file))) and not file.startswith(".")
             ]
         else:
             raise NotImplementedError()
@@ -861,14 +825,10 @@ class File:
             pass
         elif sort_method == SortMethod.CTIME:
             file_list = sorted(file_list, key=lambda x: os.path.getctime(x))
-            file_list = (
-                file_list[::-1] if sort_type == SortType.DESCENDING else file_list
-            )
+            file_list = file_list[::-1] if sort_type == SortType.DESCENDING else file_list
         elif sort_method == SortMethod.MTIME:
             file_list = sorted(file_list, key=lambda x: os.path.getmtime(x))
-            file_list = (
-                file_list[::-1] if sort_type == SortType.DESCENDING else file_list
-            )
+            file_list = file_list[::-1] if sort_type == SortType.DESCENDING else file_list
         else:
             raise NotImplementedError()
 

@@ -15,9 +15,7 @@ def replace_keyword(prompts: List, input_keys: List) -> List:
         for ind, prompt in enumerate(prompts):
             keyword = "{" + f"{input_key['keyword']}" + "}"
             if keyword in prompt["content"]:
-                prompts[ind]["content"] = prompt["content"].replace(
-                    keyword, input_key["text"]
-                )
+                prompts[ind]["content"] = prompt["content"].replace(keyword, input_key["text"])
     return prompts
 
 

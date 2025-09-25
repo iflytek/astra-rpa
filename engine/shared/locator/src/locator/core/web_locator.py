@@ -8,7 +8,6 @@ from rpaframe.logger.logger import logger
 
 
 class WEBLocator(ILocator):
-
     def __init__(self, rect=None, rects=None):
         self.__rect = rect
         self.__rects = rects
@@ -37,9 +36,7 @@ class WebFactory:
         menu_height, menu_left = cls.__get_web_top__(element)
 
         # 通过插件获取元素位置信息
-        rect_result = cls.__get_rect_from_browser_plugin__(
-            element, scroll_into_view=scroll_into_view
-        )
+        rect_result = cls.__get_rect_from_browser_plugin__(element, scroll_into_view=scroll_into_view)
         if not rect_result:
             return None
 
@@ -120,9 +117,7 @@ class WebFactory:
                     control_target = control
                     break
             if app_name in [BrowserType.CHROMIUM.value]:
-                if (control.Name == "Chrome Legacy Window") or (
-                    "- Chromium" in control.Name
-                ):
+                if (control.Name == "Chrome Legacy Window") or ("- Chromium" in control.Name):
                     control_target = control
                     break
         if control_target is None:
@@ -133,18 +128,14 @@ class WebFactory:
         handle = control_target.NativeWindowHandle
         top_browser(handle, control_target)
         if app_name in [BrowserType.FIREFOX.value]:
-            for child, _ in auto.WalkControl(
-                control_target, includeTop=True, maxDepth=100
-            ):
+            for child, _ in auto.WalkControl(control_target, includeTop=True, maxDepth=100):
                 if child.AutomationId == "tabbrowser-tabpanels":
                     bounding_rect = child.BoundingRectangle
                     top = bounding_rect.top
                     left = bounding_rect.left
                     return top, left
         else:
-            for child, _ in auto.WalkControl(
-                control_target, includeTop=True, maxDepth=100
-            ):
+            for child, _ in auto.WalkControl(control_target, includeTop=True, maxDepth=100):
                 if child.ClassName == "Chrome_RenderWidgetHostHWND":
                     bounding_rect = child.BoundingRectangle
                     top = bounding_rect.top

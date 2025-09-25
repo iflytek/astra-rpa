@@ -56,7 +56,6 @@ element_aliases = {
 
 
 class UIAElement(IElement):
-
     def __init__(self, control: auto.Control):
         self.control = control
         self.__index = None  # cache index
@@ -68,14 +67,9 @@ class UIAElement(IElement):
             rect = self.control.BoundingRectangle
             self.__rect = Rect(rect.left, rect.top, rect.right, rect.bottom)
             valid_res = True
-            is_program_manager = (
-                self.control.ClassName == "Progman"
-                and self.control.Name == "Program Manager"
-            )
+            is_program_manager = self.control.ClassName == "Progman" and self.control.Name == "Program Manager"
             if is_program_manager:
-                valid_res = validate_window_rect(
-                    rect.left, rect.top, rect.right, rect.bottom
-                )
+                valid_res = validate_window_rect(rect.left, rect.top, rect.right, rect.bottom)
             # logger.info(f'UIALocator rect  {valid_res}')
             if not valid_res:
                 self.__rect.left = 1
@@ -152,12 +146,8 @@ class UIAElement(IElement):
             if similar_path is None:
                 raise Exception("找不到相识元素")
             res["path"] = similar_path
-            res["img"]["self"] = (
-                strategy_svc.data.get("data", {}).get("img", {}).get("self", "")
-            )
-            res["picker_type"] = (
-                PickerType.SIMILAR.value
-            )  # 这个需要在这里提前写好，才能交给locator使用
+            res["img"]["self"] = strategy_svc.data.get("data", {}).get("img", {}).get("self", "")
+            res["picker_type"] = PickerType.SIMILAR.value  # 这个需要在这里提前写好，才能交给locator使用
             similar_list = LocatorManager().locator(res, timeout=10)
             if isinstance(similar_list, list):
                 similar_count = len(similar_list)
@@ -210,28 +200,17 @@ class UIAPicker:
             rect = child.BoundingRectangle
 
             # 如果在这个范围内就添加进去
-            contains = Rect.check_point_containment(
-                rect.left, rect.top, rect.right, rect.bottom, point
-            )
+            contains = Rect.check_point_containment(rect.left, rect.top, rect.right, rect.bottom, point)
             if contains:
                 res_list.append(UIAElement(control=child))
 
             # 如果忽略parent的面积，可以递归。否则要包含在内才能递归
             if contains:
-                cls._search_elements_recursively(
-                    res_list, child, point, ignore_parent_zero, deep + 1
-                )
+                cls._search_elements_recursively(res_list, child, point, ignore_parent_zero, deep + 1)
             else:
-                parent_zero = (
-                    rect.left == 0
-                    and rect.top == 0
-                    and rect.right == 0
-                    and rect.bottom == 0
-                )
+                parent_zero = rect.left == 0 and rect.top == 0 and rect.right == 0 and rect.bottom == 0
                 if parent_zero and ignore_parent_zero:
-                    cls._search_elements_recursively(
-                        res_list, child, point, ignore_parent_zero, deep + 1
-                    )
+                    cls._search_elements_recursively(res_list, child, point, ignore_parent_zero, deep + 1)
 
     @classmethod
     def get_similar_path(cls, strategy_svc, curr_path):
@@ -268,17 +247,11 @@ class UIAPicker:
                 for attr in attrs:
                     self_attr = path1[i].get(attr, None)
                     other_attr = path2[i].get(attr, None)
-                    if (
-                        self_attr is not None
-                        and other_attr is not None
-                        and self_attr != other_attr
-                    ):
+                    if self_attr is not None and other_attr is not None and self_attr != other_attr:
                         is_eq = False
                         break
                 if is_eq and not match_similar:
-                    path1[i][
-                        "similar_parent"
-                    ] = True  # similar_parent 这个值就是标识它的父级
+                    path1[i]["similar_parent"] = True  # similar_parent 这个值就是标识它的父级
                 else:
                     match_similar = True
                     if is_first:
@@ -294,7 +267,6 @@ class UIAPicker:
 
     @classmethod
     def get_element(cls, root: UIAElement, point: Point, **kwargs) -> UIAElement:
-
         # 获取配置
         used_cache = kwargs.get("used_cache", False)
         root_need_init = kwargs.get("root_need_init", True)
@@ -316,9 +288,7 @@ class UIAPicker:
 
         # 对uia进行深度遍历
         ele_list = [root]
-        cls._search_elements_recursively(
-            ele_list, root.control, point, ignore_parent_zero=ignore_parent_zero
-        )
+        cls._search_elements_recursively(ele_list, root.control, point, ignore_parent_zero=ignore_parent_zero)
 
         # 获取最小的位置返回
         ele = min(ele_list, key=lambda x: x.rect().area())
@@ -402,9 +372,7 @@ class UIAOperate:
             web_matches_schema = {"http", "https", "file", "ftp", "devtools"}
 
             # 判断 URL 是否以这些 schema 中任意一个开头
-            res = any(
-                url.lower().startswith(f"{schema}://") for schema in web_matches_schema
-            )
+            res = any(url.lower().startswith(f"{schema}://") for schema in web_matches_schema)
             # logger.info(f'命中web {res}')
             return res
 

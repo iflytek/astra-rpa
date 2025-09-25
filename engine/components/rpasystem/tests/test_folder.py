@@ -9,7 +9,6 @@ from rpasystem.folder import Folder
 
 
 class TestFolder(TestCase):
-
     def setUp(self):
         """测试前的准备工作"""
         self.temp_dir = tempfile.mkdtemp()
@@ -32,25 +31,19 @@ class TestFolder(TestCase):
 
     def test_folder_exist_exist_type(self):
         """测试文件夹存在性检查 - 存在类型"""
-        result = Folder.folder_exist(
-            folder_path=self.test_folder_path, exist_type=ExistType.EXIST
-        )
+        result = Folder.folder_exist(folder_path=self.test_folder_path, exist_type=ExistType.EXIST)
         self.assertTrue(result)
 
     def test_folder_exist_not_exist_type(self):
         """测试文件夹存在性检查 - 不存在类型"""
         non_existent_folder = os.path.join(self.temp_dir, "non_existent")
-        result = Folder.folder_exist(
-            folder_path=non_existent_folder, exist_type=ExistType.NOT_EXIST
-        )
+        result = Folder.folder_exist(folder_path=non_existent_folder, exist_type=ExistType.NOT_EXIST)
         self.assertTrue(result)
 
     def test_folder_exist_invalid_type(self):
         """测试文件夹存在性检查 - 无效类型"""
         with self.assertRaises(NotImplementedError):
-            Folder.folder_exist(
-                folder_path=self.test_folder_path, exist_type="invalid_type"
-            )
+            Folder.folder_exist(folder_path=self.test_folder_path, exist_type="invalid_type")
 
     @mock.patch("rpasystem.folder.open_folder")
     def test_folder_open_success(self, mock_open_folder):
@@ -80,9 +73,7 @@ class TestFolder(TestCase):
         """测试文件夹创建 - 目标路径不存在"""
         non_existent_dir = os.path.join(self.temp_dir, "non_existent")
         with self.assertRaises(BaseException):
-            Folder.folder_create(
-                target_path=non_existent_dir, folder_name="test_folder"
-            )
+            Folder.folder_create(target_path=non_existent_dir, folder_name="test_folder")
 
     def test_folder_create_overwrite_existing(self):
         """测试文件夹创建 - 覆盖已存在文件夹"""
@@ -117,9 +108,7 @@ class TestFolder(TestCase):
 
     def test_folder_delete_success(self):
         """测试文件夹删除 - 成功情况"""
-        result = Folder.folder_delete(
-            folder_path=self.test_folder_path, delete_options=DeleteType.DELETE
-        )
+        result = Folder.folder_delete(folder_path=self.test_folder_path, delete_options=DeleteType.DELETE)
         self.assertTrue(result)
         self.assertFalse(os.path.exists(self.test_folder_path))
 
@@ -132,9 +121,7 @@ class TestFolder(TestCase):
     @mock.patch("send2trash.send2trash")
     def test_folder_delete_trash(self, mock_send2trash):
         """测试文件夹删除 - 移入回收站"""
-        result = Folder.folder_delete(
-            folder_path=self.test_folder_path, delete_options=DeleteType.TRASH
-        )
+        result = Folder.folder_delete(folder_path=self.test_folder_path, delete_options=DeleteType.TRASH)
         self.assertTrue(result)
         mock_send2trash.assert_called_once_with(self.test_folder_path)
 
@@ -439,9 +426,7 @@ class TestFolder(TestCase):
         os.makedirs(special_folder_path, exist_ok=True)
 
         # 测试存在性检查
-        result = Folder.folder_exist(
-            folder_path=special_folder_path, exist_type=ExistType.EXIST
-        )
+        result = Folder.folder_exist(folder_path=special_folder_path, exist_type=ExistType.EXIST)
         self.assertTrue(result)
 
         # 测试重命名
@@ -460,9 +445,7 @@ class TestFolder(TestCase):
         os.makedirs(folder_with_spaces, exist_ok=True)
 
         # 测试存在性检查
-        result = Folder.folder_exist(
-            folder_path=folder_with_spaces, exist_type=ExistType.EXIST
-        )
+        result = Folder.folder_exist(folder_path=folder_with_spaces, exist_type=ExistType.EXIST)
         self.assertTrue(result)
 
         # 测试重命名

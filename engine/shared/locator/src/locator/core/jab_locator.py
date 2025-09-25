@@ -62,9 +62,7 @@ class JABContext(object):
         if hwnd and not vm_id:
             vm_id = c_long()  # vm_id的作用是跟指定dilog窗口通信
             acc_context = JOBJECT64()
-            res = bridge_dll.getAccessibleContextFromHWND(
-                hwnd, byref(vm_id), byref(acc_context)
-            )
+            res = bridge_dll.getAccessibleContextFromHWND(hwnd, byref(vm_id), byref(acc_context))
             logger.info(f"本次的可访问上下文结果   {res}, {vm_id}")
             vm_id = vm_id.value  # 0x607A8
         elif vm_id and not hwnd:
@@ -79,13 +77,9 @@ class JABContext(object):
         # 这里目的是支持桌面端原子能力，统一调用方式，context可以类比为uia中的control
         info = AccessibleValueInfo()
         accessible_context = self.acc_context
-        result = bridge_dll.getAccessibleValueInfo(
-            self.vm_id, accessible_context, byref(info)
-        )
+        result = bridge_dll.getAccessibleValueInfo(self.vm_id, accessible_context, byref(info))
         if result == 0:
-            raise Exception(
-                "Java Access Bridge func '{}' error".format("GetAccessibleContextInfo")
-            )
+            raise Exception("Java Access Bridge func '{}' error".format("GetAccessibleContextInfo"))
         logger.info(f"获取name{info.name}")
         return info.name
 
@@ -93,9 +87,7 @@ class JABContext(object):
         info = JOBJECT64()
         path_bytes = path.encode("utf-8")
         path = ctypes.c_char_p(path_bytes)
-        res = bridge_dll.getElementFromPath(
-            self.hwnd, self.vm_id, path, timeout, byref(info)
-        )
+        res = bridge_dll.getElementFromPath(self.hwnd, self.vm_id, path, timeout, byref(info))
         logger.info("get_element_from_path, BOOL:{}".format(res))
         self.acc_context = info
         if info.value == 0:
@@ -104,9 +96,7 @@ class JABContext(object):
 
     def get_element_rect(self, ratio=1):
         rect = AccessibleTextRectInfo(x=0, y=0, width=0, height=0)
-        res = bridge_dll.getElementRectangle(
-            self.hwnd, self.vm_id, self.acc_context, byref(rect), c_float(ratio)
-        )
+        res = bridge_dll.getElementRectangle(self.hwnd, self.vm_id, self.acc_context, byref(rect), c_float(ratio))
         logger.info("get_element_rect, BOOL:{}".format(res))
         return rect
 
@@ -116,7 +106,6 @@ class JABContext(object):
 
 
 class JABLocator(ILocator):
-
     def __init__(
         self,
         jab_context: JABContext = None,
@@ -147,9 +136,7 @@ class JABFactory:
         """
         is_inject = bridge_dll.isJavaWindow(hwnd)
         if not is_inject:
-            raise Exception(
-                "target application is not JAVA windows or dialog start failed"
-            )
+            raise Exception("target application is not JAVA windows or dialog start failed")
         return is_inject
 
     @classmethod
@@ -168,9 +155,7 @@ class JABFactory:
         dll_path = jar_inject_dll_path
 
         try:
-            result = cur_inject_bridge.inject_with_timeout(
-                pid, dll_path.encode("utf-8"), 30000
-            )
+            result = cur_inject_bridge.inject_with_timeout(pid, dll_path.encode("utf-8"), 30000)
             logger.info(f"注入结果: {'成功' if result else '失败'}")
         except Exception as e:
             logger.error(f"{jar_inject_dll_path} 注入失败: {str(e)}")
@@ -214,10 +199,7 @@ class JABFactory:
                 '@{}"{}"'.format(key, value)
                 for key, value in datadict.items()
                 if key not in disable_list
-                and (
-                    not isinstance(value, str)
-                    or (isinstance(value, str) and len(value) > 0)
-                )
+                and (not isinstance(value, str) or (isinstance(value, str) and len(value) > 0))
             ]
 
             # 使用'&&'连接列表中的所有元素，得到最终的字符串
@@ -286,10 +268,7 @@ class JABFactory:
             def run(self):
                 msg = wintypes.MSG()
                 initialize()
-                while (
-                    user32.GetMessageW(ctypes.byref(msg), None, 0, 0)
-                    and not self._stop_event.is_set()
-                ):
+                while user32.GetMessageW(ctypes.byref(msg), None, 0, 0) and not self._stop_event.is_set():
                     logger.info(
                         "Time: {}, hWnd: {}, Message: {}, Point (x: {}, y: {}), wParam: {}, lParam: {}".format(
                             msg.time,
@@ -324,9 +303,7 @@ class JABFactory:
             return uia_factory.find(ele, picker_type, **kwargs)
 
         # 2. 先找到窗口, 并置顶
-        root_handle = find_window(
-            path_list[0].get("cls"), path_list[0].get("name"), app_name=app_name
-        )
+        root_handle = find_window(path_list[0].get("cls"), path_list[0].get("name"), app_name=app_name)
         if not root_handle:
             raise Exception("元素无法找到")
         root_ctrl = ControlFromHandle(handle=root_handle)
@@ -375,20 +352,14 @@ class JABFactory:
         rect_wywh = jab_context.get_element_rect(ratio=ratio)
         left = rect_wywh.x if rect_wywh.x >= 0 else 0
         top = rect_wywh.y if rect_wywh.y >= 0 else 0
-        right = (
-            rect_wywh.x + rect_wywh.width if rect_wywh.x + rect_wywh.width >= 0 else 0
-        )
-        bottom = (
-            rect_wywh.y + rect_wywh.height if rect_wywh.y + rect_wywh.height >= 0 else 0
-        )
+        right = rect_wywh.x + rect_wywh.width if rect_wywh.x + rect_wywh.width >= 0 else 0
+        bottom = rect_wywh.y + rect_wywh.height if rect_wywh.y + rect_wywh.height >= 0 else 0
         right = right if right >= left else left
         bottom = bottom if bottom >= top else top
 
         display = get_system_display_size()
         max_value_screen = [int(ratio * display[0]), int(ratio * display[1])]
-        if not validate_ui_element_rect(
-            left, top, right, bottom, max_value_screen[0], max_value_screen[1]
-        ):
+        if not validate_ui_element_rect(left, top, right, bottom, max_value_screen[0], max_value_screen[1]):
             left = 0
             top = 0
             right = 1

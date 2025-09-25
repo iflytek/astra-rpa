@@ -18,10 +18,7 @@ if sys.platform == "win32":
 elif platform.system() == "Linux":
     from rpabrowser.core.core_unix import BrowserCore
 else:
-    raise NotImplementedError(
-        "Your platform (%s) is not supported by (%s)."
-        % (platform.system(), "clipboard")
-    )
+    raise NotImplementedError("Your platform (%s) is not supported by (%s)." % (platform.system(), "clipboard"))
 
 BrowserCore: IBrowserCore = BrowserCore()
 
@@ -41,9 +38,7 @@ class BrowserScript:
                 dynamics=[
                     DynamicsItem(
                         key="$this.content.show",
-                        expression="return $this.input_type.value == '{}'".format(
-                            InputType.Content.value
-                        ),
+                        expression="return $this.input_type.value == '{}'".format(InputType.Content.value),
                     )
                 ],
             ),
@@ -56,9 +51,7 @@ class BrowserScript:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_path.show",
-                        expression="return $this.input_type.value == '{}'".format(
-                            InputType.File.value
-                        ),
+                        expression="return $this.input_type.value == '{}'".format(InputType.File.value),
                     )
                 ],
             ),
@@ -99,13 +92,7 @@ class BrowserScript:
         if params:
             for p in params:
                 extend_js_str = "var "
-                extend_js_str = (
-                    extend_js_str
-                    + p.get("varName")
-                    + "="
-                    + f"\"{p.get('varValue')}\""
-                    + ";"
-                )
+                extend_js_str = extend_js_str + p.get("varName") + "=" + f'"{p.get("varValue")}"' + ";"
                 content = extend_js_str + content
         if browser_obj.browser_type in CHROME_LIKE_BROWSERS:
             js_op = content + CodeChromeBuilder.eval_js_code(is_await)

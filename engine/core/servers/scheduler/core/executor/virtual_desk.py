@@ -38,9 +38,7 @@ class LinuxVirtualDesk:
             ]
 
             # 使用获取到的分辨率启动Xephyr
-            self.xephyr = subprocess.Popen(
-                cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-            )
+            self.xephyr = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             time.sleep(2)  # 至少等待会话初始化
 
     def stop(self):
@@ -48,7 +46,6 @@ class LinuxVirtualDesk:
 
 
 class WindowVirtualDesk:
-
     def __init__(self):
         self.svc = None
         self.resolution = "1280x720"
@@ -64,12 +61,8 @@ class WindowVirtualDesk:
         """
         if not (self.handler is not None and self.handler.poll() is None):
             self.svc = svc
-            vd_path = os.path.join(
-                os.path.dirname(__file__), "virtual_desktop", "iFlyRpaRDP.exe"
-            )
-            ve_path = os.path.join(
-                os.path.dirname(__file__), "virtual_desktop", "virtual-engine.exe"
-            )
+            vd_path = os.path.join(os.path.dirname(__file__), "virtual_desktop", "iFlyRpaRDP.exe")
+            ve_path = os.path.join(os.path.dirname(__file__), "virtual_desktop", "virtual-engine.exe")
             python_path = os.path.abspath(svc.config.app_server.python_base)
             port = svc.win_virtual_port
             params = "{} --python-path={} --port={}".format(ve_path, python_path, port)
@@ -103,9 +96,7 @@ class WindowVirtualDeskSubprocessAdapter:
 
     def run(self, timeout=10 * 60):
         def is_start():
-            is_live = (
-                virtual_desk.handler is not None and virtual_desk.handler.poll() is None
-            )
+            is_live = virtual_desk.handler is not None and virtual_desk.handler.poll() is None
             if not is_live:
                 logger.info("检查虚拟桌面是否开启 {}".format(False))
                 raise Exception("检查虚拟桌面是否开启")
@@ -157,9 +148,7 @@ class WindowVirtualDeskSubprocessAdapter:
             url = "http://127.0.0.1:{}/is_alive".format(self.svc.win_virtual_port)
             response = requests.get(url)
             response_json = response.json()
-            self.live_cache = response_json["data"]["current_process"][
-                "has_running_process"
-            ]
+            self.live_cache = response_json["data"]["current_process"]["has_running_process"]
             logger.info("检查虚拟桌面任务 {}".format(self.live_cache))
         except Exception as e:
             logger.error("检查虚拟桌面任务 {}".format(e))

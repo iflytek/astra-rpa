@@ -7,11 +7,9 @@ from rpadocx.error import FILE_PATH_ERROR_FORMAT
 
 
 class IDocxCore(ABC):
-
     @staticmethod
     def validate_path(param_name):
         def decorator(func):
-
             @wraps(func)
             def wrapper(*args, **kwargs):
                 # 通过参数名称获取参数值
@@ -21,11 +19,7 @@ class IDocxCore(ABC):
                 if not os.path.exists(path):
                     raise ValueError(f"{param_name} 路径不存在")
 
-                if not (
-                    path.endswith(".docx")
-                    or path.endswith(".doc")
-                    or path.endswith(".wps")
-                ):
+                if not (path.endswith(".docx") or path.endswith(".doc") or path.endswith(".wps")):
                     raise ValueError(f"{param_name} 路径必须是.docx 或.doc或.wps 结尾")
                 # 如果校验通过，调用原函数
                 return func(*args, **kwargs)

@@ -17,9 +17,7 @@ class AnchorMatch:
     def __init__(self):
         pass
 
-    def draw_dashed_rectangle(
-        self, image, top_left, bottom_right, color, thickness, dash_length=10
-    ):
+    def draw_dashed_rectangle(self, image, top_left, bottom_right, color, thickness, dash_length=10):
         x1, y1 = top_left
         x2, y2 = bottom_right
 
@@ -58,9 +56,7 @@ class AnchorMatch:
         # else:
         #     return 0
 
-    def _limit_roi_bounds(
-        self, roi_top_left: tuple, roi_bottom_right: tuple, image_shape: tuple
-    ) -> tuple:
+    def _limit_roi_bounds(self, roi_top_left: tuple, roi_bottom_right: tuple, image_shape: tuple) -> tuple:
         """
         限制ROI的边界值在图像范围内
 
@@ -173,22 +169,14 @@ class AnchorMatch:
                     anchor_threshold = 0.6
                 aw, ah = int(anchor_gray.shape[1] * rw), int(anchor_gray.shape[0] * rh)
 
-                anchor_gray = cv2.resize(
-                    anchor_gray, (aw, ah), interpolation=cv2.INTER_CUBIC
-                )
-                anchor_match_res = cv2.matchTemplate(
-                    gray, anchor_gray, cv2.TM_CCORR_NORMED
-                )
+                anchor_gray = cv2.resize(anchor_gray, (aw, ah), interpolation=cv2.INTER_CUBIC)
+                anchor_match_res = cv2.matchTemplate(gray, anchor_gray, cv2.TM_CCORR_NORMED)
                 _, anchor_max_val, _, anchor_pos = cv2.minMaxLoc(anchor_match_res)
 
                 # TODO 执行的时候锚点不存在了，需要处理逻辑，当执行的时候缩放导致锚点变化的情况
-                logger.info(
-                    f"当前目标元素不唯一或置信度低，需要锚点，且锚点置信度为{anchor_max_val}"
-                )
+                logger.info(f"当前目标元素不唯一或置信度低，需要锚点，且锚点置信度为{anchor_max_val}")
                 if anchor_max_val < anchor_threshold:
-                    logger.info(
-                        "屏幕上不存在锚点元素或者当前界面像素过低导致找不到锚点元素"
-                    )
+                    logger.info("屏幕上不存在锚点元素或者当前界面像素过低导致找不到锚点元素")
                     # gr.Info("屏幕上不存在锚点元素或者当前界面像素过低导致找不到锚点元素")
 
                 roi_loc = (anchor_pos[0] + dis_x, anchor_pos[1] + dis_y)
@@ -203,15 +191,9 @@ class AnchorMatch:
                     math.ceil(roi_loc[0] + w * (1 + expand_factor)),
                     math.ceil(roi_loc[1] + h * (1 + expand_factor)),
                 )
-                print(
-                    f"roi_top_left:{roi_top_left},roi_bottom_right:{roi_bottom_right}"
-                )
-                roi_top_left, roi_bottom_right = self._limit_roi_bounds(
-                    roi_top_left, roi_bottom_right, image.shape
-                )
-                print(
-                    f"roi_top_left:{roi_top_left},roi_bottom_right:{roi_bottom_right}"
-                )
+                print(f"roi_top_left:{roi_top_left},roi_bottom_right:{roi_bottom_right}")
+                roi_top_left, roi_bottom_right = self._limit_roi_bounds(roi_top_left, roi_bottom_right, image.shape)
+                print(f"roi_top_left:{roi_top_left},roi_bottom_right:{roi_bottom_right}")
                 self.draw_dashed_rectangle(
                     image,
                     roi_top_left,
@@ -224,16 +206,10 @@ class AnchorMatch:
                     roi_top_left[0] : roi_bottom_right[0],
                 ]
 
-                result_CCORR_top = cv2.matchTemplate(
-                    roi, small_gray, cv2.TM_CCORR_NORMED
-                )
-                result_CCOEFF_top = cv2.matchTemplate(
-                    roi, small_gray, cv2.TM_CCOEFF_NORMED
-                )
+                result_CCORR_top = cv2.matchTemplate(roi, small_gray, cv2.TM_CCORR_NORMED)
+                result_CCOEFF_top = cv2.matchTemplate(roi, small_gray, cv2.TM_CCOEFF_NORMED)
                 min_rr, max_rr, _, max_loc = cv2.minMaxLoc(result_CCORR_top)
-                min_a, max_ccoeff_val, _, max_loc_ccoeff = cv2.minMaxLoc(
-                    result_CCOEFF_top
-                )
+                min_a, max_ccoeff_val, _, max_loc_ccoeff = cv2.minMaxLoc(result_CCOEFF_top)
 
                 print("max_val:", max_ccoeff_val)
                 # target_threshold = 0.85
@@ -257,9 +233,7 @@ class AnchorMatch:
                     match_box = None
 
             else:
-                target_match_res = cv2.matchTemplate(
-                    gray, small_gray, cv2.TM_CCOEFF_NORMED
-                )
+                target_match_res = cv2.matchTemplate(gray, small_gray, cv2.TM_CCOEFF_NORMED)
                 _, target_max_val, _, target_max_loc = cv2.minMaxLoc(target_match_res)
                 print("target_max_val:", target_max_val)
                 target_threshold = match_similarity

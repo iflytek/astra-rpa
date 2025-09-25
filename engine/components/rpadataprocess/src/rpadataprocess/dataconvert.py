@@ -7,15 +7,12 @@ from rpadataprocess import JSONConvertType, StringConvertType
 
 
 class DataConvertProcess:
-
     @staticmethod
     @atomicMg.atomic(
         "DataConvertProcess",
         outputList=[atomicMg.param("json_convert_data", types="Any")],
     )
-    def json_convertor(
-        input_data: Any, convert_type: JSONConvertType = JSONConvertType.JSON_TO_STR
-    ):
+    def json_convertor(input_data: Any, convert_type: JSONConvertType = JSONConvertType.JSON_TO_STR):
         """
         JSON数据类型转换
         """
@@ -43,9 +40,7 @@ class DataConvertProcess:
         "DataConvertProcess",
         outputList=[atomicMg.param("str_convert_other", types="Any")],
     )
-    def str_to_other(
-        input_data: Any, convert_type: StringConvertType = StringConvertType.STR_TO_INT
-    ):
+    def str_to_other(input_data: Any, convert_type: StringConvertType = StringConvertType.STR_TO_INT):
         """
         字符串转其他数据类型
         """

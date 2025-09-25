@@ -14,20 +14,15 @@ from rpabrowser.error import *
 
 
 class BrowserCore(IBrowserCore):
-
     @staticmethod
     def get_browser_path(browser_type: BrowserType) -> str:
-        raise BaseException(
-            LINUX_MUST_BROWSER_PATH_ERROR, "Linux必须手动填入浏览器地址"
-        )
+        raise BaseException(LINUX_MUST_BROWSER_PATH_ERROR, "Linux必须手动填入浏览器地址")
 
     @staticmethod
     def get_browser_handler(browser_type: BrowserType) -> Any:
         class_names = BROWSER_XDOT_WINDOW_HANDLER_NAME[browser_type.value]
         try:
-            output = subprocess.check_output(
-                ["xdotool", "search", "--name", str(class_names)]
-            )
+            output = subprocess.check_output(["xdotool", "search", "--name", str(class_names)])
         except Exception:
             return None
         # 获取最后一个
@@ -46,9 +41,7 @@ class BrowserCore(IBrowserCore):
 
     @staticmethod
     def get_browser_point(browser_type: BrowserType) -> Any:
-        control, name = BrowserCore.get_ele_by_name(
-            BROWSER_DOGTAIL_WINDOW_CLASS[browser_type.value]
-        )
+        control, name = BrowserCore.get_ele_by_name(BROWSER_DOGTAIL_WINDOW_CLASS[browser_type.value])
         if not control:
             return 0, 0
 

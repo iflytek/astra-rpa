@@ -4,9 +4,7 @@ import platform
 from ctypes import *
 
 # 加载DLL
-script_dir = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "gbild"
-)
+script_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "gbild")
 if platform.architecture()[0] == "64bit":
     dll_path = os.path.join(script_dir, "gbild64.dll")
 else:

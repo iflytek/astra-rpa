@@ -71,9 +71,7 @@ elif platform.system() == "Linux":
 
     from rpabrowser.core.core_unix import BrowserCore
 else:
-    raise NotImplementedError(
-        f"Your platform ({platform.system()}) is not supported by clipboard."
-    )
+    raise NotImplementedError(f"Your platform ({platform.system()}) is not supported by clipboard.")
 
 BrowserCore: IBrowserCore = BrowserCore()
 CodeChromeBuilder: BaseBuilder = CodeChromeBuilder()
@@ -132,7 +130,6 @@ def wait_element_appear(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-
         new_kwargs = kwargs.copy()
         timeout = new_kwargs.get("element_timeout", None)
         browser_obj = new_kwargs.get("browser_obj", None)
@@ -151,13 +148,9 @@ def wait_element_appear(func):
                         key="checkElement",
                         data=element_data["elementData"]["path"],
                     )
-                    raise BaseException(
-                        WEB_GET_ElE_ERROR.format(reason.msg), "浏览器元素未找到！"
-                    )
+                    raise BaseException(WEB_GET_ElE_ERROR.format(reason.msg), "浏览器元素未找到！")
                 else:
-                    raise BaseException(
-                        WEB_GET_ElE_ERROR.format(""), "浏览器元素未找到！"
-                    )
+                    raise BaseException(WEB_GET_ElE_ERROR.format(""), "浏览器元素未找到！")
         return func(*args, **new_kwargs)
 
     return wrapper
@@ -202,11 +195,7 @@ class BrowserElement:
         element_timeout: int = 10,
     ) -> bool:
         """等待元素出现或消失。"""
-        app = (
-            element_data["elementData"]["app"]
-            if element_data["elementData"]["app"] != "iexplore"
-            else "ie"
-        )
+        app = element_data["elementData"]["app"] if element_data["elementData"]["app"] != "iexplore" else "ie"
         if app != browser_obj.browser_type.value:
             raise Exception(
                 f"拾取元素类型需要跟浏览器类型保持一致！当前操作的浏览器为！{browser_obj.browser_type.value}"
@@ -236,10 +225,7 @@ class BrowserElement:
             # 判断是否提前结束
             if ele_status == WaitElementForStatusFlag.ElementExists and element_exist:
                 return True
-            elif (
-                ele_status == WaitElementForStatusFlag.ElementDisappears
-                and not element_exist
-            ):
+            elif ele_status == WaitElementForStatusFlag.ElementDisappears and not element_exist:
                 return True
             else:
                 # 重试
@@ -293,7 +279,6 @@ class BrowserElement:
             Keyboard.key_down(assistive_key.value)
 
         if not simulate_flag:
-
             if browser_obj.browser_type in CHROME_LIKE_BROWSERS:
                 # 发送给插件
                 browser_obj.send_browser_extension(
@@ -313,9 +298,7 @@ class BrowserElement:
                 x=center.x,
                 y=center.y,
                 clicks=2 if button_type == ButtonForClickTypeFlag.Double else 1,
-                button=(
-                    "left" if button_type != ButtonForClickTypeFlag.Right else "right"
-                ),
+                button=("left" if button_type != ButtonForClickTypeFlag.Right else "right"),
             )
         if assistive_key != ButtonForAssistiveKeyFlag.Nothing:
             Keyboard.key_up(assistive_key.value)
@@ -412,7 +395,6 @@ class BrowserElement:
                     text = str(origin_text) + str(text)
 
             if browser_obj.browser_type in CHROME_LIKE_BROWSERS:
-
                 browser_obj.send_browser_extension(
                     browser_type=browser_obj.browser_type.value,
                     key="inputElement",
@@ -438,14 +420,10 @@ class BrowserElement:
                 time.sleep(0.5)
             # 焦点睡眠时间
             if focus_time < 0:
-                raise BaseException(
-                    FOCUS_TIMEOUT_MUST_BE_POSITIVE, "焦点超时时间必须大于0"
-                )
+                raise BaseException(FOCUS_TIMEOUT_MUST_BE_POSITIVE, "焦点超时时间必须大于0")
             time.sleep(focus_time / 1000)
             if write_gap_time < 0:
-                raise BaseException(
-                    KEY_PRESS_INTERVAL_MUST_BE_NON_NEGATIVE, "按键输入间隔必须大于等于0"
-                )
+                raise BaseException(KEY_PRESS_INTERVAL_MUST_BE_NON_NEGATIVE, "按键输入间隔必须大于等于0")
             write_gap_time = write_gap_time if write_gap_time > 0 else 0.03
             if fill_type == FillInputForFillTypeFlag.Text:
                 for item in text:
@@ -563,9 +541,7 @@ class BrowserElement:
         element = Locator.locator(element_data.get("elementData"))
         rect = element.rect()
 
-        Screenshot.screenshot(
-            region=(rect.left, rect.top, rect.width(), rect.height()), file_path=path
-        )
+        Screenshot.screenshot(region=(rect.left, rect.top, rect.width(), rect.height()), file_path=path)
         return path
 
     @staticmethod
@@ -676,7 +652,6 @@ class BrowserElement:
                     scroll_to = "right"
 
             if scrollbar_type == ScrollbarType.Window:
-
                 browser_obj.send_browser_extension(
                     browser_type=browser_obj.browser_type.value,
                     key="scrollWindow",
@@ -800,10 +775,7 @@ class BrowserElement:
                     data={
                         **di,  # 解包内部字典的内容
                         "atomConfig": {
-                            "operation": str(
-                                list(ElementGetAttributeHasSelfTypeFlag).index(get_type)
-                                - 1
-                            ),
+                            "operation": str(list(ElementGetAttributeHasSelfTypeFlag).index(get_type) - 1),
                             "attrName": attribute_name,
                         },
                     },
@@ -891,12 +863,7 @@ class BrowserElement:
                             data={
                                 **di,  # 解包内部字典的内容
                                 "atomConfig": {
-                                    "operation": str(
-                                        list(ElementGetAttributeHasSelfTypeFlag).index(
-                                            get_type
-                                        )
-                                        - 1
-                                    ),
+                                    "operation": str(list(ElementGetAttributeHasSelfTypeFlag).index(get_type) - 1),
                                     "attrName": attribute_name,
                                 },
                             },
@@ -919,9 +886,7 @@ class BrowserElement:
         ],
     )
     @wait_element_appear
-    def element_text(
-        browser_obj: Browser, element_data: WebPick, element_timeout: int = 10
-    ) -> str:
+    def element_text(browser_obj: Browser, element_data: WebPick, element_timeout: int = 10) -> str:
         """
         获取元素文本内容
         """
@@ -967,9 +932,7 @@ class BrowserElement:
             logger.info(f"slider_hover start {start_pos}  end {end_pos}")
             smooth_move(end_pos[0], end_pos[1], duration=duration)
             time.sleep(0.05)
-            Mouse.up(
-                x=end_pos[0], y=end_pos[1], button="left"
-            )  # 在结束位置释放鼠标按钮
+            Mouse.up(x=end_pos[0], y=end_pos[1], button="left")  # 在结束位置释放鼠标按钮
             time.sleep(0.05)
 
         percent_value = max(0.0, min(1.0, percent_value / 100))
@@ -979,9 +942,7 @@ class BrowserElement:
         slider_center = element.point()
 
         # 滑条（滑块可移动的轨道）
-        element = Locator.locator(
-            progress_element.get("elementData"), scroll_into_view=False
-        )
+        element = Locator.locator(progress_element.get("elementData"), scroll_into_view=False)
         progress_rect = element.rect()
 
         # 计算滑条的尺寸和位置
@@ -993,18 +954,14 @@ class BrowserElement:
         # 记录滑块初始位置
         start_pos = [slider_center.x, slider_center.y]
         logger.info(f"滑块中心点: {start_pos}")
-        logger.info(
-            f"滑条位置和尺寸: [{progress_left}, {progress_top}, {progress_width}, {progress_height}]"
-        )
+        logger.info(f"滑条位置和尺寸: [{progress_left}, {progress_top}, {progress_width}, {progress_height}]")
 
         # 根据拖拽方向判断是横向还是纵向
         is_horizontal = drag_direction in [
             ElementDragDirectionTypeFlag.Left,
             ElementDragDirectionTypeFlag.Right,
         ]
-        logger.info(
-            f'滑动方向: {"横向" if is_horizontal else "纵向"}, 具体方向: {drag_direction.value}'
-        )
+        logger.info(f"滑动方向: {'横向' if is_horizontal else '纵向'}, 具体方向: {drag_direction.value}")
 
         # 计算终点位置
         if is_horizontal:
@@ -1025,9 +982,7 @@ class BrowserElement:
                 # 计算目标位置
                 target_x = slider_center.x + move_distance
                 # 确保不超出滑条范围
-                target_x = max(
-                    progress_left, min(progress_left + progress_width, target_x)
-                )
+                target_x = max(progress_left, min(progress_left + progress_width, target_x))
                 end_pos = [int(target_x), int(slider_center.y)]
         else:
             # 纵向滑块
@@ -1047,9 +1002,7 @@ class BrowserElement:
                 # 计算目标位置
                 target_y = slider_center.y + move_distance
                 # 确保不超出滑条范围
-                target_y = max(
-                    progress_top, min(progress_top + progress_height, target_y)
-                )
+                target_y = max(progress_top, min(progress_top + progress_height, target_y))
                 end_pos = [int(slider_center.x), int(target_y)]
 
         logger.info(f"计算的终点位置: {end_pos}")
@@ -1078,7 +1031,6 @@ class BrowserElement:
                 "浏览器元素为空，请检查当前界面浏览器是否正常打开",
             )
         if browser_obj.browser_type in CHROME_LIKE_BROWSERS:
-
             data = browser_obj.send_browser_extension(
                 browser_type=browser_obj.browser_type.value,
                 key="getElementSelected",
@@ -1115,7 +1067,6 @@ class BrowserElement:
                 "浏览器元素为空，请检查当前界面浏览器是否正常打开",
             )
         if browser_obj.browser_type in CHROME_LIKE_BROWSERS:
-
             data = browser_obj.send_browser_extension(
                 browser_type=browser_obj.browser_type.value,
                 key="getElementChecked",
@@ -1171,7 +1122,6 @@ class BrowserElement:
                 "浏览器元素为空，请检查当前界面浏览器是否正常打开",
             )
         if browser_obj.browser_type in CHROME_LIKE_BROWSERS:
-
             _ = browser_obj.send_browser_extension(
                 browser_type=browser_obj.browser_type.value,
                 key="setElementSelected",
@@ -1200,7 +1150,6 @@ class BrowserElement:
     ):
         """设置复选框选中状态。"""
         if browser_obj.browser_type in CHROME_LIKE_BROWSERS:
-
             _ = browser_obj.send_browser_extension(
                 browser_type=browser_obj.browser_type.value,
                 key="setElementChecked",
@@ -1349,7 +1298,6 @@ class BrowserElement:
             )
         if browser_obj.browser_type in CHROME_LIKE_BROWSERS:
             if operation_type == ElementAttributeOpTypeFlag.Del:
-
                 browser_obj.send_browser_extension(
                     browser_type=browser_obj.browser_type.value,
                     key="removeElementAttr",
@@ -1361,7 +1309,6 @@ class BrowserElement:
                     },
                 )
             elif operation_type == ElementAttributeOpTypeFlag.Get:
-
                 data = browser_obj.send_browser_extension(
                     browser_type=browser_obj.browser_type.value,
                     key="getElementAttrs",
@@ -1369,9 +1316,7 @@ class BrowserElement:
                         **element_data["elementData"]["path"],  # 解包内部字典的内容
                         "atomConfig": {
                             "attrName": attribute_name,
-                            "operation": str(
-                                list(ElementGetAttributeTypeFlag).index(get_type)
-                            ),
+                            "operation": str(list(ElementGetAttributeTypeFlag).index(get_type)),
                         },
                     },
                 )
@@ -1379,9 +1324,7 @@ class BrowserElement:
                 logger.info(f"获取元素属性: {data}")
                 if get_type == ElementGetAttributeTypeFlag.GetPosition:
                     if position == RelativePosition.ScreenLeft:
-                        top, left = BrowserCore.get_browser_point(
-                            browser_obj.browser_type
-                        )
+                        top, left = BrowserCore.get_browser_point(browser_obj.browser_type)
                         return [
                             data["x"] + left,
                             data["y"] + top,
@@ -1394,7 +1337,6 @@ class BrowserElement:
                     return data
 
             elif operation_type == ElementAttributeOpTypeFlag.Set:
-
                 browser_obj.send_browser_extension(
                     browser_type=browser_obj.browser_type.value,
                     key="setElementAttr",
@@ -1476,7 +1418,7 @@ class BrowserElement:
             table_list = table_body
             if to_excel:
                 if excel_path is None:
-                    excel_path = f'{table_element["name"]}.xlsx'
+                    excel_path = f"{table_element['name']}.xlsx"
                 df.to_excel(excel_path, index=False)
             return [table_head] + table_list
         else:
@@ -1489,9 +1431,7 @@ class BrowserElement:
         inputList=[
             atomicMg.param(
                 "batch_data",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.PICK.value, params={"use": "BATCH"}
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.PICK.value, params={"use": "BATCH"}),
             ),
             # multi_page  为 True 时，page_element_data，page_count，page_interval参数必须存在
             atomicMg.param("multi_page", required=False),
@@ -1549,9 +1489,7 @@ class BrowserElement:
                     type=AtomicFormType.INPUT_VARIABLE_PYTHON_FILE.value,
                     params={
                         "file_type": "file",
-                        "filters": [
-                            ".xlsx"
-                        ],  # 在file_type为file有效 标识只要.txt的后缀文件
+                        "filters": [".xlsx"],  # 在file_type为file有效 标识只要.txt的后缀文件
                         "defaultPath": "default.xlsx",  # 默认名称 只适用于 file
                     },
                 ),
@@ -1597,9 +1535,7 @@ class BrowserElement:
         table_list = []
         batch_element = batch_data.get("elementData")  # 抓取对象
         table_element = batch_element["path"]  # 元素信息
-        produce_type = table_element[
-            "produceType"
-        ]  # 抓取类型， produceType: table/similar
+        produce_type = table_element["produceType"]  # 抓取类型， produceType: table/similar
         for i in range(1, page_count + 1):
             # 获取表格内容, 二维数组
             if produce_type == "table":
@@ -1611,9 +1547,7 @@ class BrowserElement:
                     element_timeout=int(element_timeout),
                 )
                 if not wait:
-                    raise BaseException(
-                        WEB_GET_ElE_ERROR.format("请检查抓取元素"), "浏览器元素未找到！"
-                    )
+                    raise BaseException(WEB_GET_ElE_ERROR.format("请检查抓取元素"), "浏览器元素未找到！")
                 # 定位
                 Locator.locator(batch_element)
                 # 发送给插件
@@ -1644,9 +1578,7 @@ class BrowserElement:
                     element_timeout=int(element_timeout),
                 )
                 if not wait:
-                    raise BaseException(
-                        WEB_GET_ElE_ERROR.format("请检查抓取元素"), "浏览器元素未找到！"
-                    )
+                    raise BaseException(WEB_GET_ElE_ERROR.format("请检查抓取元素"), "浏览器元素未找到！")
                 response = browser_obj.send_browser_extension(
                     browser_type=browser_obj.browser_type.value,
                     key="simalarListBatch",
@@ -1677,9 +1609,7 @@ class BrowserElement:
 
         # logger.info(f'表格数据: {table_list}')
         # 合并获取到的数据 到 table_element的 values 中
-        data_formated = table_json_merge_values(
-            data_json=table_element, values=table_list
-        )
+        data_formated = table_json_merge_values(data_json=table_element, values=table_list)
         # logger.info(f'表格数据格式化: {data_formated}')
 
         # 数据处理
@@ -1692,15 +1622,13 @@ class BrowserElement:
         if to_excel:
             # 将table_list 转换为excel
             if excel_path is None:
-                excel_path = f'{table_element["name"]}.xlsx'
+                excel_path = f"{table_element['name']}.xlsx"
             table_df_out.to_excel(excel_path, index=False, header=output_head)
             # logger.info(f'表格数据已保存到 {excel_path}')
             table_path = excel_path
             if output_type == TablePickType.Row:
                 if output_head:
-                    return [
-                        table_df_out.columns.tolist()
-                    ] + table_df_out.values.tolist(), table_path
+                    return [table_df_out.columns.tolist()] + table_df_out.values.tolist(), table_path
                 else:
                     return table_df_out.values.tolist(), table_path
             else:
@@ -1720,11 +1648,7 @@ class BrowserElement:
     @get_default_browser
     @atomicMg.atomic(
         "BrowserElement",
-        inputList=[
-            atomicMg.param(
-                "locate_type", formType=AtomicFormTypeMeta(AtomicFormType.SELECT.value)
-            )
-        ],
+        inputList=[atomicMg.param("locate_type", formType=AtomicFormTypeMeta(AtomicFormType.SELECT.value))],
         outputList=[atomicMg.param("element_obj", types="Any")],
     )
     def create_element(
@@ -1913,11 +1837,7 @@ class BrowserElement:
         element_data: WebPick,
     ) -> bool:
         """检查元素是否存在。"""
-        app = (
-            element_data["elementData"]["app"]
-            if element_data["elementData"]["app"] != "iexplore"
-            else "ie"
-        )
+        app = element_data["elementData"]["app"] if element_data["elementData"]["app"] != "iexplore" else "ie"
         if app != browser_obj.browser_type.value:
             raise Exception(
                 f"拾取元素类型需要跟浏览器类型保持一致！当前操作的浏览器为！{browser_obj.browser_type.value}"

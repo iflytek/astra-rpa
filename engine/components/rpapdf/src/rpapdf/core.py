@@ -7,11 +7,9 @@ from rpapdf import FileExistenceType, PictureType
 
 
 class IPDFCore(ABC):
-
     @staticmethod
     def validate_path(param_name):
         def decorator(func):
-
             @wraps(func)
             def wrapper(*args, **kwargs):
                 # 通过参数名称获取参数值

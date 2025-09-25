@@ -98,9 +98,7 @@ class WebSocketManager:
 ws_manager = WebSocketManager()
 
 app = FastAPI()
-app.add_middleware(
-    CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"]
-)
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 
 @app.get("/task/health")
@@ -260,9 +258,7 @@ def future_with_create(task_info: TaskFutureExecWithoutIdInput):
 
 
 @app.get("/task/queue/status")
-async def get_queue_status(
-    pageNo: int = 1, pageSize: int = 10, name: str = None, taskType: str = None
-):
+async def get_queue_status(pageNo: int = 1, pageSize: int = 10, name: str = None, taskType: str = None):
     """
     获取当前任务队列状态
 
@@ -379,10 +375,7 @@ async def update_queue_config(config: QueueConfigInput):
                     expire_time = time.strftime(
                         "%Y-%m-%d %H:%M:%S",
                         time.localtime(
-                            time.mktime(
-                                time.strptime(enqueue_time, "%Y-%m-%d %H:%M:%S")
-                            )
-                            + config.max_wait_minutes * 60
+                            time.mktime(time.strptime(enqueue_time, "%Y-%m-%d %H:%M:%S")) + config.max_wait_minutes * 60
                         ),
                     )
                     task["expire_time"] = expire_time
@@ -396,9 +389,7 @@ async def update_queue_config(config: QueueConfigInput):
                 for _ in range(tasks_to_remove):
                     if app_context.task_queue_monitor:
                         removed_task = app_context.task_queue_monitor.pop()
-                        logger.info(
-                            f"队列长度超限，删除任务: {removed_task.get('unique_id')}"
-                        )
+                        logger.info(f"队列长度超限，删除任务: {removed_task.get('unique_id')}")
 
         if config.deduplicate and not app_context.queue_config["deduplicate"]:
             # 开启去重，需要重新检查所有任务是否重复

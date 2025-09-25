@@ -36,7 +36,6 @@ def flow_to_token(flow_json: dict) -> Optional[Token]:
 
 
 class Executor:
-
     def __init__(self, svc: Svc, max_append_child_size: int = 100):
         self.svc = svc
 
@@ -70,9 +69,7 @@ class Executor:
                         log_type=ReportType.Code,
                         process=token.value.get("__process_name__", ""),
                         process_id=token.value.get("__process_id__", ""),
-                        atomic=token.value.get(
-                            "anotherName", token.value.get("title", "")
-                        ),
+                        atomic=token.value.get("anotherName", token.value.get("title", "")),
                         line=token.value.get("__line__", 0),
                         line_id=token.value.get("id", ""),
                         status=ReportCodeStatus.SKIP,
@@ -86,9 +83,7 @@ class Executor:
                         log_type=ReportType.Code,
                         process=token.value.get("__process_name__", ""),
                         process_id=token.value.get("__process_id__", ""),
-                        atomic=token.value.get(
-                            "anotherName", token.value.get("title", "")
-                        ),
+                        atomic=token.value.get("anotherName", token.value.get("title", "")),
                         line=token.value.get("__line__", 0),
                         line_id=token.value.get("id", ""),
                         status=ReportCodeStatus.ERROR,
@@ -110,34 +105,20 @@ class Executor:
 
         if EventKey.STACK.value not in svc.events:
             svc.events[EventKey.STACK.value] = [process_id]
-        elif (
-            len(svc.events[EventKey.STACK.value]) >= 2
-            and svc.events[EventKey.STACK.value][-2] == process_id
-        ):
+        elif len(svc.events[EventKey.STACK.value]) >= 2 and svc.events[EventKey.STACK.value][-2] == process_id:
             svc.events[EventKey.STACK.value].pop()
-        elif (
-            len(svc.events[EventKey.STACK.value]) >= 1
-            and svc.events[EventKey.STACK.value][-1] != process_id
-        ):
+        elif len(svc.events[EventKey.STACK.value]) >= 1 and svc.events[EventKey.STACK.value][-1] != process_id:
             svc.events[EventKey.STACK.value].append(process_id)
 
         def wait():
             while True:
-                if (
-                    EventKey.Next.value in svc.events
-                    and svc.events[EventKey.Next.value]
-                ):
+                if EventKey.Next.value in svc.events and svc.events[EventKey.Next.value]:
                     svc.events[EventKey.ResNext.value] = True
                     svc.events[EventKey.Next.value] = False
 
-                    svc.events[EventKey.PreNext.value] = {
-                        item: True for item in svc.events[EventKey.STACK.value]
-                    }
+                    svc.events[EventKey.PreNext.value] = {item: True for item in svc.events[EventKey.STACK.value]}
                     break
-                if (
-                    EventKey.Continue.value in svc.events
-                    and svc.events[EventKey.Continue.value]
-                ):
+                if EventKey.Continue.value in svc.events and svc.events[EventKey.Continue.value]:
                     svc.events[EventKey.ResContinue.value] = True
                     svc.events[EventKey.Continue.value] = False
                     break
@@ -145,17 +126,13 @@ class Executor:
                 event.raw_event_handler(svc)
 
         is_break = False
-        if (
-            EventKey.PreNext.value in svc.events
-            and process_id in svc.events[EventKey.PreNext.value]
-        ):
+        if EventKey.PreNext.value in svc.events and process_id in svc.events[EventKey.PreNext.value]:
             del svc.events[EventKey.PreNext.value]
             is_break = True
         elif EventKey.LINE.value not in svc.events:
             is_break = True
         elif (
-            EventKey.Break.value in svc.events
-            and "{}-{}".format(process_id, line) in svc.events[EventKey.Break.value]
+            EventKey.Break.value in svc.events and "{}-{}".format(process_id, line) in svc.events[EventKey.Break.value]
         ):
             is_break = True
 
@@ -188,9 +165,7 @@ class Executor:
         """通过远端获取flow_list"""
         line = 0
         if self.svc.process_dict[process_id].flow is None:
-            flow_list = self.svc.storage.process_json(
-                project_id, process_id, mode, version
-            )
+            flow_list = self.svc.storage.process_json(project_id, process_id, mode, version)
             for k, v in enumerate(flow_list):
                 line = line + 1
                 v.update(
@@ -204,14 +179,10 @@ class Executor:
                 if project_id == self.svc.start_project_id:
                     # 只有启动工程才有断点的能力
                     if "breakpoint" in v and v["breakpoint"]:
-                        self.svc.event_break()[
-                            "{}-{}".format(process_id, v.get("__line__"))
-                        ] = True
+                        self.svc.event_break()["{}-{}".format(process_id, v.get("__line__"))] = True
 
             # 更新参数信息和flow信息
-            flow_param = self.svc.storage.param_list(
-                project_id, process_id, mode, version
-            )
+            flow_param = self.svc.storage.param_list(project_id, process_id, mode, version)
             self.svc.process_dict[process_id].param = flow_param
             self.svc.process_dict[process_id].flow = flow_list
         return copy.deepcopy(self.svc.process_dict[process_id].flow)
@@ -226,15 +197,10 @@ class Executor:
         if self.append_child_size > self.max_append_child_size:
             raise BaseException(
                 RECURSIVE_CALL_MAX_FORMAT.format(self.max_append_child_size),
-                "加载子流程超过{}上限，可能是循环引用".format(
-                    self.max_append_child_size
-                ),
+                "加载子流程超过{}上限，可能是循环引用".format(self.max_append_child_size),
             )
 
-        if (
-            flow.get("key") == TokenType.Process.value
-            and "__temp_process_end__" not in flow
-        ):
+        if flow.get("key") == TokenType.Process.value and "__temp_process_end__" not in flow:
             project_id = flow.get("__project_id__")
             process_id = flow.get("__process_id__")
             project_info = self.svc.project_dict[project_id]
@@ -271,10 +237,7 @@ class Executor:
             if len(aft) > 0:
                 pre.extend(aft)
             return pre
-        elif (
-            flow.get("key").startswith(TokenType.Component.value)
-            and "__temp_process_end__" not in flow
-        ):
+        elif flow.get("key").startswith(TokenType.Component.value) and "__temp_process_end__" not in flow:
             project_id = flow.get("__project_id__")
             new_project_id = flow.get("key").split(".")[-1]
 
@@ -363,13 +326,9 @@ class Executor:
             # 获取配置-流程获取
             process_dict = {}
             for p in self.svc.project_dict.values():
-                process_list = self.svc.storage.process_list(
-                    p.project_id, p.project_mode, p.project_version
-                )
+                process_list = self.svc.storage.process_list(p.project_id, p.project_mode, p.project_version)
                 if len(process_list) == 0:
-                    raise BaseException(
-                        ENGINEERING_DATA_ERROR, "工程数据异常 {}".format(project_id)
-                    )
+                    raise BaseException(ENGINEERING_DATA_ERROR, "工程数据异常 {}".format(project_id))
                 for i, v in enumerate(process_list):
                     process_dict[v.get("processId")] = ProcessInfo(
                         name=v.get("processName"),
@@ -434,7 +393,6 @@ class Executor:
 
             global_id2name = {}
             for p in self.svc.project_dict.values():
-
                 # 内部环境变量
                 env.setitem(
                     p.project_id,
@@ -448,9 +406,7 @@ class Executor:
                 )
 
                 # 全局变量
-                global_list = self.svc.storage.global_list(
-                    p.project_id, p.project_mode, p.project_version
-                )
+                global_list = self.svc.storage.global_list(p.project_id, p.project_mode, p.project_version)
                 if len(global_list) > 0:
                     for g_v in global_list:
                         global_id2name[g_v.get("globalId")] = g_v.get("varName", "")
@@ -471,11 +427,7 @@ class Executor:
                                         "types": g_v.get("varType", "Any"),
                                         "name": g_v.get("varName", ""),
                                         "value": g_v.get("varValue", ""),
-                                        "title": g_v.get(
-                                            GLOBAL_PARAM_NAME_FORMAT.format(
-                                                g_v.get("varName", "")
-                                            )
-                                        ),
+                                        "title": g_v.get(GLOBAL_PARAM_NAME_FORMAT.format(g_v.get("varName", ""))),
                                     },
                                     self.svc,
                                 ),
@@ -518,9 +470,7 @@ class Executor:
                     error_traceback=traceback.format_exc(),
                 )
             )
-            self.svc.storage.report_status_upload(
-                "fail", "{} {}".format(ReportFlowTaskError, error_str)
-            )
+            self.svc.storage.report_status_upload("fail", "{} {}".format(ReportFlowTaskError, error_str))
         return
 
     def __process_init__(self, program):
@@ -530,9 +480,7 @@ class Executor:
         def raw_process_init():
             # 用户pip提前下载
             for p in self.svc.project_dict.values():
-                pip_list = self.svc.storage.user_pip_list(
-                    p.project_id, p.project_mode, p.project_version
-                )
+                pip_list = self.svc.storage.user_pip_list(p.project_id, p.project_mode, p.project_version)
                 for pip in pip_list:
                     self.svc.atomic.download(
                         pip.get("packageName", ""),
@@ -562,9 +510,7 @@ class Executor:
                     error_traceback=traceback.format_exc(),
                 )
             )
-            self.svc.storage.report_status_upload(
-                "fail", "{} {}".format(ReportFlowTaskError, error_str)
-            )
+            self.svc.storage.report_status_upload("fail", "{} {}".format(ReportFlowTaskError, error_str))
 
     def __process_run__(self, program, env=None):
         if not program:
@@ -593,9 +539,7 @@ class Executor:
                         msg_str=ReportFlowTaskEndUserClose,
                     )
                 )
-                self.svc.storage.report_status_upload(
-                    "cancel", ReportFlowTaskEndUserClose
-                )
+                self.svc.storage.report_status_upload("cancel", ReportFlowTaskEndUserClose)
             return
         except IgnoreException:
             self.svc.report.error(
@@ -606,9 +550,7 @@ class Executor:
                     msg_str="{}".format(ReportFlowTaskError),
                 )
             )
-            self.svc.storage.report_status_upload(
-                "fail", "{}".format(ReportFlowTaskError)
-            )
+            self.svc.storage.report_status_upload("fail", "{}".format(ReportFlowTaskError))
             return
         except Exception as e:
             # 原子能力执行错误
@@ -625,9 +567,7 @@ class Executor:
                     error_traceback=traceback.format_exc(),
                 )
             )
-            self.svc.storage.report_status_upload(
-                "fail", "{} {}".format(ReportFlowTaskError, error_str)
-            )
+            self.svc.storage.report_status_upload("fail", "{} {}".format(ReportFlowTaskError, error_str))
             return
         self.svc.report.info(
             ReportFlow(

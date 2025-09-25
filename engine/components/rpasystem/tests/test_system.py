@@ -9,7 +9,6 @@ from rpasystem.system import System
 
 
 class TestSystem(TestCase):
-
     def setUp(self):
         """测试前的准备工作"""
         self.temp_dir = tempfile.mkdtemp()
@@ -85,9 +84,7 @@ class TestSystem(TestCase):
         new_dir = os.path.join(self.temp_dir, "new_dir")
 
         # 执行截图到不存在的目录，但设置为自动创建
-        result = System.screen_shot(
-            png_path=new_dir, state_type=StateType.CREATE, png_name=self.test_png_name
-        )
+        result = System.screen_shot(png_path=new_dir, state_type=StateType.CREATE, png_name=self.test_png_name)
 
         # 验证截图文件存在且目录被创建
         self.assertTrue(os.path.exists(result))
@@ -115,9 +112,7 @@ class TestSystem(TestCase):
         jpg_name = "test_screenshot.jpg"
 
         # 执行截图，使用jpg扩展名
-        result = System.screen_shot(
-            png_path=self.temp_dir, state_type=StateType.ERROR, png_name=jpg_name
-        )
+        result = System.screen_shot(png_path=self.temp_dir, state_type=StateType.ERROR, png_name=jpg_name)
 
         # 验证文件存在且扩展名正确
         self.assertTrue(os.path.exists(result))

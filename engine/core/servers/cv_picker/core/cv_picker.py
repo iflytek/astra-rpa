@@ -113,9 +113,7 @@ class ImageDetector(object):
 
         基本上没有用……
         """
-        thresh = cv2.adaptiveThreshold(
-            edge, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2
-        )
+        thresh = cv2.adaptiveThreshold(edge, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
 
         return thresh
 
@@ -162,11 +160,8 @@ class ImageDetector(object):
         return iou
 
     def fill_hole(self, masker):
-
         _, mask = cv2.threshold(masker, 30, 255, cv2.THRESH_BINARY)
-        contours, hierarchy = cv2.findContours(
-            mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE
-        )
+        contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         areas = [cv2.contourArea(contour) for contour in contours]
 
@@ -179,9 +174,7 @@ class ImageDetector(object):
         return mask
 
     @staticmethod
-    def apply_nms(
-        boxes: List[List[int]], iou_threshold: float = 0.3
-    ) -> List[List[int]]:
+    def apply_nms(boxes: List[List[int]], iou_threshold: float = 0.3) -> List[List[int]]:
         """
         对边界框应用非极大值抑制（NMS）。
 
@@ -209,9 +202,7 @@ class ImageDetector(object):
 
         return keep_boxes
 
-    def draw_dashed_rectangle(
-        self, top_left, bottom_right, color, thickness, dash_length=5
-    ):
+    def draw_dashed_rectangle(self, top_left, bottom_right, color, thickness, dash_length=5):
         x1, y1 = top_left
         x2, y2 = bottom_right
         for x in range(x1, x2, 2 * dash_length):
@@ -246,7 +237,6 @@ class ImageDetector(object):
             )
 
     def preprocess_stage(self, gradient, is_adaptive):
-
         if is_adaptive:
             thresh = self.apply_adaptive_threshold(gradient)
         else:
@@ -254,9 +244,7 @@ class ImageDetector(object):
 
         closed = self.apply_morphology(thresh)
         contours = self.fill_hole(closed)
-        contours, _ = cv2.findContours(
-            contours, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS
-        )
+        contours, _ = cv2.findContours(contours, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
 
         return contours
 
@@ -290,17 +278,13 @@ class ImageDetector(object):
         sobel_gradient = self.compute_sobel_gradient(sharpened)
 
         ## Step1 前景检测，筛选
-        _, fore_g = cv2.threshold(
-            canny_gradient, 127, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
-        )
+        _, fore_g = cv2.threshold(canny_gradient, 127, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         kernel = np.ones((3, 3), np.uint8)
         # 膨胀函数
         fore_g = cv2.dilate(fore_g, kernel, iterations=2)
         _, fore_markers = cv2.connectedComponents(fore_g)
         fore_markers = fore_markers.astype(np.uint8)
-        fore_contours, _ = cv2.findContours(
-            fore_markers.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE
-        )
+        fore_contours, _ = cv2.findContours(fore_markers.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         ## Step2 Sobel算子检测常规边框
         sobel_contours = self.preprocess_stage(sobel_gradient, False)
@@ -314,8 +298,7 @@ class ImageDetector(object):
             for x, y, w, h in (cv2.boundingRect(contour) for contour in fore_contours)
             if (w * h) > 50
             and (h / w) < 10
-            and (w * h) / (self.original_img.shape[0] * self.original_img.shape[1])
-            < 0.2
+            and (w * h) / (self.original_img.shape[0] * self.original_img.shape[1]) < 0.2
         ]
 
         sobel_boxes = [
@@ -323,8 +306,7 @@ class ImageDetector(object):
             for x, y, w, h in (cv2.boundingRect(contour) for contour in sobel_contours)
             if (w * h) > 50
             and (h / w) < 10
-            and (w * h) / (self.original_img.shape[0] * self.original_img.shape[1])
-            < 0.2
+            and (w * h) / (self.original_img.shape[0] * self.original_img.shape[1]) < 0.2
         ]
 
         canny_boxes = [
@@ -333,8 +315,7 @@ class ImageDetector(object):
             if ((w * h) > 20 and (w * h) <= 50)
             or ((w * h) > 200 and (w * h) <= 350)
             and (h / w) < 10
-            and (w * h) / (self.original_img.shape[0] * self.original_img.shape[1])
-            < 0.2
+            and (w * h) / (self.original_img.shape[0] * self.original_img.shape[1]) < 0.2
         ]
 
         self.output_img = copy.deepcopy(self.original_img)
@@ -355,9 +336,7 @@ class ImageDetector(object):
         for box in selected_boxes:
             x, y, w, h = box
             boxes_with_coordinates.append(box)
-            self.draw_dashed_rectangle(
-                (x, y), (x + w, y + h), dash_color, line_width, 5
-            )
+            self.draw_dashed_rectangle((x, y), (x + w, y + h), dash_color, line_width, 5)
         selected_boxes = selected_boxes
         # + self.detect_ocr_text(line_width)
 

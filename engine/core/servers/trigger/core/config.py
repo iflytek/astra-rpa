@@ -1,5 +1,4 @@
 class Config:
-
     PORT: int = 0
 
     GATEWAY_PORT: int = 0

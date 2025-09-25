@@ -48,7 +48,6 @@ def async_default_output_callback(msg, error):
 
 
 class SubPopen:
-
     def __init__(self, name: str = None, cmd: list = None, params: dict = None):
         if not params:
             params = {}
@@ -61,9 +60,7 @@ class SubPopen:
         self.start_time = 0
         self.__log__ = None
 
-    def logger_handler(
-        self, output_callback=default_output_callback, timeout=None
-    ) -> (str, str):
+    def logger_handler(self, output_callback=default_output_callback, timeout=None) -> (str, str):
         if self.__log__:
 
             def read_stdout(pipe, callback):
@@ -108,9 +105,7 @@ class SubPopen:
                 else:
                     pass
 
-        stdout_thread = threading.Thread(
-            target=read_stdout, args=(self.proc, output_callback), daemon=True
-        )
+        stdout_thread = threading.Thread(target=read_stdout, args=(self.proc, output_callback), daemon=True)
         stdout_thread.start()
         return
 

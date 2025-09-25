@@ -86,9 +86,7 @@ def start():
             workers=1,
         )
     except Exception as e:
-        logger.error(
-            "scheduler error: {} traceback: {}".format(e, traceback.format_exc())
-        )
+        logger.error("scheduler error: {} traceback: {}".format(e, traceback.format_exc()))
 
 
 if __name__ == "__main__":

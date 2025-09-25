@@ -10,7 +10,4 @@ if sys.platform == "win32":
 elif platform.system() == "Linux":
     pass
 else:
-    raise NotImplementedError(
-        "Your platform (%s) is not supported by (%s)."
-        % (platform.system(), "clipboard")
-    )
+    raise NotImplementedError("Your platform (%s) is not supported by (%s)." % (platform.system(), "clipboard"))

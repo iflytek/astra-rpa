@@ -19,9 +19,7 @@ class BrowserPluginFactory(PluginManager):
         ]
 
     @staticmethod
-    def get_plugin_manager(
-        browser_type: BrowserType, plugin_data: PluginData
-    ) -> PluginManagerCore:
+    def get_plugin_manager(browser_type: BrowserType, plugin_data: PluginData) -> PluginManagerCore:
         if browser_type == BrowserType.CHROME:
             return ChromePluginManager(plugin_data)
         elif browser_type == BrowserType.MICROSOFT_EDGE:

@@ -84,12 +84,7 @@ def extract_pdf(path: str) -> str:
     import pypdf
 
     pdf_reader = pypdf.PdfReader(path)
-    return "\n".join(
-        [
-            pdf_reader.pages[page_num].extract_text()
-            for page_num in range(len(pdf_reader.pages))
-        ]
-    )
+    return "\n".join([pdf_reader.pages[page_num].extract_text() for page_num in range(len(pdf_reader.pages))])
 
 
 def extract_docx(path: str) -> str:
@@ -161,9 +156,7 @@ def get_factors(
         )
 
     system_input = "你是一名合同文件解析专家，你擅长从用户提供的**合同文件内容**中，逐一精准提取用户指定的**提取要素**，并按照要求输出结果。你会严格遵循**任务要求**和**输出格式**。"
-    user_input = CONTRACT_COMMON_PROMPT.replace("{factors}", str(factors)).replace(
-        "{parsed_content}", contract_content
-    )
+    user_input = CONTRACT_COMMON_PROMPT.replace("{factors}", str(factors)).replace("{parsed_content}", contract_content)
 
     inputs = [
         {"role": "user", "content": user_input},

@@ -53,20 +53,14 @@ class TestMouse(TestCase):
         print("鼠标左键双击")
         time.sleep(2)
 
-        Gui.mouse(
-            btn_type=BtnType.RIGHT, btn_model=BtnModel.DOWN, ctrl_type=ControlType.EMPTY
-        )
+        Gui.mouse(btn_type=BtnType.RIGHT, btn_model=BtnModel.DOWN, ctrl_type=ControlType.EMPTY)
         print("鼠标右键按下")
         time.sleep(2)
-        Gui.mouse(
-            btn_type=BtnType.RIGHT, btn_model=BtnModel.UP, ctrl_type=ControlType.EMPTY
-        )
+        Gui.mouse(btn_type=BtnType.RIGHT, btn_model=BtnModel.UP, ctrl_type=ControlType.EMPTY)
         print("鼠标右键释放")
         time.sleep(2)
 
-        Gui.mouse(
-            btn_type=BtnType.LEFT, btn_model=BtnModel.CLICK, ctrl_type=ControlType.EMPTY
-        )
+        Gui.mouse(btn_type=BtnType.LEFT, btn_model=BtnModel.CLICK, ctrl_type=ControlType.EMPTY)
 
         Gui.mouse(
             btn_type=BtnType.MIDDLE,
@@ -75,9 +69,7 @@ class TestMouse(TestCase):
         )
         print("鼠标中键按下")
         time.sleep(2)
-        Gui.mouse(
-            btn_type=BtnType.MIDDLE, btn_model=BtnModel.UP, ctrl_type=ControlType.EMPTY
-        )
+        Gui.mouse(btn_type=BtnType.MIDDLE, btn_model=BtnModel.UP, ctrl_type=ControlType.EMPTY)
         print("鼠标中键释放")
         time.sleep(2)
 
@@ -131,7 +123,6 @@ class TestMouse(TestCase):
 
 
 class TestKeyboard(TestCase):
-
     def test_input(self):
         gui = Gui()
         # gui.keyboard(keyboard_type = KeyboardType.NORMAL, message="&#   ￥W……&￥#……#￥%换行和空格", simulate_flag=Simulate_flag.YES, interval=0.1)

@@ -17,7 +17,6 @@ from setup.utils.subprocess import SubPopen
 #
 #
 class Package:
-
     # @staticmethod
     # def get_core_packages():
     #     """

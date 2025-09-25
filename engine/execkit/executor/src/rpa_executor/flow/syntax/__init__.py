@@ -7,7 +7,6 @@ from rpa_executor.flow.syntax.token import Token
 
 
 class Job(ABC):
-
     @abstractmethod
     def init(self, t: Token, cache_dir: str):
         pass

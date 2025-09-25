@@ -61,12 +61,7 @@ class Rect:
         """
         是否包含rect
         """
-        return (
-            self.left < rect.left
-            and self.top < rect.top
-            and self.right >= rect.right
-            and self.bottom >= rect.bottom
-        )
+        return self.left < rect.left and self.top < rect.top and self.right >= rect.right and self.bottom >= rect.bottom
 
     def to_json(self):
         return json.dumps(
@@ -80,10 +75,7 @@ class Rect:
 
     def __eq__(self, rect):
         return (
-            self.left == rect.left
-            and self.top == rect.top
-            and self.right == rect.right
-            and self.bottom == rect.bottom
+            self.left == rect.left and self.top == rect.top and self.right == rect.right and self.bottom == rect.bottom
         )
 
 
@@ -262,7 +254,6 @@ class IPickerCore(ABC):
 
 
 class IElement(ABC):
-
     @abstractmethod
     def rect(self) -> Rect:
         """尺寸"""

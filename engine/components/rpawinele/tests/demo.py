@@ -141,10 +141,10 @@ def demo():
                 point = locator.point()
                 execution_time = time.time() - start_time
                 execution_times.append(execution_time)
-                print(f"   第 {i+1} 次: {execution_time:.3f}秒")
+                print(f"   第 {i + 1} 次: {execution_time:.3f}秒")
             except Exception as e:
                 execution_time = time.time() - start_time
-                print(f"   第 {i+1} 次: {execution_time:.3f}秒 - 失败: {str(e)}")
+                print(f"   第 {i + 1} 次: {execution_time:.3f}秒 - 失败: {str(e)}")
 
         if execution_times:
             avg_time = sum(execution_times) / len(execution_times)

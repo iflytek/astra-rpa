@@ -20,7 +20,6 @@ class NotifyConfig:
 
 
 class NotifyUtils:
-
     def __init__(self, svc):
         self.svc = svc
         self.settings = get_settings()
@@ -34,17 +33,12 @@ class NotifyUtils:
         # 解析可能存在的列表型输入
         list_result = []
         if isinstance(email_str, list):
-            list_result = [
-                list(filter(lambda a: a, email.replace("；", ";").split(";")))
-                for email in email_str
-            ]
+            list_result = [list(filter(lambda a: a, email.replace("；", ";").split(";"))) for email in email_str]
         elif isinstance(email_str, str):
             email_str = email_str.replace("；", ";")
             try:
                 email_str = ast.literal_eval(email_str)
-                list_result = [
-                    list(filter(lambda a: a, email.split(";"))) for email in email_str
-                ]
+                list_result = [list(filter(lambda a: a, email.split(";"))) for email in email_str]
             except Exception as e:
                 list_result = [list(filter(lambda a: a, email_str.split(";")))]
                 email_str = [email_str]
@@ -70,9 +64,7 @@ class NotifyUtils:
             use_ssl = self.email_setting["use_ssl"]
         self.email_msg = MIMEMultipart()
         if use_ssl:
-            self.mail_handler = smtplib.SMTP_SSL(
-                mail_server, int(mail_port), timeout=20
-            )
+            self.mail_handler = smtplib.SMTP_SSL(mail_server, int(mail_port), timeout=20)
         else:
             self.mail_handler = smtplib.SMTP(mail_server, int(mail_port), timeout=20)
         try:
@@ -83,16 +75,13 @@ class NotifyUtils:
 
     def send(self, robot_name, run_time):
         if self.email_setting.get("is_enable", False):
-            content = "【AstronRPA】您运行的机器人 {}于{}运行失败，请您及时查看".format(
-                robot_name, run_time
-            )
+            content = "【AstronRPA】您运行的机器人 {}于{}运行失败，请您及时查看".format(robot_name, run_time)
             self.login_send()
             self.send_email(content)
         if self.text_setting.get("is_enable", False):
             self.send_text(robot_name, run_time)
 
     def send_email(self, content: str = "机器人运行出错，请检查！"):
-
         if self.email_setting.get("is_default", True):
             sender_mail = NotifyConfig.EMAIL_ADDRESS
         else:
@@ -131,9 +120,7 @@ class NotifyUtils:
                 "errorTime": run_time,
             }
             response = requests.get(
-                "http://127.0.0.1:{}/api/uac/sms/sendForRobotError".format(
-                    self.svc.route_port
-                ),
+                "http://127.0.0.1:{}/api/uac/sms/sendForRobotError".format(self.svc.route_port),
                 params=params,
             )
             status_code = response.status_code

@@ -18,7 +18,6 @@ else:
 
 
 class Process:
-
     @staticmethod
     @atomicMg.atomic(
         "System",
@@ -31,9 +30,7 @@ class Process:
                 ),
                 required=True,
             ),
-            atomicMg.param(
-                "params", types="Str", level=AtomicLevel.ADVANCED.value, required=False
-            ),
+            atomicMg.param("params", types="Str", level=AtomicLevel.ADVANCED.value, required=False),
             atomicMg.param("cmd_type", required=False),
             atomicMg.param(
                 "work_dir",
@@ -50,9 +47,7 @@ class Process:
                 dynamics=[
                     DynamicsItem(
                         key="$this.wait_time.show",
-                        expression="return $this.run_type.value == '{}'".format(
-                            RunType.COMPLETE.value
-                        ),
+                        expression="return $this.run_type.value == '{}'".format(RunType.COMPLETE.value),
                     )
                 ],
                 required=False,
@@ -168,9 +163,7 @@ class Process:
                 dynamics=[
                     DynamicsItem(
                         key="$this.pid.show",
-                        expression="return $this.termination_type.value == '{}'".format(
-                            TerminationType.PID.value
-                        ),
+                        expression="return $this.termination_type.value == '{}'".format(TerminationType.PID.value),
                     )
                 ],
                 required=True,
@@ -181,9 +174,7 @@ class Process:
                 dynamics=[
                     DynamicsItem(
                         key="$this.process_name.show",
-                        expression="return $this.termination_type.value == '{}'".format(
-                            TerminationType.NAME.value
-                        ),
+                        expression="return $this.termination_type.value == '{}'".format(TerminationType.NAME.value),
                     )
                 ],
                 required=True,

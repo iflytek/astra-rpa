@@ -41,31 +41,27 @@ class OcrRequests:
 
         now = datetime.now()
         date = format_date_time(mktime(now.timetuple()))
-        signature_origin = "host: {}\ndate: {}\n{} {} HTTP/1.1".format(
-            host, date, method, path
-        )
+        signature_origin = "host: {}\ndate: {}\n{} {} HTTP/1.1".format(host, date, method, path)
         signature_sha = hmac.new(
             api_secret.encode("utf-8"),
             signature_origin.encode("utf-8"),
             digestmod=hashlib.sha256,
         ).digest()
         signature_sha = base64.b64encode(signature_sha).decode(encoding="utf-8")
-        authorization_origin = (
-            'api_key="%s", algorithm="%s", headers="%s", signature="%s"'
-            % (api_key, "hmac-sha256", "host date request-line", signature_sha)
+        authorization_origin = 'api_key="%s", algorithm="%s", headers="%s", signature="%s"' % (
+            api_key,
+            "hmac-sha256",
+            "host date request-line",
+            signature_sha,
         )
-        authorization = base64.b64encode(authorization_origin.encode("utf-8")).decode(
-            encoding="utf-8"
-        )
+        authorization = base64.b64encode(authorization_origin.encode("utf-8")).decode(encoding="utf-8")
         values = {"host": host, "date": date, "authorization": authorization}
         return url + "?" + urlencode(values)
 
     @staticmethod
     def request(method, url, **kwargs):
         """请求"""
-        request_url = OcrRequests.__assemble_ws_auth_url__(
-            url, "POST", APIKey, APISecret
-        )
+        request_url = OcrRequests.__assemble_ws_auth_url__(url, "POST", APIKey, APISecret)
         return requests.request(method, request_url, **kwargs)
 
 
@@ -73,9 +69,7 @@ class OpenapiIflytek:
     """iflytek开放平台"""
 
     @staticmethod
-    def template_ocr(
-        header_dict: dict, files: list, type_code: str, url: str, key_name: str
-    ) -> list:
+    def template_ocr(header_dict: dict, files: list, type_code: str, url: str, key_name: str) -> list:
         results = []
         for image in files:
             with open(image, "rb") as f:
@@ -109,15 +103,11 @@ class OpenapiIflytek:
                 "app_id": APPId,
             }
             # 发起请求
-            ret = OcrRequests.request(
-                "POST", url, data=json.dumps(body), headers=headers
-            )
+            ret = OcrRequests.request("POST", url, data=json.dumps(body), headers=headers)
 
             # 请求结果处理
             if ret.status_code != 200:
-                raise BaseException(
-                    AI_SERVER_ERROR, "ai服务器无响应或错误 {}".format(ret)
-                )
+                raise BaseException(AI_SERVER_ERROR, "ai服务器无响应或错误 {}".format(ret))
             text = (
                 base64.b64decode(ret.json()["payload"]["result"]["text"])
                 .decode()
@@ -148,9 +138,7 @@ class OpenapiIflytek:
                 if not header_dict.get(key):
                     continue
                 if region["text_block_list"][0]["value"]:
-                    result_info[header_dict[key]] = region["text_block_list"][0][
-                        "value"
-                    ]
+                    result_info[header_dict[key]] = region["text_block_list"][0]["value"]
             results.append(result_info)
         return results
 
@@ -171,13 +159,9 @@ class OpenapiIflytek:
 
             # 请求结果处理
             if ret.status_code != 200:
-                raise BaseException(
-                    AI_SERVER_ERROR, "ai服务器无响应或错误 {}".format(ret)
-                )
+                raise BaseException(AI_SERVER_ERROR, "ai服务器无响应或错误 {}".format(ret))
 
-            ret_dict = json.loads(
-                base64.b64decode(ret.json()["payload"]["result"]["text"]).decode()
-            )
+            ret_dict = json.loads(base64.b64decode(ret.json()["payload"]["result"]["text"]).decode())
             content = OpenapiIflytek.__analyse_ocr_result__(ret_dict)
             ocr_result = {"Context": content}
             json_result = {}

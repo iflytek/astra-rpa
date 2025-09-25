@@ -7,15 +7,9 @@ from .server.server import app
 if __name__ == "__main__":
     # 读取配置
     parser = argparse.ArgumentParser(description="{} service".format("executor"))
-    parser.add_argument(
-        "--port", default="8087", help="[系统配置]本地端口号", required=False
-    )
-    parser.add_argument(
-        "--gateway_port", default="8003", help="[系统配置]网关端口", required=False
-    )
-    parser.add_argument(
-        "--terminal_mode", default="n", help="[系统配置]是否为调度模式", required=False
-    )
+    parser.add_argument("--port", default="8087", help="[系统配置]本地端口号", required=False)
+    parser.add_argument("--gateway_port", default="8003", help="[系统配置]网关端口", required=False)
+    parser.add_argument("--terminal_mode", default="n", help="[系统配置]是否为调度模式", required=False)
     parser.add_argument("--terminal_id", help="[系统配置]调度模式终端ID", required=True)
     args = parser.parse_args()
 

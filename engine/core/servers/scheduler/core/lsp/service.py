@@ -62,9 +62,7 @@ def start_session(session_options: SessionOptions = None) -> SessionId:
     return session_id
 
 
-def restart_session(
-    session: Session, session_options: SessionOptions = None
-) -> SessionId:
+def restart_session(session: Session, session_options: SessionOptions = None) -> SessionId:
     logger.info(f"Restarting inactive session ${session.id}")
 
     session.options = session_options
@@ -90,9 +88,7 @@ def close_session(session_id: SessionId):
         inactive_session = inactive_sessions.pop(0)
         inactive_session.lang_client.shutdown()
 
-    logger.info(
-        f"Recycling session (currently ${len(inactive_sessions)} in inactive queue)"
-    )
+    logger.info(f"Recycling session (currently ${len(inactive_sessions)} in inactive queue)")
 
 
 def get_diagnostics(session: Session, session_options: SessionOptions):
@@ -116,9 +112,7 @@ def get_rename_edits(session: Session, session_options: SessionOptions):
     if lang_client is None:
         return
 
-    return lang_client.get_rename_edits(
-        session_options.code, session_options.position, session_options.newName
-    )
+    return lang_client.get_rename_edits(session_options.code, session_options.position, session_options.newName)
 
 
 def get_signature_help(session: Session, session_options: SessionOptions):
@@ -126,9 +120,7 @@ def get_signature_help(session: Session, session_options: SessionOptions):
     if lang_client is None:
         return
 
-    return lang_client.get_signature_help(
-        session_options.code, session_options.position
-    )
+    return lang_client.get_signature_help(session_options.code, session_options.position)
 
 
 def get_completion(session: Session, session_options: SessionOptions):

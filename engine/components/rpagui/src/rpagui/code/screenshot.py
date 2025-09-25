@@ -10,11 +10,8 @@ import pyautogui
 
 
 class Screenshot:
-
     @staticmethod
-    def screenshot(
-        region: Tuple[int, int, int, int] = (0, 0, 0, 0), file_path: str = ""
-    ) -> Any:
+    def screenshot(region: Tuple[int, int, int, int] = (0, 0, 0, 0), file_path: str = "") -> Any:
         """
         截图
         """
@@ -33,9 +30,7 @@ class Screenshot:
         """见pyautogui"""
 
         if imageFilename is None:
-            tmp_filename = ".screenshot%s.png" % (
-                datetime.datetime.now().strftime("%Y-%m%d_%H-%M-%S-%f")
-            )
+            tmp_filename = ".screenshot%s.png" % (datetime.datetime.now().strftime("%Y-%m%d_%H-%M-%S-%f"))
         else:
             tmp_filename = imageFilename
 
@@ -52,12 +47,8 @@ class Screenshot:
                 and isinstance(region[2], int)
                 and isinstance(region[3], int)
             ), "region argument must be a tuple of four ints"
-            im = im.crop(
-                (region[0], region[1], region[2] + region[0], region[3] + region[1])
-            )
-            os.unlink(
-                tmp_filename
-            )  # delete image of entire screen to save cropped version
+            im = im.crop((region[0], region[1], region[2] + region[0], region[3] + region[1]))
+            os.unlink(tmp_filename)  # delete image of entire screen to save cropped version
             im.save(tmp_filename)
         else:
             # force loading before unlinking, Image.open() is lazy

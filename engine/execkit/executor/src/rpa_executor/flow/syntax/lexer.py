@@ -24,9 +24,7 @@ class Lexer:
             self.flow = self.flow_list[self.read_position]
             # 如果token是执行子流程 会动态加载flow_list
             if self.child_process_flow_list:
-                new_flow_list = self.child_process_flow_list(
-                    self.flow, self.flow_list, self.read_position
-                )
+                new_flow_list = self.child_process_flow_list(self.flow, self.flow_list, self.read_position)
                 if new_flow_list:
                     self.flow_list = new_flow_list
         self.position = self.read_position

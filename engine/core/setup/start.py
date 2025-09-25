@@ -43,8 +43,6 @@ def start(conf_file="conf.json", schema="START"):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="{} service".format("setup"))
     parser.add_argument("--conf", type=str, default="conf.json", help="配置文件")
-    parser.add_argument(
-        "--schema", type=str, default="START", choices=["START", "STOP"]
-    )
+    parser.add_argument("--schema", type=str, default="START", choices=["START", "STOP"])
     args = parser.parse_args()
     start(args.conf, args.schema)

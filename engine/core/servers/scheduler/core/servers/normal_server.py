@@ -13,9 +13,7 @@ class TriggerServer(IServer):
         self.port = 0
         self.err_time = 0
         self.err_max_time = 3
-        super().__init__(
-            svc=svc, name="trigger", level=ServerLevel.NORMAL, run_is_async=False
-        )
+        super().__init__(svc=svc, name="trigger", level=ServerLevel.NORMAL, run_is_async=False)
 
     def run(self):
         self.port = self.svc.trigger_port
@@ -39,9 +37,7 @@ class TriggerServer(IServer):
             return False
 
         response = requests.get(
-            "http://127.0.0.1:{}/{}/task/health".format(
-                self.svc.route_port, ComponentType.TRIGGER.name.lower()
-            )
+            "http://127.0.0.1:{}/{}/task/health".format(self.svc.route_port, ComponentType.TRIGGER.name.lower())
         )
         status_code = response.status_code
         if status_code != 200:
@@ -69,9 +65,7 @@ class TriggerServer(IServer):
     def update_config(self, terminal_mod: bool):
         try:
             response = requests.post(
-                "http://127.0.0.1:{}/{}/config/update".format(
-                    self.svc.route_port, ComponentType.TRIGGER.name.lower()
-                ),
+                "http://127.0.0.1:{}/{}/config/update".format(self.svc.route_port, ComponentType.TRIGGER.name.lower()),
                 json={"terminal_mode": terminal_mod},
             )
             status_code = response.status_code
@@ -93,9 +87,7 @@ class VNCServer(IServer):
         self.vnc_port: int = svc.get_validate_port(None)
         self.vnc_ws_port: int = svc.get_validate_port(None)
         self.vnc = None
-        super().__init__(
-            svc=svc, name="vnc", level=ServerLevel.NORMAL, run_is_async=False
-        )
+        super().__init__(svc=svc, name="vnc", level=ServerLevel.NORMAL, run_is_async=False)
 
     def run(self):
         if not self.svc.terminal_mod:

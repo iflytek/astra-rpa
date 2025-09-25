@@ -5,7 +5,6 @@ from rpademo.core import IDemoCore
 
 
 class DemoCore(IDemoCore):
-
     @staticmethod
     def print(msg: str = "") -> str:
         return "linux {}".format(msg)

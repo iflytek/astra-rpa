@@ -31,9 +31,9 @@ class TaskQueueManager:
             current_time = time.strftime("%Y-%m-%d %H:%M:%S")
             expire_time = task.get("expire_time", "")
             # 判断是否超时
-            return time.mktime(
-                time.strptime(current_time, "%Y-%m-%d %H:%M:%S")
-            ) > time.mktime(time.strptime(expire_time, "%Y-%m-%d %H:%M:%S"))
+            return time.mktime(time.strptime(current_time, "%Y-%m-%d %H:%M:%S")) > time.mktime(
+                time.strptime(expire_time, "%Y-%m-%d %H:%M:%S")
+            )
         except Exception as e:
             logger.error(f"检查任务是否超时失败: {e}")
             return False
@@ -51,9 +51,7 @@ class TaskQueueManager:
             logger.info(f"接收到触发任务, task_info: {task_info}")
 
             if len(self.task_queue_monitor) >= self.queue_config["max_length"]:
-                logger.warning(
-                    f"任务队列已满，任务已丢弃: {task_info.get('trigger_id')}"
-                )
+                logger.warning(f"任务队列已满，任务已丢弃: {task_info.get('trigger_id')}")
                 continue
 
             # 使用深拷贝避免修改原始任务对象
@@ -65,9 +63,7 @@ class TaskQueueManager:
                     # 检查是否已存在相同trigger_id的任务
                     for task in self.task_queue_monitor:
                         if task.get("trigger_id") == task_copy.get("trigger_id"):
-                            logger.info(
-                                f"任务已存在，跳过: {task_copy.get('trigger_id')}"
-                            )
+                            logger.info(f"任务已存在，跳过: {task_copy.get('trigger_id')}")
                             continue
 
             # 将任务信息添加到监控队列，并记录入队时间和过期时间
@@ -98,15 +94,11 @@ class TaskQueueManager:
             # 检查任务是否是当前mode的
             if task_info.get("mode") == "DISPATCH" and not config.TERMINAL_MODE:
                 self.task_queue_monitor.popleft()  # 下发前就移除第一个元素
-                logger.info(
-                    f"任务模式为本地计划任务，已移除远程调度任务: {task_info.get('trigger_id')}"
-                )
+                logger.info(f"任务模式为本地计划任务，已移除远程调度任务: {task_info.get('trigger_id')}")
                 continue
             if task_info.get("mode") != "DISPATCH" and config.TERMINAL_MODE:
                 self.task_queue_monitor.popleft()  # 下发前就移除第一个元素
-                logger.info(
-                    f"任务模式为远程调度任务，已移除本地计划任务: {task_info.get('trigger_id')}"
-                )
+                logger.info(f"任务模式为远程调度任务，已移除本地计划任务: {task_info.get('trigger_id')}")
                 continue
 
             # 检查任务是否超时

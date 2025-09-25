@@ -8,7 +8,6 @@ from ..logger import logger
 
 
 class IServer(ABC):
-
     def __init__(
         self,
         svc=None,

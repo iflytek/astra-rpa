@@ -14,9 +14,7 @@ class I18n:
         self.translation = None
         try:
             localedir = os.path.join(os.getcwd(), "translations")
-            self.translation = gettext.translation(
-                name, localedir=localedir, languages=["zh_CN"]
-            )
+            self.translation = gettext.translation(name, localedir=localedir, languages=["zh_CN"])
             locale.setlocale(locale.LC_ALL, "zh_CN.UTF-8")
         except Exception:
             logger.warning("翻译失败，接受翻译文件不存在")

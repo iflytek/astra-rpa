@@ -22,7 +22,6 @@ class EnvItem:
 
 
 class Environment:
-
     def __init__(self, outer: "Environment" = None):
         self.lock = threading.Lock()
         self.store: Dict[str, EnvItem] = {}
@@ -36,11 +35,7 @@ class Environment:
             return True
 
     def get_global(self, project_id):
-        res = {
-            value.key: value
-            for _, value in self.g_store.items()
-            if value.project_id == project_id
-        }
+        res = {value.key: value for _, value in self.g_store.items() if value.project_id == project_id}
         return res
 
     def getitem(self, project_id, name: str) -> Optional[EnvItem]:
@@ -78,11 +73,7 @@ class Environment:
             outer_dict.update(result)
             result = outer_dict
         if first_time:
-            g_result = {
-                value.key: value.value
-                for _, value in self.g_store.items()
-                if value.project_id == project_id
-            }
+            g_result = {value.key: value.value for _, value in self.g_store.items() if value.project_id == project_id}
             g_result.update(result)
             result = g_result
         return result
@@ -93,8 +84,7 @@ class Environment:
         result = {
             key: {"value": str(value.value), "types": value.types}
             for key, value in self.store.items()
-            if not key.startswith("_")
-            and value.biz_types in [EnvBizTypes.Global, EnvBizTypes.Flow]
+            if not key.startswith("_") and value.biz_types in [EnvBizTypes.Global, EnvBizTypes.Flow]
         }
         if self.outer:
             outer_dict = self.outer.to_dict(project_id, False)
@@ -112,9 +102,7 @@ class Environment:
             result = g_result
         return result
 
-    def sync_with_dict(
-        self, project_id, other_dict: dict, biz_types=EnvBizTypes.Other
-    ) -> None:
+    def sync_with_dict(self, project_id, other_dict: dict, biz_types=EnvBizTypes.Other) -> None:
         """将eval执行后的dict 更新到全局里面"""
 
         current_dict = self.to_dict(project_id)

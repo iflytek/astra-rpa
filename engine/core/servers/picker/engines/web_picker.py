@@ -10,7 +10,6 @@ from ..utils.process import get_process_name
 
 
 class WEBElement(IElement):
-
     def __init__(self, web_info: dict, left_top_point: Point, app: APP, root_path=None):
         self.web_info = web_info
         self.left_top_point = left_top_point
@@ -64,7 +63,6 @@ class BizCode(Enum):
 
 
 class WEBPicker:
-
     @classmethod
     def get_similar_path(cls, route_port: int, strategy_svc) -> Optional[dict]:
         url = f"http://127.0.0.1:{route_port}/browser_connector/browser/transition"
@@ -92,30 +90,20 @@ class WEBPicker:
         except (KeyError, TypeError) as exc:
             logger.warning("出现异常 %s, 返回: %s", exc, resp_json)
             if resp_json.get("data", {}).get("code", "") != BizCode.OK.value:
-                raise RuntimeError(
-                    resp_json.get("data", {}).get("msg", "插件查找相似元素出错")
-                )
+                raise RuntimeError(resp_json.get("data", {}).get("msg", "插件查找相似元素出错"))
             return None
 
         if resp_json.get("data", {}).get("code", "") != BizCode.OK.value:
-            raise RuntimeError(
-                resp_json.get("data", {}).get("msg", "插件查找相似元素出错")
-            )
+            raise RuntimeError(resp_json.get("data", {}).get("msg", "插件查找相似元素出错"))
 
         return web_info or None
 
     @classmethod
-    def get_batch_path(
-        cls, route_port, strategy_svc, curr_ele: "WEBElement"
-    ) -> Optional[dict]:
-        url = "http://127.0.0.1:{}/browser_connector/browser/transition".format(
-            route_port
-        )
+    def get_batch_path(cls, route_port, strategy_svc, curr_ele: "WEBElement") -> Optional[dict]:
+        url = "http://127.0.0.1:{}/browser_connector/browser/transition".format(route_port)
         try:
             # 表头抓取
-            batch_type = (
-                strategy_svc.data.get("data", {}).get("path", {}).get("batchType")
-            )
+            batch_type = strategy_svc.data.get("data", {}).get("path", {}).get("batchType")
             if batch_type == "head":
                 data = {
                     "browser_type": strategy_svc.app.value,
@@ -180,9 +168,7 @@ class WEBPicker:
     def get_element(
         cls, root_control, route_port, strategy_svc, left_top_point: Point, **kwargs
     ) -> Optional[WEBElement]:
-        url = "http://127.0.0.1:{}/browser_connector/browser/transition".format(
-            route_port
-        )
+        url = "http://127.0.0.1:{}/browser_connector/browser/transition".format(route_port)
         data = {
             "browser_type": strategy_svc.app.value,
             "data": {

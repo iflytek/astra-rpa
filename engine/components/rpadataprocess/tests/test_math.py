@@ -18,18 +18,14 @@ class TestMathProcess(unittest.TestCase):
 
     def test_generate_random_number_integer_single(self):
         """测试生成单个整数随机数"""
-        result = MathProcess.generate_random_number(
-            number_type=NumberType.INTEGER, size=1, start=1, end=101
-        )
+        result = MathProcess.generate_random_number(number_type=NumberType.INTEGER, size=1, start=1, end=101)
         self.assertIsInstance(result, int)
         self.assertGreaterEqual(result, 1)
         self.assertLess(result, 101)
 
     def test_generate_random_number_integer_multiple(self):
         """测试生成多个整数随机数"""
-        result = MathProcess.generate_random_number(
-            number_type=NumberType.INTEGER, size=5, start=1, end=101
-        )
+        result = MathProcess.generate_random_number(number_type=NumberType.INTEGER, size=5, start=1, end=101)
         self.assertIsInstance(result, list)
         self.assertEqual(len(result), 5)
         for num in result:
@@ -39,18 +35,14 @@ class TestMathProcess(unittest.TestCase):
 
     def test_generate_random_number_float_single(self):
         """测试生成单个浮点数随机数"""
-        result = MathProcess.generate_random_number(
-            number_type=NumberType.FLOAT, size=1, start=1.0, end=10.0
-        )
+        result = MathProcess.generate_random_number(number_type=NumberType.FLOAT, size=1, start=1.0, end=10.0)
         self.assertIsInstance(result, float)
         self.assertGreaterEqual(result, 1.0)
         self.assertLess(result, 10.0)
 
     def test_generate_random_number_float_multiple(self):
         """测试生成多个浮点数随机数"""
-        result = MathProcess.generate_random_number(
-            number_type=NumberType.FLOAT, size=3, start=1.0, end=10.0
-        )
+        result = MathProcess.generate_random_number(number_type=NumberType.FLOAT, size=3, start=1.0, end=10.0)
         self.assertIsInstance(result, list)
         self.assertEqual(len(result), 3)
         for num in result:
@@ -61,9 +53,7 @@ class TestMathProcess(unittest.TestCase):
     def test_generate_random_number_invalid_range(self):
         """测试无效范围参数"""
         with self.assertRaises(BaseException):
-            MathProcess.generate_random_number(
-                number_type=NumberType.INTEGER, size=1, start=100, end=50
-            )
+            MathProcess.generate_random_number(number_type=NumberType.INTEGER, size=1, start=100, end=50)
 
     def test_get_rounding_number_integer(self):
         """测试整数四舍五入"""
@@ -92,30 +82,22 @@ class TestMathProcess(unittest.TestCase):
 
     def test_self_calculation_number_add(self):
         """测试自增操作"""
-        result = MathProcess.self_calculation_number(
-            number=self.test_number, add_sub=AddSubType.ADD, add_sub_number=5
-        )
+        result = MathProcess.self_calculation_number(number=self.test_number, add_sub=AddSubType.ADD, add_sub_number=5)
         self.assertEqual(result, 15)
 
     def test_self_calculation_number_sub(self):
         """测试自减操作"""
-        result = MathProcess.self_calculation_number(
-            number=self.test_number, add_sub=AddSubType.SUB, add_sub_number=3
-        )
+        result = MathProcess.self_calculation_number(number=self.test_number, add_sub=AddSubType.SUB, add_sub_number=3)
         self.assertEqual(result, 7)
 
     def test_self_calculation_number_add_default(self):
         """测试自增操作默认参数"""
-        result = MathProcess.self_calculation_number(
-            number=self.test_number, add_sub=AddSubType.ADD
-        )
+        result = MathProcess.self_calculation_number(number=self.test_number, add_sub=AddSubType.ADD)
         self.assertEqual(result, 11)
 
     def test_self_calculation_number_sub_default(self):
         """测试自减操作默认参数"""
-        result = MathProcess.self_calculation_number(
-            number=self.test_number, add_sub=AddSubType.SUB
-        )
+        result = MathProcess.self_calculation_number(number=self.test_number, add_sub=AddSubType.SUB)
         self.assertEqual(result, 9)
 
     def test_get_absolute_number_positive_int(self):
@@ -160,30 +142,22 @@ class TestMathProcess(unittest.TestCase):
 
     def test_calculate_expression_add(self):
         """测试加法表达式计算"""
-        result = MathProcess.calculate_expression(
-            left="10", operator=MathOperatorType.ADD, right="5"
-        )
+        result = MathProcess.calculate_expression(left="10", operator=MathOperatorType.ADD, right="5")
         self.assertEqual(result, 15)
 
     def test_calculate_expression_subtract(self):
         """测试减法表达式计算"""
-        result = MathProcess.calculate_expression(
-            left="20", operator=MathOperatorType.SUB, right="8"
-        )
+        result = MathProcess.calculate_expression(left="20", operator=MathOperatorType.SUB, right="8")
         self.assertEqual(result, 12)
 
     def test_calculate_expression_multiply(self):
         """测试乘法表达式计算"""
-        result = MathProcess.calculate_expression(
-            left="6", operator=MathOperatorType.MUL, right="7"
-        )
+        result = MathProcess.calculate_expression(left="6", operator=MathOperatorType.MUL, right="7")
         self.assertEqual(result, 42)
 
     def test_calculate_expression_divide(self):
         """测试除法表达式计算"""
-        result = MathProcess.calculate_expression(
-            left="15", operator=MathOperatorType.DIV, right="3"
-        )
+        result = MathProcess.calculate_expression(left="15", operator=MathOperatorType.DIV, right="3")
         self.assertEqual(result, 5.0)
 
     def test_calculate_expression_with_round(self):
@@ -231,29 +205,21 @@ class TestMathProcess(unittest.TestCase):
     def test_calculate_expression_invalid_expression(self):
         """测试无效表达式"""
         with self.assertRaises(BaseException):
-            MathProcess.calculate_expression(
-                left="10", operator=MathOperatorType.DIV, right="0"
-            )
+            MathProcess.calculate_expression(left="10", operator=MathOperatorType.DIV, right="0")
 
     def test_calculate_expression_invalid_syntax(self):
         """测试语法错误的表达式"""
         with self.assertRaises(BaseException):
-            MathProcess.calculate_expression(
-                left="invalid", operator=MathOperatorType.ADD, right="5"
-            )
+            MathProcess.calculate_expression(left="invalid", operator=MathOperatorType.ADD, right="5")
 
     def test_calculate_expression_float_numbers(self):
         """测试浮点数表达式计算"""
-        result = MathProcess.calculate_expression(
-            left="10.5", operator=MathOperatorType.ADD, right="5.3"
-        )
+        result = MathProcess.calculate_expression(left="10.5", operator=MathOperatorType.ADD, right="5.3")
         self.assertEqual(result, 15.8)
 
     def test_calculate_expression_mixed_types(self):
         """测试混合类型表达式计算"""
-        result = MathProcess.calculate_expression(
-            left="10", operator=MathOperatorType.MUL, right="2.5"
-        )
+        result = MathProcess.calculate_expression(left="10", operator=MathOperatorType.MUL, right="2.5")
         self.assertEqual(result, 25.0)
 
     def test_calculate_expression_default_parameters(self):

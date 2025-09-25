@@ -7,9 +7,7 @@ import subprocess
 def install_firefox_extension(extension_id, xpi_url):
     # 根据操作系统确定策略文件位置
     if platform.system() == "Windows":
-        policy_dir = os.path.join(
-            os.getenv("ProgramFiles"), "Mozilla Firefox", "distribution"
-        )
+        policy_dir = os.path.join(os.getenv("ProgramFiles"), "Mozilla Firefox", "distribution")
     elif platform.system() == "Linux":
         policy_dir = "/usr/lib/firefox/distribution"
     elif platform.system() == "Darwin":  # macOS

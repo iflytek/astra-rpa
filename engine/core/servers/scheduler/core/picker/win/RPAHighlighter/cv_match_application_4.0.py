@@ -45,7 +45,6 @@ class DrawStatus:
 
 
 class HighlightForm(QWidget):
-
     message_signal = pyqtSignal(str)
 
     def __init__(self):
@@ -227,11 +226,7 @@ class HighlightForm(QWidget):
         if self.mode.find("CV") != -1:
             # self.setAttribute(Qt.WA_TransparentForMouseEvents, False)
             self.setWindowFlags(
-                Qt.WindowStaysOnTopHint
-                | Qt.FramelessWindowHint
-                | Qt.Dialog
-                | Qt.Tool
-                | Qt.X11BypassWindowManagerHint
+                Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint | Qt.Dialog | Qt.Tool | Qt.X11BypassWindowManagerHint
             )
 
     def activate_screenshot_form(self):
@@ -270,11 +265,7 @@ class ScreenshotWidget(QWidget):
         screenshot = screen.grabWindow(0)
 
         # Set the window to be frameless and stay behind
-        self.setWindowFlags(
-            Qt.FramelessWindowHint
-            | Qt.WindowStaysOnTopHint
-            | Qt.WindowTransparentForInput
-        )
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.WindowTransparentForInput)
 
         # Set the initial size and position to cover the entire screen
         self.setGeometry(screenshot.rect())
@@ -285,7 +276,6 @@ class ScreenshotWidget(QWidget):
 
 
 class CtrlWidget(QWidget):
-
     message_signal = pyqtSignal(str)
 
     def __init__(self):
@@ -402,12 +392,7 @@ class CtrlWidget(QWidget):
             self.update()  # Trigger a repaint
 
     def mouseReleaseEvent(self, event):
-
-        if (
-            event.button() == Qt.LeftButton
-            and self.selecting
-            and (not self.toolbar_show)
-        ):
+        if event.button() == Qt.LeftButton and self.selecting and (not self.toolbar_show):
             toolbar_position = self.selection_rect.bottomLeft()
             toolbar_position.setY(toolbar_position.y() + 3)
             self.toolbar.move(toolbar_position)
@@ -433,9 +418,7 @@ class CtrlWidget(QWidget):
             painter.setClipRect(self.selection_rect)
 
             # 再次绘制选择区域的背景 pixmap，以去除红色蒙层的效果
-            painter.drawPixmap(
-                self.selection_rect, self.background, self.selection_rect
-            )
+            painter.drawPixmap(self.selection_rect, self.background, self.selection_rect)
 
             # 恢复painter的状态
             painter.restore()
@@ -508,12 +491,8 @@ class HoverHintWidget(QWidget):
 
         if self.mode == "CV":
             # 设置字体和颜色
-            paint_text(
-                painter=painter, text="ALT", center_x=100, center_y=80, box_flag=True
-            )
-            paint_text(
-                painter=painter, text="CTRL", center_x=100, center_y=150, box_flag=True
-            )
+            paint_text(painter=painter, text="ALT", center_x=100, center_y=80, box_flag=True)
+            paint_text(painter=painter, text="CTRL", center_x=100, center_y=150, box_flag=True)
             paint_text(painter=painter, text="智能拾取", center_x=200, center_y=80)
             paint_text(painter=painter, text="截图拾取", center_x=200, center_y=150)
         else:
@@ -525,9 +504,7 @@ class HoverHintWidget(QWidget):
                 center_y=80,
                 box_flag=True,
             )
-            paint_text(
-                painter=painter, text="ESC", center_x=100, center_y=150, box_flag=True
-            )
+            paint_text(painter=painter, text="ESC", center_x=100, center_y=150, box_flag=True)
             paint_text(painter=painter, text="拾取", center_x=200, center_y=80)
             paint_text(painter=painter, text="退出", center_x=200, center_y=150)
 
@@ -561,9 +538,7 @@ class ConsoleApp(QMainWindow):
         self.udp_socket = QUdpSocket(self)
         self.sender_port = None
         self.sender_host = None
-        if not self.udp_socket.bind(
-            QHostAddress.Any, int(socket_port)
-        ):  # 绑定到端口 11001
+        if not self.udp_socket.bind(QHostAddress.Any, int(socket_port)):  # 绑定到端口 11001
             print("Failed to bind UDP socket!")
             return
 
@@ -634,10 +609,8 @@ class ConsoleApp(QMainWindow):
                             QRect(
                                 message_dict["Boxes"][0]["Left"],
                                 message_dict["Boxes"][0]["Top"],
-                                message_dict["Boxes"][0]["Right"]
-                                - message_dict["Boxes"][0]["Left"],
-                                message_dict["Boxes"][0]["Bottom"]
-                                - message_dict["Boxes"][0]["Top"],
+                                message_dict["Boxes"][0]["Right"] - message_dict["Boxes"][0]["Left"],
+                                message_dict["Boxes"][0]["Bottom"] - message_dict["Boxes"][0]["Top"],
                             )
                         )
                     else:
@@ -705,9 +678,7 @@ class ConsoleApp(QMainWindow):
     def handle_message(self, message):
         # 处理来自 HighlightForm 的消息
         print(f"Received message from HighlightForm: {message}")
-        self.udp_socket.writeDatagram(
-            message.encode("utf-8"), QHostAddress("127.0.0.1"), self.sender_port
-        )
+        self.udp_socket.writeDatagram(message.encode("utf-8"), QHostAddress("127.0.0.1"), self.sender_port)
 
 
 if __name__ == "__main__":

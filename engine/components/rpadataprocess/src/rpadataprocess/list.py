@@ -42,7 +42,6 @@ def list_legal_check(list_data: list, index: str = "", allow_empty: bool = True)
 
 
 class ListProcess:
-
     @staticmethod
     @atomicMg.atomic(
         "ListProcess",
@@ -52,9 +51,7 @@ class ListProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.size.show",
-                        expression="return $this.list_type.value == '{}'".format(
-                            ListType.SAME_DATA.value
-                        ),
+                        expression="return $this.list_type.value == '{}'".format(ListType.SAME_DATA.value),
                     )
                 ],
             ),
@@ -73,9 +70,7 @@ class ListProcess:
         ],
         outputList=[atomicMg.param("created_list_data", types="List")],
     )
-    def create_new_list(
-        list_type: ListType = ListType.EMPTY, size: int = 0, value: Any = ""
-    ):
+    def create_new_list(list_type: ListType = ListType.EMPTY, size: int = 0, value: Any = ""):
         """
         创建新列表
         """
@@ -83,9 +78,7 @@ class ListProcess:
             try:
                 value = ast.literal_eval(value)
             except Exception as e:
-                raise BaseException(
-                    INVALID_LIST_FORMAT_ERROR_FORMAT.format(e), "请输入正确的列表格式"
-                )
+                raise BaseException(INVALID_LIST_FORMAT_ERROR_FORMAT.format(e), "请输入正确的列表格式")
         new_array = []
         if list_type == ListType.EMPTY:
             pass
@@ -120,9 +113,7 @@ class ListProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.index.show",
-                        expression="return $this.insert_method.value == '{}'".format(
-                            InsertMethodType.INDEX.value
-                        ),
+                        expression="return $this.insert_method.value == '{}'".format(InsertMethodType.INDEX.value),
                     )
                 ],
             ),
@@ -147,9 +138,7 @@ class ListProcess:
             try:
                 index = int(index)
             except:
-                raise BaseException(
-                    INVALID_INDEX_ERROR_FORMAT.format(index), "需要提供整数类型的索引！"
-                )
+                raise BaseException(INVALID_INDEX_ERROR_FORMAT.format(index), "需要提供整数类型的索引！")
             list_data.insert(index, value)
         return list_data
 
@@ -200,9 +189,7 @@ class ListProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.del_value.show",
-                        expression="return $this.del_mode.value == '{}'".format(
-                            DeleteMethodType.VALUE.value
-                        ),
+                        expression="return $this.del_mode.value == '{}'".format(DeleteMethodType.VALUE.value),
                     )
                 ],
             ),
@@ -212,9 +199,7 @@ class ListProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.del_pos.show",
-                        expression="return $this.del_mode.value == '{}'".format(
-                            DeleteMethodType.INDEX.value
-                        ),
+                        expression="return $this.del_mode.value == '{}'".format(DeleteMethodType.INDEX.value),
                     )
                 ],
             ),

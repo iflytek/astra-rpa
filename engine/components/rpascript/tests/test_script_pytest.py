@@ -53,13 +53,9 @@ class TestScriptModulePytest:
         expected = {"score": 85, "grade": "B"}
         assert result == expected
 
-    def test_module_with_real_world_scenario(
-        self, data_processing_env, data_processing_script_content
-    ):
+    def test_module_with_real_world_scenario(self, data_processing_env, data_processing_script_content):
         """测试真实世界场景"""
-        result = Script.module(
-            content=data_processing_script_content, __env__=data_processing_env
-        )
+        result = Script.module(content=data_processing_script_content, __env__=data_processing_env)
 
         expected = {
             "original_count": 7,
@@ -103,9 +99,7 @@ def main(value1, value2):
     }
 """
 
-        env = type(
-            "MockEnv", (), {"to_dict": lambda: {"value1": None, "value2": "test"}}
-        )()
+        env = type("MockEnv", (), {"to_dict": lambda: {"value1": None, "value2": "test"}})()
 
         result = Script.module(content=test_content, __env__=env)
 

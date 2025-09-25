@@ -7,7 +7,6 @@ from rpaopenapi.error import *
 
 
 class OpenApi:
-
     @staticmethod
     @atomicMg.atomic(
         "OpenApi",

@@ -8,14 +8,11 @@ speed_to_int = {Speed.SLOW: 0.5, Speed.NORMAL: 1, Speed.FAST: 2}
 
 
 class Mouse:
-
     def __int__(self):
         pyautogui.FAILSAFE = False
 
     @staticmethod
-    def calculate_movement_duration(
-        start_x: int, start_y: int, end_x: int, end_y: int, speed: Speed
-    ) -> float:
+    def calculate_movement_duration(start_x: int, start_y: int, end_x: int, end_y: int, speed: Speed) -> float:
         """
         根据距离和速度计算移动所需时间。
         """
@@ -42,9 +39,7 @@ class Mouse:
         return pyautogui.moveTo(x=x, y=y, duration=duration, tween=tween)
 
     @staticmethod
-    def move_simulate(
-        x=None, y=None, duration: float = 0.0, tween=pyautogui.linear
-    ) -> None:
+    def move_simulate(x=None, y=None, duration: float = 0.0, tween=pyautogui.linear) -> None:
         """
         鼠标模拟人工移动方式
         """
@@ -85,9 +80,7 @@ class Mouse:
                 new_y += random.uniform(-1, 1)
 
             # 使用pyautogui的moveTo函数，但减少调用次数
-            pyautogui.moveTo(
-                new_x, new_y, duration=interval, tween=pyautogui.easeInOutQuad
-            )
+            pyautogui.moveTo(new_x, new_y, duration=interval, tween=pyautogui.easeInOutQuad)
 
         # 确保最终位置准确
         Mouse.move(x=x, y=y)
@@ -116,26 +109,18 @@ class Mouse:
         )
 
     @staticmethod
-    def down(
-        x=None, y=None, button=pyautogui.PRIMARY, duration=0.0, tween=pyautogui.linear
-    ):
+    def down(x=None, y=None, button=pyautogui.PRIMARY, duration=0.0, tween=pyautogui.linear):
         """
         鼠标按键
         """
-        return pyautogui.mouseDown(
-            x=x, y=y, button=button, duration=duration, tween=tween
-        )
+        return pyautogui.mouseDown(x=x, y=y, button=button, duration=duration, tween=tween)
 
     @staticmethod
-    def up(
-        x=None, y=None, button=pyautogui.PRIMARY, duration=0.0, tween=pyautogui.linear
-    ):
+    def up(x=None, y=None, button=pyautogui.PRIMARY, duration=0.0, tween=pyautogui.linear):
         """
         鼠标松键
         """
-        return pyautogui.mouseUp(
-            x=x, y=y, button=button, duration=duration, tween=tween
-        )
+        return pyautogui.mouseUp(x=x, y=y, button=button, duration=duration, tween=tween)
 
     @staticmethod
     def scroll(clicks, x=None, y=None):

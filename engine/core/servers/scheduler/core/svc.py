@@ -14,7 +14,6 @@ from ..utils.utils import check_port
 
 
 class Svc:
-
     def __init__(self):
         """程序上下文管理类"""
         # 0. 服务对应端口
@@ -36,9 +35,7 @@ class Svc:
         self.trigger_port: int = self.get_validate_port(ComponentType.TRIGGER)
         # 浏览器通信端口[固定分配]
         self.browser_connector_port: int = 9082
-        self.port_dict[ComponentType.BROWSER_CONNECTOR.name.lower()] = (
-            self.browser_connector_port
-        )
+        self.port_dict[ComponentType.BROWSER_CONNECTOR.name.lower()] = self.browser_connector_port
         # 拾取框[固定分配]
         self.hl_port: int = 11001
         # 虚拟桌面
@@ -85,18 +82,13 @@ class Svc:
                     self.__local_port__ = 8002
                 if check_port(self.__local_port__):
                     if component_type is not None:
-                        self.port_dict[component_type.name.lower()] = (
-                            self.__local_port__
-                        )
+                        self.port_dict[component_type.name.lower()] = self.__local_port__
                     return self.__local_port__
 
     def register_server(self):
-
         def register_component(component, port: int):
             try:
-                url = "http://127.0.0.1:{}/rpa-local-route/registry".format(
-                    self.route_port
-                )
+                url = "http://127.0.0.1:{}/rpa-local-route/registry".format(self.route_port)
                 data = {"module_name": component, "port": str(port)}
                 response = requests.post(
                     url=url,
@@ -106,11 +98,7 @@ class Svc:
                 if "OK" in response.text:
                     pass
                 else:
-                    raise Exception(
-                        "route register error : {} {} => {}".format(
-                            component, port, response.text
-                        )
-                    )
+                    raise Exception("route register error : {} {} => {}".format(component, port, response.text))
             except Exception as e:
                 logger.exception("register_component error: {}".format(e))
 

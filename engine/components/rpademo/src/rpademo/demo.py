@@ -11,21 +11,15 @@ if sys.platform == "win32":
 elif platform.system() == "Linux":
     from rpademo.src.rpademo.core_unix import DemoCore
 else:
-    raise NotImplementedError(
-        "Your platform (%s) is not supported by (%s)."
-        % (platform.system(), "clipboard")
-    )
+    raise NotImplementedError("Your platform (%s) is not supported by (%s)." % (platform.system(), "clipboard"))
 
 DemoCore: IDemoCore = DemoCore()
 
 
 class Demo:
-
     @staticmethod
     @atomicMg.atomic("Demo", outputList=[atomicMg.param("msg", types="Str")])
-    def print(
-        print_type: ReportLevelType = ReportLevelType.INFO, print_msg: str = ""
-    ) -> str:
+    def print(print_type: ReportLevelType = ReportLevelType.INFO, print_msg: str = "") -> str:
         # 核心的代码最好放入到Core中
         # 好处:
         # 1. 屏蔽系统差异
@@ -35,9 +29,7 @@ class Demo:
         msg = DemoCore.print(print_msg)
         if not msg:
             # BaseException 第一个字段 暴露给用户的 需要翻译，第二个字段是 暴露给开发者的 日志信息 不需要翻译
-            raise BaseException(
-                MSG_EMPTY_FORMAT.format(msg), "消息为空 {}".format(print_msg)
-            )
+            raise BaseException(MSG_EMPTY_FORMAT.format(msg), "消息为空 {}".format(print_msg))
 
         # 简单逻辑
         return "[{}] {}".format(print_type.value, msg)

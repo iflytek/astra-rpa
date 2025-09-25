@@ -15,7 +15,6 @@ CHINESE = 0x0804  # 中文（简体，中国）
 
 
 class GuiKeyBoard:
-
     @staticmethod
     @atomicMg.atomic(
         "Gui",
@@ -42,9 +41,7 @@ class GuiKeyBoard:
                 dynamics=[
                     DynamicsItem(
                         key="$this.simulate_flag.show",
-                        expression="return $this.keyboard_type.value == '{}'".format(
-                            KeyboardType.NORMAL.value
-                        ),
+                        expression="return $this.keyboard_type.value == '{}'".format(KeyboardType.NORMAL.value),
                     )
                 ],
             ),
@@ -111,9 +108,7 @@ class GuiKeyBoard:
             device = gb.opendevicebyid(0x5188, 0x1801)
             is_connected = gb.isconnected()
             if not device or not is_connected:
-                raise BaseException(
-                    GHOST_DRIVE_ERROR, "设备不存在或未连接,请检查设备连接"
-                )
+                raise BaseException(GHOST_DRIVE_ERROR, "设备不存在或未连接,请检查设备连接")
             if message == "":
                 raise BaseException(KEYBOARD_MSG_ERROR, "输入内容为空，请检查输入内容")
             try:

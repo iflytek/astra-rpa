@@ -18,7 +18,6 @@ from cv_picker.core.picker import CVPicker, Socket, logger
 
 
 async def handler(websocket):
-
     try:
         picker = CVPicker(status=Status.INIT, picktype=PickType.TARGET)
         # 处理前端 Websocket 发送过来的消息
@@ -39,9 +38,7 @@ async def handler(websocket):
                 # 根据拾取返回的不同状态返回响应的响应
                 if status == Status.OVER:
                     if msg is not None:
-                        await websocket.send(
-                            PickerResponse(err_msg="", data=msg).json()
-                        )
+                        await websocket.send(PickerResponse(err_msg="", data=msg).json())
                     else:
                         await websocket.send(
                             PickerResponse(
@@ -53,16 +50,12 @@ async def handler(websocket):
                     continue
                 elif status == Status.TIMEOUT:
                     await websocket.send(
-                        PickerResponse(
-                            err_msg="拾取超时", data="", key=PickerResponseItem.ERROR
-                        ).json()
+                        PickerResponse(err_msg="拾取超时", data="", key=PickerResponseItem.ERROR).json()
                     )
                     continue
                 elif status == Status.CANCEL:
                     await websocket.send(
-                        PickerResponse(
-                            err_msg="拾取取消", data="", key=PickerResponseItem.CANCEL
-                        ).json()
+                        PickerResponse(err_msg="拾取取消", data="", key=PickerResponseItem.CANCEL).json()
                     )
                     continue
                 else:
@@ -74,18 +67,14 @@ async def handler(websocket):
                     logger.info("校验data ", data)
                     print("进入校验")
                     # 执行校验程序，获取目标元素位置
-                    match_rect = IPickCore.match_imgs(
-                        data=data, remote_addr=Config.REMOTE_ADDR
-                    )
+                    match_rect = IPickCore.match_imgs(data=data, remote_addr=Config.REMOTE_ADDR)
                     print(f"匹配目标：{match_rect}")
                     if match_rect:
                         # 向高亮发送坐标信息，进行高亮显示
                         logger.info(f"目标元素校验成功，元素坐标：{match_rect}")
                         hl.send_rect(operation="validate", rect=match_rect)
                         time.sleep(3)
-                        await websocket.send(
-                            PickerResponse(err_msg="", data="校验成功").json()
-                        )
+                        await websocket.send(PickerResponse(err_msg="", data="校验成功").json())
                     else:
                         # 发送未校验到目标元素
                         logger.info(f"目标元素校验失败")
@@ -104,15 +93,11 @@ async def handler(websocket):
                 with Socket() as hl:
                     data = json.loads(input_data.data)
                     # 首先进行目标元素校验，判断当前界面是否存在目标元素
-                    match_rect = IPickCore.match_imgs(
-                        data=data, remote_addr=Config.REMOTE_ADDR
-                    )
+                    match_rect = IPickCore.match_imgs(data=data, remote_addr=Config.REMOTE_ADDR)
                     desktop_img = pyautogui.screenshot()
                     if match_rect:
                         # 向高亮发送designate信号及目标元素坐标，进行标识
-                        hl.send_rect(
-                            operation="start", status="designate", rect=match_rect
-                        )
+                        hl.send_rect(operation="start", status="designate", rect=match_rect)
                         # 开始拾取锚点图像
                         logger.info(f"元素校验成功，开始拾取锚点")
                         picker.set(
@@ -136,9 +121,7 @@ async def handler(websocket):
                     # 根据拾取返回的不同状态返回响应的响应
                     if status == Status.OVER:
                         if anchor_msg is not None:
-                            await websocket.send(
-                                PickerResponse(err_msg="", data=anchor_msg).json()
-                            )
+                            await websocket.send(PickerResponse(err_msg="", data=anchor_msg).json())
                         else:
                             await websocket.send(
                                 PickerResponse(
@@ -212,9 +195,7 @@ if __name__ == "__main__":
             # 设置和运行websocket服务器的主函数
             async def main():
                 # 在指定的主机和端口上启动Websocket服务器
-                start_serve = websockets.serve(
-                    handler, "localhost", Config.CV_PICKER_PORT
-                )
+                start_serve = websockets.serve(handler, "localhost", Config.CV_PICKER_PORT)
                 # 等待服务器启动完成
                 await start_serve
                 try:

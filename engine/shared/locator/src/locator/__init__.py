@@ -88,22 +88,14 @@ class Rect:
         """
         是否包含rect
         """
-        return (
-            self.left < rect.left
-            and self.top < rect.top
-            and self.right >= rect.right
-            and self.bottom >= rect.bottom
-        )
+        return self.left < rect.left and self.top < rect.top and self.right >= rect.right and self.bottom >= rect.bottom
 
     def overlaps(self, other: Any) -> bool:
         """
         是否与other重叠
         """
         return not (
-            self.right <= other.left
-            or self.left >= other.right
-            or self.bottom <= other.top
-            or self.top >= other.bottom
+            self.right <= other.left or self.left >= other.right or self.bottom <= other.top or self.top >= other.bottom
         )
 
     def to_json(self):
@@ -119,10 +111,7 @@ class Rect:
 
     def __eq__(self, rect):
         return (
-            self.left == rect.left
-            and self.top == rect.top
-            and self.right == rect.right
-            and self.bottom == rect.bottom
+            self.left == rect.left and self.top == rect.top and self.right == rect.right and self.bottom == rect.bottom
         )
 
 

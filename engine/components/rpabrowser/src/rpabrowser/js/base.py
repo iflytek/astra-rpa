@@ -15,10 +15,7 @@ def multi_replace(func):
         element = ele.kwargs
         result = func(*args, **kwargs)
         # 映射属性字典，并替换
-        replacements = {
-            replace_key: element.get(replace_key, "")
-            for replace_key in re.findall(r"\$(.*?)\$", result)
-        }
+        replacements = {replace_key: element.get(replace_key, "") for replace_key in re.findall(r"\$(.*?)\$", result)}
         for replace_key, value in replacements.items():
             if isinstance(value, bool):
                 value = "true" if value else "false"

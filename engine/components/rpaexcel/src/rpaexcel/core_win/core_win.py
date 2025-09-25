@@ -55,7 +55,6 @@ from rpaexcel.error import *
 
 
 class ExcelCore(IExcelCore):
-
     excel_obj = None
 
     @staticmethod
@@ -75,9 +74,7 @@ class ExcelCore(IExcelCore):
     def get_default_excel_app():
         try:
             # 打开HKEY_CLASSES_ROOT\Excel.Sheet.12\shell\open\command键
-            key = winreg.OpenKey(
-                winreg.HKEY_CLASSES_ROOT, r"Excel.Sheet.12\shell\open\command"
-            )
+            key = winreg.OpenKey(winreg.HKEY_CLASSES_ROOT, r"Excel.Sheet.12\shell\open\command")
             # 获取默认值
             default_value, _ = winreg.QueryValueEx(key, None)
             winreg.CloseKey(key)
@@ -92,10 +89,7 @@ class ExcelCore(IExcelCore):
             return ApplicationType.EXCEL
 
     @classmethod
-    def init_excel_app(
-        cls, default_application: ApplicationType = ApplicationType.DEFAULT
-    ):
-
+    def init_excel_app(cls, default_application: ApplicationType = ApplicationType.DEFAULT):
         # excel_flag, wps_flag = cls.excel_is_exists()
         if default_application == ApplicationType.DEFAULT:
             default_application = cls.get_default_excel_app()
@@ -119,9 +113,7 @@ class ExcelCore(IExcelCore):
         raise Exception("未检测到wps和office注册表信息！")
 
     @staticmethod
-    def get_worksheet_names(
-        excel: object, sheet_range: SheetRangeType = SheetRangeType.ACTIVATED
-    ):
+    def get_worksheet_names(excel: object, sheet_range: SheetRangeType = SheetRangeType.ACTIVATED):
         """
         sheet_range: "0":当前sheet页名称; "1":所有sheet页名称
         return:返回所有sheet名
@@ -163,9 +155,7 @@ class ExcelCore(IExcelCore):
                     Password=password,
                 )
             except:
-                raise BaseException(
-                    EXCEL_UNAVAILABLE_ERROR_FORMAT.format(new_file_path), ""
-                )
+                raise BaseException(EXCEL_UNAVAILABLE_ERROR_FORMAT.format(new_file_path), "")
         cls.excel_obj.DisplayAlerts = True
         cls.excel_obj.ScreenUpdating = True
 
@@ -300,9 +290,7 @@ class ExcelCore(IExcelCore):
         if len(excel_obj_list) == 1:
             return excel_obj_list[0]
         elif len(excel_obj_list) == 2:
-            raise Exception(
-                "检测到对象：{}在WPS/Office中打开,需关闭其中一个".format(file_name)
-            )
+            raise Exception("检测到对象：{}在WPS/Office中打开,需关闭其中一个".format(file_name))
         else:
             raise Exception("不存在已打开的Excel文件:{0}".format(file_name))
 
@@ -417,21 +405,13 @@ class ExcelCore(IExcelCore):
         used_row = worksheet.Cells.SpecialCells(11).Row
 
         # 处理读取范围
-        start_col = ExcelCore._handle_column_input(
-            start_col, used_range.Columns.Count, True
-        )
-        end_col = ExcelCore._handle_column_input(
-            end_col, used_range.Columns.Count, True
-        )
+        start_col = ExcelCore._handle_column_input(start_col, used_range.Columns.Count, True)
+        end_col = ExcelCore._handle_column_input(end_col, used_range.Columns.Count, True)
         start_row = ExcelCore._handle_row_input(start_row, used_range.Rows.Count)
         end_row = ExcelCore._handle_row_input(end_row, used_range.Rows.Count)
 
         if read_range == ReadRangeType.CELL:
-            content = (
-                worksheet.Range(cell).Text
-                if read_display
-                else worksheet.Range(cell).Value
-            )
+            content = worksheet.Range(cell).Text if read_display else worksheet.Range(cell).Value
         elif read_range == ReadRangeType.ROW:
             content = (
                 [worksheet.Cells(row, col).Text for col in range(1, used_col + 1)]
@@ -442,34 +422,23 @@ class ExcelCore(IExcelCore):
             content = (
                 [worksheet.Cells(row, column).Text for row in range(1, used_row + 1)]
                 if read_display
-                else [
-                    worksheet.Cells(row, column).Value for row in range(1, used_row + 1)
-                ]
+                else [worksheet.Cells(row, column).Value for row in range(1, used_row + 1)]
             )
         elif read_range == ReadRangeType.AREA:
             content = (
                 [
-                    [
-                        worksheet.Cells(row, col).Text
-                        for col in range(start_col, end_col + 1)
-                    ]
+                    [worksheet.Cells(row, col).Text for col in range(start_col, end_col + 1)]
                     for row in range(start_row, end_row + 1)
                 ]
                 if read_display
                 else [
-                    [
-                        worksheet.Cells(row, col).Value
-                        for col in range(start_col, end_col + 1)
-                    ]
+                    [worksheet.Cells(row, col).Value for col in range(start_col, end_col + 1)]
                     for row in range(start_row, end_row + 1)
                 ]
             )
         elif read_range == ReadRangeType.ALL:
             content = (
-                [
-                    [worksheet.Cells(row, col).Text for col in range(1, used_col + 1)]
-                    for row in range(1, used_row + 1)
-                ]
+                [[worksheet.Cells(row, col).Text for col in range(1, used_col + 1)] for row in range(1, used_row + 1)]
                 if read_display
                 else [
                     [worksheet.Cells(row, col).Value for col in range(1, used_col + 1)]
@@ -502,9 +471,7 @@ class ExcelCore(IExcelCore):
                             if content[n][m] is None:
                                 content[n][m] = ""
             else:
-                content = (
-                    content if content is not None else ""
-                )  # 如果是单个值且为 None，替换为空字符串
+                content = content if content is not None else ""  # 如果是单个值且为 None，替换为空字符串
 
         return content
 
@@ -628,9 +595,7 @@ class ExcelCore(IExcelCore):
                     row = row.split(",")
                     for index in range(len(row)):
                         row[index] = cls._handle_row_input(row[index], used_row)
-                        cell_positions.append(
-                            "A{}:{}{}".format(row[index], col, row[index])
-                        )
+                        cell_positions.append("A{}:{}{}".format(row[index], col, row[index]))
                 else:
                     row = cls._handle_row_input(row, used_row)
                     cell_positions.append("A{}:{}{}".format(row, col, row))
@@ -653,9 +618,7 @@ class ExcelCore(IExcelCore):
                     col = col.split(",")
                     for index in range(len(col)):
                         col[index] = cls._handle_column_input(col[index], used_col)
-                        cell_positions.append(
-                            "{}1:{}{}".format(col[index], col[index], used_row)
-                        )
+                        cell_positions.append("{}1:{}{}".format(col[index], col[index], used_row))
                 else:
                     col = cls._handle_column_input(col, used_col)
                     cell_position = "{}1:{}{}".format(col, col, used_row)
@@ -724,13 +687,9 @@ class ExcelCore(IExcelCore):
             ws.Range(cell_position).WrapText = True if wrap_text is True else False
             # 对齐原则
             if horizontal_align != HorizontalAlign.NO_CHANGE:
-                ws.Range(cell_position).HorizontalAlignment = cls.XlHAlign_map.get(
-                    horizontal_align.value
-                )
+                ws.Range(cell_position).HorizontalAlignment = cls.XlHAlign_map.get(horizontal_align.value)
             if vertical_align != VerticalAlign.NO_CHANGE:
-                ws.Range(cell_position).VerticalAlignment = cls.XlVAlign_map.get(
-                    vertical_align.value
-                )
+                ws.Range(cell_position).VerticalAlignment = cls.XlVAlign_map.get(vertical_align.value)
 
             # 自适应列宽/行高
             if design_type == ReadRangeType.ROW and auto_row_height:
@@ -1009,9 +968,7 @@ class ExcelCore(IExcelCore):
             return excel
         except Exception as err:
             if "无法对合并单元格执行此操作" in str(err):
-                raise ValueError(
-                    "当前单元格区域存在合并单元格情况，无法清空内容，重新输入最大合并区域"
-                )
+                raise ValueError("当前单元格区域存在合并单元格情况，无法清空内容，重新输入最大合并区域")
             else:
                 raise err
 
@@ -1098,9 +1055,7 @@ class ExcelCore(IExcelCore):
                         range_obj.EntireRow.Insert(Shift=-4162)
                     row = row + 1
                 if not blank_rows:
-                    cls.edit(
-                        excel, "", row, sheet_name, EditRangeType.AREA, insert_content
-                    )
+                    cls.edit(excel, "", row, sheet_name, EditRangeType.AREA, insert_content)
 
             elif insert_type in [
                 EnhancedInsertType.COLUMN,
@@ -1111,31 +1066,22 @@ class ExcelCore(IExcelCore):
                 for _ in range(insert_num):
                     if col_direction == ColumnDirectionType.LEFT:  # 左
                         col_letter = cls._column_number_to_letter(col)
-                        range_obj = ws_obj.Range(
-                            "{}1:{}{}".format(col_letter, col_letter, used_row)
-                        )
+                        range_obj = ws_obj.Range("{}1:{}{}".format(col_letter, col_letter, used_row))
                         range_obj.EntireColumn.Insert(Shift=-4159)
                     if col_direction == ColumnDirectionType.RIGHT:  # 右
                         new_col = cls._column_number_to_letter(col + 1)
-                        range_obj = ws_obj.Range(
-                            "{}1:{}{}".format(new_col, new_col, used_row)
-                        )
+                        range_obj = ws_obj.Range("{}1:{}{}".format(new_col, new_col, used_row))
                         # range_obj.EntireColumn.Insert(Shift=-4161) 理论上有对应的shift数值，但是经过测试似乎不行
                         range_obj.EntireColumn.Insert(Shift=-4159)
                 row = 1
                 col = new_col
                 if not blank_rows:
                     max_length = max(len(sublist) for sublist in insert_content)
-                    filled_list = [
-                        sublist + [""] * (max_length - len(sublist))
-                        for sublist in insert_content
-                    ]
+                    filled_list = [sublist + [""] * (max_length - len(sublist)) for sublist in insert_content]
                     # 反转列表前补空白
                     np_array = np.array(filled_list)
                     insert_content = np.transpose(np_array).tolist()
-                    cls.edit(
-                        excel, col, "", sheet_name, EditRangeType.AREA, insert_content
-                    )
+                    cls.edit(excel, col, "", sheet_name, EditRangeType.AREA, insert_content)
 
         except Exception as err:
             raise err
@@ -1146,9 +1092,7 @@ class ExcelCore(IExcelCore):
         used_cell = ws.Cells.SpecialCells(11).Address.replace("$", "")
 
         used_range = ws.Range("A1:{}".format(used_cell))
-        data = (
-            used_range.Value
-        )  # 将使用区域的数据读入数组；如果表太大，可能会导致内存溢出
+        data = used_range.Value  # 将使用区域的数据读入数组；如果表太大，可能会导致内存溢出
 
         rows_count = ws.Cells.SpecialCells(11).Row
         cols_count = ws.Cells.SpecialCells(11).Column
@@ -1175,9 +1119,7 @@ class ExcelCore(IExcelCore):
         used_cell = ws.Cells.SpecialCells(11).Address.replace("$", "")
 
         used_range = ws.Range("A1:{}".format(used_cell))
-        data = (
-            used_range.Value
-        )  # 将使用区域的数据读入数组；如果表太大，可能会导致内存溢出
+        data = used_range.Value  # 将使用区域的数据读入数组；如果表太大，可能会导致内存溢出
 
         rows_count = ws.Cells.SpecialCells(11).Row
         cols_count = ws.Cells.SpecialCells(11).Column
@@ -1211,12 +1153,7 @@ class ExcelCore(IExcelCore):
             return used_row
         elif get_col_type == ColumnType.ONE_COLUMN:
             col = cls._handle_column_input(col, used_col, True)
-            rows = [
-                cell.Value
-                for cell in ws_obj.Range(
-                    ws_obj.Cells(1, col), ws_obj.Cells(used_row, col)
-                ).Cells
-            ]
+            rows = [cell.Value for cell in ws_obj.Range(ws_obj.Cells(1, col), ws_obj.Cells(used_row, col)).Cells]
             for index in range(len(rows) - 1, -1, -1):
                 if rows[index] not in [None, ""]:
                     return index + 1
@@ -1244,12 +1181,7 @@ class ExcelCore(IExcelCore):
             result_col = used_col
         elif get_row_type == RowType.ONE_ROW:
             row = cls._handle_row_input(row, used_row)
-            columns = [
-                cell.Value
-                for cell in ws_obj.Range(
-                    ws_obj.Cells(row, 1), ws_obj.Cells(row, used_col)
-                ).Cells
-            ]
+            columns = [cell.Value for cell in ws_obj.Range(ws_obj.Cells(row, 1), ws_obj.Cells(row, used_col)).Cells]
             for index in range(len(columns) - 1, -1, -1):
                 if columns[index] not in [None, ""]:
                     result_col = index + 1
@@ -1411,9 +1343,7 @@ class ExcelCore(IExcelCore):
             rows = cls._handle_multiple_inputs(row, used_row, used_col, True)
             for extract_row in rows:
                 cell_positions.append(
-                    "A{}:{}{}".format(
-                        extract_row, cls._column_number_to_letter(used_col), extract_row
-                    )
+                    "A{}:{}{}".format(extract_row, cls._column_number_to_letter(used_col), extract_row)
                 )
 
         elif search_range == SearchRangeType.COLUMN:
@@ -1432,9 +1362,7 @@ class ExcelCore(IExcelCore):
             end_row = cls._handle_row_input(end_row, used_row)
             start_col = cls._handle_column_input(start_col, used_col)
             end_col = cls._handle_column_input(end_col, used_col)
-            cell_positions.append(
-                ws.Range("{}{}:{}{}".format(start_col, start_row, end_col, end_row))
-            )
+            cell_positions.append(ws.Range("{}{}:{}{}".format(start_col, start_row, end_col, end_row)))
 
         positions = set()
         for cell_position in cell_positions:
@@ -1452,9 +1380,7 @@ class ExcelCore(IExcelCore):
                 positions.add(first_address)
 
                 if replace_flag:
-                    found_cell.Value = str(found_cell.Value).replace(
-                        find_str, replace_str
-                    )
+                    found_cell.Value = str(found_cell.Value).replace(find_str, replace_str)
                     # 这里用.Value容易报错
 
                 if match_range == MatchCountType.ALL:
@@ -1463,14 +1389,10 @@ class ExcelCore(IExcelCore):
                         found_cell = ws.Range(cell_position).FindNext(found_cell)
                         if found_cell is None or found_cell.Address == first_address:
                             break
-                        logger.info(
-                            f"找到值 '{find_str}' 在单元格: {found_cell.Address}"
-                        )
+                        logger.info(f"找到值 '{find_str}' 在单元格: {found_cell.Address}")
                         positions.add(found_cell.Address)
                         if replace_flag:
-                            found_cell.Value = str(found_cell.Value).replace(
-                                find_str, replace_str
-                            )
+                            found_cell.Value = str(found_cell.Value).replace(find_str, replace_str)
             else:
                 logger.info(f"未找到值 '{find_str}'")
 
@@ -1560,10 +1482,7 @@ class ExcelCore(IExcelCore):
             start_row = cls._handle_row_input(start_row, used_row)
             end_row = cls._handle_row_input(end_row, used_row)
 
-        if (
-            select_type == SearchRangeType.COLUMN
-            or select_type == select_type == SearchRangeType.AREA
-        ):
+        if select_type == SearchRangeType.COLUMN or select_type == select_type == SearchRangeType.AREA:
             start_col = cls._handle_column_input(start_col, used_col, False)
             end_col = cls._handle_column_input(end_col, used_col, False)
 
@@ -1651,9 +1570,7 @@ class ExcelCore(IExcelCore):
             starter = ws_obj.Range("{}{}".format(col, str(start_row)))
             starter.Value = formula
             starter.AutoFill(
-                ws_obj.Range(
-                    "{}{}:{}{}".format(col, str(start_row), col, str(end_row))
-                ),
+                ws_obj.Range("{}{}:{}{}".format(col, str(start_row), col, str(end_row))),
                 0,
             )
 
@@ -1664,9 +1581,7 @@ class ExcelCore(IExcelCore):
             starter = ws_obj.Range("{}{}".format(start_col, str(row)))
             starter.Value = formula
             starter.AutoFill(
-                ws_obj.Range(
-                    "{}{}:{}{}".format(start_col, str(row), end_col, str(row))
-                ),
+                ws_obj.Range("{}{}:{}{}".format(start_col, str(row), end_col, str(row))),
                 0,
             )
 
@@ -1719,9 +1634,7 @@ class ExcelCore(IExcelCore):
                     count += 1
                     if count == 1 and not comment_all:
                         break
-            elif (
-                isinstance(search_result, dict) and comment_range == SearchSheetType.ALL
-            ):
+            elif isinstance(search_result, dict) and comment_range == SearchSheetType.ALL:
                 for sheet_name, positions in search_result.items():
                     ws = cls._get_ws_obj(excel, sheet_name)
                     for i in range(len(positions)):
@@ -1812,16 +1725,11 @@ class ExcelCore(IExcelCore):
         if out_column == "":
             output_data = filtered_data
         else:
-            output_columns = (
-                out_column.split(",") if len(out_column) > 1 else [out_column]
-            )
+            output_columns = out_column.split(",") if len(out_column) > 1 else [out_column]
             output_column_indexes = [
-                cls._column_letter_to_number(output_column) - 1
-                for output_column in output_columns
+                cls._column_letter_to_number(output_column) - 1 for output_column in output_columns
             ]
-            output_data = [
-                [row[i] for i in output_column_indexes] for row in filtered_data
-            ]
+            output_data = [[row[i] for i in output_column_indexes] for row in filtered_data]
         if show_column_name == "0":
             output_data = output_data[1:]
         if del_filtered_rows == "1":
@@ -1896,9 +1804,7 @@ class ExcelCore(IExcelCore):
             rows = cls._handle_multiple_inputs(row, used_row, used_col, True)
             for extract_row in rows:
                 cell_positions.append(
-                    "A{}:{}{}".format(
-                        extract_row, cls._column_number_to_letter(used_col), extract_row
-                    )
+                    "A{}:{}{}".format(extract_row, cls._column_number_to_letter(used_col), extract_row)
                 )
 
         elif select_type == ReadRangeType.COLUMN:
@@ -1961,9 +1867,7 @@ class ExcelCore(IExcelCore):
             rows = cls._handle_multiple_inputs(row, used_row, used_col, True)
             for extract_row in rows:
                 cell_positions.append(
-                    "A{}:{}{}".format(
-                        extract_row, cls._column_number_to_letter(used_col), extract_row
-                    )
+                    "A{}:{}{}".format(extract_row, cls._column_number_to_letter(used_col), extract_row)
                 )
 
         elif select_type == ReadRangeType.COLUMN:
@@ -1992,9 +1896,7 @@ class ExcelCore(IExcelCore):
                     ws.Range(item_address).Value = ws.Range(item_address).Text
 
     @classmethod
-    def set_col_width(
-        cls, excel_obj, sheet_name: str, set_type: SetType, col: str, width: float
-    ):
+    def set_col_width(cls, excel_obj, sheet_name: str, set_type: SetType, col: str, width: float):
         ws = cls._get_ws_obj(excel_obj, sheet_name)
         used_col = ws.Cells.SpecialCells(11).Column
         used_row = ws.Cells.SpecialCells(11).Row
@@ -2008,9 +1910,7 @@ class ExcelCore(IExcelCore):
                 ws.Columns(col).AutoFit()
 
     @classmethod
-    def set_row_height(
-        cls, excel_obj, sheet_name: str, set_type: SetType, row: str, height: float
-    ):
+    def set_row_height(cls, excel_obj, sheet_name: str, set_type: SetType, row: str, height: float):
         ws = cls._get_ws_obj(excel_obj, sheet_name)
         used_col = ws.Cells.SpecialCells(11).Column
         used_row = ws.Cells.SpecialCells(11).Row
@@ -2037,7 +1937,6 @@ class ExcelCore(IExcelCore):
         values_fields: list,
         filter_fields: list,
     ):
-
         func_dict = {
             "sum": excel_constants.xlSum,
             "count": excel_constants.xlCount,
@@ -2089,12 +1988,8 @@ class ExcelCore(IExcelCore):
             if values_fields:
                 for field_info in values_fields:
                     field_name = field_info["name"]
-                    aggregate_function = field_info.get(
-                        "function", "sum"
-                    ).lower()  # 默认为'sum'
-                    function_code = func_dict.get(
-                        aggregate_function, excel_constants.xlSum
-                    )  # 获取对应的Excel函数
+                    aggregate_function = field_info.get("function", "sum").lower()  # 默认为'sum'
+                    function_code = func_dict.get(aggregate_function, excel_constants.xlSum)  # 获取对应的Excel函数
 
                     try:
                         pivot_field = pivot_table.PivotFields(field_name)
@@ -2104,9 +1999,7 @@ class ExcelCore(IExcelCore):
                             function_code,
                         )
                     except Exception as e:
-                        print(
-                            f"Error adding field '{field_name}' with function '{aggregate_function}': {e}"
-                        )
+                        print(f"Error adding field '{field_name}' with function '{aggregate_function}': {e}")
                         continue
 
             print("Pivot table created successfully.")
@@ -2120,9 +2013,7 @@ class ExcelCore(IExcelCore):
             return None
 
     @staticmethod
-    def get_or_create_sheet_and_pivot_table(
-        excel_obj, pivot_sheet, pivot_start_cell, pivot_table_name, src_range
-    ):
+    def get_or_create_sheet_and_pivot_table(excel_obj, pivot_sheet, pivot_start_cell, pivot_table_name, src_range):
         try:
             pvt_ws = excel_obj.Worksheets(pivot_sheet)
         except Exception as e:
@@ -2202,10 +2093,7 @@ class ExcelCore(IExcelCore):
     def get_column_index_by_name(cls, worksheet, column_name):
         for col_index in range(1, worksheet.UsedRange.Columns.Count + 1):
             cell_value = worksheet.Cells(1, col_index).Text
-            if (
-                cell_value is not None
-                and str(cell_value).strip().lower() == column_name.strip().lower()
-            ):
+            if cell_value is not None and str(cell_value).strip().lower() == column_name.strip().lower():
                 return col_index
         raise ValueError(f"Column name '{column_name}' not found.")
 

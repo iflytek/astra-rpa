@@ -5,7 +5,6 @@ from pynput.mouse import Controller
 
 
 class RectHandler(IRectHandler):
-
     @staticmethod
     def get_foreground_window_rect():
         try:
@@ -13,16 +12,12 @@ class RectHandler(IRectHandler):
             window_id = subprocess.check_output(["xdotool", "getactivewindow"]).strip()
 
             # 获取窗口的标题
-            window_name = (
-                subprocess.check_output(["xdotool", "getwindowname", window_id])
-                .strip()
-                .decode("utf-8")
-            )
+            window_name = subprocess.check_output(["xdotool", "getwindowname", window_id]).strip().decode("utf-8")
 
             # 获取窗口的几何信息
-            window_geometry = subprocess.check_output(
-                ["xdotool", "getwindowgeometry", "--shell", window_id]
-            ).decode("utf-8")
+            window_geometry = subprocess.check_output(["xdotool", "getwindowgeometry", "--shell", window_id]).decode(
+                "utf-8"
+            )
             geometry = {}
             for line in window_geometry.splitlines():
                 key, value = line.split("=")

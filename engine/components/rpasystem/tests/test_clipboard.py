@@ -9,7 +9,6 @@ from rpasystem.clipboard import Clipboard
 
 
 class TestClipboard(TestCase):
-
     def setUp(self):
         """测试前的准备工作"""
         self.temp_dir = tempfile.mkdtemp()
@@ -48,9 +47,7 @@ class TestClipboard(TestCase):
     def test_copy_clip_file_success(self):
         """测试复制到剪贴板 - 文件成功"""
         # 复制文件到剪贴板
-        Clipboard.copy_clip(
-            content_type=ContentType.FILE, file_path=self.test_file_path
-        )
+        Clipboard.copy_clip(content_type=ContentType.FILE, file_path=self.test_file_path)
 
         # 验证剪贴板中的文件路径
         result = Clipboard.paste_clip(
@@ -65,16 +62,12 @@ class TestClipboard(TestCase):
         """测试复制到剪贴板 - 文件不存在"""
         non_existent_file = os.path.join(self.temp_dir, "non_existent.txt")
         with self.assertRaises(BaseException):
-            Clipboard.copy_clip(
-                content_type=ContentType.FILE, file_path=non_existent_file
-            )
+            Clipboard.copy_clip(content_type=ContentType.FILE, file_path=non_existent_file)
 
     def test_copy_clip_folder_success(self):
         """测试复制到剪贴板 - 文件夹成功"""
         # 复制文件夹到剪贴板
-        Clipboard.copy_clip(
-            content_type=ContentType.FOLDER, folder_path=self.test_folder_path
-        )
+        Clipboard.copy_clip(content_type=ContentType.FOLDER, folder_path=self.test_folder_path)
 
         # 验证剪贴板中的文件夹路径
         result = Clipboard.paste_clip(
@@ -89,9 +82,7 @@ class TestClipboard(TestCase):
         """测试复制到剪贴板 - 文件夹不存在"""
         non_existent_folder = os.path.join(self.temp_dir, "non_existent_folder")
         with self.assertRaises(BaseException):
-            Clipboard.copy_clip(
-                content_type=ContentType.FOLDER, folder_path=non_existent_folder
-            )
+            Clipboard.copy_clip(content_type=ContentType.FOLDER, folder_path=non_existent_folder)
 
     def test_copy_clip_invalid_content_type(self):
         """测试复制到剪贴板 - 无效内容类型"""
@@ -129,9 +120,7 @@ class TestClipboard(TestCase):
     def test_paste_clip_file_success(self):
         """测试从剪贴板粘贴 - 文件成功"""
         # 复制文件到剪贴板
-        Clipboard.copy_clip(
-            content_type=ContentType.FILE, file_path=self.test_file_path
-        )
+        Clipboard.copy_clip(content_type=ContentType.FILE, file_path=self.test_file_path)
 
         # 从剪贴板粘贴文件
         result = Clipboard.paste_clip(
@@ -145,9 +134,7 @@ class TestClipboard(TestCase):
     def test_paste_clip_file_with_custom_name(self):
         """测试从剪贴板粘贴 - 文件带自定义名称"""
         # 复制文件到剪贴板
-        Clipboard.copy_clip(
-            content_type=ContentType.FILE, file_path=self.test_file_path
-        )
+        Clipboard.copy_clip(content_type=ContentType.FILE, file_path=self.test_file_path)
 
         # 从剪贴板粘贴文件，使用自定义名称
         result = Clipboard.paste_clip(
@@ -162,9 +149,7 @@ class TestClipboard(TestCase):
     def test_paste_clip_folder_success(self):
         """测试从剪贴板粘贴 - 文件夹成功"""
         # 复制文件夹到剪贴板
-        Clipboard.copy_clip(
-            content_type=ContentType.FOLDER, folder_path=self.test_folder_path
-        )
+        Clipboard.copy_clip(content_type=ContentType.FOLDER, folder_path=self.test_folder_path)
 
         # 从剪贴板粘贴文件夹
         result = Clipboard.paste_clip(
@@ -178,9 +163,7 @@ class TestClipboard(TestCase):
     def test_paste_clip_folder_with_custom_name(self):
         """测试从剪贴板粘贴 - 文件夹带自定义名称"""
         # 复制文件夹到剪贴板
-        Clipboard.copy_clip(
-            content_type=ContentType.FOLDER, folder_path=self.test_folder_path
-        )
+        Clipboard.copy_clip(content_type=ContentType.FOLDER, folder_path=self.test_folder_path)
 
         # 从剪贴板粘贴文件夹，使用自定义名称
         result = Clipboard.paste_clip(
@@ -195,9 +178,7 @@ class TestClipboard(TestCase):
     def test_paste_clip_folder_not_exists_error(self):
         """测试从剪贴板粘贴 - 目标文件夹不存在且设置为错误"""
         # 复制文件到剪贴板
-        Clipboard.copy_clip(
-            content_type=ContentType.FILE, file_path=self.test_file_path
-        )
+        Clipboard.copy_clip(content_type=ContentType.FILE, file_path=self.test_file_path)
 
         non_existent_dir = os.path.join(self.temp_dir, "non_existent")
         with self.assertRaises(BaseException):
@@ -210,14 +191,10 @@ class TestClipboard(TestCase):
     def test_paste_clip_folder_not_exists_create(self):
         """测试从剪贴板粘贴 - 目标文件夹不存在但自动创建"""
         # 复制文件到剪贴板
-        Clipboard.copy_clip(
-            content_type=ContentType.FILE, file_path=self.test_file_path
-        )
+        Clipboard.copy_clip(content_type=ContentType.FILE, file_path=self.test_file_path)
 
         new_dir = os.path.join(self.temp_dir, "new_dir")
-        result = Clipboard.paste_clip(
-            content_type=ContentType.FILE, dst_path=new_dir, state_type=StateType.CREATE
-        )
+        result = Clipboard.paste_clip(content_type=ContentType.FILE, dst_path=new_dir, state_type=StateType.CREATE)
         self.assertTrue(os.path.exists(result))
         self.assertTrue(os.path.exists(new_dir))
 
@@ -292,9 +269,7 @@ class TestClipboard(TestCase):
         os.makedirs(folder_with_spaces, exist_ok=True)
 
         # 复制包含空格的文件夹到剪贴板
-        Clipboard.copy_clip(
-            content_type=ContentType.FOLDER, folder_path=folder_with_spaces
-        )
+        Clipboard.copy_clip(content_type=ContentType.FOLDER, folder_path=folder_with_spaces)
 
         # 验证剪贴板中的文件夹
         result = Clipboard.paste_clip(

@@ -9,11 +9,8 @@ from rpadataprocess import TimeChangeType, TimestampUnitType, TimeUnitType, Time
 
 
 class TimeProcess:
-
     @staticmethod
-    @atomicMg.atomic(
-        "TimeProcess", outputList=[atomicMg.param("current_time", types="Date")]
-    )
+    @atomicMg.atomic("TimeProcess", outputList=[atomicMg.param("current_time", types="Date")])
     def get_current_time(time_format: TimeFormatType = TimeFormatType.YMD_HMS):
         res = Date()
         res.format = time_format
@@ -26,18 +23,14 @@ class TimeProcess:
             atomicMg.param(
                 "time",
                 types="Date",
-                formType=AtomicFormTypeMeta(
-                    AtomicFormType.INPUT_VARIABLE_PYTHON_DATETIME.value
-                ),
+                formType=AtomicFormTypeMeta(AtomicFormType.INPUT_VARIABLE_PYTHON_DATETIME.value),
             ),
             atomicMg.param(
                 "seconds",
                 dynamics=[
                     DynamicsItem(
                         key="$this.seconds.show",
-                        expression="return $this.change_type.value != '{}'".format(
-                            TimeChangeType.MAINTAIN.value
-                        ),
+                        expression="return $this.change_type.value != '{}'".format(TimeChangeType.MAINTAIN.value),
                     )
                 ],
             ),
@@ -46,9 +39,7 @@ class TimeProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.minutes.show",
-                        expression="return $this.change_type.value != '{}'".format(
-                            TimeChangeType.MAINTAIN.value
-                        ),
+                        expression="return $this.change_type.value != '{}'".format(TimeChangeType.MAINTAIN.value),
                     )
                 ],
             ),
@@ -57,9 +48,7 @@ class TimeProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.hours.show",
-                        expression="return $this.change_type.value != '{}'".format(
-                            TimeChangeType.MAINTAIN.value
-                        ),
+                        expression="return $this.change_type.value != '{}'".format(TimeChangeType.MAINTAIN.value),
                     )
                 ],
             ),
@@ -68,9 +57,7 @@ class TimeProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.days.show",
-                        expression="return $this.change_type.value != '{}'".format(
-                            TimeChangeType.MAINTAIN.value
-                        ),
+                        expression="return $this.change_type.value != '{}'".format(TimeChangeType.MAINTAIN.value),
                     )
                 ],
             ),
@@ -79,9 +66,7 @@ class TimeProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.months.show",
-                        expression="return $this.change_type.value != '{}'".format(
-                            TimeChangeType.MAINTAIN.value
-                        ),
+                        expression="return $this.change_type.value != '{}'".format(TimeChangeType.MAINTAIN.value),
                     )
                 ],
             ),
@@ -90,9 +75,7 @@ class TimeProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.years.show",
-                        expression="return $this.change_type.value != '{}'".format(
-                            TimeChangeType.MAINTAIN.value
-                        ),
+                        expression="return $this.change_type.value != '{}'".format(TimeChangeType.MAINTAIN.value),
                     )
                 ],
             ),
@@ -137,16 +120,12 @@ class TimeProcess:
             atomicMg.param(
                 "time",
                 types="Date",
-                formType=AtomicFormTypeMeta(
-                    AtomicFormType.INPUT_VARIABLE_PYTHON_DATETIME.value
-                ),
+                formType=AtomicFormTypeMeta(AtomicFormType.INPUT_VARIABLE_PYTHON_DATETIME.value),
             )
         ],
         outputList=[atomicMg.param("converted_timestamp", types="Int")],
     )
-    def time_to_timestamp(
-        time: Date, timestamp_unit: TimestampUnitType = TimestampUnitType.SECOND
-    ):
+    def time_to_timestamp(time: Date, timestamp_unit: TimestampUnitType = TimestampUnitType.SECOND):
         if timestamp_unit == TimestampUnitType.SECOND:
             return int(time.time.timestamp())
         elif timestamp_unit == TimestampUnitType.MILLISECOND:
@@ -155,9 +134,7 @@ class TimeProcess:
             return int(time.time.timestamp() * 1000000)
 
     @staticmethod
-    @atomicMg.atomic(
-        "TimeProcess", outputList=[atomicMg.param("converted_time", types="Date")]
-    )
+    @atomicMg.atomic("TimeProcess", outputList=[atomicMg.param("converted_time", types="Date")])
     def timestamp_to_time(timestamp: int, time_zone: TimeZoneType = TimeZoneType.LOCAL):
         if 10 < len(str(timestamp)) <= 13:  # 毫秒级时间戳
             timestamp = timestamp / 1000
@@ -177,23 +154,17 @@ class TimeProcess:
             atomicMg.param(
                 "time_1",
                 types="Date",
-                formType=AtomicFormTypeMeta(
-                    AtomicFormType.INPUT_VARIABLE_PYTHON_DATETIME.value
-                ),
+                formType=AtomicFormTypeMeta(AtomicFormType.INPUT_VARIABLE_PYTHON_DATETIME.value),
             ),
             atomicMg.param(
                 "time_2",
                 types="Date",
-                formType=AtomicFormTypeMeta(
-                    AtomicFormType.INPUT_VARIABLE_PYTHON_DATETIME.value
-                ),
+                formType=AtomicFormTypeMeta(AtomicFormType.INPUT_VARIABLE_PYTHON_DATETIME.value),
             ),
         ],
         outputList=[atomicMg.param("time_difference", types="Int")],
     )
-    def get_time_difference(
-        time_1: Date, time_2: Date, time_unit: TimeUnitType = TimeUnitType.SECOND
-    ):
+    def get_time_difference(time_1: Date, time_2: Date, time_unit: TimeUnitType = TimeUnitType.SECOND):
         time_difference = abs((time_2.time - time_1.time).total_seconds())
         # 根据所需的时间单位转换差值
         if time_unit == TimeUnitType.SECOND:
@@ -222,15 +193,11 @@ class TimeProcess:
             atomicMg.param(
                 "time",
                 types="Date",
-                formType=AtomicFormTypeMeta(
-                    AtomicFormType.INPUT_VARIABLE_PYTHON_DATETIME.value
-                ),
+                formType=AtomicFormTypeMeta(AtomicFormType.INPUT_VARIABLE_PYTHON_DATETIME.value),
             ),
         ],
         outputList=[atomicMg.param("format_datetime", types="Str")],
     )
-    def format_datetime(
-        time: Date, format_type: TimeFormatType = TimeFormatType.YMD_HMS
-    ):
+    def format_datetime(time: Date, format_type: TimeFormatType = TimeFormatType.YMD_HMS):
         time.format = format_type
         return time.__str__()

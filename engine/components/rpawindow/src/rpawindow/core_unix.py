@@ -7,7 +7,6 @@ from rpawindow.core import IUITreeCore, IWindowsCore
 
 
 class WindowsCore(IWindowsCore):
-
     @staticmethod
     def info(handler: Any) -> ControlInfo:
         assert isinstance(handler, int)
@@ -17,9 +16,7 @@ class WindowsCore(IWindowsCore):
         name = output.decode("utf-8")
 
         geom = {}
-        output = subprocess.check_output(
-            ["xdotool", "getwindowgeometry", "--shell", str(win_id)], shell=True
-        )
+        output = subprocess.check_output(["xdotool", "getwindowgeometry", "--shell", str(win_id)], shell=True)
         for line in output.splitlines():
             key, value = line.decode("utf-8").split("=")
             geom[key] = int(value)
@@ -66,13 +63,9 @@ class WindowsCore(IWindowsCore):
         win_id = handler
 
         if size_type == WindowSizeType.CUSTOM:
-            subprocess.check_output(
-                ["xdotool", "windowsize", str(win_id), str(width), str(height)]
-            )
+            subprocess.check_output(["xdotool", "windowsize", str(win_id), str(width), str(height)])
         elif size_type == WindowSizeType.MAX:
-            subprocess.check_output(
-                ["xdotool", "windowsize", str(win_id), "100%", "100%"]
-            )
+            subprocess.check_output(["xdotool", "windowsize", str(win_id), "100%", "100%"])
         elif size_type == WindowSizeType.MIN:
             subprocess.check_output(["xdotool", "windowminimize", str(win_id)])
 

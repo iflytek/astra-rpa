@@ -15,10 +15,7 @@ if sys.platform == "win32":
 elif platform.system() == "Linux":
     from rpapdf.core_unix import PDFCore
 else:
-    raise NotImplementedError(
-        "Your platform (%s) is not supported by (%s)."
-        % (platform.system(), "clipboard")
-    )
+    raise NotImplementedError("Your platform (%s) is not supported by (%s)." % (platform.system(), "clipboard"))
 
 PDFCore: IPDFCore = PDFCore()
 
@@ -27,7 +24,6 @@ PDFCore: IPDFCore = PDFCore()
 
 
 class PDF:
-
     @staticmethod
     @IPDFCore.validate_path("file_path")
     @atomicMg.atomic(
@@ -71,9 +67,7 @@ class PDF:
                 dynamics=[
                     DynamicsItem(
                         key="$this.page_range.show",
-                        expression="return $this.select_range.value == '{}'".format(
-                            SelectRangeType.PART.value
-                        ),
+                        expression="return $this.select_range.value == '{}'".format(SelectRangeType.PART.value),
                     )
                 ],
             ),
@@ -154,26 +148,18 @@ class PDF:
 
             # 配置保存路径
             if not save_file_name:
-                word_save_file_name = (
-                    os.path.basename(file_path).split(".")[0] + ".docx"
-                )
+                word_save_file_name = os.path.basename(file_path).split(".")[0] + ".docx"
                 txt_save_file_name = os.path.basename(file_path).split(".")[0] + ".txt"
             else:
                 word_save_file_name = save_file_name + ".docx"
                 txt_save_file_name = save_file_name + ".txt"
 
-            if (
-                text_save_type == TextSaveType.WORD
-                or text_save_type == TextSaveType.WORD_AND_TXT
-            ):
+            if text_save_type == TextSaveType.WORD or text_save_type == TextSaveType.WORD_AND_TXT:
                 word_file_path = os.path.join(save_dir, word_save_file_name)
                 word_file_path = handle_existence(word_file_path, exist_handle_type)
                 if word_file_path:
                     PDFCore.write_text_to_word(pdf_text_str, word_file_path)
-            if (
-                text_save_type == TextSaveType.TXT
-                or text_save_type == TextSaveType.WORD_AND_TXT
-            ):
+            if text_save_type == TextSaveType.TXT or text_save_type == TextSaveType.WORD_AND_TXT:
                 txt_file_path = os.path.join(save_dir, txt_save_file_name)
                 txt_file_path = handle_existence(txt_file_path, exist_handle_type)
                 if txt_file_path:
@@ -200,9 +186,7 @@ class PDF:
                 dynamics=[
                     DynamicsItem(
                         key="$this.page_range.show",
-                        expression="return $this.select_range.value == '{}'".format(
-                            SelectRangeType.PART.value
-                        ),
+                        expression="return $this.select_range.value == '{}'".format(SelectRangeType.PART.value),
                     )
                 ],
                 required=False,
@@ -243,9 +227,7 @@ class PDF:
         """
         if select_range == SelectRangeType.PART:
             page_range = ""
-        return PDFCore.get_images_in_page(
-            file_path, pwd, page_range, save_dir, image_type, prefix, exist_handle_type
-        )
+        return PDFCore.get_images_in_page(file_path, pwd, page_range, save_dir, image_type, prefix, exist_handle_type)
 
     @staticmethod
     @atomicMg.atomic(
@@ -260,9 +242,7 @@ class PDF:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_folder_path.show",
-                        expression="return $this.merge_type.value == '{}'".format(
-                            MergeType.FOLDER.value
-                        ),
+                        expression="return $this.merge_type.value == '{}'".format(MergeType.FOLDER.value),
                     )
                 ],
             ),
@@ -275,9 +255,7 @@ class PDF:
                 dynamics=[
                     DynamicsItem(
                         key="$this.files_path.show",
-                        expression="return $this.merge_type.value == '{}'".format(
-                            MergeType.FILE.value
-                        ),
+                        expression="return $this.merge_type.value == '{}'".format(MergeType.FILE.value),
                     )
                 ],
             ),
@@ -427,9 +405,7 @@ class PDF:
                 dynamics=[
                     DynamicsItem(
                         key="$this.page_range.show",
-                        expression="return $this.select_range.value == '{}'".format(
-                            SelectRangeType.PART.value
-                        ),
+                        expression="return $this.select_range.value == '{}'".format(SelectRangeType.PART.value),
                     )
                 ],
             ),
@@ -498,9 +474,7 @@ class PDF:
                 dynamics=[
                     DynamicsItem(
                         key="$this.page_range.show",
-                        expression="return $this.select_range.value == '{}'".format(
-                            SelectRangeType.PART.value
-                        ),
+                        expression="return $this.select_range.value == '{}'".format(SelectRangeType.PART.value),
                     )
                 ],
             ),
@@ -540,6 +514,4 @@ class PDF:
         """
         if select_range == SelectRangeType.ALL:
             page_range = ""
-        PDFCore.pdf_to_image(
-            file_path, pwd, save_dir, page_range, image_type, prefix, exist_handle_type
-        )
+        PDFCore.pdf_to_image(file_path, pwd, save_dir, page_range, image_type, prefix, exist_handle_type)

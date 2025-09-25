@@ -30,9 +30,7 @@ class Browser:
     def get_url(self) -> str:
         """获取当前网页URL。"""
         if self.browser_type in CHROME_LIKE_BROWSERS:
-            data = self.send_browser_extension(
-                browser_type=self.browser_type.value, key="getUrl", data={"": ""}
-            )
+            data = self.send_browser_extension(browser_type=self.browser_type.value, key="getUrl", data={"": ""})
         else:
             raise NotImplementedError()
         return data
@@ -41,9 +39,7 @@ class Browser:
     def get_title(self) -> str:
         """获取当前网页标题。"""
         if self.browser_type in CHROME_LIKE_BROWSERS:
-            data = self.send_browser_extension(
-                browser_type=self.browser_type.value, key="getTitle", data={"": ""}
-            )
+            data = self.send_browser_extension(browser_type=self.browser_type.value, key="getTitle", data={"": ""})
         else:
             raise NotImplementedError()
         return data
@@ -52,9 +48,7 @@ class Browser:
     def get_tabid(self) -> int:
         """获取当前标签ID。"""
         if self.browser_type in CHROME_LIKE_BROWSERS:
-            data = self.send_browser_extension(
-                browser_type=self.browser_type.value, key="getTabId", data={"": ""}
-            )
+            data = self.send_browser_extension(browser_type=self.browser_type.value, key="getTabId", data={"": ""})
         else:
             raise NotImplementedError()
         return data
@@ -64,9 +58,7 @@ class Browser:
         """验证浏览器对象。"""
         if isinstance(value, Browser):
             return value
-        raise BaseException(
-            PARAM_VERIFY_ERROR_FORMAT.format(name, value), f"{name}参数验证失败{value}"
-        )
+        raise BaseException(PARAM_VERIFY_ERROR_FORMAT.format(name, value), f"{name}参数验证失败{value}")
 
     @staticmethod
     def send_browser_rpc(req: dict, timeout: float = None) -> Any:
@@ -103,9 +95,7 @@ class Browser:
         )
 
         if res.status_code != 200:
-            raise BaseException(
-                BROWSER_EXTENSION_INSTALL_ERROR, "浏览器插件通信出错，请重试"
-            )
+            raise BaseException(BROWSER_EXTENSION_INSTALL_ERROR, "浏览器插件通信出错，请重试")
         data = res.json()
         if not data.get("data"):
             return "插件无返回消息"
@@ -115,9 +105,7 @@ class Browser:
                 data.get("data").get("msg"),
             )
         if data.get("data").get("code") == "5002":
-            raise BaseException(
-                WEB_GET_ElE_ERROR.format(data.get("data").get("msg")), "网页元素未找到"
-            )
+            raise BaseException(WEB_GET_ElE_ERROR.format(data.get("data").get("msg")), "网页元素未找到")
         if data.get("data").get("code") == "5003":
             raise BaseException(
                 WEB_EXEC_ElE_ERROR.format(data.get("data").get("msg")),

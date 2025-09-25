@@ -10,7 +10,6 @@ from typing import Any, Callable, Union
 
 
 class IWebSocket(ABC):
-
     @abstractmethod
     async def receive_text(self) -> str:
         pass

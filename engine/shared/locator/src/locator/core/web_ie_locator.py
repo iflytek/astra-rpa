@@ -11,7 +11,6 @@ from rpaframe.logger.logger import logger
 
 
 class WEBIELocator(WEBLocator):
-
     def __init__(self, rect=None, rects=None):
         super().__init__(rect, rects)
         self.__rect = rect
@@ -30,25 +29,19 @@ class WebIEFactory:
     """WebIE工厂"""
 
     @classmethod
-    def find(
-        cls, ele: dict, picker_type: str, **kwargs
-    ) -> Union[List[WEBIELocator], WEBIELocator, None]:
+    def find(cls, ele: dict, picker_type: str, **kwargs) -> Union[List[WEBIELocator], WEBIELocator, None]:
         if ele.get("app", "") in like_chrome_browser_type:
             # 直接结束
             return None
 
-        scroll_into_view = (
-            "true" if kwargs.get("scroll_into_view", True) else "false"
-        )  # 开启是否滚动
+        scroll_into_view = "true" if kwargs.get("scroll_into_view", True) else "false"  # 开启是否滚动
 
         # 获取元素配置
         path = ele.get("path", {})
         iframe_index = path.get("iframeIndex", None)
         check_type = path.get("checkType", None)  # 选择类型，是使用可视化还是自定义
         match_types = path.get("matchTypes", "")  # 选择匹配方式，是匹配位置，滚动加载
-        scroll_into_view_time = (
-            "false" if "scrollPosition" in match_types else "true"
-        )  # 开启是否滚动若干次
+        scroll_into_view_time = "false" if "scrollPosition" in match_types else "true"  # 开启是否滚动若干次
 
         css_selector = path.get("cssSelector", None)
         path_dirs = path.get("pathDirs", [])
@@ -91,9 +84,7 @@ class WebIEFactory:
                     if "onlyPosition" in match_types:
                         if not cls.__check_xpath__(xpath_str=xpath):
                             raise Exception("xpath无效")
-                        logger.info(
-                            "走的 __ele_xpath_handler__  xpath: {}".format(xpath)
-                        )
+                        logger.info("走的 __ele_xpath_handler__  xpath: {}".format(xpath))
                         res = cls.__ele_xpath_handler__(xpath, iframe_index)
                         rect = Rect(
                             int(float(res["left"])),
@@ -119,9 +110,7 @@ class WebIEFactory:
                     if all(not node.get("checked", True) for node in path_dirs):
                         raise Exception("请选中至少一项校验所需参考信息")
                     if "onlyPosition" in match_types:
-                        path_dirs_only_index = cls.__modify_pathdir_attributes__(
-                            path_dirs
-                        )
+                        path_dirs_only_index = cls.__modify_pathdir_attributes__(path_dirs)
                         res = cls.__ele_path_dirs_handler__(
                             path_dirs_only_index,
                             iframe_index,
@@ -149,8 +138,7 @@ class WebIEFactory:
                                 Rect(
                                     int(float(s_rect["left"])),
                                     int(float(s_rect["top"])),
-                                    int(float(s_rect["left"]))
-                                    + int(float(s_rect["w"])),
+                                    int(float(s_rect["left"])) + int(float(s_rect["w"])),
                                     int(float(s_rect["top"])) + int(float(s_rect["h"])),
                                 )
                             )
@@ -161,15 +149,11 @@ class WebIEFactory:
             raise Exception("元素查找失败，请勾选可视化信息或者使用自定义")
 
     @classmethod
-    def locate_ele_by_direct_css_selector(
-        cls, cssSelector, iframeIndex, scroll_into_view, scrollPosition="false"
-    ):
+    def locate_ele_by_direct_css_selector(cls, cssSelector, iframeIndex, scroll_into_view, scrollPosition="false"):
         ie_win = auto.WindowControl(searchDepth=1, ClassName="IEFrame")
         ie_doc = ie_win.PaneControl(ClassName="Internet Explorer_Server")
         hwnd = ie_doc.NativeWindowHandle
-        page_info = IEAutomationClass().getBoudingOfContainer(
-            hwnd, "", int(iframeIndex), ""
-        )
+        page_info = IEAutomationClass().getBoudingOfContainer(hwnd, "", int(iframeIndex), "")
         screen_top = page_info["top"]
         screen_left = page_info["left"]
         ieRatio = page_info["ieRatio"]
@@ -306,11 +290,7 @@ class WebIEFactory:
 
 
 
-                        """.replace(
-                "{", "{{"
-            ).replace(
-                "}", "}}"
-            )
+                        """.replace("{", "{{").replace("}", "}}")
             + """findElementBySelector(" """
             + cssSelector
             + ' " '
@@ -319,9 +299,7 @@ class WebIEFactory:
 
         # script = script.replace('{', '{{')
         # script = script.replace('}', '}}')
-        res = IEAutomationClass().executeJsScroll(
-            hwnd, script, int(iframeIndex), "wait use"
-        )["match_ele"]
+        res = IEAutomationClass().executeJsScroll(hwnd, script, int(iframeIndex), "wait use")["match_ele"]
         return res
 
     @classmethod
@@ -484,21 +462,15 @@ class WebIEFactory:
                                                        }}
                 """
         )  # 根据绝对xpath定位元素，将元素信息插入input
-        res = IEAutomationClass().executeJsGetBouding(
-            hwnd, script, int(iframeIndex), ""
-        )
+        res = IEAutomationClass().executeJsGetBouding(hwnd, script, int(iframeIndex), "")
         return res
 
     @classmethod
-    def __ele_css_selector_handler__(
-        cls, css_selector, iframeIndex, scroll_into_view="true"
-    ):
+    def __ele_css_selector_handler__(cls, css_selector, iframeIndex, scroll_into_view="true"):
         ie_win = auto.WindowControl(searchDepth=1, ClassName="IEFrame")
         ie_doc = ie_win.PaneControl(ClassName="Internet Explorer_Server")
         hwnd = ie_doc.NativeWindowHandle
-        page_info = IEAutomationClass().getBoudingOfContainer(
-            hwnd, "", int(iframeIndex), ""
-        )
+        page_info = IEAutomationClass().getBoudingOfContainer(hwnd, "", int(iframeIndex), "")
         screen_top = page_info["top"]
         screen_left = page_info["left"]
         ie_ratio = page_info["ieRatio"]
@@ -543,18 +515,12 @@ class WebIEFactory:
                     hiddenInput.setAttribute('iflyrpaKeys','match_ele');
                 }}
             }}
-        """.replace(
-                "{", "{{"
-            ).replace(
-                "}", "}}"
-            )
+        """.replace("{", "{{").replace("}", "}}")
             + """findSimilarElementBySelector('"""
             + css_selector
             + "')"
         )
-        res = IEAutomationClass().executeJs(hwnd, script, int(iframeIndex), "wait use")[
-            "match_ele"
-        ]
+        res = IEAutomationClass().executeJs(hwnd, script, int(iframeIndex), "wait use")["match_ele"]
         return res
 
     @classmethod
@@ -568,9 +534,7 @@ class WebIEFactory:
         ie_win = auto.WindowControl(searchDepth=1, ClassName="IEFrame")
         ie_doc = ie_win.PaneControl(ClassName="Internet Explorer_Server")
         hwnd = ie_doc.NativeWindowHandle
-        page_info = IEAutomationClass().getBoudingOfContainer(
-            hwnd, "", int(iframeIndex), ""
-        )
+        page_info = IEAutomationClass().getBoudingOfContainer(hwnd, "", int(iframeIndex), "")
         screen_top = page_info["top"]
         screen_left = page_info["left"]
         ie_ratio = page_info["ieRatio"]
@@ -903,20 +867,12 @@ class WebIEFactory:
                             handleMatchedElements(totalMatchedElements);
                         }}
                     }}
-                      """.replace(
-                "{", "{{"
-            ).replace(
-                "}", "}}"
-            )
+                      """.replace("{", "{{").replace("}", "}}")
             + """findElementBySelector("""
-            + json.dumps(pathdirs, ensure_ascii=False)
-            .replace("{", "{{")
-            .replace("}", "}}")
+            + json.dumps(pathdirs, ensure_ascii=False).replace("{", "{{").replace("}", "}}")
             + ")"
         )
-        res = IEAutomationClass().executeJsScroll(
-            hwnd, script, int(iframeIndex), "wait use"
-        )["match_ele"]
+        res = IEAutomationClass().executeJsScroll(hwnd, script, int(iframeIndex), "wait use")["match_ele"]
         return res
 
     @classmethod
@@ -979,16 +935,10 @@ class WebIEFactory:
         top_window(handle, ct)
         if app_name in [BrowserType.BTIE.value]:
             notification_bar = ct.Control(searchDepth=1, ClassName="BrowserRootView")
-            direct_ui = notification_bar.Control(
-                searchDepth=1, ClassName="NonClientView"
-            )
-            direct_ui = direct_ui.Control(
-                searchDepth=1, ClassName="BrowserFrameViewWin"
-            )
+            direct_ui = notification_bar.Control(searchDepth=1, ClassName="NonClientView")
+            direct_ui = direct_ui.Control(searchDepth=1, ClassName="BrowserFrameViewWin")
             direct_ui = direct_ui.Control(searchDepth=1, ClassName="BrowserView")
-            direct_ui = direct_ui.Control(
-                searchDepth=1, ClassName="SidebarContentsSplitView"
-            )
+            direct_ui = direct_ui.Control(searchDepth=1, ClassName="SidebarContentsSplitView")
             bounding_rect = direct_ui.BoundingRectangle
             top = bounding_rect.top
             left = bounding_rect.left

@@ -29,7 +29,6 @@ from rpaexcel.excel import Excel
 
 
 class TestExcel(TestCase):
-
     def setUp(self):
         self.excel = Excel()
         self.open_excel = self.excel.open_excel(
@@ -117,16 +116,12 @@ class TestExcel(TestCase):
             copy_range_type=ReadRangeType.AREA,
         )
         print(type(data))
-        new_excel = self.excel.paste_excel(
-            excel=self.open_excel, start_location="H2", paste_type=PasteType.PASTE_VALUE
-        )
+        new_excel = self.excel.paste_excel(excel=self.open_excel, start_location="H2", paste_type=PasteType.PASTE_VALUE)
 
     def test_delete_cell(self):
         excel = Excel()
         excel_obj = excel.open_excel(file_path=r"C:\Users\xcwang31\Desktop\llj.xlsx")
-        new_excel = excel.delete_excel_cell(
-            excel=excel_obj, delete_range_excel="cell", coordinate="A1"
-        )
+        new_excel = excel.delete_excel_cell(excel=excel_obj, delete_range_excel="cell", coordinate="A1")
         return new_excel
 
     def test_clear_content(self):
@@ -176,9 +171,7 @@ class TestExcel(TestCase):
     def test_cell_color(self):
         excel = Excel()
         excel_obj = excel.open_excel(file_path=r"C:\Users\xcwang31\Desktop\llj.xlsx")
-        color = excel.excel_get_cell_color(
-            excel=excel_obj, sheet_name="Sheet1", coordinate="B1"
-        )
+        color = excel.excel_get_cell_color(excel=excel_obj, sheet_name="Sheet1", coordinate="B1")
         print(color)
 
     def test_merge_split(self):
@@ -195,31 +188,23 @@ class TestExcel(TestCase):
     def test_move_excel_worksheet(self):
         excel = Excel()
         excel_obj = excel.open_excel(file_path=r"C:\Users\xcwang31\Desktop\llj.xlsx")
-        new_excel = excel.move_excel_worksheet(
-            excel=excel_obj, move_sheet_name="Sheet1", move_location_index=2
-        )
+        new_excel = excel.move_excel_worksheet(excel=excel_obj, move_sheet_name="Sheet1", move_location_index=2)
         return new_excel
 
     def test_delete_excel_worksheet(self):
         excel = Excel()
         excel_obj = excel.open_excel(file_path=r"C:\Users\xcwang31\Desktop\llj.xlsx")
-        new_excel = excel.delete_excel_worksheet(
-            excel=excel_obj, del_sheet_name="Sheet2"
-        )
+        new_excel = excel.delete_excel_worksheet(excel=excel_obj, del_sheet_name="Sheet2")
         return new_excel
 
     def test_rename_excel_worksheet(self):
         excel = Excel()
         excel_obj = excel.open_excel(file_path=r"C:\Users\xcwang31\Desktop\llj.xlsx")
-        new_excel = excel.rename_excel_worksheet(
-            excel=excel_obj, source_sheet_name="Sheet1", new_sheet_name="111a"
-        )
+        new_excel = excel.rename_excel_worksheet(excel=excel_obj, source_sheet_name="Sheet1", new_sheet_name="111a")
         return new_excel
 
     def test_get_excel_sheet_names(self):
-        sheet_names = self.excel.get_excel_worksheet_names(
-            excel=self.open_excel, sheet_range=SheetRangeType.ALL
-        )
+        sheet_names = self.excel.get_excel_worksheet_names(excel=self.open_excel, sheet_range=SheetRangeType.ALL)
         print(sheet_names)
 
     def test_copy_excel_sheet(self):
@@ -236,9 +221,7 @@ class TestExcel(TestCase):
     def test_search_excel_content(self):
         # result = self.excel.search_excel_content(excel=self.open_excel, find_str = "1", search_range=SearchRangeType.ALL, lookup_range_excel=SearchSheetType.ALL, sheet_name="Sheet3",
         #                                          case_flag=True, output_type=SearchResultType.CELL, replace_flag=True, replace_str="b", exact_match=True)
-        result = self.excel.search_and_replace_excel_content(
-            excel=self.open_excel, find_str="1"
-        )
+        result = self.excel.search_and_replace_excel_content(excel=self.open_excel, find_str="1")
         print(result)
 
     def test_insert_image(self):
@@ -288,15 +271,11 @@ class TestExcel(TestCase):
         )
 
     def test_get_col(self):
-        col_num = self.excel.get_excel_col_num(
-            self.open_excel, get_row_type=RowType.ONE_ROW, row="2"
-        )
+        col_num = self.excel.get_excel_col_num(self.open_excel, get_row_type=RowType.ONE_ROW, row="2")
         print(col_num)
 
     def test_get_row(self):
-        row_num = self.excel.get_excel_row_num(
-            self.open_excel, get_col_type=ColumnType.ONE_COLUMN, col="-1"
-        )
+        row_num = self.excel.get_excel_row_num(self.open_excel, get_col_type=ColumnType.ONE_COLUMN, col="-1")
         print(row_num)
 
     def test_loop_excel_content(self):

@@ -8,9 +8,7 @@ from rpascript.error import *
 def http_post(shot_url: str, gateway_port: str, data: Optional[dict]) -> Any:
     """post 请求"""
 
-    response = requests.post(
-        "http://127.0.0.1:{}{}".format(gateway_port, shot_url), json=data
-    )
+    response = requests.post("http://127.0.0.1:{}{}".format(gateway_port, shot_url), json=data)
     if response.status_code != 200:
         raise BaseException(
             SERVER_ERROR_FORMAT.format(response.status_code),

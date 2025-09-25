@@ -23,7 +23,6 @@ from websocket import WebSocketApp
 
 
 class WsApp:
-
     def __init__(
         self,
         url: str,
@@ -91,9 +90,7 @@ class WsApp:
         if watch.callback:
             watch.callback(*args, **kwargs)
 
-    def event(
-        self, channel: str, key: str = "", func: Callable[[BaseMsg, Any], Any] = None
-    ):
+    def event(self, channel: str, key: str = "", func: Callable[[BaseMsg, Any], Any] = None):
         """
         _add_route 路由添加
         """
@@ -127,15 +124,11 @@ class WsApp:
                             watch = self.watch_msg[name]
                             watch.retry()
                             if watch.time > watch.retry_time:
-                                self._call_wait(
-                                    watch, None, WatchTimeout("watch timeout")
-                                )
+                                self._call_wait(watch, None, WatchTimeout("watch timeout"))
                                 del self.watch_msg[name]
                             else:
                                 self._call_wait(watch, None, WatchRetry("retry"))
-                                heapq.heappush(
-                                    self.watch_msg_queue, (watch.timeout, name)
-                                )
+                                heapq.heappush(self.watch_msg_queue, (watch.timeout, name))
                     except Exception as e:
                         self.log("error clear_watch: {}".format(e))
 

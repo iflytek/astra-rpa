@@ -7,7 +7,6 @@ from rpareport import ReportLevelType
 
 
 class Report:
-
     @staticmethod
     @atomicMg.atomic(
         "Report",
@@ -18,9 +17,7 @@ class Report:
             ),
         ],
     )
-    def print(
-        report_type: ReportLevelType = ReportLevelType.INFO, msg: Any = "", **kwargs
-    ) -> None:
+    def print(report_type: ReportLevelType = ReportLevelType.INFO, msg: Any = "", **kwargs) -> None:
         msg = str(msg)
 
         line = int(kwargs.get("__line__", 0))

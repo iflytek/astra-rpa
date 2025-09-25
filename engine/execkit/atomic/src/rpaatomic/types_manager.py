@@ -8,7 +8,6 @@ from rpaatomic.config import config
 
 
 class TypesManager:
-
     def __init__(self):
         self.register_dict: dict = {}
         self.shortcut_dict: dict = {}
@@ -32,9 +31,7 @@ class TypesManager:
         src = "{}.{}()".format(cls.__module__, cls.__name__)
         if cls.__module__ == "rpaatomic.types":
             src = ""
-        self.register_dict[group_key] = TypesMeta(
-            key=group_key, desc=desc, src=src, version=version, **kwargs
-        ).__dict__
+        self.register_dict[group_key] = TypesMeta(key=group_key, desc=desc, src=src, version=version, **kwargs).__dict__
 
     def shortcut(
         self,
@@ -106,10 +103,7 @@ class TypesManager:
                 oldList = []
             has = False
             for ok, ov in enumerate(oldList):
-                if (
-                    v.get("key", None) == ov.get("key", None)
-                    and v.get("key", None) is not None
-                ):
+                if v.get("key", None) == ov.get("key", None) and v.get("key", None) is not None:
                     has = True
                     v.update(ov)
                     temp_register_dict[group_key]["funcList"].insert(ok, v)

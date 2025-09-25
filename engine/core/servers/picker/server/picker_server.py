@@ -7,7 +7,6 @@ from ..logger import logger
 
 
 class PickerServer:
-
     def __init__(self, service_context):
         self.service_context = service_context
         self.start_time = None  # 用于统计是否卡顿
@@ -70,9 +69,7 @@ class PickerServer:
                             # 收集返回数据
                             if self.service_context.event_core.is_focus():
                                 picker_data = sign[PickerSign.START.value]
-                                result = self.service_context.picker_core.element(
-                                    self.service_context, picker_data
-                                )
+                                result = self.service_context.picker_core.element(self.service_context, picker_data)
                             else:
                                 result = "cancel"
                         except Exception as e:

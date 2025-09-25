@@ -40,7 +40,6 @@ def decode_data(bytes, added_encode=None):
 
 
 class MailTask:
-
     def __init__(
         self,
         task_id: str,
@@ -118,33 +117,23 @@ class MailTask:
         :return:
         """
         try:
-            used_mail_server, used_mail_port, used_mail_protocol, used_mail_ssl = (
-                self.mail_server_dict[self.mail_flag]
-            )
+            used_mail_server, used_mail_port, used_mail_protocol, used_mail_ssl = self.mail_server_dict[self.mail_flag]
 
             # 根据协议和SSL设置创建相应的客户端
             if used_mail_protocol == "IMAP":
                 if used_mail_ssl:
-                    client = imaplib.IMAP4_SSL(
-                        host=used_mail_server, port=int(used_mail_port)
-                    )
+                    client = imaplib.IMAP4_SSL(host=used_mail_server, port=int(used_mail_port))
                 else:
-                    client = imaplib.IMAP4(
-                        host=used_mail_server, port=int(used_mail_port)
-                    )
+                    client = imaplib.IMAP4(host=used_mail_server, port=int(used_mail_port))
 
                 client.login(self.user_mail, self.user_authorization)
                 client.logout()  # 登出
                 return True
             elif used_mail_protocol == "POP3":
                 if used_mail_ssl:
-                    client = poplib.POP3_SSL(
-                        host=used_mail_server, port=int(used_mail_port)
-                    )
+                    client = poplib.POP3_SSL(host=used_mail_server, port=int(used_mail_port))
                 else:
-                    client = poplib.POP3(
-                        host=used_mail_server, port=int(used_mail_port)
-                    )
+                    client = poplib.POP3(host=used_mail_server, port=int(used_mail_port))
 
                 client.user(self.user_mail)
                 client.pass_(self.user_authorization)
@@ -161,20 +150,14 @@ class MailTask:
         :return:
         """
         try:
-            used_mail_server, used_mail_port, used_mail_protocol, used_mail_ssl = (
-                self.mail_server_dict[self.mail_flag]
-            )
+            used_mail_server, used_mail_port, used_mail_protocol, used_mail_ssl = self.mail_server_dict[self.mail_flag]
 
             # 统一使用同步方式，在异步函数中运行
             if used_mail_protocol == "IMAP":
                 if used_mail_ssl:
-                    client = imaplib.IMAP4_SSL(
-                        host=used_mail_server, port=int(used_mail_port)
-                    )
+                    client = imaplib.IMAP4_SSL(host=used_mail_server, port=int(used_mail_port))
                 else:
-                    client = imaplib.IMAP4(
-                        host=used_mail_server, port=int(used_mail_port)
-                    )
+                    client = imaplib.IMAP4(host=used_mail_server, port=int(used_mail_port))
 
                 # 登录
                 client.login(self.user_mail, self.user_authorization)
@@ -195,13 +178,9 @@ class MailTask:
                 return client
             elif used_mail_protocol == "POP3":
                 if used_mail_ssl:
-                    client = poplib.POP3_SSL(
-                        host=used_mail_server, port=int(used_mail_port)
-                    )
+                    client = poplib.POP3_SSL(host=used_mail_server, port=int(used_mail_port))
                 else:
-                    client = poplib.POP3(
-                        host=used_mail_server, port=int(used_mail_port)
-                    )
+                    client = poplib.POP3(host=used_mail_server, port=int(used_mail_port))
 
                 client.user(self.user_mail)
                 client.pass_(self.user_authorization)
@@ -215,9 +194,7 @@ class MailTask:
             logger.info(f"【AsyncMailTask callback】连接邮箱时报错：{str(e)}")
             import traceback
 
-            logger.info(
-                f"【AsyncMailTask callback】详细错误信息：{traceback.format_exc()}"
-            )
+            logger.info(f"【AsyncMailTask callback】详细错误信息：{traceback.format_exc()}")
             return None
 
     async def search_all(self, client, condition: str = "ALL"):
@@ -229,17 +206,13 @@ class MailTask:
                 # 先选择INBOX
                 status, data = client.select("INBOX")
                 if status != "OK":
-                    logger.error(
-                        f"【AsyncMailTask callback】选择INBOX失败：{status} - {data}"
-                    )
+                    logger.error(f"【AsyncMailTask callback】选择INBOX失败：{status} - {data}")
                     return False
 
                 # 然后搜索邮件
                 status, data = client.search(None, condition)
                 if status != "OK":
-                    logger.error(
-                        f"【AsyncMailTask callback】搜索邮件失败：{status} - {data}"
-                    )
+                    logger.error(f"【AsyncMailTask callback】搜索邮件失败：{status} - {data}")
                     return False
                 return data
             except Exception as e:
@@ -255,9 +228,7 @@ class MailTask:
                 logger.info(f"【AsyncMailTask callback】POP3获取邮件列表失败：{str(e)}")
                 return False
         else:
-            logger.error(
-                f"【AsyncMailTask callback】不支持的协议：{self.custom_mail_protocol}"
-            )
+            logger.error(f"【AsyncMailTask callback】不支持的协议：{self.custom_mail_protocol}")
             return False
 
     async def callback(self) -> bool:
@@ -301,9 +272,7 @@ class MailTask:
             email_ids = data
 
         cache_ids = global_mail_ids.get(self.task_id, [])
-        logger.info(
-            f"【AsyncMailTask callback】获取邮筒当前邮件成功：{len(email_ids)} 封邮件"
-        )
+        logger.info(f"【AsyncMailTask callback】获取邮筒当前邮件成功：{len(email_ids)} 封邮件")
 
         # 智能处理大量邮件：只检查新增的邮件
         if not cache_ids:
@@ -338,25 +307,17 @@ class MailTask:
                     status, data = client.fetch(email_id.decode(), "RFC822")
                 elif self.custom_mail_protocol == "POP3":
                     # POP3协议
-                    email_id_str = (
-                        email_id.decode()
-                        if isinstance(email_id, bytes)
-                        else str(email_id)
-                    )
+                    email_id_str = email_id.decode() if isinstance(email_id, bytes) else str(email_id)
                     data = client.retr(int(email_id_str))
                     # POP3返回的是元组 (response, lines, octets)
                     data = [data[1]]  # 转换为与IMAP相同的格式
                 else:
-                    logger.error(
-                        f"【AsyncMailTask callback】不支持的协议：{self.custom_mail_protocol}"
-                    )
+                    logger.error(f"【AsyncMailTask callback】不支持的协议：{self.custom_mail_protocol}")
                     continue
 
                 mail_info = self._extract_info(data, self.custom_mail_protocol)
                 processed_count += 1
-                logger.info(
-                    f"【AsyncMailTask callback】已读取邮件信息完毕，准备开始判断：{mail_info}..."
-                )
+                logger.info(f"【AsyncMailTask callback】已读取邮件信息完毕，准备开始判断：{mail_info}...")
 
                 if self._check_mail_conditions(mail_info):
                     logger.info(f"【AsyncMailTask callback】进入条件{self.condition}")
@@ -367,9 +328,7 @@ class MailTask:
                 logger.error(f"【AsyncMailTask callback】读取邮件失败：{str(e)}")
                 continue
 
-        logger.info(
-            f"【AsyncMailTask callback】处理了 {processed_count} 封新邮件，没有符合的邮件信息，直接返回"
-        )
+        logger.info(f"【AsyncMailTask callback】处理了 {processed_count} 封新邮件，没有符合的邮件信息，直接返回")
         global_mail_ids[self.task_id] = email_ids
         return False
 
@@ -408,9 +367,7 @@ class MailTask:
 
         # 记录匹配结果
         condition_logs = [f"{name}: {match}" for name, match in conditions]
-        logger.info(
-            f"【AsyncMailTask callback】条件匹配结果: {', '.join(condition_logs)}"
-        )
+        logger.info(f"【AsyncMailTask callback】条件匹配结果: {', '.join(condition_logs)}")
 
         # 如果没有设置任何条件，返回True
         if not conditions:
@@ -496,7 +453,6 @@ class MailTask:
             return deContent[0]
 
         def get_mail_time(msg):
-
             date_tuple = email.utils.parsedate_tz(msg["Date"])
             if date_tuple:
                 local_date = datetime.fromtimestamp(email.utils.mktime_tz(date_tuple))
@@ -553,6 +509,4 @@ class MailTask:
 
     def to_trigger(self):
         """获取该类任务的触发器模型"""
-        return IntervalTrigger(
-            end_date=self._end_time, **{"minutes": self.interval_time}
-        )
+        return IntervalTrigger(end_date=self._end_time, **{"minutes": self.interval_time})

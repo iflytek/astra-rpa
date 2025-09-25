@@ -11,7 +11,6 @@ from rpawindow.error import *
 
 
 class WindowsCore(IWindowsCore):
-
     @staticmethod
     def toControl(handler: Any) -> Any:
         import uiautomation
@@ -110,7 +109,6 @@ class WindowsCore(IWindowsCore):
 
 
 class UITreeCore(IUITreeCore):
-
     @staticmethod
     def GetRootControl() -> Any:
         import uiautomation
@@ -124,9 +122,7 @@ class UITreeCore(IUITreeCore):
         """
         import uiautomation
 
-        for control, depth in uiautomation.WalkControl(
-            control, includeTop=includeTop, maxDepth=maxDepth
-        ):
+        for control, depth in uiautomation.WalkControl(control, includeTop=includeTop, maxDepth=maxDepth):
             yield WalkControlInfo(
                 name=control.Name,
                 classname=control.ClassName,

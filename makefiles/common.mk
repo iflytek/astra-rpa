@@ -2,11 +2,18 @@
 # Common Variables and Functions - Makefile Module
 # =============================================================================
 
-# Project detection variables
-HAS_GO := $(shell [ -d "backend-go" ] && echo "true")
-HAS_TS := $(shell [ -d "frontend" ] && echo "true")
-HAS_JAVA := $(shell [ -d "backend-java" ] && echo "true")
-HAS_PYTHON := $(shell [ -d "backend-python" ] && echo "true")
+# Project detection variables (Cross-platform compatible)
+ifeq ($(OS),Windows_NT)
+    HAS_GO := $(shell if exist "backend-go" echo true)
+    HAS_TS := $(shell if exist "frontend" echo true)
+    HAS_JAVA := $(shell if exist "backend-java" echo true)
+    HAS_PYTHON := $(shell if exist "backend-python" echo true)
+else
+    HAS_GO := $(shell [ -d "backend-go" ] && echo "true")
+    HAS_TS := $(shell [ -d "frontend" ] && echo "true")
+    HAS_JAVA := $(shell [ -d "backend-java" ] && echo "true")
+    HAS_PYTHON := $(shell [ -d "backend-python" ] && echo "true")
+endif
 
 # Color output definitions
 RED := \033[31m
@@ -18,10 +25,17 @@ RESET := \033[0m
 # Project status check
 project-status: ## Show detected project status
 	@echo "$(BLUE)Detected Projects:$(RESET)"
+ifeq ($(OS),Windows_NT)
+	@if "$(HAS_GO)"=="true" (echo "  $(GREEN)✓ Go Backend$(RESET)       (backend-go/)") else (echo "  $(RED)✗ Go Backend$(RESET)       (backend-go/)")
+	@if "$(HAS_TS)"=="true" (echo "  $(GREEN)✓ TypeScript Frontend$(RESET) (frontend/)") else (echo "  $(RED)✗ TypeScript Frontend$(RESET) (frontend/)")
+	@if "$(HAS_JAVA)"=="true" (echo "  $(GREEN)✓ Java Backend$(RESET)      (backend-java/)") else (echo "  $(RED)✗ Java Backend$(RESET)      (backend-java/)")
+	@if "$(HAS_PYTHON)"=="true" (echo "  $(GREEN)✓ Python Backend$(RESET)    (backend-python/)") else (echo "  $(RED)✗ Python Backend$(RESET)    (backend-python/)")
+else
 	@if [ "$(HAS_GO)" = "true" ]; then echo "  $(GREEN)✓ Go Backend$(RESET)       (backend-go/)"; else echo "  $(RED)✗ Go Backend$(RESET)       (backend-go/)"; fi
 	@if [ "$(HAS_TS)" = "true" ]; then echo "  $(GREEN)✓ TypeScript Frontend$(RESET) (frontend/)"; else echo "  $(RED)✗ TypeScript Frontend$(RESET) (frontend/)"; fi
 	@if [ "$(HAS_JAVA)" = "true" ]; then echo "  $(GREEN)✓ Java Backend$(RESET)      (backend-java/)"; else echo "  $(RED)✗ Java Backend$(RESET)      (backend-java/)"; fi
 	@if [ "$(HAS_PYTHON)" = "true" ]; then echo "  $(GREEN)✓ Python Backend$(RESET)    (backend-python/)"; else echo "  $(RED)✗ Python Backend$(RESET)    (backend-python/)"; fi
+endif
 
 # Multi-language tool installation aggregate command
 install-tools: ## Install formatting and checking tools for all languages

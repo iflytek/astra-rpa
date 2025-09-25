@@ -7,7 +7,6 @@ from ...utils.subprocess import SubPopen
 
 
 class VenvManager:
-
     @staticmethod
     def list_temp_venvs(svc):
         """
@@ -32,9 +31,7 @@ class VenvManager:
             return project_venv_list
         for venv in os.listdir(self.svc.config.app_server.venv_base_dir):
             if re.search("^\d+$", venv):
-                project_venv_list.append(
-                    os.path.join(self.svc.config.app_server.venv_base_dir, venv)
-                )
+                project_venv_list.append(os.path.join(self.svc.config.app_server.venv_base_dir, venv))
         return project_venv_list
 
     @staticmethod
@@ -49,26 +46,18 @@ class VenvManager:
                 try:
                     # os.remove 无法删除.文件
                     if sys.platform == "win32":
-                        os.system(
-                            "rd /s/q {}".format(os.path.join(venvs_path, file_name))
-                        )
+                        os.system("rd /s/q {}".format(os.path.join(venvs_path, file_name)))
                     else:
-                        os.system(
-                            "rm -rf {}".format(os.path.join(venvs_path, file_name))
-                        )
+                        os.system("rm -rf {}".format(os.path.join(venvs_path, file_name)))
                 except Exception as e:
                     pass
             if not os.path.exists(os.path.join(venvs_path, file_name, "venv")):
                 try:
                     # os.remove 无法删除.文件
                     if sys.platform == "win32":
-                        os.system(
-                            "rd /s/q {}".format(os.path.join(venvs_path, file_name))
-                        )
+                        os.system("rd /s/q {}".format(os.path.join(venvs_path, file_name)))
                     else:
-                        os.system(
-                            "rm -rf {}".format(os.path.join(venvs_path, file_name))
-                        )
+                        os.system("rm -rf {}".format(os.path.join(venvs_path, file_name)))
                 except Exception as e:
                     pass
 
@@ -105,11 +94,7 @@ class VenvManager:
             env_dir_temp,
             "--system-site-packages",
         ]
-        _, err = (
-            SubPopen(name="create_venv", cmd=cmd)
-            .run(log=True, encoding=None)
-            .logger_handler()
-        )
+        _, err = SubPopen(name="create_venv", cmd=cmd).run(log=True, encoding=None).logger_handler()
         if err:
             logger.error("create venv failed: {}".format(err))
 

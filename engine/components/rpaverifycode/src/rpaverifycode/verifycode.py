@@ -18,7 +18,6 @@ Locator = locator
 
 
 class VerifyCode:
-
     @staticmethod
     @atomicMg.atomic(
         "VerifyCode",
@@ -46,20 +45,14 @@ class VerifyCode:
     ) -> str:
         element = Locator.locator(picture_pick.get("elementData"))
         rect = element.rect()
-        image_base64 = VerifyCodeCore.get_base64_screenshot(
-            rect.left, rect.top, rect.width(), rect.height()
-        )
-        code_result = VerifyCodeCore.get_api_result(
-            api_type=code_type.value, pic_element_base64=image_base64
-        )
+        image_base64 = VerifyCodeCore.get_base64_screenshot(rect.left, rect.top, rect.width(), rect.height())
+        code_result = VerifyCodeCore.get_api_result(api_type=code_type.value, pic_element_base64=image_base64)
         logger.info("验证码返回值: {}".format(code_result))
         if not code_result:
             raise BaseException(MSG_EMPTY_FORMAT, "")
 
         if input_flag:
-            BrowserElement.input(
-                browser_obj=browser_obj, element_data=input_box, fill_input=code_result
-            )
+            BrowserElement.input(browser_obj=browser_obj, element_data=input_box, fill_input=code_result)
 
         return code_result
 
@@ -98,14 +91,8 @@ class VerifyCode:
     ) -> int:
         element = Locator.locator(picture_pick.get("elementData"))
         rect = element.rect()
-        image_base64 = VerifyCodeCore.get_base64_screenshot(
-            rect.left, rect.top, rect.width(), rect.height()
-        )
-        drag_distance = int(
-            VerifyCodeCore.get_api_result(
-                api_type="22222", pic_element_base64=image_base64
-            )
-        )
+        image_base64 = VerifyCodeCore.get_base64_screenshot(rect.left, rect.top, rect.width(), rect.height())
+        drag_distance = int(VerifyCodeCore.get_api_result(api_type="22222", pic_element_base64=image_base64))
         logger.info("验证码返回值: {}".format(drag_distance))
         if not drag_distance:
             raise BaseException(MSG_EMPTY_FORMAT, "")
@@ -121,25 +108,17 @@ class VerifyCode:
             pyautogui.mouseDown()
             smooth_move(start_pos.x + drag_distance * 0.85, start_pos.y, duration=0.5)
             time.sleep(0.5)
-            delta = drag_distance - round(
-                float(VerifyCodeCore.get_margin_left(browser_obj, move_pic_pick))
-            )
+            delta = drag_distance - round(float(VerifyCodeCore.get_margin_left(browser_obj, move_pic_pick)))
             logger.info(delta)
             while abs(delta) > mini_step:
                 if delta > 0:
-                    smooth_move(
-                        pyautogui.position().x + mini_step, start_pos.y, duration=0.5
-                    )
+                    smooth_move(pyautogui.position().x + mini_step, start_pos.y, duration=0.5)
                     # pyautogui.moveTo(pyautogui.position().x + mini_step, start_pos.y, duration=0.5)
                 else:
-                    smooth_move(
-                        pyautogui.position().x - mini_step, start_pos.y, duration=0.5
-                    )
+                    smooth_move(pyautogui.position().x - mini_step, start_pos.y, duration=0.5)
                     # pyautogui.moveTo(pyautogui.position().x - mini_step, start_pos.y, duration=0.5)
                 time.sleep(0.5)
-                delta = drag_distance - round(
-                    float(VerifyCodeCore.get_margin_left(browser_obj, move_pic_pick))
-                )
+                delta = drag_distance - round(float(VerifyCodeCore.get_margin_left(browser_obj, move_pic_pick)))
                 logger.info(delta)
             # 释放滑块
             pyautogui.mouseUp()
@@ -160,9 +139,7 @@ class VerifyCode:
         element = Locator.locator(picture_pick.get("elementData"))
         rect = element.rect()
         logger.info("rect: {}".format(rect))
-        image_base64 = VerifyCodeCore.get_base64_screenshot(
-            rect.left, rect.top, rect.width(), rect.height()
-        )
+        image_base64 = VerifyCodeCore.get_base64_screenshot(rect.left, rect.top, rect.width(), rect.height())
 
         # 86,94|255,62|170,92
         click_result = VerifyCodeCore.get_api_result(

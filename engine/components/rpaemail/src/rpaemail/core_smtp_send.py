@@ -17,13 +17,10 @@ from rpaframe.logger.logger import logger
 
 
 class EmailSmtpSend:
-
     def __init__(self):
         self.mail_handler = None
 
-    def login(
-        self, server, port: int, user, password, use_ssl: bool = False, timeout=20
-    ):
+    def login(self, server, port: int, user, password, use_ssl: bool = False, timeout=20):
         if use_ssl:
             self.mail_handler = smtplib.SMTP_SSL(server, port, timeout=timeout)
         else:
@@ -40,21 +37,15 @@ class EmailSmtpSend:
         address_group_list = []
         if isinstance(address_list, list):
             address_group_list = [
-                list(filter(lambda a: a, email.replace("；", ";").split(";")))
-                for email in address_list
+                list(filter(lambda a: a, email.replace("；", ";").split(";"))) for email in address_list
             ]
         elif isinstance(address_list, str):
             address_list = address_list.replace("；", ";")
             try:
                 address_list = ast.literal_eval(address_list)
-                address_group_list = [
-                    list(filter(lambda a: a, email.split(";")))
-                    for email in address_list
-                ]
+                address_group_list = [list(filter(lambda a: a, email.split(";"))) for email in address_list]
             except Exception as e:
-                address_group_list = [
-                    list(filter(lambda a: a, address_list.split(";")))
-                ]
+                address_group_list = [list(filter(lambda a: a, address_list.split(";")))]
                 address_list = [address_list]
 
         # address_list是装载了原本输入str的list ["a@qq.com;b@qq.com","a@163.com]

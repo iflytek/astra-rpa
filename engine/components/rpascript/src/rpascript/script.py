@@ -7,7 +7,6 @@ from rpaatomic.report import report
 
 
 class Script:
-
     @staticmethod
     @atomicMg.atomic(
         "Script",

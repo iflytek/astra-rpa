@@ -74,9 +74,7 @@ class CheckBrowserPlugin(BaseModel):
         default_browser_list = [browser.value.lower() for browser in BrowserType]
         if not v:
             return default_browser_list
-        assert all(
-            item in default_browser_list for item in v
-        ), "Invalid browser type in plugins"
+        assert all(item in default_browser_list for item in v), "Invalid browser type in plugins"
         return v
 
 
@@ -162,9 +160,7 @@ def video_play(video_paths: VideoPaths):
     try:
         video_paths = video_paths.videoPaths
         if not video_paths:
-            return res_msg(
-                code=ResCode.ERR, msg="videoPaths is empty", data={"exist": []}
-            )
+            return res_msg(code=ResCode.ERR, msg="videoPaths is empty", data={"exist": []})
         existing_files = [path for path in video_paths if os.path.exists(path)]
         return res_msg(code=ResCode.SUCCESS, msg="", data={"exist": existing_files})
     except Exception as e:
@@ -195,9 +191,7 @@ def auto_start_enable(svc: Svc = Depends(get_svc)):
 
     from ...utils.window import AutoStart
 
-    exe_path = os.path.join(
-        os.path.dirname(os.path.dirname(svc.config.app_server.conf_file)), "iflyrpa.exe"
-    ).lower()
+    exe_path = os.path.join(os.path.dirname(os.path.dirname(svc.config.app_server.conf_file)), "iflyrpa.exe").lower()
     AutoStart.enable(exe_path)
     return res_msg(msg="", data={"tips": "操作成功"})
 
@@ -317,19 +311,15 @@ def stream_sse(pck: PipPackages, svc: Svc = Depends(get_svc)):
                     raise Exception(err_info)
 
             # 下载并缓存
-            download_proc = SubPopen(
-                cmd=PipManager.download_pip_cmd(package, version, mirror)
-            ).run(log=True)
+            download_proc = SubPopen(cmd=PipManager.download_pip_cmd(package, version, mirror)).run(log=True)
             sub_processes.append(download_proc)
             for log_data in log(download_proc):
                 yield log_data
 
             # 执行安装
-            install_proc = SubPopen(
-                cmd=PipManager.install_pip_cmd(
-                    package, version, exec_python=exec_python
-                )
-            ).run(log=True)
+            install_proc = SubPopen(cmd=PipManager.install_pip_cmd(package, version, exec_python=exec_python)).run(
+                log=True
+            )
             sub_processes.append(download_proc)
             for log_data in log(install_proc):
                 yield log_data
@@ -374,9 +364,7 @@ def notify_text(param: NotifyText, svc: Svc = Depends(get_svc)):
         if not notifier.text_setting["receiver"]:
             return res_msg(code=ResCode.ERR, msg="手机号必填", data=None)
 
-        notifier.send_text(
-            "test", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        )
+        notifier.send_text("test", datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     return res_msg(code=ResCode.SUCCESS, msg="", data=None)
 
 

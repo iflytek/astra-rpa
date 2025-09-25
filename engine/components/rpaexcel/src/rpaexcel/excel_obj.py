@@ -43,9 +43,7 @@ class ExcelObj:
         used_cell = ws.Cells.SpecialCells(11).Address.replace("$", "")
 
         used_range = ws.Range("A1:{}".format(used_cell))
-        data = (
-            used_range.Value
-        )  # 将使用区域的数据读入数组；如果表太大，可能会导致内存溢出
+        data = used_range.Value  # 将使用区域的数据读入数组；如果表太大，可能会导致内存溢出
 
         rows_count = ws.Cells.SpecialCells(11).Row
         cols_count = ws.Cells.SpecialCells(11).Column

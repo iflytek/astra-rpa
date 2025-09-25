@@ -49,17 +49,13 @@ def gen_type(__annotation__):
     elif issubclass(__annotation__, Enum):
         # Enum类型
         types = (
-            getattr(__annotation__, "__name__")
-            if getattr(__annotation__, "__name__", "_empty") != "_empty"
-            else None
+            getattr(__annotation__, "__name__") if getattr(__annotation__, "__name__", "_empty") != "_empty" else None
         )
         kind = InspectType.ENUM
     elif hasattr(__annotation__, "__validate__"):
         # pydantic基础类型扩展
         types = (
-            getattr(__annotation__, "__name__")
-            if getattr(__annotation__, "__name__", "_empty") != "_empty"
-            else None
+            getattr(__annotation__, "__name__") if getattr(__annotation__, "__name__", "_empty") != "_empty" else None
         )
         kind = InspectType.RPABASE
     else:
@@ -82,9 +78,7 @@ def handle_existence(file_path, exist_type):
             count = 1
             while True:
                 new_full_file_name = f"{file_name}_{count}{file_ext}"
-                new_file_path = os.path.join(
-                    os.path.dirname(file_path), new_full_file_name
-                )
+                new_file_path = os.path.join(os.path.dirname(file_path), new_full_file_name)
                 if os.path.exists(new_file_path):
                     count += 1
                 else:
@@ -98,7 +92,6 @@ def handle_existence(file_path, exist_type):
 
 
 class ParamModel:
-
     def __init__(self, inputList: list, params_name_dict: dict, key: str = ""):
         self.inputList = inputList
         self.key = key
@@ -218,9 +211,7 @@ class ParamModel:
                 except Exception as e:
                     raise BaseException(
                         PARAM_CONVERT_ERROR_FORMAT.format(show_name, i.types, value),
-                        "{}的值转换成{}失败{}, error:{}".format(
-                            show_name, i.types, value, e
-                        ),
+                        "{}的值转换成{}失败{}, error:{}".format(show_name, i.types, value, e),
                     ) from e
             elif isinstance(i.__annotation__, str):
                 # 忽略
@@ -240,9 +231,7 @@ class ParamModel:
                 except Exception as e:
                     raise BaseException(
                         PARAM_CONVERT_ERROR_FORMAT.format(show_name, i.types, value),
-                        "{}的值装换成{}失败{}, error:{}".format(
-                            show_name, i.types, value, e
-                        ),
+                        "{}的值装换成{}失败{}, error:{}".format(show_name, i.types, value, e),
                     ) from e
             else:
                 # 忽略

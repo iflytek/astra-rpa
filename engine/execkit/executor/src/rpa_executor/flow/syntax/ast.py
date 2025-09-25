@@ -23,9 +23,7 @@ from rpaatomic.types import Int
 from rpaatomic.types import List as RpaList
 
 
-def expression(
-    code: str, svc: Svc, env: Optional[Environment], token: Token, project_id
-) -> Any:
+def expression(code: str, svc: Svc, env: Optional[Environment], token: Token, project_id) -> Any:
     """处理python的表达式， 大概率会出现错误"""
 
     if not code:
@@ -133,9 +131,7 @@ def condition_expression(
             args2_val = args2.value
         if cond in [">", "<", ">=", "<="]:
             # 优先将args1_val转换成数字做比较
-            if isinstance(args1_val, str) and (
-                str_is_integer(args1_val) or str_is_float(args1_val)
-            ):
+            if isinstance(args1_val, str) and (str_is_integer(args1_val) or str_is_float(args1_val)):
                 if str_is_integer(args1_val):
                     args1_val = int(args1_val)
                 else:
@@ -146,9 +142,7 @@ def condition_expression(
                 args1_val = str(args1_val)
 
             # 优先将args2_val转换成数字做比较
-            if isinstance(args2_val, str) and (
-                str_is_integer(args2_val) or str_is_float(args2_val)
-            ):
+            if isinstance(args2_val, str) and (str_is_integer(args2_val) or str_is_float(args2_val)):
                 if str_is_integer(args2_val):
                     args2_val = int(args2_val)
                 else:
@@ -245,9 +239,7 @@ class Program(Node):
             for gk, gv in env.get_global(svc.start_project_id).items():
                 if isinstance(gv.value, InputParam):
                     if gv.value.need_eval:
-                        gv.value = expression(
-                            gv.value.value, svc, None, self.token, svc.start_project_id
-                        )
+                        gv.value = expression(gv.value.value, svc, None, self.token, svc.start_project_id)
                     else:
                         gv.value = gv.value.value
 
@@ -261,18 +253,13 @@ class Program(Node):
             if svc.start_process_id in svc.process_dict:
                 for p_v in svc.process_dict[svc.start_process_id].param:
                     # 获取返回值
-                    if (
-                        p_v.get("varDirection", 1)
-                        and int(p_v.get("varDirection", 1)) == 1
-                    ):
+                    if p_v.get("varDirection", 1) and int(p_v.get("varDirection", 1)) == 1:
                         process_return_key.append(p_v.get("varName", ""))
 
                     # 计算值
                     if p_v.get("varName", "") in process_param_dict:
                         # 获取传参值
-                        p_v_value = process_param_dict[p_v.get("varName", "")].get(
-                            "varValue", None
-                        )
+                        p_v_value = process_param_dict[p_v.get("varName", "")].get("varValue", None)
                     else:
                         # 计算默认值
                         p_v_value = svc.params.parse_param(
@@ -281,11 +268,7 @@ class Program(Node):
                                 "types": p_v.get("varType", "Any"),
                                 "name": p_v.get("varName", ""),
                                 "value": p_v.get("varValue", ""),
-                                "title": p_v.get(
-                                    FLOW_PARAM_NAME_FORMAT.format(
-                                        p_v.get("varName", "")
-                                    )
-                                ),
+                                "title": p_v.get(FLOW_PARAM_NAME_FORMAT.format(p_v.get("varName", ""))),
                             },
                             svc,
                         )
@@ -375,9 +358,7 @@ class Component(Node):
             for gk, gv in env.get_global(project_id).items():
                 if isinstance(gv.value, InputParam):
                     if gv.value.need_eval:
-                        gv.value = expression(
-                            gv.value.value, svc, None, self.token, project_id
-                        )
+                        gv.value = expression(gv.value.value, svc, None, self.token, project_id)
                     else:
                         gv.value = gv.value.value
 
@@ -396,9 +377,7 @@ class Component(Node):
 
                     # 去执行
                     if v.need_eval:
-                        arguments[k] = expression(
-                            v.value, svc, env, self.token, project_id
-                        )
+                        arguments[k] = expression(v.value, svc, env, self.token, project_id)
                     else:
                         arguments[k] = v.value
 
@@ -414,18 +393,13 @@ class Component(Node):
             if process_id in svc.process_dict:
                 for p_v in svc.process_dict[process_id].param:
                     # 获取返回值
-                    if (
-                        p_v.get("varDirection", 1)
-                        and int(p_v.get("varDirection", 1)) == 1
-                    ):
+                    if p_v.get("varDirection", 1) and int(p_v.get("varDirection", 1)) == 1:
                         process_return_key.append(p_v.get("varName", ""))
 
                     # 计算值
                     if p_v.get("varName", "") in process_param_dict:
                         # 获取传参值
-                        p_v_value = process_param_dict[p_v.get("varName", "")].get(
-                            "varValue", None
-                        )
+                        p_v_value = process_param_dict[p_v.get("varName", "")].get("varValue", None)
                     else:
                         # 计算默认值
                         p_v_value = svc.params.parse_param(
@@ -434,19 +408,13 @@ class Component(Node):
                                 "types": p_v.get("varType", "Any"),
                                 "name": p_v.get("varName", ""),
                                 "value": p_v.get("varValue", ""),
-                                "title": p_v.get(
-                                    FLOW_PARAM_NAME_FORMAT.format(
-                                        p_v.get("varName", "")
-                                    )
-                                ),
+                                "title": p_v.get(FLOW_PARAM_NAME_FORMAT.format(p_v.get("varName", ""))),
                             },
                             svc,
                         )
                         if isinstance(p_v_value, InputParam):
                             if p_v_value.need_eval:
-                                p_v_value = expression(
-                                    p_v_value.value, svc, None, self.token, project_id
-                                )
+                                p_v_value = expression(p_v_value.value, svc, None, self.token, project_id)
                             else:
                                 p_v_value = p_v_value.value
 
@@ -557,9 +525,7 @@ class ChildProgram(Node):
 
                     # 去执行
                     if v.need_eval:
-                        arguments[k] = expression(
-                            v.value, svc, env, self.token, project_id
-                        )
+                        arguments[k] = expression(v.value, svc, env, self.token, project_id)
                     else:
                         arguments[k] = v.value
 
@@ -575,18 +541,13 @@ class ChildProgram(Node):
             if process_id in svc.process_dict:
                 for p_v in svc.process_dict[process_id].param:
                     # 获取返回值
-                    if (
-                        p_v.get("varDirection", 1)
-                        and int(p_v.get("varDirection", 1)) == 1
-                    ):
+                    if p_v.get("varDirection", 1) and int(p_v.get("varDirection", 1)) == 1:
                         process_return_key.append(p_v.get("varName", ""))
 
                     # 计算值
                     if p_v.get("varName", "") in process_param_dict:
                         # 获取传参值
-                        p_v_value = process_param_dict[p_v.get("varName", "")].get(
-                            "varValue", None
-                        )
+                        p_v_value = process_param_dict[p_v.get("varName", "")].get("varValue", None)
                     else:
                         # 计算默认值
                         p_v_value = svc.params.parse_param(
@@ -595,19 +556,13 @@ class ChildProgram(Node):
                                 "types": p_v.get("varType", "Any"),
                                 "name": p_v.get("varName", ""),
                                 "value": p_v.get("varValue", ""),
-                                "title": p_v.get(
-                                    FLOW_PARAM_NAME_FORMAT.format(
-                                        p_v.get("varName", "")
-                                    )
-                                ),
+                                "title": p_v.get(FLOW_PARAM_NAME_FORMAT.format(p_v.get("varName", ""))),
                             },
                             svc,
                         )
                         if isinstance(p_v_value, InputParam):
                             if p_v_value.need_eval:
-                                p_v_value = expression(
-                                    p_v_value.value, svc, None, self.token, project_id
-                                )
+                                p_v_value = expression(p_v_value.value, svc, None, self.token, project_id)
                             else:
                                 p_v_value = p_v_value.value
 
@@ -690,7 +645,6 @@ class Block(Node):
                 statement.init(svc)
 
     def run(self, svc: Svc, env: Environment) -> Union[Sign, None]:
-
         @event.event_handler(svc)
         def raw_run():
             while not self.is_init:
@@ -764,9 +718,7 @@ class Atomic(Node):
 
                     # 去执行
                     if v.need_eval:
-                        arguments[k] = expression(
-                            v.value, svc, env, self.token, project_id
-                        )
+                        arguments[k] = expression(v.value, svc, env, self.token, project_id)
                     else:
                         arguments[k] = v.value
 
@@ -880,9 +832,7 @@ class AtomicExist(Node):
 
                     # 去执行
                     if v.need_eval:
-                        arguments[k] = expression(
-                            v.value, svc, env, self.token, project_id
-                        )
+                        arguments[k] = expression(v.value, svc, env, self.token, project_id)
                     else:
                         arguments[k] = v.value
 
@@ -965,7 +915,6 @@ class AtomicFor(Node):
             self.is_init = True
 
     def run(self, svc: Svc, env: Environment) -> Union[Sign, None]:
-
         @event.error_logger_handler(svc, Node, self.token)
         @event.event_handler(svc)
         def raw_run():
@@ -993,9 +942,7 @@ class AtomicFor(Node):
 
                     # 去执行
                     if v.need_eval:
-                        arguments[k] = expression(
-                            v.value, svc, env, self.token, project_id
-                        )
+                        arguments[k] = expression(v.value, svc, env, self.token, project_id)
                     else:
                         arguments[k] = v.value
 
@@ -1240,7 +1187,6 @@ class IF(Node):
             self.alternative.init(svc)
 
     def run(self, svc: Svc, env: Environment) -> Union[Sign, None]:
-
         @event.error_logger_handler(svc, env, self.token)
         @event.event_handler(svc)
         def raw_run():
@@ -1250,9 +1196,7 @@ class IF(Node):
 
             project_id = self.token.value.get("__project_id__")
 
-            res = if_condition_expression(
-                self.__condition__, self.consequence, svc, env, self.token, project_id
-            )
+            res = if_condition_expression(self.__condition__, self.consequence, svc, env, self.token, project_id)
             if not isinstance(res, bool):
                 assert isinstance(res, Sign)
                 if res.type in [SignType.Return, SignType.Continue, SignType.Break]:
@@ -1323,9 +1267,7 @@ class While(Node):
 
             while True:
                 event.debug_handler(svc, env, self.token)
-                if not condition_expression(
-                    self.__condition__, svc, env, self.token, project_id
-                ):
+                if not condition_expression(self.__condition__, svc, env, self.token, project_id):
                     break
 
                 res = self.body.run(svc, env)
@@ -1441,29 +1383,15 @@ class For(Node):
                 for k, v in self.__arguments__.items():
                     assert isinstance(v, InputParam)
                     if v.need_eval:
-                        arguments[k] = expression(
-                            v.value, svc, env, self.token, project_id
-                        )
+                        arguments[k] = expression(v.value, svc, env, self.token, project_id)
                     else:
                         arguments[k] = v.value
 
             if self.token.type == TokenType.ForStep.value:
                 params_name = arguments.get("__params_name__", {})
-                start = int(
-                    Int.__validate__(
-                        params_name.get("start", "start"), arguments.get("start", 0)
-                    )
-                )
-                end = int(
-                    Int.__validate__(
-                        params_name.get("end", "end"), arguments.get("end", 0)
-                    )
-                )
-                step = int(
-                    Int.__validate__(
-                        params_name.get("step", "step"), arguments.get("step", 0)
-                    )
-                )
+                start = int(Int.__validate__(params_name.get("start", "start"), arguments.get("start", 0)))
+                end = int(Int.__validate__(params_name.get("end", "end"), arguments.get("end", 0)))
+                step = int(Int.__validate__(params_name.get("step", "step"), arguments.get("step", 0)))
                 i = start
                 while True:
                     event.debug_handler(svc, env, self.token)
@@ -1502,11 +1430,7 @@ class For(Node):
                     i += step
             elif self.token.type == TokenType.ForList.value:
                 params_name = arguments.get("__params_name__", {})
-                lists = list(
-                    RpaList.__validate__(
-                        params_name.get("list", "list"), arguments.get("list", 0)
-                    )
-                )
+                lists = list(RpaList.__validate__(params_name.get("list", "list"), arguments.get("list", 0)))
                 i = 0
                 ls = len(lists)
                 while True:
@@ -1562,11 +1486,7 @@ class For(Node):
                     i += 1
             elif self.token.type == TokenType.ForDict.value:
                 params_name = arguments.get("__params_name__", {})
-                dicts = dict(
-                    RpaDict.__validate__(
-                        params_name.get("dicts", "dicts"), arguments.get("dicts", 0)
-                    )
-                )
+                dicts = dict(RpaDict.__validate__(params_name.get("dicts", "dicts"), arguments.get("dicts", 0)))
                 keys = list(dicts.keys())
 
                 i = 0

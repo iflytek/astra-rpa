@@ -14,11 +14,8 @@ from .tasks.base_task import (
 
 
 class Trigger:
-
     def __init__(self):
-        self.tasks: Dict[
-            str, Union[AsyncSchedulerTask, AsyncOneCallTask, AsyncImmediateTask]
-        ] = {}
+        self.tasks: Dict[str, Union[AsyncSchedulerTask, AsyncOneCallTask, AsyncImmediateTask]] = {}
         self.queue: Queue = Queue(maxsize=1000)
         self.scheduler = AsyncIOScheduler()
         self.scheduler.start()
@@ -51,30 +48,12 @@ class Trigger:
 
             trigger_ids = triggers.keys()
             # 和本地任务的交集、本地任务差集、云端任务差集
-            intersection = [
-                triggers.get(task_id)
-                for task_id, task in self.tasks.items()
-                if task_id in trigger_ids
-            ]
-            local_tasks_unique = [
-                task_id
-                for task_id, task in self.tasks.items()
-                if task_id not in trigger_ids
-            ]
-            cloud_tasks_unique = [
-                task
-                for task_id, task in triggers.items()
-                if task_id not in self.tasks.keys()
-            ]
-            logger.info(
-                f"【to_native】intersection本地、云端相交部分是：{intersection} "
-            )
-            logger.info(
-                f"【to_native】local_tasks_unique本地独有任务：{local_tasks_unique} "
-            )
-            logger.info(
-                f"【to_native】cloud_tasks_unique云端独有任务：{cloud_tasks_unique} "
-            )
+            intersection = [triggers.get(task_id) for task_id, task in self.tasks.items() if task_id in trigger_ids]
+            local_tasks_unique = [task_id for task_id, task in self.tasks.items() if task_id not in trigger_ids]
+            cloud_tasks_unique = [task for task_id, task in triggers.items() if task_id not in self.tasks.keys()]
+            logger.info(f"【to_native】intersection本地、云端相交部分是：{intersection} ")
+            logger.info(f"【to_native】local_tasks_unique本地独有任务：{local_tasks_unique} ")
+            logger.info(f"【to_native】cloud_tasks_unique云端独有任务：{cloud_tasks_unique} ")
 
             # 本地任务差值，直接删除
             for task_id in local_tasks_unique:
@@ -89,14 +68,10 @@ class Trigger:
                 task = self.tasks[trigger["trigger_id"]]
 
                 if task.kwargs == trigger:
-                    logger.info(
-                        "【to_native】云端、本地任务ID相同，参数相同，不进行更新。 "
-                    )
+                    logger.info("【to_native】云端、本地任务ID相同，参数相同，不进行更新。 ")
                     continue
                 else:
-                    logger.info(
-                        f"【to_native】云端、本地任务ID相同，参数不同，进行更新：{trigger} "
-                    )
+                    logger.info(f"【to_native】云端、本地任务ID相同，参数不同，进行更新：{trigger} ")
                     self.update_task(**trigger)
             return True
         except Exception as e:
@@ -240,9 +215,7 @@ class Trigger:
             # 记录任务信息
             task_type = getattr(task, "task_type", "unknown")
             task_name = getattr(task, "trigger_name", "unknown")
-            logger.info(
-                f"【delete_task】找到任务: ID={trigger_id}, 类型={task_type}, 名称={task_name}"
-            )
+            logger.info(f"【delete_task】找到任务: ID={trigger_id}, 类型={task_type}, 名称={task_name}")
 
             # 执行任务删除
             if hasattr(task, "delete"):
@@ -257,9 +230,7 @@ class Trigger:
             return True
 
         except Exception as e:
-            logger.error(
-                f"【delete_task】删除任务时发生异常: {trigger_id}, 错误: {str(e)}"
-            )
+            logger.error(f"【delete_task】删除任务时发生异常: {trigger_id}, 错误: {str(e)}")
             import traceback
 
             logger.error(f"【delete_task】详细错误信息: {traceback.format_exc()}")

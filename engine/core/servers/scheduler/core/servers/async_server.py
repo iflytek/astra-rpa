@@ -9,7 +9,6 @@ from ..terminal.terminal import Terminal
 
 
 class RpaSchedulerAsyncServer(IServer):
-
     def __init__(self, svc):
         super().__init__(
             svc=svc,
@@ -44,11 +43,8 @@ class RpaSchedulerAsyncServer(IServer):
 
 
 class TerminalAsyncServer(IServer):
-
     def __init__(self, svc):
-        super().__init__(
-            svc=svc, name="terminal_async", level=ServerLevel.NORMAL, run_is_async=True
-        )
+        super().__init__(svc=svc, name="terminal_async", level=ServerLevel.NORMAL, run_is_async=True)
 
     def run(self):
         i = 1
@@ -95,7 +91,6 @@ class AtomicUploadAsyncServer(IServer):
 
 
 class CheckPickProcessAliveServer(IServer):
-
     def __init__(self, svc):
         super().__init__(
             svc=svc,

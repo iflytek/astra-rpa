@@ -13,25 +13,19 @@ if sys.platform == "win32":
 elif platform.system() == "Linux":
     from rpawindow.core_unix import WindowsCore
 else:
-    raise NotImplementedError(
-        "Your platform (%s) is not supported by (%s)."
-        % (platform.system(), "clipboard")
-    )
+    raise NotImplementedError("Your platform (%s) is not supported by (%s)." % (platform.system(), "clipboard"))
 
 WindowsCore: IWindowsCore = WindowsCore()
 
 
 class Window:
-
     @staticmethod
     @atomicMg.atomic(
         "Window",
         inputList=[
             atomicMg.param(
                 "pick",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.PICK.value, params={"use": "WINDOW"}
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.PICK.value, params={"use": "WINDOW"}),
             ),
             atomicMg.param(
                 "check_type",
@@ -66,9 +60,7 @@ class Window:
         inputList=[
             atomicMg.param(
                 "pick",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.PICK.value, params={"use": "WINDOW"}
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.PICK.value, params={"use": "WINDOW"}),
             ),
         ],
     )
@@ -85,9 +77,7 @@ class Window:
         inputList=[
             atomicMg.param(
                 "pick",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.PICK.value, params={"use": "WINDOW"}
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.PICK.value, params={"use": "WINDOW"}),
             ),
         ],
     )
@@ -104,18 +94,14 @@ class Window:
         inputList=[
             atomicMg.param(
                 "pick",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.PICK.value, params={"use": "WINDOW"}
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.PICK.value, params={"use": "WINDOW"}),
             ),
             atomicMg.param(
                 "width",
                 dynamics=[
                     DynamicsItem(
                         key="$this.width.show",
-                        expression="return $this.size_type.value == '{}'".format(
-                            WindowSizeType.CUSTOM.value
-                        ),
+                        expression="return $this.size_type.value == '{}'".format(WindowSizeType.CUSTOM.value),
                     )
                 ],
             ),
@@ -124,9 +110,7 @@ class Window:
                 dynamics=[
                     DynamicsItem(
                         key="$this.height.show",
-                        expression="return $this.size_type.value == '{}'".format(
-                            WindowSizeType.CUSTOM.value
-                        ),
+                        expression="return $this.size_type.value == '{}'".format(WindowSizeType.CUSTOM.value),
                     )
                 ],
             ),

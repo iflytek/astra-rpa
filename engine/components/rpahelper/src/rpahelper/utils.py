@@ -9,7 +9,6 @@ from rpahelper.error import *
 
 
 class Storage(ABC):
-
     @abstractmethod
     def global_list(self, project_id: str) -> list:
         """获取工程的全局变量"""
@@ -22,7 +21,6 @@ class Storage(ABC):
 
 
 class HttpStorage(Storage):
-
     def __init__(self, gateway_port: str = None):
         self.gateway_port = gateway_port
         self.cache_element = {}
@@ -60,9 +58,7 @@ class HttpStorage(Storage):
 
         if json_data.get("code") != "0000" and json_data.get("code") != "000000":
             msg = json_data.get("message", "")
-            raise BaseException(
-                SERVER_ERROR_FORMAT.format(msg), "服务器错误{}".format(json_data)
-            )
+            raise BaseException(SERVER_ERROR_FORMAT.format(msg), "服务器错误{}".format(json_data))
         return json_data.get("data", {})
 
     def global_list(self, project_id: str) -> list:
@@ -82,9 +78,7 @@ class HttpStorage(Storage):
             None,
         )
         if not res:
-            raise BaseException(
-                ELEMENT_FAIL_GET_FORMAL.format(element_id), "元素获取异常 为空"
-            )
+            raise BaseException(ELEMENT_FAIL_GET_FORMAL.format(element_id), "元素获取异常 为空")
 
         # 处理元素的图片URL，将其转为base64编码保存到elementData中
         if res.get("imageUrl") or res.get("parentImageUrl"):
@@ -101,9 +95,7 @@ class HttpStorage(Storage):
                 else:
                     image_base64 = ""
                 if parent_image_url and not parent_image_url.endswith("fileId="):
-                    parent_image_base64 = self.__http__(
-                        "/" + parent_image_url, None, None, "get"
-                    )
+                    parent_image_base64 = self.__http__("/" + parent_image_url, None, None, "get")
                 else:
                     parent_image_base64 = ""
                 element_data["img"]["self"] = image_base64

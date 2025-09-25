@@ -38,7 +38,6 @@ class SyncMap:
 
 
 class Svc:
-
     def __init__(
         self,
         cache_dir,
@@ -80,9 +79,7 @@ class Svc:
         # 日志
         self.report_queue = Queue(maxsize=1000)
         self.report = report
-        self.report.code.set_config(
-            self.log_ws, self.report_queue, project_id, self.exec_id
-        )
+        self.report.code.set_config(self.log_ws, self.report_queue, project_id, self.exec_id)
 
         # 运行工具
         self.ws = None
@@ -104,36 +101,24 @@ class Svc:
         if is_pause:
             self.events[EventKey.ResPause.value] = False
             self.events[EventKey.Pause.value] = True
-            while not (
-                EventKey.ResPause.value in self.events
-                and self.events[EventKey.ResPause.value]
-            ):
+            while not (EventKey.ResPause.value in self.events and self.events[EventKey.ResPause.value]):
                 await asyncio.sleep(0.1)
         else:
             self.events[EventKey.ResPause.value] = True
             self.events[EventKey.Pause.value] = False
-            while (
-                EventKey.ResPause.value in self.events
-                and self.events[EventKey.ResPause.value]
-            ):
+            while EventKey.ResPause.value in self.events and self.events[EventKey.ResPause.value]:
                 await asyncio.sleep(0.1)
 
     async def event_continue(self):
         self.events[EventKey.ResContinue.value] = False
         self.events[EventKey.Continue.value] = True
-        while not (
-            EventKey.ResContinue.value in self.events
-            and self.events[EventKey.ResContinue.value]
-        ):
+        while not (EventKey.ResContinue.value in self.events and self.events[EventKey.ResContinue.value]):
             await asyncio.sleep(0.1)
 
     async def event_next(self):
         self.events[EventKey.ResNext.value] = False
         self.events[EventKey.Next.value] = True
-        while not (
-            EventKey.ResNext.value in self.events
-            and self.events[EventKey.ResNext.value]
-        ):
+        while not (EventKey.ResNext.value in self.events and self.events[EventKey.ResNext.value]):
             await asyncio.sleep(0.1)
 
     def event_break(self) -> dict:
@@ -156,9 +141,7 @@ class Svc:
                             msg_str=ReportFlowTaskEndUserClose,
                         )
                     )
-                    svc.storage.report_status_upload(
-                        "cancel", ReportFlowTaskEndUserClose
-                    )
+                    svc.storage.report_status_upload("cancel", ReportFlowTaskEndUserClose)
                 # 补充日志结束
                 svc.report.code.close()
                 self.sys_exit_lock_end = True

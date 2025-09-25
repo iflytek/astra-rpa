@@ -4,7 +4,6 @@ from rpa_executor.flow.syntax.environment import EnvBizTypes, Environment, EnvIt
 
 
 class TestEnvironment(TestCase):
-
     def test_getitem_1(self):
         env = Environment()
         env.setitem("a", EnvItem(biz_types=EnvBizTypes.Global, key="a", value=1))

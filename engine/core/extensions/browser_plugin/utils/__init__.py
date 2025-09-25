@@ -5,6 +5,7 @@ Author: chaowang46
 Date: 2024/10/8 14:58
 docs:
 """
+
 import configparser
 import json
 import os
@@ -15,7 +16,9 @@ import subprocess
 
 def parse_filename_regex(filename):
     # 正则表达式匹配模式
-    pattern = r"^(?P<browser>[a-zA-Z0-9-]+)-(?P<version>\d+(\.\d+)*)-(?P<hashid>[a-zA-Z0-9]+)\.(?P<extension>[a-zA-Z]+)$"
+    pattern = (
+        r"^(?P<browser>[a-zA-Z0-9-]+)-(?P<version>\d+(\.\d+)*)-(?P<hashid>[a-zA-Z0-9]+)\.(?P<extension>[a-zA-Z]+)$"
+    )
     match = re.match(pattern, filename)
     if match:
         # 使用命名捕获组来提取各部分
@@ -45,9 +48,7 @@ class FirefoxUtils:
 
             # 遍历每个版本并检查是否安装
             for version in firefox_versions:
-                result = subprocess.run(
-                    ["which", version], capture_output=True, text=True
-                )
+                result = subprocess.run(["which", version], capture_output=True, text=True)
                 # 检查'which'命令是否找到了二进制文件
                 if result.returncode == 0:
                     return version
@@ -77,9 +78,7 @@ class FirefoxUtils:
             default_profile = config[sections[0]]["Default"]
             return os.path.join(profile_path, default_profile)
         else:
-            raise FileNotFoundError(
-                "没有找到默认配置文件。请确保已创建 Firefox 配置文件。"
-            )
+            raise FileNotFoundError("没有找到默认配置文件。请确保已创建 Firefox 配置文件。")
 
     @staticmethod
     def check(firefox_command="firefox"):
@@ -88,9 +87,7 @@ class FirefoxUtils:
         :return:
         """
         try:
-            default_profile_path = FirefoxUtils.get_default_profile_path(
-                firefox_command
-            )
+            default_profile_path = FirefoxUtils.get_default_profile_path(firefox_command)
             # extensions.json 文件中保存了插件的相关信息
             extensions_path = os.path.join(default_profile_path, "extensions.json")
             if os.path.exists(extensions_path):

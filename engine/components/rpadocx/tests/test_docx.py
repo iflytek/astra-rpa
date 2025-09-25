@@ -31,7 +31,6 @@ from rpadocx.docx import Docx
 
 
 class TestDocx(TestCase):
-
     @classmethod
     def setUpClass(cls):
         current_dir = os.path.abspath(os.getcwd())
@@ -103,14 +102,10 @@ class TestDocx(TestCase):
 
     def test_read_docx(self):
         read_content = self.docx.read_docx(self.docx_obj)
-        self.assertEqual(
-            read_content, "word文档中插入中文内容\nword文档中插入特殊符号#%……%*%#@……&\n"
-        )
+        self.assertEqual(read_content, "word文档中插入中文内容\nword文档中插入特殊符号#%……%*%#@……&\n")
 
     def test_select(self):
-        self.docx.select_text(
-            doc=self.docx_obj, select_type=SelectTextType.ROW, r_start=1, r_end=3
-        )
+        self.docx.select_text(doc=self.docx_obj, select_type=SelectTextType.ROW, r_start=1, r_end=3)
 
     def test_move_cursor(self):
         self.docx.get_cursor_position(
@@ -138,13 +133,9 @@ class TestDocx(TestCase):
         )
 
     def test_read_table(self):
-        table_content_text = self.docx.read_table(
-            doc=self.docx_obj, search_type=SearchTableType.TEXT, text="设置"
-        )
+        table_content_text = self.docx.read_table(doc=self.docx_obj, search_type=SearchTableType.TEXT, text="设置")
         print(table_content_text)
-        table_content_idx = self.docx.read_table(
-            doc=self.docx_obj, search_type=SearchTableType.IDX, idx=2
-        )
+        table_content_idx = self.docx.read_table(doc=self.docx_obj, search_type=SearchTableType.IDX, idx=2)
         self.assertEqual(table_content_text, table_content_idx)
 
     def test_insert_table(self):
@@ -165,9 +156,7 @@ class TestDocx(TestCase):
             underline=UnderLineStyle.LINE,
         )
         self.assertEqual(
-            self.docx.read_table(
-                doc=self.docx_obj, search_type=SearchTableType.IDX, idx=1
-            ),
+            self.docx.read_table(doc=self.docx_obj, search_type=SearchTableType.IDX, idx=1),
             [["1", "2", "3"], ["4", "5", "6"], ["7", "8", ""]],
         )
 

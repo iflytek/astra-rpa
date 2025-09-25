@@ -43,15 +43,15 @@ class Process:
                     "CSV",
                 ]
             ).decode(system_encoding)
-            output_2 = subprocess.check_output(
-                ["tasklist", "/FI", "IMAGENAME eq route.exe", "/FO", "CSV"]
-            ).decode(system_encoding)
+            output_2 = subprocess.check_output(["tasklist", "/FI", "IMAGENAME eq route.exe", "/FO", "CSV"]).decode(
+                system_encoding
+            )
             output_3 = subprocess.check_output(
                 ["tasklist", "/FI", "IMAGENAME eq ConsoleApp1.exe", "/FO", "CSV"]
             ).decode(system_encoding)
-            output_4 = subprocess.check_output(
-                ["tasklist", "/FI", "IMAGENAME eq winvnc.exe", "/FO", "CSV"]
-            ).decode(system_encoding)
+            output_4 = subprocess.check_output(["tasklist", "/FI", "IMAGENAME eq winvnc.exe", "/FO", "CSV"]).decode(
+                system_encoding
+            )
             pids = []
             for output in [output_1, output_2, output_3, output_4]:
                 for line in output.splitlines()[1:]:
@@ -78,11 +78,7 @@ class Process:
                 try:
                     # 他们的名称是否包含python
                     proc_name = proc.name()
-                    if (
-                        python_tag_linux in proc_name
-                        or "route.exe" in proc_name
-                        or "winvnc" in proc_name
-                    ):
+                    if python_tag_linux in proc_name or "route.exe" in proc_name or "winvnc" in proc_name:
                         # 忽略自己
                         if proc.pid == setup_pid:
                             continue
@@ -154,15 +150,10 @@ class Process:
         while True:
             time.sleep(1)
             try:
-                if (
-                    not psutil.pid_exists(root_id)
-                    or psutil.Process(root_id).name() != root_name
-                ):
+                if not psutil.pid_exists(root_id) or psutil.Process(root_id).name() != root_name:
                     logger.info("pid_exist_check kill process...")
                     # 首先递归杀一遍子进程
-                    Process.kill_proc_tree(
-                        psutil.Process(os.getpid()), exclude_pids=[os.getpid()]
-                    )
+                    Process.kill_proc_tree(psutil.Process(os.getpid()), exclude_pids=[os.getpid()])
                     # 再找到当前的启动路径的所有python进程杀一遍
                     Process.kill_all_zombie()
                     # 自行杀掉

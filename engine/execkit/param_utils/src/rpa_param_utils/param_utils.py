@@ -100,9 +100,7 @@ def special_eval_parse(param: dict, env: dict, id2name: dict = None):
     return param
 
 
-def pre_param_handler(
-    param_value: Any, param_types: str = None, show_name: str = "", id2name: dict = None
-):
+def pre_param_handler(param_value: Any, param_types: str = None, show_name: str = "", id2name: dict = None):
     """预处理参数"""
     if id2name is None:
         id2name = {}
@@ -148,11 +146,7 @@ def pre_param_handler(
                 else:
                     v["type"] = ParamType.STR.value
             except Exception as e:
-                raise Exception(
-                    "{}的值转换成{}失败，原始值:{}。".format(
-                        show_name, param_types, v["data"]
-                    )
-                ) from e
+                raise Exception("{}的值转换成{}失败，原始值:{}。".format(show_name, param_types, v["data"])) from e
         elif v.get("type") == ParamType.G_VAR.value and v["data"] in id2name:
             v["data"] = id2name[v["data"]]
         else:
@@ -188,13 +182,7 @@ def param_to_eval(ls: list) -> (Any, bool):
         if need_eval:
             # 转换成eval能执行的状态
             if types == ParamType.STR.value:
-                res.append(
-                    '"{}"'.format(
-                        value.replace("\n", "\\n")
-                        .replace("\t", "\\t")
-                        .replace("\r", "\\r")
-                    )
-                )
+                res.append('"{}"'.format(value.replace("\n", "\\n").replace("\t", "\\t").replace("\r", "\\r")))
             else:
                 res.append("{}".format(value))
         else:

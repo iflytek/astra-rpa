@@ -35,7 +35,6 @@ def get_pattern(pattern_type, regex_formula):
 
 
 class StringProcess:
-
     @staticmethod
     @atomicMg.atomic(
         "StringProcess",
@@ -45,9 +44,7 @@ class StringProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.regex_formula.show",
-                        expression="return $this.extract_type.value == '{}'".format(
-                            ExtractType.REGEX.value
-                        ),
+                        expression="return $this.extract_type.value == '{}'".format(ExtractType.REGEX.value),
                     )
                 ],
             ),
@@ -65,9 +62,7 @@ class StringProcess:
                 re.compile(regex_formula)
                 pass
             except re.error:
-                raise BaseException(
-                    INVALID_REGEX_ERROR_FORMAT.format(regex_formula), "请重新输入"
-                )
+                raise BaseException(INVALID_REGEX_ERROR_FORMAT.format(regex_formula), "请重新输入")
 
         pattern = get_pattern(extract_type, regex_formula)
         result = re.findall(pattern, text)
@@ -84,9 +79,7 @@ class StringProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.replaced_string.show",
-                        expression="return $this.replace_type.value == '{}'".format(
-                            ReplaceType.STRING.value
-                        ),
+                        expression="return $this.replace_type.value == '{}'".format(ReplaceType.STRING.value),
                     )
                 ],
             ),
@@ -95,9 +88,7 @@ class StringProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.regex_formula.show",
-                        expression="return $this.replace_type.value == '{}'".format(
-                            ReplaceType.REGEX.value
-                        ),
+                        expression="return $this.replace_type.value == '{}'".format(ReplaceType.REGEX.value),
                     )
                 ],
             ),
@@ -118,9 +109,7 @@ class StringProcess:
                 re.compile(regex_formula)
                 pass
             except re.error:
-                raise BaseException(
-                    INVALID_REGEX_ERROR_FORMAT.format(regex_formula), "请重新输入"
-                )
+                raise BaseException(INVALID_REGEX_ERROR_FORMAT.format(regex_formula), "请重新输入")
 
         if replace_type == ReplaceType.REGEX:
             old_value = regex_formula
@@ -179,9 +168,7 @@ class StringProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.separator.show",
-                        expression="return $this.concat_type.value == '{}'".format(
-                            ConcatStringType.OTHER.value
-                        ),
+                        expression="return $this.concat_type.value == '{}'".format(ConcatStringType.OTHER.value),
                     )
                 ],
             ),
@@ -237,13 +224,9 @@ class StringProcess:
         if total_length <= len(string_data):
             return result_str
         else:
-            n = math.ceil(
-                (total_length - len(string_data)) / len(add_str)
-            )  # 向上取整获得重复次数
+            n = math.ceil((total_length - len(string_data)) / len(add_str))  # 向上取整获得重复次数
             if fill_type == FillStringType.LEFT:  # 左端补齐
-                result_str = (add_str * n)[
-                    0 : total_length - len(string_data)
-                ] + string_data
+                result_str = (add_str * n)[0 : total_length - len(string_data)] + string_data
             elif fill_type == FillStringType.RIGHT:  # 右端补齐
                 result_str = (string_data + add_str * n)[0:total_length]
             return result_str
@@ -256,9 +239,7 @@ class StringProcess:
         ],
         outputList=[atomicMg.param("stripped_string", types="Str")],
     )
-    def strip_string(
-        string_data: str, strip_method: StripStringType = StripStringType.BOTH
-    ):
+    def strip_string(string_data: str, strip_method: StripStringType = StripStringType.BOTH):
         """ """
         if len(string_data) == 0:
             return ""
@@ -282,9 +263,7 @@ class StringProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.index.show",
-                        expression="return $this.cut_type.value == '{}'".format(
-                            CutStringType.INDEX.value
-                        ),
+                        expression="return $this.cut_type.value == '{}'".format(CutStringType.INDEX.value),
                     )
                 ],
             ),
@@ -293,9 +272,7 @@ class StringProcess:
                 dynamics=[
                     DynamicsItem(
                         key="$this.find_str.show",
-                        expression="return $this.cut_type.value == '{}'".format(
-                            CutStringType.STRING.value
-                        ),
+                        expression="return $this.cut_type.value == '{}'".format(CutStringType.STRING.value),
                     )
                 ],
             ),
@@ -338,9 +315,7 @@ class StringProcess:
         ],
         outputList=[atomicMg.param("change_case_string", types="Str")],
     )
-    def change_case_of_string(
-        string_data: str, case_type: CaseChangeType = CaseChangeType.LOWER
-    ):
+    def change_case_of_string(string_data: str, case_type: CaseChangeType = CaseChangeType.LOWER):
         if string_data:
             if case_type == CaseChangeType.LOWER:
                 return str.lower(string_data)

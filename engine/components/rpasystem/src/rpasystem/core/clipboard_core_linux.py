@@ -5,7 +5,6 @@ from rpasystem.core.clipboard_core import IClipBoardCore
 
 
 class ClipBoardCore(IClipBoardCore):
-
     @staticmethod
     def copy_str_clip(data: str = ""):
         return pyperclip.copy(data)

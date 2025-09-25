@@ -18,19 +18,13 @@ class ChromePluginManager(PluginManagerCore):
         self.plugin_data = plugin_data
 
         self.browser_path = r"Software\Google\Chrome"
-        self.extension_path = (
-            f"{self.browser_path}\\Extensions\\{plugin_data.plugin_id}"
-        )
+        self.extension_path = f"{self.browser_path}\\Extensions\\{plugin_data.plugin_id}"
         self.preferences_path_list = [
-            r"C:\Users\{}\AppData\Local\Google\Chrome\User Data\Default\Preferences".format(
-                getpass.getuser()
-            ),
-            r"C:\Users\{}\AppData\Local\Google\Chrome\User Data\Profile 1\Preferences".format(
-                getpass.getuser()
-            ),
+            r"C:\Users\{}\AppData\Local\Google\Chrome\User Data\Default\Preferences".format(getpass.getuser()),
+            r"C:\Users\{}\AppData\Local\Google\Chrome\User Data\Profile 1\Preferences".format(getpass.getuser()),
         ]
-        self.secure_preferences = r"C:\Users\{}\AppData\Local\Google\Chrome\User Data\Default\Secure Preferences".format(
-            getpass.getuser()
+        self.secure_preferences = (
+            r"C:\Users\{}\AppData\Local\Google\Chrome\User Data\Default\Secure Preferences".format(getpass.getuser())
         )
 
     def check_browser(self):
@@ -38,9 +32,7 @@ class ChromePluginManager(PluginManagerCore):
         return Registry.exist(self.browser_path)
 
     def check_plugin(self):
-        installed, installed_version = check_chrome_plugin(
-            self.preferences_path_list, self.plugin_data.plugin_id
-        )
+        installed, installed_version = check_chrome_plugin(self.preferences_path_list, self.plugin_data.plugin_id)
 
         latest_version = self.plugin_data.plugin_version
         latest = installed_version == latest_version
@@ -64,22 +56,14 @@ class ChromePluginManager(PluginManagerCore):
         )
 
         Registry.create(self.extension_path)
-        Registry.add_string_value(
-            self.extension_path, "path", self.plugin_data.plugin_path
-        )
-        Registry.add_string_value(
-            self.extension_path, "version", self.plugin_data.plugin_version
-        )
+        Registry.add_string_value(self.extension_path, "path", self.plugin_data.plugin_path)
+        Registry.add_string_value(self.extension_path, "version", self.plugin_data.plugin_version)
 
         # https://chromeenterprise.google/policies/?policy=ExtensionInstallAllowlist
         try:
             # 插件未发布，这个去掉这个警告
-            if not Registry.exist(
-                r"Software\Policies\Google\Chrome\ExtensionInstallAllowlist"
-            ):
-                Registry.create(
-                    r"Software\Policies\Google\Chrome\ExtensionInstallAllowlist"
-                )
+            if not Registry.exist(r"Software\Policies\Google\Chrome\ExtensionInstallAllowlist"):
+                Registry.create(r"Software\Policies\Google\Chrome\ExtensionInstallAllowlist")
             Registry.add_string_value(
                 r"Software\Policies\Google\Chrome\ExtensionInstallAllowlist",
                 "2",

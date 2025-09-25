@@ -68,10 +68,6 @@ def list_to_excel(path_list: list = None, excel_path: str = ""):
 
 
 def get_exe_path():
-    atoms_dir = os.path.dirname(
-        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    )
-    driver_path = os.path.join(
-        atoms_dir, "rpagui", "src", "rpagui", "VK", "bin", "debug", "VK.exe"
-    )
+    atoms_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    driver_path = os.path.join(atoms_dir, "rpagui", "src", "rpagui", "VK", "bin", "debug", "VK.exe")
     return driver_path

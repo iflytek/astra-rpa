@@ -14,7 +14,6 @@ Any = typing.Any
 
 
 class Float(float):
-
     @classmethod
     def __validate__(cls, name: str, value):
         if isinstance(value, Float):
@@ -32,7 +31,6 @@ class Float(float):
 
 
 class Int(int):
-
     @classmethod
     def __validate__(cls, name: str, value):
         if isinstance(value, Int):
@@ -50,7 +48,6 @@ class Int(int):
 
 
 class Bool:
-
     @classmethod
     def __validate__(cls, name: str, value):
         if isinstance(value, Bool):
@@ -68,9 +65,7 @@ class Bool:
 
     def __init__(self, value: bool):
         if not isinstance(value, bool):
-            raise BaseException(
-                TYPE_KIND_ERROR_FORMAT.format(value), "Value must be a boolean"
-            )
+            raise BaseException(TYPE_KIND_ERROR_FORMAT.format(value), "Value must be a boolean")
         self._value = value
 
     def __bool__(self):
@@ -81,7 +76,6 @@ class Bool:
 
 
 class Str(str):
-
     @classmethod
     def __validate__(cls, name: str, value):
         if isinstance(value, Str):
@@ -96,7 +90,6 @@ class Str(str):
 
 
 class List(list):
-
     @classmethod
     def __validate__(cls, name: str, value):
         if isinstance(value, List):
@@ -113,7 +106,6 @@ class List(list):
 
 
 class Dict(dict):
-
     @classmethod
     def __validate__(cls, name: str, value):
         if isinstance(value, Dict):
@@ -130,7 +122,6 @@ class Dict(dict):
 
 
 class PATH(Str):
-
     @classmethod
     def __validate__(cls, name: str, value):
         if isinstance(value, PATH):
@@ -167,7 +158,6 @@ class PATH(Str):
 
 
 class DIRPATH(Str):
-
     @classmethod
     def __validate__(cls, name: str, value):
         if isinstance(value, DIRPATH):
@@ -218,9 +208,7 @@ class Date:
             "{}参数验证失败{}".format(name, value),
         )
 
-    def set_time(
-        self, time_str: str, format_type: TimeFormatType = TimeFormatType.YMD_HMS
-    ):
+    def set_time(self, time_str: str, format_type: TimeFormatType = TimeFormatType.YMD_HMS):
         self.format = format_type
         self.time = parser.parse(time_str)
 
@@ -230,17 +218,9 @@ class Date:
             TimeFormatType.YMD_CN_HM,
             TimeFormatType.YMD_CN_HMS,
         ]:
-            time_format = (
-                self.format.value.replace("年", "Nian")
-                .replace("月", "Yue")
-                .replace("日", "Ri")
-            )
+            time_format = self.format.value.replace("年", "Nian").replace("月", "Yue").replace("日", "Ri")
             datetime_current = self.time.strftime(time_format)
-            return (
-                datetime_current.replace("Nian", "年")
-                .replace("Yue", "月")
-                .replace("Ri", "日")
-            )
+            return datetime_current.replace("Nian", "年").replace("Yue", "月").replace("Ri", "日")
         else:
             return self.time.strftime(self.format.value)
 
@@ -285,7 +265,6 @@ class Date:
 
 
 class URL(Str):
-
     @classmethod
     def __validate__(cls, name: str, value):
         if isinstance(value, URL):
@@ -309,7 +288,6 @@ class URL(Str):
 
 
 class Pick(Dict):
-
     @classmethod
     def __validate__(cls, name: str, value):
         if isinstance(value, Pick):
@@ -326,7 +304,6 @@ class Pick(Dict):
 
 
 class WebPick(Pick):
-
     @classmethod
     def __validate__(cls, name: str, value):
         if isinstance(value, WebPick):
@@ -343,7 +320,6 @@ class WebPick(Pick):
 
 
 class WinPick(Pick):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.locator = None  # 如果包含locator就直接使用locator
@@ -374,7 +350,6 @@ class WinPick(Pick):
 
 
 class IMGPick(Pick):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.locator = None  # 如果包含locator就直接使用locator
@@ -453,7 +428,6 @@ class Password(Str):
 
 
 class Ciphertext:
-
     def __init__(self, s: str):
         self.str = s
         self.__key__ = None  # 解密密钥，如果为空就说明不需要解密，密文就是解密,加密类型aes, 使用__隐藏方法

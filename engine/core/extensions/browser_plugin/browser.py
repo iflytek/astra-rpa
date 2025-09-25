@@ -5,6 +5,7 @@ Author: chaowang46
 Date: 2024/9/30 15:30
 docs:
 """
+
 import os
 import sys
 
@@ -18,7 +19,6 @@ elif sys.platform == "linux":
 
 
 class ExtensionManager(object):
-
     def __init__(self, browser_type: BrowserType = BrowserType.CHROME):
         self.browser_type = browser_type
 
@@ -26,22 +26,15 @@ class ExtensionManager(object):
         plugin_dir = os.path.join(current_directory, "plugins")
         browser_name = self.browser_type.value.lower()
 
-        public_chrom_plugin = tuple(
-            name.value.lower()
-            for name in (BrowserType.CHROME, BrowserType.MICROSOFT_EDGE)
-        )
+        public_chrom_plugin = tuple(name.value.lower() for name in (BrowserType.CHROME, BrowserType.MICROSOFT_EDGE))
         pre_name = "chrome" if browser_name in public_chrom_plugin else browser_name
-        plugins = [
-            file for file in os.listdir(plugin_dir) if file.startswith(pre_name + "-")
-        ]
+        plugins = [file for file in os.listdir(plugin_dir) if file.startswith(pre_name + "-")]
 
         if not plugins:
             raise Exception("插件不存在安装失败...")
 
         # 提取文件名中的参数
-        plugin_name, plugin_version, plugin_id, _extension = parse_filename_regex(
-            plugins[-1]
-        )
+        plugin_name, plugin_version, plugin_id, _extension = parse_filename_regex(plugins[-1])
 
         self.plugin_data = PluginData(
             plugin_path=os.path.join(os.getcwd(), plugin_dir, plugins[-1]),
@@ -50,9 +43,7 @@ class ExtensionManager(object):
             plugin_name=plugin_name,
         )
 
-        self.browser_plugin_manager = BrowserPluginFactory.get_plugin_manager(
-            browser_type, self.plugin_data
-        )
+        self.browser_plugin_manager = BrowserPluginFactory.get_plugin_manager(browser_type, self.plugin_data)
 
     @staticmethod
     def get_support():

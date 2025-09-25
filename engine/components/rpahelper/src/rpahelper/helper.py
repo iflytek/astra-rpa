@@ -50,16 +50,10 @@ class Helper:
             for k, v in self.__env__.items():
                 if k in self.__map__:
                     v = self.__map__[k]
-        res = copy.deepcopy(
-            self.__storage__.element_detail(self.__PROJECT_ID__, element_id)
-        )
+        res = copy.deepcopy(self.__storage__.element_detail(self.__PROJECT_ID__, element_id))
         try:
             element_data = json.loads(res.get("elementData"))
-            res["elementData"] = param_utils.special_eval_element(
-                element_data, self.__env__, self.__id2name__
-            )
+            res["elementData"] = param_utils.special_eval_element(element_data, self.__env__, self.__id2name__)
             return res
         except Exception as e:
-            raise BaseException(
-                SPECIAL_PARSE_FORMAL, "特殊元素处理异常 {}".format(e)
-            ) from e
+            raise BaseException(SPECIAL_PARSE_FORMAL, "特殊元素处理异常 {}".format(e)) from e

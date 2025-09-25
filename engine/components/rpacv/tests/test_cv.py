@@ -28,7 +28,6 @@ input_data = {
 
 
 class TestCV(TestCase):
-
     def test_cv_click(self):
         cv = CV()
         time.sleep(3)

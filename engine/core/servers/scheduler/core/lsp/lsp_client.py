@@ -27,9 +27,7 @@ class LspClient(object):
 
     def __init__(self, project_id: str):
         self.svc = get_svc()
-        self._project_path = path.join(
-            path.abspath(self.svc.config.app_server.venv_base_dir), project_id
-        )
+        self._project_path = path.join(path.abspath(self.svc.config.app_server.venv_base_dir), project_id)
         self._lsp_session = LspSession()
         self._lsp_session.enter()
 

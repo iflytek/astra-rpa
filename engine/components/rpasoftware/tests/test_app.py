@@ -26,12 +26,8 @@ def _install_signal_handlers():
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Minimal test app for RPA software integration tests"
-    )
-    parser.add_argument(
-        "args", nargs=argparse.REMAINDER, help="Positional arguments (ignored)"
-    )
+    parser = argparse.ArgumentParser(description="Minimal test app for RPA software integration tests")
+    parser.add_argument("args", nargs=argparse.REMAINDER, help="Positional arguments (ignored)")
     parser.add_argument(
         "--sleep",
         type=float,

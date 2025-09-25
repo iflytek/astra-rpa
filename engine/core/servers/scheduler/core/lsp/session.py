@@ -134,9 +134,7 @@ class LspSession(MethodDispatcher):
 
     def text_document_signature_help(self, signature_help_params):
         """Sends text document hover request to LSP server."""
-        fut = self._send_request(
-            "textDocument/signatureHelp", params=signature_help_params
-        )
+        fut = self._send_request("textDocument/signatureHelp", params=signature_help_params)
         return fut.result()
 
     def text_document_declaration(self, declaration_params):
@@ -151,16 +149,12 @@ class LspSession(MethodDispatcher):
 
     def text_document_symbol(self, document_symbol_params):
         """Sends text document symbol request to LSP server."""
-        fut = self._send_request(
-            "textDocument/documentSymbol", params=document_symbol_params
-        )
+        fut = self._send_request("textDocument/documentSymbol", params=document_symbol_params)
         return fut.result()
 
     def text_document_highlight(self, document_highlight_params):
         """Sends text document highlight request to LSP server."""
-        fut = self._send_request(
-            "textDocument/documentHighlight", params=document_highlight_params
-        )
+        fut = self._send_request("textDocument/documentHighlight", params=document_highlight_params)
         return fut.result()
 
     def text_document_references(self, references_params):
@@ -192,9 +186,7 @@ class LspSession(MethodDispatcher):
 
     def notify_did_change_configuration(self, did_change_configuration_params):
         """Sends did change configuration notification to LSP Server."""
-        self._send_notification(
-            "workspace/didChangeConfiguration", params=did_change_configuration_params
-        )
+        self._send_notification("workspace/didChangeConfiguration", params=did_change_configuration_params)
 
     def set_notification_callback(self, notification_name, callback):
         """Set custom LS notification handler."""
@@ -213,9 +205,7 @@ class LspSession(MethodDispatcher):
 
     def _publish_diagnostics(self, publish_diagnostics_params):
         """Internal handler for text document publish diagnostics."""
-        return self._handle_notification(
-            PUBLISH_DIAGNOSTICS, publish_diagnostics_params
-        )
+        return self._handle_notification(PUBLISH_DIAGNOSTICS, publish_diagnostics_params)
 
     def _window_log_message(self, window_log_message_params):
         """Internal handler for window log message."""
@@ -223,9 +213,7 @@ class LspSession(MethodDispatcher):
 
     def _window_show_message(self, window_show_message_params):
         """Internal handler for window show message."""
-        return self._handle_notification(
-            WINDOW_SHOW_MESSAGE, window_show_message_params
-        )
+        return self._handle_notification(WINDOW_SHOW_MESSAGE, window_show_message_params)
 
     def _handle_notification(self, notification_name, params):
         """Internal handler for notifications."""

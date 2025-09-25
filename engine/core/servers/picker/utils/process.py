@@ -16,11 +16,7 @@ def get_process_info(pid: int) -> Dict:
     try:
         process = psutil.Process(pid)
         process_name = process.name()
-        name = (
-            process_name.split(".exe")[0]
-            if process_name.endswith(".exe")
-            else process_name
-        )
+        name = process_name.split(".exe")[0] if process_name.endswith(".exe") else process_name
 
         # 获取父进程信息
         parent_info = None
@@ -35,11 +31,7 @@ def get_process_info(pid: int) -> Dict:
                 parent_info = {
                     "pid": parent_process.pid,
                     "name": parent_name,
-                    "cmdline": (
-                        " ".join(parent_process.cmdline())
-                        if parent_process.cmdline()
-                        else ""
-                    ),
+                    "cmdline": (" ".join(parent_process.cmdline()) if parent_process.cmdline() else ""),
                 }
         except:
             pass

@@ -11,7 +11,6 @@ from rpaframe.logger.logger import logger
 
 
 class Enterprise:
-
     @staticmethod
     @atomicMg.atomic(
         "Enterprise",
@@ -28,14 +27,10 @@ class Enterprise:
     )
     def upload_to_sharefolder(file_path: PATH = ""):
         upload_url = "http://127.0.0.1:8003/api/resource/file/shared-file-upload"
-        update_info_url = (
-            "http://127.0.0.1:8003/api/robot/robot-shared-file/addSharedFileInfo"
-        )
+        update_info_url = "http://127.0.0.1:8003/api/robot/robot-shared-file/addSharedFileInfo"
         # 检查文件是否存在
         if not (os.path.exists(file_path) and os.path.isfile(file_path)):
-            return BaseException(
-                PATH_INVALID_FORMAT.format(file_path), "请重新输入正确的文件路径"
-            )
+            return BaseException(PATH_INVALID_FORMAT.format(file_path), "请重新输入正确的文件路径")
 
         try:
             # 准备文件上传
@@ -64,9 +59,7 @@ class Enterprise:
                         "fileName": inner_data.get("data").get("fileName"),
                         "tags": [],
                     }
-                    info_response = requests.post(
-                        update_info_url, json=info_data, timeout=30
-                    )
+                    info_response = requests.post(update_info_url, json=info_data, timeout=30)
                     if info_response.status_code == 200:
                         logger.info(info_response.text)
                         return "上传成功"
@@ -79,9 +72,7 @@ class Enterprise:
                             "请检查更新文件信息接口！",
                         )
                 else:
-                    logger.info(
-                        f"上传失败，状态码：{response.status_code}，响应：{response.text}"
-                    )
+                    logger.info(f"上传失败，状态码：{response.status_code}，响应：{response.text}")
                     raise BaseException(
                         FILE_UPLOAD_FAILED_FORMAT.format(response.text),
                         "请检查上传接口！",
@@ -117,15 +108,11 @@ class Enterprise:
 
         # 检查保存路径是否为目录
         if not os.path.isdir(save_folder):
-            return BaseException(
-                PATH_INVALID_FORMAT.format(save_folder), "请重新输入正确的文件夹路径"
-            )
+            return BaseException(PATH_INVALID_FORMAT.format(save_folder), "请重新输入正确的文件夹路径")
 
         try:
             params = {"fileId": file_path}
-            response = requests.get(
-                download_url, params=params, timeout=30, stream=True
-            )
+            response = requests.get(download_url, params=params, timeout=30, stream=True)
 
             # 检查响应状态
             if response.status_code == 200:
@@ -153,9 +140,7 @@ class Enterprise:
                 logger.info(f"下载成功：文件已保存到 {save_path}")
                 return save_path
             else:
-                logger.error(
-                    f"下载失败，状态码：{response.status_code}，响应：{response.text}"
-                )
+                logger.error(f"下载失败，状态码：{response.status_code}，响应：{response.text}")
                 raise BaseException(
                     FILE_DOWNLOAD_FAILED_FORMAT.format(response.text),
                     "请检查下载接口！",

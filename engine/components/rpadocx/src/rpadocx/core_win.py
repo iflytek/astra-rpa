@@ -36,9 +36,7 @@ class DocxCore(IDocxCore):
     @staticmethod
     def _doc_save(doc, file_path, file_name, save_type, exist_handle_type):
         if save_type == SaveType.SAVE_AS and file_path:
-            file_suffix = (
-                "." + doc.Name.split(".")[-1]
-            )  # 获取文件后缀，防止文件名中有点号
+            file_suffix = "." + doc.Name.split(".")[-1]  # 获取文件后缀，防止文件名中有点号
             if not file_name:
                 file_name = doc.Name.split(file_suffix)[0]
             dst_file = os.path.join(file_path, file_name + file_suffix)
@@ -62,9 +60,7 @@ class DocxCore(IDocxCore):
                 logger.debug(f"创建Word对象失败：{params}")
 
     @classmethod
-    def init_word_app(
-        cls, default_application: ApplicationType = ApplicationType.DEFAULT
-    ):
+    def init_word_app(cls, default_application: ApplicationType = ApplicationType.DEFAULT):
         word_flag, wps_flag = cls._word_is_exists()
         if default_application == ApplicationType.DEFAULT and word_flag:
             keys = ["Word.Application", "Kwps.Application", "wps.Application"]
@@ -182,9 +178,7 @@ class DocxCore(IDocxCore):
         """
         Word - 文档操作 - 保存
         """
-        save_file_path = cls._doc_save(
-            doc, file_path, file_name, save_type, exist_handle_type
-        )
+        save_file_path = cls._doc_save(doc, file_path, file_name, save_type, exist_handle_type)
         if close_flag:
             doc.Close(SaveChanges=0)
         return save_file_path
@@ -235,9 +229,7 @@ class DocxCore(IDocxCore):
         if enter_flag:
             selection.TypeParagraph()
         selection.TypeText(text)
-        selection.Start = selection.Start - len(
-            text
-        )  # 将光标移回到插入的文字开始位置 32
+        selection.Start = selection.Start - len(text)  # 将光标移回到插入的文字开始位置 32
         selection.End = selection.End  # 将光标移到插入的文字结束位置
         # 设置文字格式（例如加粗、斜体等）
         selection.Font.Bold = text_format["bold"]
@@ -248,9 +240,7 @@ class DocxCore(IDocxCore):
         # 设置文字大小
         selection.Font.Size = text_format["font_size"]
         rgb_color = text_format["font_color"].split(",")
-        selection.Font.Color = RGB(
-            int(rgb_color[0]), int(rgb_color[1]), int(rgb_color[2])
-        )
+        selection.Font.Color = RGB(int(rgb_color[0]), int(rgb_color[1]), int(rgb_color[2]))
         selection.Start = selection.End  # 将光标移到末尾
 
     @classmethod
@@ -476,9 +466,7 @@ class DocxCore(IDocxCore):
             )
 
     @classmethod
-    def insert_sep(
-        cls, doc: object = None, sep_type: InsertionType = InsertionType.PARAGRAPH
-    ):
+    def insert_sep(cls, doc: object = None, sep_type: InsertionType = InsertionType.PARAGRAPH):
         doc.Activate()
         s = doc.Application.Selection
         if sep_type == InsertionType.PAGE:
@@ -537,9 +525,7 @@ class DocxCore(IDocxCore):
                 img = win32clipboard.GetClipboardData(win32clipboard.CF_DIBV5)
             else:
                 win32clipboard.CloseClipboard()
-                raise BaseException(
-                    PASTE_CLIPBOARD_ERROR.format("剪贴板没有图片数据"), ""
-                )
+                raise BaseException(PASTE_CLIPBOARD_ERROR.format("剪贴板没有图片数据"), "")
             # 将字节数据转换为Image对象
             image = Image.open(io.BytesIO(img))
             if image.mode != "RGB":
@@ -559,9 +545,7 @@ class DocxCore(IDocxCore):
         else:
             img_shape = s.InlineShapes.AddPicture(img_path)
             if not os.path.isfile(img_path):
-                raise BaseException(
-                    FILE_PATH_ERROR_FORMAT.format(img_path), "图片路径错误"
-                )
+                raise BaseException(FILE_PATH_ERROR_FORMAT.format(img_path), "图片路径错误")
         img_shape.ScaleWidth = scale
         img_shape.ScaleHeight = scale
 
@@ -587,9 +571,7 @@ class DocxCore(IDocxCore):
             # 遍历所有表格，查找包含指定文本的表格
             count = 0
             for table in doc.Tables:
-                if any(
-                    text in cell.Range.Text for row in table.Rows for cell in row.Cells
-                ):
+                if any(text in cell.Range.Text for row in table.Rows for cell in row.Cells):
                     count += 1
                     if count == idx:
                         table_content = cls._extract_table_content(table)
@@ -686,9 +668,7 @@ class DocxCore(IDocxCore):
                 # 删除所有内容为{delete_str}的元素
                 for paragraph in doc.Paragraphs:
                     if delete_str in paragraph.Range.Text:
-                        paragraph.Range.Text = paragraph.Range.Text.replace(
-                            delete_str, ""
-                        )
+                        paragraph.Range.Text = paragraph.Range.Text.replace(delete_str, "")
             else:
                 count = 0
                 for paragraph in doc.Paragraphs:
@@ -701,9 +681,7 @@ class DocxCore(IDocxCore):
                                 end_pos = start_pos + len(delete_str)
                                 paragraph.Range.Text = text[:start_pos] + text[end_pos:]
                                 break
-                            start_pos = text.find(
-                                delete_str, start_pos + len(delete_str)
-                            )
+                            start_pos = text.find(delete_str, start_pos + len(delete_str))
         elif delete_mode == DeleteMode.RANGE:
             # 删除从第{p_start}段第{c_start}个字符到第{p_end}段第{c_end}个字符之间的内容
             start_paragraph = doc.Paragraphs(p_start)
@@ -714,9 +692,7 @@ class DocxCore(IDocxCore):
             end_range = end_paragraph.Range.Characters(c_end)
 
             # 选择从开始位置到结束位置的内容
-            doc.Application.Selection.SetRange(
-                Start=start_range.Start, End=end_range.End
-            )
+            doc.Application.Selection.SetRange(Start=start_range.Start, End=end_range.End)
 
             # 删除选中的内容
             doc.Application.Selection.Delete()
@@ -749,25 +725,19 @@ class DocxCore(IDocxCore):
                 return
             if comment_all:
                 selection.HomeKey(Unit=6, Extend=0)  # 将插入点移动到到文档首位
-                while selection.Find.Execute(
-                    FindText=target_str, Forward=True, MatchCase=True
-                ):
+                while selection.Find.Execute(FindText=target_str, Forward=True, MatchCase=True):
                     doc.Comments.Add(Range=selection.Range, Text=comment)
             else:
                 find_times = 0
                 selection.HomeKey(Unit=6, Extend=0)  # 将插入点移动到到文档首位
-                while selection.Find.Execute(
-                    FindText=target_str, Forward=True, MatchCase=True
-                ):
+                while selection.Find.Execute(FindText=target_str, Forward=True, MatchCase=True):
                     find_times += 1
                     if find_times == comment_index:
                         doc.Comments.Add(Range=selection.Range, Text=comment)
                         break
 
     @classmethod
-    def delete_comment(
-        cls, doc: object = None, comment_index: int = 1, delete_all: bool = False
-    ):
+    def delete_comment(cls, doc: object = None, comment_index: int = 1, delete_all: bool = False):
         doc.Activate()
         if delete_all is True:
             count = doc.Comments.Count

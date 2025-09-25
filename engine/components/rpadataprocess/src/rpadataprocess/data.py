@@ -9,7 +9,6 @@ from rpadataprocess.error import *
 
 
 class DataProcess:
-
     @staticmethod
     @atomicMg.atomic(
         "DataProcess",
@@ -56,7 +55,5 @@ class DataProcess:
             else:
                 result = value
         except Exception as e:
-            raise BaseException(
-                VALUE_ERROR_FORMAT.format(e), "输入数据类型有误，无法设置为变量"
-            )
+            raise BaseException(VALUE_ERROR_FORMAT.format(e), "输入数据类型有误，无法设置为变量")
         return result

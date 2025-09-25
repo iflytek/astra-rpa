@@ -7,7 +7,11 @@ MVN := mvn
 
 # Java project variables
 JAVA_DIR := backend-java
-JAVA_FILES := $(shell find backend-java -name "*.java" 2>/dev/null || true)
+ifeq ($(OS),Windows_NT)
+    JAVA_FILES := $(shell dir /s /b backend-java\*.java 2>nul)
+else
+    JAVA_FILES := $(shell find backend-java -name "*.java" 2>/dev/null || true)
+endif
 
 # =============================================================================
 # Java Tool Installation

@@ -7,13 +7,9 @@ from ctypes import *
 jab_path = os.path.join(os.path.dirname(__file__), "exes", "jab")
 sys.path.append(jab_path)
 
-lib_windows_access_bridge_path = os.path.join(
-    jab_path, "artifacts", "dll", "win", "libwindowsaccessbridge.dll"
-)
+lib_windows_access_bridge_path = os.path.join(jab_path, "artifacts", "dll", "win", "libwindowsaccessbridge.dll")
 inject_dll_path = os.path.join(jab_path, "artifacts", "dll", "inject", "Inject.dll")
-jar_inject_dll_path = os.path.join(
-    jab_path, "artifacts", "dll", "javahook", "IflyrpaJavaHook.dll"
-)
+jar_inject_dll_path = os.path.join(jab_path, "artifacts", "dll", "javahook", "IflyrpaJavaHook.dll")
 
 user32 = ctypes.windll.user32
 bridge_dll = cdll.LoadLibrary(lib_windows_access_bridge_path)

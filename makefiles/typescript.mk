@@ -9,7 +9,11 @@ TSC := tsc
 
 # TypeScript project variables
 TS_DIR := frontend
-TS_FILES := $(shell find frontend -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" 2>/dev/null || true)
+ifeq ($(OS),Windows_NT)
+    TS_FILES := $(shell dir /s /b frontend\*.ts frontend\*.tsx frontend\*.js frontend\*.jsx 2>nul)
+else
+    TS_FILES := $(shell find frontend -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" 2>/dev/null || true)
+endif
 
 # =============================================================================
 # TypeScript Tool Installation

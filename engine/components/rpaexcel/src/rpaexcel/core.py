@@ -65,9 +65,7 @@ class IExcelCore(ABC):
         elif column_letter.isupper():
             column_number = 0
             for i in range(len(column_letter)):
-                column_number += (ord(column_letter[i]) - ord("A") + 1) * (
-                    26 ** (len(column_letter) - i - 1)
-                )
+                column_number += (ord(column_letter[i]) - ord("A") + 1) * (26 ** (len(column_letter) - i - 1))
             return column_number
         else:
             raise ValueError("列号异常，请输入大写字母或索引！")
@@ -134,25 +132,17 @@ class IExcelCore(ABC):
                 right_element = element.split(":")[1]
                 if is_row:
                     left_element = IExcelCore._handle_row_input(left_element, used_row)
-                    right_element = IExcelCore._handle_row_input(
-                        right_element, used_row
-                    )
+                    right_element = IExcelCore._handle_row_input(right_element, used_row)
                 else:
-                    left_element = IExcelCore._handle_column_input(
-                        element, used_col, True
-                    )
-                    right_element = IExcelCore._handle_column_input(
-                        right_element, used_col, True
-                    )
+                    left_element = IExcelCore._handle_column_input(element, used_col, True)
+                    right_element = IExcelCore._handle_column_input(right_element, used_col, True)
                 for i in range(left_element, right_element + 1):
                     result.append(i)
             else:
                 if is_row:
                     result.append(IExcelCore._handle_row_input(element, used_row))
                 else:
-                    result.append(
-                        IExcelCore._handle_column_input(element, used_col, True)
-                    )
+                    result.append(IExcelCore._handle_column_input(element, used_col, True))
         return result
 
     @staticmethod
@@ -231,9 +221,7 @@ class IExcelCore(ABC):
                 count = 1
                 while True:
                     new_full_file_name = f"{file_name}_{count}{file_ext}"
-                    new_file_path = os.path.join(
-                        os.path.dirname(file_path), new_full_file_name
-                    )
+                    new_file_path = os.path.join(os.path.dirname(file_path), new_full_file_name)
                     if os.path.exists(new_file_path):
                         count += 1
                     else:

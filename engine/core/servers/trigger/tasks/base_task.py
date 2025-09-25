@@ -60,9 +60,7 @@ class Task:
         self.callback_project_ids: List = callback_project_ids
         self.trigger_json: dict = kwargs
         self.time = datetime.now(tz=get_localzone())
-        self.screen_record_enable = (
-            screen_record_enable if screen_record_enable else False
-        )
+        self.screen_record_enable = screen_record_enable if screen_record_enable else False
         self.open_virtual_desk = open_virtual_desk if open_virtual_desk else False
 
         # 新增mode字段，用于区分远程下发（DISPATCH）
@@ -82,13 +80,11 @@ class Task:
 
         self.kwargs.update(kwargs)
 
-        self.minor_task: Union[ScheduledTask, MailTask, FileTask, HotKeyTask] = (
-            self._init_task_model(self.task_type, **kwargs)
+        self.minor_task: Union[ScheduledTask, MailTask, FileTask, HotKeyTask] = self._init_task_model(
+            self.task_type, **kwargs
         )
 
-    def _init_task_model(
-        self, task_type: str, **kwargs
-    ) -> Union[ScheduledTask, MailTask, FileTask, HotKeyTask]:
+    def _init_task_model(self, task_type: str, **kwargs) -> Union[ScheduledTask, MailTask, FileTask, HotKeyTask]:
         """
         初始化任务模型
 
@@ -281,9 +277,7 @@ class AsyncImmediateTask(Task):
             status = get_executor_status()
             # 检测队列里是否存在待排队工程，若存在则不投放入队列
             # 若处于调度模式，全排队
-            if (
-                self.enable and len(app_context.task_queue_monitor) == 0 and not status
-            ) or (self.mode == "DISPATCH"):
+            if (self.enable and len(app_context.task_queue_monitor) == 0 and not status) or (self.mode == "DISPATCH"):
                 self.queue.put(self.__dict__())
                 return True
             return False

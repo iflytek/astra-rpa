@@ -57,9 +57,7 @@ def merge_dicts(flow, full_flow):
     keep_level_2 = ["inputList", "outputList"]
     keep_level_3 = ["types", "title", "name", "need_parse", "show"]
 
-    flow["inputList"] = (
-        flow.get("inputList", []) + flow.get("advanced", []) + flow.get("exception", [])
-    )
+    flow["inputList"] = flow.get("inputList", []) + flow.get("advanced", []) + flow.get("exception", [])
     flow["advanced"] = flow["exception"] = []
     if "inputList" not in full_flow:
         full_flow["inputList"] = []
@@ -94,16 +92,13 @@ def merge_dicts(flow, full_flow):
 
 
 class Storage(ABC):
-
     @abstractmethod
     def process_list(self, project_id: str, mode: str, version: str = "") -> list:
         """获取工程的流程列表"""
         pass
 
     @abstractmethod
-    def process_json(
-        self, project_id: str, process_id: str, mode: str, version: str = ""
-    ) -> list:
+    def process_json(self, project_id: str, process_id: str, mode: str, version: str = "") -> list:
         """获取流程json"""
         pass
 
@@ -113,23 +108,17 @@ class Storage(ABC):
         pass
 
     @abstractmethod
-    def param_list(
-        self, project_id: str, process_id: str, mode: str, version: str = ""
-    ) -> list:
+    def param_list(self, project_id: str, process_id: str, mode: str, version: str = "") -> list:
         """获取工程的参数"""
         pass
 
     @abstractmethod
-    def element_detail(
-        self, project_id: str, element_id: str, mode: str, version: str = ""
-    ) -> dict:
+    def element_detail(self, project_id: str, element_id: str, mode: str, version: str = "") -> dict:
         """获取工程的元素数据详情"""
         pass
 
     @abstractmethod
-    def module_detail(
-        self, project_id: str, module_id: str, mode: str, version: str = ""
-    ) -> str:
+    def module_detail(self, project_id: str, module_id: str, mode: str, version: str = "") -> str:
         """获取脚本数据"""
         pass
 
@@ -165,7 +154,6 @@ class Storage(ABC):
 
 
 class HttpStorage(Storage):
-
     def __init__(self, gateway_port: str = None, svc=None):
         self.svc = svc
         self.gateway_port = gateway_port
@@ -213,14 +201,9 @@ class HttpStorage(Storage):
         logger.debug("请求结束 {}:{}".format(shot_url, json_data))
 
         if has_code:
-            if (
-                json_data.get("code") != BizCode.OK.value
-                and json_data.get("code") != "000000"
-            ):
+            if json_data.get("code") != BizCode.OK.value and json_data.get("code") != "000000":
                 msg = json_data.get("message", "")
-                raise BaseException(
-                    SERVER_ERROR_FORMAT.format(msg), "服务器错误{}".format(json_data)
-                )
+                raise BaseException(SERVER_ERROR_FORMAT.format(msg), "服务器错误{}".format(json_data))
             return json_data.get("data", {})
         else:
             return json_data
@@ -263,9 +246,7 @@ class HttpStorage(Storage):
 
         return self.__http__("/api/robot/process/name-list", params, None)
 
-    def process_json(
-        self, project_id: str, process_id: str, mode: str, version: str = ""
-    ) -> list:
+    def process_json(self, project_id: str, process_id: str, mode: str, version: str = "") -> list:
         """获取流程json"""
 
         data = {
@@ -316,9 +297,7 @@ class HttpStorage(Storage):
         for k, flow in enumerate(flow_list):
             full_item = {}
             if "{}-{}".format(flow.get("key"), flow.get("version")) in full_dict:
-                full_item = full_dict[
-                    "{}-{}".format(flow.get("key"), flow.get("version"))
-                ]
+                full_item = full_dict["{}-{}".format(flow.get("key"), flow.get("version"))]
             flow_list[k] = merge_dicts(flow, full_item)
         return flow_list
 
@@ -335,9 +314,7 @@ class HttpStorage(Storage):
 
         return self.__http__("/api/robot/global/all", params, None)
 
-    def param_list(
-        self, project_id: str, process_id: str, mode: str, version: str = ""
-    ) -> list:
+    def param_list(self, project_id: str, process_id: str, mode: str, version: str = "") -> list:
         """运行参数列表"""
 
         data = {
@@ -354,9 +331,7 @@ class HttpStorage(Storage):
             res = json.loads(res)
         return res
 
-    def element_detail(
-        self, project_id: str, element_id: str, mode: str, version: str = ""
-    ) -> dict:
+    def element_detail(self, project_id: str, element_id: str, mode: str, version: str = "") -> dict:
         """获取工程的元素数据详情"""
         if element_id in self.cache_element:
             return self.cache_element[element_id]
@@ -371,9 +346,7 @@ class HttpStorage(Storage):
 
         res = self.__http__("/api/robot/element/detail", params, None)
         if not res:
-            raise BaseException(
-                ELEMENT_FAIL_GET_FORMAL.format(element_id), "元素获取异常 为空"
-            )
+            raise BaseException(ELEMENT_FAIL_GET_FORMAL.format(element_id), "元素获取异常 为空")
 
         # 处理元素的图片URL，将其转为base64编码保存到elementData中
         if res.get("imageUrl") or res.get("parentImageUrl"):
@@ -390,22 +363,16 @@ class HttpStorage(Storage):
                 else:
                     image_base64 = ""
                 if parent_image_url and not parent_image_url.endswith("fileId="):
-                    parent_image_base64 = self.__http__(
-                        parent_image_url, None, None, "get"
-                    )
+                    parent_image_base64 = self.__http__(parent_image_url, None, None, "get")
                 else:
                     parent_image_base64 = ""
                 element_data["img"]["self"] = image_base64
                 element_data["img"]["parent"] = parent_image_base64
-                res.update(
-                    {"elementData": json.dumps(element_data, ensure_ascii=False)}
-                )
+                res.update({"elementData": json.dumps(element_data, ensure_ascii=False)})
         self.cache_element[element_id] = res
         return res
 
-    def module_detail(
-        self, project_id: str, module_id: str, mode: str, version: str = ""
-    ) -> str:
+    def module_detail(self, project_id: str, module_id: str, mode: str, version: str = "") -> str:
         if module_id in self.cache_script_code:
             return self.cache_script_code[module_id]
 
@@ -420,9 +387,7 @@ class HttpStorage(Storage):
 
         res = self.__http__("/api/robot/module/open", None, data)
         if not (res and res.get("moduleContent", "")):
-            raise BaseException(
-                MODULE_FAIL_GET_FORMAL.format(module_id), "模块获取异常 为空"
-            )
+            raise BaseException(MODULE_FAIL_GET_FORMAL.format(module_id), "模块获取异常 为空")
 
         module = res.get("moduleContent", "")
         self.cache_element[module_id] = res
@@ -447,9 +412,7 @@ class HttpStorage(Storage):
             params["mode"] = mode
         if version:
             params["robotVersion"] = int(version)
-        return self.__http__(
-            "/api/robot/component-robot-use/component-use", None, params, meta="post"
-        )
+        return self.__http__("/api/robot/component-robot-use/component-use", None, params, meta="post")
 
     def atomic_version_list(self) -> dict:
         if self.cache_atomic_version:
@@ -485,9 +448,7 @@ class HttpStorage(Storage):
         if self.cache_remote_var_key is not None:
             return self.cache_remote_var_key
 
-        res = self.__http__(
-            "/api/robot/robot-shared-var/shared-var-key", None, None, "get", True
-        )
+        res = self.__http__("/api/robot/robot-shared-var/shared-var-key", None, None, "get", True)
         self.cache_remote_var_key = res.get("key", "")
         return self.cache_remote_var_key
 

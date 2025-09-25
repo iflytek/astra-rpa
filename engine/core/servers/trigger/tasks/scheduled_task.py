@@ -162,9 +162,7 @@ class FrequencyMonths(BaseModel):
         ms = values.get("months")
 
         if m is None or h is None or ws is None or ms is None:
-            raise ValueError(
-                "'Minutes' and 'Hours' and 'Weeks' and 'Months' must be set."
-            )
+            raise ValueError("'Minutes' and 'Hours' and 'Weeks' and 'Months' must be set.")
 
         # validate minute
         if m not in range(0, 60):
@@ -201,7 +199,6 @@ class FrequencyAdvance(BaseModel):
 
 
 class ScheduledTask:
-
     def __init__(self, end_time: str = None, **kwargs):
         """
         构建定时任务的类

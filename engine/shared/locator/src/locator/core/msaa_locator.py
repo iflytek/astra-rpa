@@ -158,9 +158,7 @@ class MSAAElement:
             obj_child_id.vt = comtypes.automation.VT_I4
             obj_child_id.value = self.iObjectId
             obj_name = comtypes.automation.BSTR()
-            self.IAccessible._IAccessible__com__get_accName(
-                obj_child_id, ctypes.byref(obj_name)
-            )
+            self.IAccessible._IAccessible__com__get_accName(obj_child_id, ctypes.byref(obj_name))
             return obj_name.value or ""
         except:
             return ""
@@ -172,9 +170,7 @@ class MSAAElement:
             obj_child_id.vt = comtypes.automation.VT_I4
             obj_child_id.value = self.iObjectId
             obj_bstr_value = comtypes.automation.BSTR()
-            self.IAccessible._IAccessible__com__get_accValue(
-                obj_child_id, ctypes.byref(obj_bstr_value)
-            )
+            self.IAccessible._IAccessible__com__get_accValue(obj_child_id, ctypes.byref(obj_bstr_value))
             return obj_bstr_value.value or ""
         except:
             return ""
@@ -261,9 +257,7 @@ class MSAAElement:
                 objAccChild = objAccChildArray[i]
                 if objAccChild.vt == comtypes.automation.VT_DISPATCH:
                     child = MSAAElement(
-                        objAccChild.value.QueryInterface(
-                            comtypes.gen.Accessibility.IAccessible
-                        ),
+                        objAccChild.value.QueryInterface(comtypes.gen.Accessibility.IAccessible),
                         0,
                     )
                     children.append(child)
@@ -282,9 +276,7 @@ class MSAAElement:
                 logger.info(f"元素 {self.get_name()} 没有父元素")
                 return 0
 
-            logger.info(
-                f"计算元素 {self.get_name()} 的索引，父元素: {parent.get_name()}"
-            )
+            logger.info(f"计算元素 {self.get_name()} 的索引，父元素: {parent.get_name()}")
 
             # 获取当前元素的特征信息用于比较
             current_name = self.get_name()
@@ -313,27 +305,15 @@ class MSAAElement:
 
                 # 方法2: 如果位置不可用或不匹配，使用角色+名称+类型组合
                 if not is_match:
-                    if (
-                        current_name == sibling_name
-                        and current_role == sibling_role
-                        and current_type == sibling_type
-                    ):
+                    if current_name == sibling_name and current_role == sibling_role and current_type == sibling_type:
                         # 进一步验证：检查是否是同一个对象
-                        if (
-                            sibling.IAccessible == self.IAccessible
-                            and sibling.iObjectId == self.iObjectId
-                        ):
+                        if sibling.IAccessible == self.IAccessible and sibling.iObjectId == self.iObjectId:
                             is_match = True
-                            logger.info(
-                                f"通过角色+名称+类型+对象地址匹配找到元素，索引: {index}"
-                            )
+                            logger.info(f"通过角色+名称+类型+对象地址匹配找到元素，索引: {index}")
 
                 # 方法3: 如果名称为空，仅使用对象地址和ID比较
                 if not is_match and current_name == "":
-                    if (
-                        sibling.IAccessible == self.IAccessible
-                        and sibling.iObjectId == self.iObjectId
-                    ):
+                    if sibling.IAccessible == self.IAccessible and sibling.iObjectId == self.iObjectId:
                         is_match = True
                         logger.info(f"通过对象地址匹配找到元素，索引: {index}")
 
@@ -423,9 +403,7 @@ class MSAAValidator:
                 child_type = c.get_type()
                 child_name = c.get_name()
                 child_value = c.get_value()
-                logger.info(
-                    f'子元素[{i}]: type={child_type}, name="{child_name}", value="{child_value}"'
-                )
+                logger.info(f'子元素[{i}]: type={child_type}, name="{child_name}", value="{child_value}"')
 
             # 筛选匹配类型的子元素
             candidates = [c for c in children if c.get_type() == target_tag]
@@ -435,9 +413,7 @@ class MSAAValidator:
             if not candidates and use_recursive:
                 logger.info(f"没有找到直接匹配的子元素，尝试递归搜索...")
                 for child in children:
-                    recursive_matches = MSAAValidator._find_matches_in_parent(
-                        child, target_desc, use_recursive=True
-                    )
+                    recursive_matches = MSAAValidator._find_matches_in_parent(child, target_desc, use_recursive=True)
                     if recursive_matches:
                         logger.info(f"递归搜索找到匹配元素")
                         return recursive_matches
@@ -449,9 +425,7 @@ class MSAAValidator:
                 value_match = not target_value or candidate.get_value() == target_value
                 index_match = not target_index or candidate.get_index() == target_index
 
-                logger.info(
-                    f"候选元素匹配检查: name_match={name_match}, value_match={value_match}"
-                )
+                logger.info(f"候选元素匹配检查: name_match={name_match}, value_match={value_match}")
 
                 if name_match and value_match and index_match:
                     filtered_candidates.append(candidate)
@@ -509,9 +483,7 @@ class MSAAValidator:
                     )
 
                 current_elements = next_elements
-                logger.info(
-                    f"第{depth + 1}层级查找完成，找到 {len(current_elements)} 个匹配元素"
-                )
+                logger.info(f"第{depth + 1}层级查找完成，找到 {len(current_elements)} 个匹配元素")
 
             return current_elements
 
@@ -577,13 +549,9 @@ class MSAAValidator:
                 return False, "无法获取IAccessible对象", []
 
             msaa_start_ele = MSAAElement(ia_start_ele, 0)
-            logger.info(
-                f'创建的MSAA元素: name="{msaa_start_ele.get_name()}", type="{msaa_start_ele.get_type()}"'
-            )
+            logger.info(f'创建的MSAA元素: name="{msaa_start_ele.get_name()}", type="{msaa_start_ele.get_type()}"')
 
-            elements = MSAAValidator.find_element_by_msaa_path(
-                msaa_path, msaa_start_ele
-            )
+            elements = MSAAValidator.find_element_by_msaa_path(msaa_path, msaa_start_ele)
             logger.info(f"MSAA路径查找结果: {elements}")
 
             if elements and len(elements) > 0:

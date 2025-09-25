@@ -4,7 +4,6 @@ from rpademo.src.rpademo.core import IDemoCore
 
 
 class DemoCore(IDemoCore):
-
     @staticmethod
     def print(msg: str = "") -> str:
         return "win {}".format(msg)

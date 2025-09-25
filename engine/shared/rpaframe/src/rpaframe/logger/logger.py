@@ -19,9 +19,7 @@ class Logger:
             os.mkdir(log_path)
 
         # 按时间轮转的日志文件
-        log_path = os.path.abspath(
-            os.path.join(log_path, "{}-{}.log".format(name, time.strftime("%Y-%m-%d")))
-        )
+        log_path = os.path.abspath(os.path.join(log_path, "{}-{}.log".format(name, time.strftime("%Y-%m-%d"))))
         self.logger.add(
             log_path,
             rotation="50MB",

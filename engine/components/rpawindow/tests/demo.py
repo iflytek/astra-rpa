@@ -11,11 +11,7 @@ def demo():
     print("=" * 60)
 
     # 创建测试用的WinPick对象
-    test_pick = {
-        "elementData": {
-            "path": [{"name": "此电脑 - 文件资源管理器", "cls": "CabinetWClass"}]
-        }
-    }
+    test_pick = {"elementData": {"path": [{"name": "此电脑 - 文件资源管理器", "cls": "CabinetWClass"}]}}
 
     try:
         # exist方法
@@ -27,15 +23,11 @@ def demo():
         # set_size方法
         Window.set_size(pick=test_pick, size_type=WindowSizeType.MAX, width=0, height=0)
         time.sleep(1)
-        Window.set_size(
-            pick=test_pick, size_type=WindowSizeType.CUSTOM, width=200, height=200
-        )
+        Window.set_size(pick=test_pick, size_type=WindowSizeType.CUSTOM, width=200, height=200)
         time.sleep(1)
         Window.set_size(pick=test_pick, size_type=WindowSizeType.MIN, width=0, height=0)
         time.sleep(1)
-        Window.set_size(
-            pick=test_pick, size_type=WindowSizeType.CUSTOM, width=400, height=400
-        )
+        Window.set_size(pick=test_pick, size_type=WindowSizeType.CUSTOM, width=400, height=400)
         time.sleep(1)
         Window.set_size(pick=test_pick, size_type=WindowSizeType.MAX, width=0, height=0)
         time.sleep(1)

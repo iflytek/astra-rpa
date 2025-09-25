@@ -47,9 +47,7 @@ class PluginManager(ABC):
 
     @staticmethod
     @abstractmethod
-    def get_plugin_manager(
-        browser_type: BrowserType, plugin_data: PluginData
-    ) -> PluginManagerCore:
+    def get_plugin_manager(browser_type: BrowserType, plugin_data: PluginData) -> PluginManagerCore:
         """
         获取插件管理器
         :param plugin_data: 插件信息

@@ -10,9 +10,7 @@ from rpaai import LLMModelTypes
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta
 from rpatools.tools import RpaTools
 
-sys.path.append(
-    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-)
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 print(os.path.dirname(os.path.abspath(__file__)))
 
 from rpaai.api.llm import chat_normal, chat_streamable
@@ -25,14 +23,9 @@ from rpaframe.logger.logger import logger
 
 
 class ChatAI:
-
     @staticmethod
-    @atomicMg.atomic(
-        "ChatAI", outputList=[atomicMg.param("single_chat_res", types="Str")]
-    )
-    def single_turn_chat(
-        query: str, model: LLMModelTypes = LLMModelTypes.DS_CHAT
-    ) -> str:
+    @atomicMg.atomic("ChatAI", outputList=[atomicMg.param("single_chat_res", types="Str")])
+    def single_turn_chat(query: str, model: LLMModelTypes = LLMModelTypes.DS_CHAT) -> str:
         """
         单轮对话方法
         Args:

@@ -3,7 +3,6 @@ import os
 
 
 class FtpCore:
-
     @staticmethod
     def create_ftp():
         """
@@ -159,13 +158,9 @@ class FtpCore:
         for name in name_list:
             local_item_path = os.path.join(local_path, name)
             if not FtpCore.is_dir(ftp_instance, name):
-                FtpCore.ftp_download_file(
-                    ftp_instance, os.path.join(remote_path, name), local_item_path
-                )
+                FtpCore.ftp_download_file(ftp_instance, os.path.join(remote_path, name), local_item_path)
             else:
-                FtpCore.ftp_download_dir(
-                    ftp_instance, os.path.join(remote_path, name), local_item_path
-                )
+                FtpCore.ftp_download_dir(ftp_instance, os.path.join(remote_path, name), local_item_path)
         ftp_instance.cwd("..")
         return local_path
 

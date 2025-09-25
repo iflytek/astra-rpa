@@ -10,7 +10,6 @@ language_map = {0x0409: "xkb:us::eng", 0x0804: "zh_CN"}  # 英文  # 中文
 
 
 class Keyboard:
-
     def __init__(self):
         pyautogui.FAILSAFE = False
 
@@ -28,9 +27,7 @@ class Keyboard:
         else:
             try:
                 # 先查询当前输入法状态
-                result = subprocess.run(
-                    ["fcitx-remote"], capture_output=True, text=True, timeout=5
-                )
+                result = subprocess.run(["fcitx-remote"], capture_output=True, text=True, timeout=5)
                 if result.returncode != 0:
                     logger.info("无法查询fcitx状态，可能fcitx未运行")
                     return
@@ -49,9 +46,7 @@ class Keyboard:
 
                 # 判断是否需要切换
                 if current_status != expected_status:
-                    logger.info(
-                        f"需要切换输入法：从状态{current_status}切换到状态{expected_status}"
-                    )
+                    logger.info(f"需要切换输入法：从状态{current_status}切换到状态{expected_status}")
                     # 执行切换命令
                     subprocess.run(["fcitx-remote", "-t"], timeout=5)
             except Exception as e:

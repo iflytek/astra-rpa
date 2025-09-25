@@ -11,7 +11,6 @@ from ...logger import logger
 
 
 class Terminal:
-
     @staticmethod
     def register(svc):
         api = "/api/robot/terminal/register"
@@ -32,9 +31,7 @@ class Terminal:
                 "cpu": int(Terminal.get_cpu_percent()),  # CPU占用率（百分比)
                 "memory": int(Terminal.get_memory_percent()),  # 内存占用率（百分比)
                 "disk": int(Terminal.get_disk_percent()),  # 硬盘占用率（百分比)
-                "isDispatch": (
-                    1 if svc.terminal_mod else 0
-                ),  # 是否调度模式 (0: 否, 1: 是)
+                "isDispatch": (1 if svc.terminal_mod else 0),  # 是否调度模式 (0: 否, 1: 是)
                 "monitorUrl": "/terminal/ping",  # 视频监控URL
             }
             logger.info("Terminal register data: {}".format(data))
@@ -63,9 +60,7 @@ class Terminal:
                 "status": (
                     "busy" if svc.executor_mg.status() else "free"
                 ),  # 当前状态，用于计算最终状态，只有两种状态，运行中busy，空闲free
-                "isDispatch": (
-                    1 if svc.terminal_mod else 0
-                ),  # 是否调度模式 (0: 否, 1: 是)
+                "isDispatch": (1 if svc.terminal_mod else 0),  # 是否调度模式 (0: 否, 1: 是)
                 "cpu": int(Terminal.get_cpu_percent()),  # CPU占用率（百分比)
                 "memory": int(Terminal.get_memory_percent()),  # 内存占用率（百分比)
                 "disk": int(Terminal.get_disk_percent()),  # 硬盘占用率（百分比)
@@ -139,9 +134,7 @@ class Terminal:
                     if addr.family == psutil.AF_LINK:
                         mac = addr.address.replace("-", ":").upper()
                 for addr in addresses:
-                    if addr.family == socket.AF_INET and not addr.address.startswith(
-                        "127."
-                    ):
+                    if addr.family == socket.AF_INET and not addr.address.startswith("127."):
                         ipv4 = addr.address
                 if mac and ipv4:
                     active_net.append({"interface": iface, "mac": mac, "ipv4": ipv4})

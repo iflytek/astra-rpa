@@ -9,7 +9,6 @@ from rpasystem.compress import Compress
 
 
 class TestCompress(TestCase):
-
     def setUp(self):
         """测试前的准备工作"""
         self.temp_dir = tempfile.mkdtemp()
@@ -300,9 +299,7 @@ class TestCompress(TestCase):
 
         # 解压到不存在的目录，但设置为自动创建
         new_dir = os.path.join(self.temp_dir, "new_extract_dir")
-        uncompress_result = Compress.uncompress(
-            source_path=result, target_path=new_dir, status_type=StateType.CREATE
-        )
+        uncompress_result = Compress.uncompress(source_path=result, target_path=new_dir, status_type=StateType.CREATE)
 
         # 验证解压结果和目录创建
         self.assertTrue(os.path.exists(uncompress_result))
@@ -447,9 +444,7 @@ class TestCompress(TestCase):
 
     def test_compress_with_special_characters(self):
         """测试压缩 - 包含特殊字符的文件名"""
-        special_file = os.path.join(
-            self.temp_dir, "测试文件：包含中文、英文、数字123和特殊符号！@#￥%.txt"
-        )
+        special_file = os.path.join(self.temp_dir, "测试文件：包含中文、英文、数字123和特殊符号！@#￥%.txt")
         with open(special_file, "w", encoding="utf-8") as f:
             f.write("特殊字符文件内容")
 

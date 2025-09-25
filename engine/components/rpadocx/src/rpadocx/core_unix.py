@@ -170,9 +170,7 @@ class DocxCore(IDocxCore):
     @staticmethod
     def _doc_save(doc, file_path, file_name, save_type, exist_handle_type):
         if save_type == SaveType.SAVE_AS and file_path:
-            file_suffix = (
-                "." + doc.Name.split(".")[-1]
-            )  # 获取文件后缀，防止文件名中有点号
+            file_suffix = "." + doc.Name.split(".")[-1]  # 获取文件后缀，防止文件名中有点号
             if not file_name:
                 file_name = doc.Name.split(file_suffix)[0]
             dst_file = os.path.join(file_path, file_name + file_suffix)
@@ -260,9 +258,7 @@ class DocxCore(IDocxCore):
         if enter_flag:
             selection.TypeParagraph()
         selection.TypeText(text)
-        selection.Start = selection.Start - len(
-            text
-        )  # 将光标移回到插入的文字开始位置 32
+        selection.Start = selection.Start - len(text)  # 将光标移回到插入的文字开始位置 32
         selection.End = selection.End  # 将光标移到插入的文字结束位置
         # 设置文字格式（例如加粗、斜体等）
         selection.Font.Bold = text_format["bold"]
@@ -385,9 +381,7 @@ class DocxCore(IDocxCore):
             s.MoveDown(5, drift_num, 1)
             s.EndOf(5, 1)
         elif select_type == SelectTextType.PARAGRAPH:
-            s.SetRange(
-                doc.Paragraphs[p_start].Range.Start, doc.Paragraphs[p_end].Range.End
-            )
+            s.SetRange(doc.Paragraphs[p_start].Range.Start, doc.Paragraphs[p_end].Range.End)
             s.Select()
 
     @classmethod
@@ -437,9 +431,7 @@ class DocxCore(IDocxCore):
                     doc.Paragraphs[p_idx].Range.End - 1,
                 )
             elif pos == CursorPositionType.HEAD:  # 定位到某个段落开头
-                s.SetRange(
-                    doc.Paragraphs[p_idx].Range.Start, doc.Paragraphs[p_idx].Range.Start
-                )
+                s.SetRange(doc.Paragraphs[p_idx].Range.Start, doc.Paragraphs[p_idx].Range.Start)
             else:
                 raise BaseException(
                     CONTENT_FORMAT_ERROR_FORMAT,
@@ -498,9 +490,7 @@ class DocxCore(IDocxCore):
             )
 
     @classmethod
-    def insert_sep(
-        cls, doc: object = None, sep_type: InsertionType = InsertionType.PARAGRAPH
-    ):
+    def insert_sep(cls, doc: object = None, sep_type: InsertionType = InsertionType.PARAGRAPH):
         doc.Activate()
         s = doc.Application.Selection
         if sep_type == InsertionType.PAGE:
@@ -543,9 +533,7 @@ class DocxCore(IDocxCore):
             # 使用xclip获取剪贴板中的数据
             try:
                 # 尝试获取文件路径
-                process = subprocess.Popen(
-                    ["xclip", "-selection", "clipboard", "-o"], stdout=subprocess.PIPE
-                )
+                process = subprocess.Popen(["xclip", "-selection", "clipboard", "-o"], stdout=subprocess.PIPE)
                 clipboard_data, _ = process.communicate()
                 clipboard_data = clipboard_data.decode("utf-8").strip()
             except subprocess.CalledProcessError:
@@ -592,9 +580,7 @@ class DocxCore(IDocxCore):
             hr, img_shape = s.InlineShapes.AddPicture(img_path)
             print(f"Inserted image shape: {img_shape}")
             if not os.path.isfile(img_path):
-                raise BaseException(
-                    FILE_PATH_ERROR_FORMAT.format(img_path), "图片路径错误"
-                )
+                raise BaseException(FILE_PATH_ERROR_FORMAT.format(img_path), "图片路径错误")
         img_shape.ScaleWidth = scale
         img_shape.ScaleHeight = scale
 
@@ -736,9 +722,7 @@ class DocxCore(IDocxCore):
                 while p_cnt <= doc.Paragraphs.Count:
                     paragraph = doc.Paragraphs[p_cnt]
                     if delete_str in paragraph.Range.Text:
-                        paragraph.Range.Text = paragraph.Range.Text.replace(
-                            delete_str, ""
-                        )
+                        paragraph.Range.Text = paragraph.Range.Text.replace(delete_str, "")
                     p_cnt += 1
             else:
                 count = 0
@@ -754,9 +738,7 @@ class DocxCore(IDocxCore):
                                 end_pos = start_pos + len(delete_str)
                                 paragraph.Range.Text = text[:start_pos] + text[end_pos:]
                                 break
-                            start_pos = text.find(
-                                delete_str, start_pos + len(delete_str)
-                            )
+                            start_pos = text.find(delete_str, start_pos + len(delete_str))
                     p_cnt += 1
         elif delete_mode == DeleteMode.RANGE:
             # 删除从第{p_start}段第{c_start}个字符到第{p_end}段第{c_end}个字符之间的内容
@@ -803,9 +785,7 @@ class DocxCore(IDocxCore):
                 selection.HomeKey(Unit=6, Extend=0)
                 previous_range = None
                 while True:
-                    found = selection.Find.Execute(
-                        FindText=target_str, Forward=True, MatchCase=True
-                    )
+                    found = selection.Find.Execute(FindText=target_str, Forward=True, MatchCase=True)
                     if not found:
                         break
 
@@ -823,18 +803,14 @@ class DocxCore(IDocxCore):
             else:
                 find_times = 0
                 selection.HomeKey(Unit=6, Extend=0)  # 将插入点移动到到文档首位
-                while selection.Find.Execute(
-                    FindText=target_str, Forward=True, MatchCase=True
-                ):
+                while selection.Find.Execute(FindText=target_str, Forward=True, MatchCase=True):
                     find_times += 1
                     if find_times == comment_index:
                         doc.Comments.Add(selection.Range, comment)
                         break
 
     @classmethod
-    def delete_comment(
-        cls, doc: object = None, comment_index: int = 1, delete_all: bool = False
-    ):
+    def delete_comment(cls, doc: object = None, comment_index: int = 1, delete_all: bool = False):
         doc.Activate()
         if delete_all is True:
             count = doc.Comments.Count

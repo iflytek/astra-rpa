@@ -25,9 +25,7 @@ def callback_special_eval_element(svc, param: InputParam, env: Environment, proj
         )
         return res
     except Exception as e:
-        raise BaseException(
-            SPECIAL_PARSE_FORMAL, "特殊元素处理异常 {}".format(e)
-        ) from e
+        raise BaseException(SPECIAL_PARSE_FORMAL, "特殊元素处理异常 {}".format(e)) from e
 
 
 def callback_special_eval_parse(svc, param: InputParam, env: Environment, project_id):
@@ -38,13 +36,10 @@ def callback_special_eval_parse(svc, param: InputParam, env: Environment, projec
         res.value = special_eval_parse(param.value, env, svc.global_id2name)
         return res
     except Exception as e:
-        raise BaseException(
-            SPECIAL_PARSE_FORMAL, "特殊元素处理异常 {}".format(e)
-        ) from e
+        raise BaseException(SPECIAL_PARSE_FORMAL, "特殊元素处理异常 {}".format(e)) from e
 
 
 class Params:
-
     def __init__(self, svc):
         self.svc = svc
 
@@ -53,10 +48,7 @@ class Params:
             # 复杂数据前置处理
             if isinstance(i.get("value"), list) and i.get("need_parse", "") == "str":
                 dict_value = i.get("value")
-            elif (
-                isinstance(i.get("value"), str)
-                and i.get("need_parse", "") == "json_str"
-            ):
+            elif isinstance(i.get("value"), str) and i.get("need_parse", "") == "json_str":
                 value = i.get("value")
                 if value:
                     try:
@@ -104,11 +96,7 @@ class Params:
                     need_eval=False,
                     special="callback_special_eval_element",
                 )
-            elif (
-                token
-                and token.value.get("key") == "Script.module"
-                and i.get("key") == "content"
-            ):
+            elif token and token.value.get("key") == "Script.module" and i.get("key") == "content":
                 # 普通流程的特殊数据2：子模块数据(原子能力可以枚举)
                 code_id = i.get("value")
                 try:
@@ -208,11 +196,7 @@ class Params:
                 # 1. 预处理
                 ls = pre_param_handler(i.get("value", []))
                 # 2. 解析
-                res.append(
-                    OutputParam(
-                        types=i.get("types", "Any"), value=ls[0].get("value", "")
-                    )
-                )
+                res.append(OutputParam(types=i.get("types", "Any"), value=ls[0].get("value", "")))
         return res
 
     def parse_input(self, token: Token) -> Dict[str, InputParam]:
@@ -222,7 +206,6 @@ class Params:
         params_name = {}
         input_list = token.value.get("inputList", [])
         for i in input_list:
-
             # 优化:过滤高级选项中的默认值，减少参数传递[可以剔除这段优化代码]
             if i.get("key") in [
                 "__delay_before__",
@@ -280,7 +263,5 @@ class Params:
                 value=token.value.get("id", ""),
                 need_eval=False,
             )
-        res["__params_name__"] = InputParam(
-            types="Str", key="__params_name__", value=params_name, need_eval=False
-        )
+        res["__params_name__"] = InputParam(types="Str", key="__params_name__", value=params_name, need_eval=False)
         return res

@@ -226,9 +226,7 @@ class WsManager:
                     if not msg.channel:
                         await self._send_exit(
                             conn,
-                            MsgUnlawfulnessError(
-                                "msg unlawfulness, {}".format(msg.tojson())
-                            ),
+                            MsgUnlawfulnessError("msg unlawfulness, {}".format(msg.tojson())),
                         )
                         continue
 
@@ -238,9 +236,7 @@ class WsManager:
                     if not msg.send_uuid:
                         msg.send_uuid = "$root$"
                 except Exception as e:
-                    await self._send_exit(
-                        conn, MsgUnlawfulnessError("msg unlawfulness, {}".format(text))
-                    )
+                    await self._send_exit(conn, MsgUnlawfulnessError("msg unlawfulness, {}".format(text)))
                     continue
 
                 # 处理
@@ -291,9 +287,7 @@ class WsManager:
                 if self.watch_msg_queue:
                     now = datetime.now()
                     if self.watch_msg_queue[0][0] > now:
-                        await asyncio.sleep(
-                            (self.watch_msg_queue[0][0] - now).total_seconds()
-                        )
+                        await asyncio.sleep((self.watch_msg_queue[0][0] - now).total_seconds())
                     _, name = heapq.heappop(self.watch_msg_queue)
 
                     try:
@@ -301,15 +295,11 @@ class WsManager:
                             watch = self.watch_msg[name]
                             watch.retry()
                             if watch.time > watch.retry_time:
-                                await self._call_wait(
-                                    watch, None, WatchTimeout("watch timeout")
-                                )
+                                await self._call_wait(watch, None, WatchTimeout("watch timeout"))
                                 del self.watch_msg[name]
                             else:
                                 await self._call_wait(watch, None, WatchRetry("retry"))
-                                heapq.heappush(
-                                    self.watch_msg_queue, (watch.timeout, name)
-                                )
+                                heapq.heappush(self.watch_msg_queue, (watch.timeout, name))
                     except Exception as e:
                         self.log("error clear_watch: {}".format(e))
                 else:
@@ -330,17 +320,13 @@ class WsManager:
                             if item.last_ping + self.ping_close_time < int(time.time()):
                                 await self._send_exit(
                                     item,
-                                    PingTimeoutError(
-                                        "ping time expires, {}".format(item.last_ping)
-                                    ),
+                                    PingTimeoutError("ping time expires, {}".format(item.last_ping)),
                                 )
                     for index, item in enumerate(self.no_login_conns):
                         if item.last_ping + self.ping_close_time < int(time.time()):
                             await self._send_exit(
                                 item,
-                                PingTimeoutError(
-                                    "ping time expires, {}".format(item.last_ping)
-                                ),
+                                PingTimeoutError("ping time expires, {}".format(item.last_ping)),
                             )
                 except Exception as e:
                     self.log("error check_ping: {}".format(e))
@@ -361,10 +347,7 @@ class WsManager:
             raise WsException("send uuid empty")
 
         try:
-            tasks = [
-                asyncio.create_task(self._send_text(v, msg.tojson()))
-                for v in self.conns[msg.send_uuid]
-            ]
+            tasks = [asyncio.create_task(self._send_text(v, msg.tojson())) for v in self.conns[msg.send_uuid]]
             await asyncio.gather(*tasks)
         except Exception as e:
             pass

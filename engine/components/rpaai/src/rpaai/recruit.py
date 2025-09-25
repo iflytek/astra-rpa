@@ -46,9 +46,7 @@ class RecruitAI:
         inputList=[
             atomicMg.param(
                 "job_description",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.INPUT_PYTHON_TEXTAREAMODAL_VARIABLE.value
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.INPUT_PYTHON_TEXTAREAMODAL_VARIABLE.value),
             ),
         ],
         outputList=[atomicMg.param("recruit_keywords", types="Str")],
@@ -59,7 +57,6 @@ class RecruitAI:
         job_description: str = "",
         job_website: JobWebsitesTypes = JobWebsitesTypes.BOSS,
     ):
-
         params = {
             "job_name": job_name,
             "job_description": job_description,
@@ -78,9 +75,7 @@ class RecruitAI:
                 dynamics=[
                     DynamicsItem(
                         key="$this.resume_content.show",
-                        expression="return $this.resume_input_type.value == '{}'".format(
-                            InputType.TEXT.value
-                        ),
+                        expression="return $this.resume_input_type.value == '{}'".format(InputType.TEXT.value),
                     )
                 ],
             ),
@@ -89,9 +84,7 @@ class RecruitAI:
                 dynamics=[
                     DynamicsItem(
                         key="$this.resume_file_path.show",
-                        expression="return $this.resume_input_type.value == '{}'".format(
-                            InputType.FILE.value
-                        ),
+                        expression="return $this.resume_input_type.value == '{}'".format(InputType.FILE.value),
                     )
                 ],
                 formType=AtomicFormTypeMeta(
@@ -104,9 +97,7 @@ class RecruitAI:
                 dynamics=[
                     DynamicsItem(
                         key="$this.rating_dimensions.show",
-                        expression="return $this.rating_system.value == '{}'".format(
-                            RatingSystemTypes.CUSTOM.value
-                        ),
+                        expression="return $this.rating_system.value == '{}'".format(RatingSystemTypes.CUSTOM.value),
                     )
                 ],
             ),

@@ -203,9 +203,7 @@ class Executor:
         self.kill_time = time.time() + 3  # [强制关闭]
         # 温和关闭
         if not check_port(port=self.exec_port):
-            ws = websocket.create_connection(
-                f"ws://127.0.0.1:{self.exec_port}/?tag=scheduler"
-            )
+            ws = websocket.create_connection(f"ws://127.0.0.1:{self.exec_port}/?tag=scheduler")
             closed_event = {
                 "event_id": self.exec_id,
                 "event_time": int(time.time()),
@@ -296,9 +294,7 @@ class ExecutorManager:
         self.curr_task_name = task_name
         self.curr_task_id = task_id
         self.curr_project_name = project_name
-        self.curr_log_name = os.path.join(
-            r"logs", "report", executor.project_id, "{}.txt".format(executor.exec_id)
-        )
+        self.curr_log_name = os.path.join(r"logs", "report", executor.project_id, "{}.txt".format(executor.exec_id))
 
         # 3. 获取端口
         executor.exec_port = self.svc.get_validate_port(None)
@@ -307,9 +303,7 @@ class ExecutorManager:
         create_project_venv(self.svc, project_id)
 
         # 5. 配置tasK
-        exec_python = platform_python_venv_path(
-            os.path.join(self.svc.config.app_server.venv_base_dir, project_id)
-        )
+        exec_python = platform_python_venv_path(os.path.join(self.svc.config.app_server.venv_base_dir, project_id))
 
         if open_virtual_desk and sys.platform == "win32":
             ins = WindowVirtualDeskSubprocessAdapter(self.svc, exec_python=exec_python)
@@ -362,9 +356,7 @@ class ExecutorManager:
                         "recording_config",
                         json.dumps(recording_config, ensure_ascii=True),
                     )
-                    executor.recording_path = recording_config.get(
-                        "filePath", "./logs/report"
-                    )
+                    executor.recording_path = recording_config.get("filePath", "./logs/report")
             except Exception as e:
                 pass
 
@@ -419,15 +411,8 @@ class ExecutorManager:
 
                     # 任务2: 强杀逻辑, 如果标记回收，且标记了强杀时间[大于0]，到了强杀时间就回收[强杀结束后kill_time会设置成-1]
                     try:
-                        if (
-                            executor.open_async
-                            and 0 < executor.kill_time <= time.time()
-                        ):
-                            logger.info(
-                                "step2: {} {}".format(
-                                    executor.exec_id, executor.kill_time
-                                )
-                            )
+                        if executor.open_async and 0 < executor.kill_time <= time.time():
+                            logger.info("step2: {} {}".format(executor.exec_id, executor.kill_time))
                             executor.kill()
                     except Exception as e:
                         logger.errr("step2 error: {}".format(e))
@@ -435,11 +420,7 @@ class ExecutorManager:
 
                     # 任务3: 日志上报，如果标记回收，没有标记强杀时间，或已经被强杀了，所有尘埃落地后，去上报状态，并标记上报状态 上报 0 没上报 > 0 上报中 <0 上报结束
                     try:
-                        if (
-                            executor.open_async
-                            and executor.kill_time <= 0
-                            and executor.report_log_time == 0
-                        ):
+                        if executor.open_async and executor.kill_time <= 0 and executor.report_log_time == 0:
                             logger.info("step3: {}".format(executor.exec_id))
                             self.report_app_log(executor)
                     except Exception as e:
@@ -448,11 +429,7 @@ class ExecutorManager:
 
                     # 任务4: 全部完成，上报也结束后，删除执行器
                     try:
-                        if (
-                            executor.open_async
-                            and executor.kill_time <= 0
-                            and executor.report_log_time < 0
-                        ):
+                        if executor.open_async and executor.kill_time <= 0 and executor.report_log_time < 0:
                             logger.info("step4: {}".format(executor.exec_id))
                             try:
                                 if executor.open_virtual_desk:
@@ -464,9 +441,7 @@ class ExecutorManager:
                         logger.info("step4 error: {}".format(e))
                         continue
             except Exception as e:
-                logger.error(
-                    "async_call error: {} {}".format(e, traceback.format_exc())
-                )
+                logger.error("async_call error: {} {}".format(e, traceback.format_exc()))
                 pass
 
     def close(self, executor: Executor):
@@ -505,9 +480,7 @@ class ExecutorManager:
     def task_trigger_status(self):
         """通知触发"""
 
-        emit_to_front(
-            EmitType.TERMINAL_STATUS, msg={"type": "busy" if self.status() else "idle"}
-        )
+        emit_to_front(EmitType.TERMINAL_STATUS, msg={"type": "busy" if self.status() else "idle"})
 
     def get_execute_id(
         self,
@@ -544,9 +517,7 @@ class ExecutorManager:
             text = response.text
             if status_code != 200:
                 raise Exception("get error status_code: {}".format(status_code))
-            logger.info(
-                "report data: {}, response: {} {}".format(data, status_code, text)
-            )
+            logger.info("report data: {}, response: {} {}".format(data, status_code, text))
             return json.loads(text.strip())["data"]
         except Exception as e:
             logger.exception("[APP] request api: {} error: {}".format(api, e))
@@ -597,9 +568,7 @@ class ExecutorManager:
                     log_content = [json.loads(item.strip()) for item in log_content]
                     log_content = json.dumps(log_content)
                 else:
-                    logger.warning(
-                        f"{log_file} size is {log_path_size / (10 * 1024 * 1024)}, will ignore report."
-                    )
+                    logger.warning(f"{log_file} size is {log_path_size / (10 * 1024 * 1024)}, will ignore report.")
 
                 # 2.4 状态收集
                 execute_status, execute_reason, execute_data = read_status(log_file)
@@ -651,19 +620,13 @@ class ExecutorManager:
                 if self.svc.terminal_mod:
                     data["dispatchTaskExecuteId"] = executor.task_exec_id
                 response = requests.post(
-                    url="http://127.0.0.1:{}/api/robot/robot-record/save-result".format(
-                        self.svc.route_port
-                    ),
+                    url="http://127.0.0.1:{}/api/robot/robot-record/save-result".format(self.svc.route_port),
                     json=data,
                     timeout=10,
                 )
                 status_code = response.status_code
                 text = response.text
-                logger.info(
-                    "report log data: {}, response: {} {}".format(
-                        data, status_code, text
-                    )
-                )
+                logger.info("report log data: {}, response: {} {}".format(data, status_code, text))
         except Exception as e:
             logger.exception("report_app_log error: {}".format(e))
         finally:

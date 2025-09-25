@@ -9,7 +9,6 @@ from ...utils.utils import EmitType, emit_to_front
 
 
 class Package:
-
     @staticmethod
     def get_atomic_packages(svc):
         """
@@ -41,10 +40,7 @@ class Package:
             if "" in atom_major_pub_list:
                 atom_major_pub_list.remove("")
             max_atom_major = atom_major_pub_list[-1]
-            if (
-                atom_pck in installed_pck_info
-                and max_atom_major == installed_pck_info[atom_pck]
-            ):
+            if atom_pck in installed_pck_info and max_atom_major == installed_pck_info[atom_pck]:
                 continue
             update_pck_ver = f"{atom_pck}=={max_atom_major}"
 

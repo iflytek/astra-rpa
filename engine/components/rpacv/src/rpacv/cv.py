@@ -27,9 +27,7 @@ class CV:
         inputList=[
             atomicMg.param(
                 "input_data",
-                formType=AtomicFormTypeMeta(
-                    AtomicFormType.PICK.value, params={"use": "CV"}
-                ),
+                formType=AtomicFormTypeMeta(AtomicFormType.PICK.value, params={"use": "CV"}),
                 noInput=True,
             ),
             atomicMg.param("btn_type", required=False),
@@ -42,9 +40,7 @@ class CV:
                 dynamics=[
                     DynamicsItem(
                         key="$this.specified_position.show",
-                        expression="return $this.click_position.value == '{}'".format(
-                            PositionType.SPECIFIC.value
-                        ),
+                        expression="return $this.click_position.value == '{}'".format(PositionType.SPECIFIC.value),
                     )
                 ],
             ),
@@ -54,9 +50,7 @@ class CV:
                 dynamics=[
                     DynamicsItem(
                         key="$this.horizontal_move.show",
-                        expression="return $this.click_position.value == '{}'".format(
-                            PositionType.SPECIFIC.value
-                        ),
+                        expression="return $this.click_position.value == '{}'".format(PositionType.SPECIFIC.value),
                     )
                 ],
             ),
@@ -66,9 +60,7 @@ class CV:
                 dynamics=[
                     DynamicsItem(
                         key="$this.vertical_move.show",
-                        expression="return $this.click_position.value == '{}'".format(
-                            PositionType.SPECIFIC.value
-                        ),
+                        expression="return $this.click_position.value == '{}'".format(PositionType.SPECIFIC.value),
                     )
                 ],
             ),
@@ -83,9 +75,7 @@ class CV:
                 formType=AtomicFormTypeMeta(AtomicFormType.SLIDER.value),
                 required=False,
             ),
-            atomicMg.param(
-                "move_type", level=AtomicLevel.ADVANCED.value, required=False
-            ),
+            atomicMg.param("move_type", level=AtomicLevel.ADVANCED.value, required=False),
             atomicMg.param(
                 "move_speed",
                 level=AtomicLevel.ADVANCED.value,
@@ -130,9 +120,7 @@ class CV:
         """
         start_time = time.time()
         while True:
-            target_rect = CvCore.match_imgs(
-                input_data=input_data, match_similarity=match_similarity
-            )
+            target_rect = CvCore.match_imgs(input_data=input_data, match_similarity=match_similarity)
             if target_rect is not None:
                 try:
                     if click_position == PositionType.CENTER:
@@ -144,9 +132,7 @@ class CV:
                     elif click_position == PositionType.SPECIFIC:
                         position = specified_position
                         if position is None:
-                            raise BaseException(
-                                SPECIFIC_POSITION_ERROR, "未指定点击位置，请检查参数"
-                            )
+                            raise BaseException(SPECIFIC_POSITION_ERROR, "未指定点击位置，请检查参数")
                         # 按照指定位置计算点击位置
                         target_x, target_y = CvCore.get_region_position(
                             target_rect, position, horizontal_move, vertical_move
@@ -155,12 +141,7 @@ class CV:
                         raise NotImplementedError()
 
                     screen_weight, screen_height = Mouse.screen_size()
-                    if (
-                        target_x < 0
-                        or target_x > screen_weight
-                        or target_y < 0
-                        or target_y > screen_height
-                    ):
+                    if target_x < 0 or target_x > screen_weight or target_y < 0 or target_y > screen_height:
                         raise BaseException(REGION_ERROR, "坐标参数不合法！")
 
                     if move_type == MoveType.LINEAR:
@@ -198,9 +179,7 @@ class CV:
                 else:
                     time.sleep(0.1)
 
-        raise BaseException(
-            CV_MATCH_ERROR, "超时未匹配到目标元素，请检查当前界面或降低匹配相似度重试"
-        )
+        raise BaseException(CV_MATCH_ERROR, "超时未匹配到目标元素，请检查当前界面或降低匹配相似度重试")
 
     @staticmethod
     @atomicMg.atomic(
@@ -208,9 +187,7 @@ class CV:
         inputList=[
             atomicMg.param(
                 "input_data",
-                formType=AtomicFormTypeMeta(
-                    AtomicFormType.PICK.value, params={"use": "CV"}
-                ),
+                formType=AtomicFormTypeMeta(AtomicFormType.PICK.value, params={"use": "CV"}),
                 noInput=True,
             ),
             atomicMg.param("click_position", required=False),
@@ -221,9 +198,7 @@ class CV:
                 dynamics=[
                     DynamicsItem(
                         key="$this.specified_position.show",
-                        expression="return $this.click_position.value == '{}'".format(
-                            PositionType.SPECIFIC.value
-                        ),
+                        expression="return $this.click_position.value == '{}'".format(PositionType.SPECIFIC.value),
                     )
                 ],
             ),
@@ -233,9 +208,7 @@ class CV:
                 dynamics=[
                     DynamicsItem(
                         key="$this.horizontal_move.show",
-                        expression="return $this.click_position.value == '{}'".format(
-                            PositionType.SPECIFIC.value
-                        ),
+                        expression="return $this.click_position.value == '{}'".format(PositionType.SPECIFIC.value),
                     )
                 ],
             ),
@@ -245,9 +218,7 @@ class CV:
                 dynamics=[
                     DynamicsItem(
                         key="$this.vertical_move.show",
-                        expression="return $this.click_position.value == '{}'".format(
-                            PositionType.SPECIFIC.value
-                        ),
+                        expression="return $this.click_position.value == '{}'".format(PositionType.SPECIFIC.value),
                     )
                 ],
             ),
@@ -262,9 +233,7 @@ class CV:
                 level=AtomicLevel.ADVANCED.value,
                 required=False,
             ),
-            atomicMg.param(
-                "move_type", level=AtomicLevel.ADVANCED.value, required=False
-            ),
+            atomicMg.param("move_type", level=AtomicLevel.ADVANCED.value, required=False),
             atomicMg.param(
                 "move_speed",
                 level=AtomicLevel.ADVANCED.value,
@@ -317,9 +286,7 @@ class CV:
                     elif click_position == PositionType.SPECIFIC:
                         position = specified_position
                         if position is None:
-                            raise BaseException(
-                                SPECIFIC_POSITION_ERROR, "未指定点击位置，请检查参数"
-                            )
+                            raise BaseException(SPECIFIC_POSITION_ERROR, "未指定点击位置，请检查参数")
                         # 按照指定位置计算点击位置
                         target_x, target_y = CvCore.get_region_position(
                             target_rect, position, horizontal_move, vertical_move
@@ -328,12 +295,7 @@ class CV:
                         raise NotImplementedError()
 
                     screen_weight, screen_height = Mouse.screen_size()
-                    if (
-                        target_x < 0
-                        or target_x > screen_weight
-                        or target_y < 0
-                        or target_y > screen_height
-                    ):
+                    if target_x < 0 or target_x > screen_weight or target_y < 0 or target_y > screen_height:
                         raise BaseException(REGION_ERROR, "坐标参数不合法！")
 
                     if move_type == MoveType.LINEAR:
@@ -364,9 +326,7 @@ class CV:
                 else:
                     time.sleep(0.1)
 
-        raise BaseException(
-            CV_MATCH_ERROR, "超时未匹配到目标元素，请检查当前界面或降低匹配相似度重试"
-        )
+        raise BaseException(CV_MATCH_ERROR, "超时未匹配到目标元素，请检查当前界面或降低匹配相似度重试")
 
     @staticmethod
     @atomicMg.atomic(
@@ -374,9 +334,7 @@ class CV:
         inputList=[
             atomicMg.param(
                 "input_data",
-                formType=AtomicFormTypeMeta(
-                    AtomicFormType.PICK.value, params={"use": "CV"}
-                ),
+                formType=AtomicFormTypeMeta(AtomicFormType.PICK.value, params={"use": "CV"}),
                 noInput=True,
             ),
             atomicMg.param("exist_type", required=False),
@@ -439,9 +397,7 @@ class CV:
         inputList=[
             atomicMg.param(
                 "input_data",
-                formType=AtomicFormTypeMeta(
-                    AtomicFormType.PICK.value, params={"use": "CV"}
-                ),
+                formType=AtomicFormTypeMeta(AtomicFormType.PICK.value, params={"use": "CV"}),
                 noInput=True,
             ),
             atomicMg.param("wait_type", required=False),
@@ -473,9 +429,7 @@ class CV:
         if wait_type == WaitType.DISAPPEAR:
             target_rect = CvCore.match_imgs(input_data, match_similarity)
             if not target_rect:
-                raise BaseException(
-                    TARGET_EXISTS_ERROR, "当前界面元素不存在，无法判断消失状态"
-                )
+                raise BaseException(TARGET_EXISTS_ERROR, "当前界面元素不存在，无法判断消失状态")
 
         while True:
             target_rect = CvCore.match_imgs(input_data, match_similarity)
@@ -502,9 +456,7 @@ class CV:
         inputList=[
             atomicMg.param(
                 "input_data",
-                formType=AtomicFormTypeMeta(
-                    AtomicFormType.PICK.value, params={"use": "CV"}
-                ),
+                formType=AtomicFormTypeMeta(AtomicFormType.PICK.value, params={"use": "CV"}),
                 noInput=True,
             ),
             atomicMg.param("input_type", required=False),
@@ -514,9 +466,7 @@ class CV:
                 dynamics=[
                     DynamicsItem(
                         key="$this.input_content.show",
-                        expression="return $this.input_type.value == '{}'".format(
-                            InputType.TEXT.value
-                        ),
+                        expression="return $this.input_type.value == '{}'".format(InputType.TEXT.value),
                     )
                 ],
             ),
@@ -526,9 +476,7 @@ class CV:
                 dynamics=[
                     DynamicsItem(
                         key="$this.simulate_flag.show",
-                        expression="return $this.input_type.value == '{}'".format(
-                            InputType.TEXT.value
-                        ),
+                        expression="return $this.input_type.value == '{}'".format(InputType.TEXT.value),
                     )
                 ],
                 required=False,
@@ -540,9 +488,7 @@ class CV:
                 dynamics=[
                     DynamicsItem(
                         key="$this.interval.show",
-                        expression="return $this.input_type.value == '{}'".format(
-                            InputType.TEXT.value
-                        ),
+                        expression="return $this.input_type.value == '{}'".format(InputType.TEXT.value),
                     )
                 ],
             ),
@@ -619,6 +565,4 @@ class CV:
                 else:
                     time.sleep(0.5)
 
-        raise BaseException(
-            CV_MATCH_ERROR, "超时未匹配到目标元素，请检查当前界面或降低匹配相似度重试"
-        )
+        raise BaseException(CV_MATCH_ERROR, "超时未匹配到目标元素，请检查当前界面或降低匹配相似度重试")

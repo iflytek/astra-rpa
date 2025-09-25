@@ -12,30 +12,22 @@ if sys.platform == "win32":
 elif platform.system() == "Linux":
     from rpadatabase.core_unix import DatabaseCore
 else:
-    raise NotImplementedError(
-        "Your platform (%s) is not supported by (%s)."
-        % (platform.system(), "clipboard")
-    )
+    raise NotImplementedError("Your platform (%s) is not supported by (%s)." % (platform.system(), "clipboard"))
 
 
 DatabaseCore: IDatabaseCore = DatabaseCore()
 
 
 class Database:
-
     @staticmethod
     @atomicMg.atomic(
         "Database",
         intputList=[
-            atomicMg.param(
-                "connect_info", types=dict
-            ),  # TODO 確定類型【目前用手動輸入Dict的方式】
+            atomicMg.param("connect_info", types=dict),  # TODO 確定類型【目前用手動輸入Dict的方式】
         ],
         outputList=[atomicMg.param("connect_db_obj", types="Any")],
     )
-    def connect_database(
-        connect_info: dict, db_type: DatabaseType = DatabaseType.MySQL
-    ):
+    def connect_database(connect_info: dict, db_type: DatabaseType = DatabaseType.MySQL):
         connect_db_obj = DatabaseCore.connect(connect_info, db_type)
         return connect_db_obj
 

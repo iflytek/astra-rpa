@@ -36,9 +36,7 @@ class Folder:
             atomicMg.param("exist_type", required=False),
         ],
     )
-    def folder_exist(
-        folder_path: str = "", exist_type: ExistType = ExistType.EXIST
-    ) -> bool:
+    def folder_exist(folder_path: str = "", exist_type: ExistType = ExistType.EXIST) -> bool:
         """
         判断文件夹是否存在，返回判断结果folder_exist_result
         """
@@ -147,9 +145,7 @@ class Folder:
         ],
         outputList=[atomicMg.param("delete_folder_result", types="Bool")],
     )
-    def folder_delete(
-        folder_path: str = "", delete_options: DeleteType = DeleteType.DELETE
-    ):
+    def folder_delete(folder_path: str = "", delete_options: DeleteType = DeleteType.DELETE):
         """
         删除指定文件夹，删除操作可选  彻底删除/移入回收站
         """
@@ -189,9 +185,7 @@ class Folder:
             ),
             atomicMg.param(
                 "folder_name",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.INPUT_VARIABLE_PYTHON.value
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.INPUT_VARIABLE_PYTHON.value),
                 required=False,
             ),
             atomicMg.param(
@@ -240,7 +234,6 @@ class Folder:
         copy_folder_path = os.path.join(target_path, folder_name)
         if folder_is_exists(copy_folder_path):
             if exist_options == OptionType.OVERWRITE:
-
                 shutil.rmtree(copy_folder_path)
             elif exist_options == OptionType.SKIP:
                 return copy_folder_path
@@ -456,9 +449,7 @@ class Folder:
                 dynamics=[
                     DynamicsItem(
                         key="$this.excel_path.show",
-                        expression="return $this.output_type.value == '{}'".format(
-                            OutputType.EXCEL.value
-                        ),
+                        expression="return $this.output_type.value == '{}'".format(OutputType.EXCEL.value),
                     )
                 ],
                 required=True,
@@ -469,9 +460,7 @@ class Folder:
                 dynamics=[
                     DynamicsItem(
                         key="$this.state_type.show",
-                        expression="return $this.output_type.value == '{}'".format(
-                            OutputType.EXCEL.value
-                        ),
+                        expression="return $this.output_type.value == '{}'".format(OutputType.EXCEL.value),
                     )
                 ],
             ),
@@ -481,9 +470,7 @@ class Folder:
                 dynamics=[
                     DynamicsItem(
                         key="$this.excel_name.show",
-                        expression="return $this.output_type.value == '{}'".format(
-                            OutputType.EXCEL.value
-                        ),
+                        expression="return $this.output_type.value == '{}'".format(OutputType.EXCEL.value),
                     )
                 ],
             ),
@@ -530,17 +517,12 @@ class Folder:
         folder_list = []
         if traverse_subfolder == TraverseType.YES:
             for root, dirs, _ in os.walk(folder_path):
-                folder_list.extend(
-                    os.path.join(root, folder)
-                    for folder in dirs
-                    if not folder.startswith(".")
-                )
+                folder_list.extend(os.path.join(root, folder) for folder in dirs if not folder.startswith("."))
         elif traverse_subfolder == TraverseType.NO:
             folder_list = [
                 os.path.join(folder_path, folder)
                 for folder in os.listdir(folder_path)
-                if folder_is_exists(os.path.join(folder_path, folder))
-                and not folder.startswith(".")
+                if folder_is_exists(os.path.join(folder_path, folder)) and not folder.startswith(".")
             ]
         else:
             raise NotImplementedError()
@@ -550,14 +532,10 @@ class Folder:
             pass
         elif sort_method == SortMethod.CTIME:
             folder_list = sorted(folder_list, key=lambda x: os.path.getctime(x))
-            folder_list = (
-                folder_list[::-1] if sort_type == SortType.DESCENDING else folder_list
-            )
+            folder_list = folder_list[::-1] if sort_type == SortType.DESCENDING else folder_list
         elif sort_method == SortMethod.MTIME:
             folder_list = sorted(folder_list, key=lambda x: os.path.getmtime(x))
-            folder_list = (
-                folder_list[::-1] if sort_type == SortType.DESCENDING else folder_list
-            )
+            folder_list = folder_list[::-1] if sort_type == SortType.DESCENDING else folder_list
         else:
             raise NotImplementedError()
 

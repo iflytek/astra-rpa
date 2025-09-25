@@ -7,7 +7,6 @@ from ..core.logger import logger
 
 
 class HotKeyTask:
-
     def __init__(self, shortcuts: List = None, **kwargs):
         """
         构建热键监听的类
@@ -20,7 +19,6 @@ class HotKeyTask:
         self._h_handle = None  # 用于控制监听事件的对象
 
     async def callback(self, q: asyncio.Queue, run_event: asyncio.Event):
-
         async def handle_hotkey():
             logger.debug("handle_hotkey: enqueue True to asyncio.Queue")
             await q.put(True)
@@ -34,13 +32,9 @@ class HotKeyTask:
             try:
                 is_set = run_event.is_set()
             except Exception as e:
-                logger.exception(
-                    f"on_hotkey_press: failed to read run_event.is_set(): {e}"
-                )
+                logger.exception(f"on_hotkey_press: failed to read run_event.is_set(): {e}")
                 is_set = False
-            logger.debug(
-                f"on_hotkey_press: hotkey '{hotkey_expression}' pressed, run_event.is_set={is_set}"
-            )
+            logger.debug(f"on_hotkey_press: hotkey '{hotkey_expression}' pressed, run_event.is_set={is_set}")
             if is_set:
                 logger.info("on_hotkey_press: run_event is set; ignore hotkey")
                 return

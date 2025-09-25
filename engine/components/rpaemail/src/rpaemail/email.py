@@ -8,7 +8,6 @@ from rpaframe.logger.logger import logger
 
 
 class Email:
-
     @staticmethod
     @atomicMg.atomic(
         "Email",
@@ -40,9 +39,7 @@ class Email:
                 dynamics=[
                     DynamicsItem(
                         key="$this.other_mail_server.show",
-                        expression="return $this.mail_server.value == '{}'".format(
-                            EmailServerType.OTHER.value
-                        ),
+                        expression="return $this.mail_server.value == '{}'".format(EmailServerType.OTHER.value),
                     )
                 ],
                 required=False,
@@ -68,7 +65,6 @@ class Email:
         bcc: str = "",
         replace_table: str = "",
     ):
-
         mail_server_dict = {
             EmailServerType.QQ: "smtp.qq.com",
             EmailServerType.NETEASE_163: "smtp.163.com",
@@ -92,9 +88,7 @@ class Email:
         try:
             if replace_table and isinstance(replace_table, list):
                 for replace in replace_table:
-                    content = content.replace(
-                        str(replace.get("origintext")), str(replace.get("replacetext"))
-                    )
+                    content = content.replace(str(replace.get("origintext")), str(replace.get("replacetext")))
         except Exception as e:
             pass
         core.send(
@@ -119,9 +113,7 @@ class Email:
                 dynamics=[
                     DynamicsItem(
                         key="$this.custom_mail_server.show",
-                        expression="return $this.mail_server.value == '{}'".format(
-                            EmailServerType.OTHER.value
-                        ),
+                        expression="return $this.mail_server.value == '{}'".format(EmailServerType.OTHER.value),
                     )
                 ],
                 types="Str",
@@ -132,19 +124,13 @@ class Email:
                 dynamics=[
                     DynamicsItem(
                         key="$this.custom_mail_port.show",
-                        expression="return $this.mail_server.value == '{}'".format(
-                            EmailServerType.OTHER.value
-                        ),
+                        expression="return $this.mail_server.value == '{}'".format(EmailServerType.OTHER.value),
                     )
                 ],
                 types="Str",
             ),
-            atomicMg.param(
-                "user_mail", level=AtomicLevel.NORMAL, types="Str", required=True
-            ),
-            atomicMg.param(
-                "user_password", level=AtomicLevel.NORMAL, types="Str", required=True
-            ),
+            atomicMg.param("user_mail", level=AtomicLevel.NORMAL, types="Str", required=True),
+            atomicMg.param("user_password", level=AtomicLevel.NORMAL, types="Str", required=True),
             atomicMg.param(
                 "unseen_flag",
                 formType=AtomicFormTypeMeta(type=AtomicFormType.CHECKBOX.value),
@@ -263,12 +249,10 @@ class Email:
                 (not (sender_text or receiver_text or theme_text or content_text))
                 or sender_text
                 and mail_info["from"]
-                and sender_text
-                in " ".join([item for item in mail_info["from"] if item])
+                and sender_text in " ".join([item for item in mail_info["from"] if item])
                 or receiver_text
                 and mail_info["to"]
-                and receiver_text
-                in " ".join([item for item in mail_info["to"] if item])
+                and receiver_text in " ".join([item for item in mail_info["to"] if item])
                 or theme_text
                 and mail_info["subject"]
                 and theme_text in mail_info["subject"]
@@ -297,17 +281,13 @@ class Email:
                 for attachment in mail_info["attachments"]:
                     if not attachment:
                         continue
-                    with open(
-                        os.path.join(save_attachment_path, attachment["name"]), "wb"
-                    ) as f:
+                    with open(os.path.join(save_attachment_path, attachment["name"]), "wb") as f:
                         f.write(attachment["data"])
             # 判断是否需要标注为已读
             if mask_as_read_flag:
                 core.mask_as_read(mail_id)
             mail_info["attachments"] = [
-                attachment["name"]
-                for attachment in mail_info["attachments"]
-                if attachment and attachment["name"]
+                attachment["name"] for attachment in mail_info["attachments"] if attachment and attachment["name"]
             ]
             return_mail_res.append(mail_info)
         return return_mail_res

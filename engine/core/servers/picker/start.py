@@ -10,12 +10,8 @@ def start():
     parser = argparse.ArgumentParser(description=f"{'executor'} service")
 
     parser.add_argument("--port", help="服务http端口", type=int, default=8101)
-    parser.add_argument(
-        "--route_port", help="浏览器通信中间件端口", type=int, default=8003
-    )
-    parser.add_argument(
-        "--highlight_socket_port", help="高亮程序端口号", type=int, default=11001
-    )
+    parser.add_argument("--route_port", help="浏览器通信中间件端口", type=int, default=8003)
+    parser.add_argument("--highlight_socket_port", help="高亮程序端口号", type=int, default=11001)
 
     args = parser.parse_args()
 

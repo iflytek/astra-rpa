@@ -25,7 +25,5 @@ if __name__ == "__main__":
     atomicMg.meta()
 
     config.set_config_file("config_type.yaml")
-    typesMg.register_types(
-        Browser, version=get_version(), channel="global", template="Browser对象"
-    )
+    typesMg.register_types(Browser, version=get_version(), channel="global", template="Browser对象")
     typesMg.meta()

@@ -44,16 +44,12 @@ def auto_default_strategy(
             is_document, menu_top, menu_left, hwnd = web_control_result
             if is_document:
                 web_cache = (is_document, menu_top, menu_left, hwnd)
-                preliminary_element = web_default_strategy(
-                    service, strategy_svc, web_cache
-                )
+                preliminary_element = web_default_strategy(service, strategy_svc, web_cache)
                 # web元素直接返回，不做兜底
                 return preliminary_element
         except Exception as e:
             logger.error("堆栈信息:\n%s", traceback.format_exc())
-            logger.error(
-                f"auto_default_strategy web error: {e} {traceback.extract_stack()}"
-            )
+            logger.error(f"auto_default_strategy web error: {e} {traceback.extract_stack()}")
     elif strategy_svc.app.value in MSAA_APPLICATIONS:
         preliminary_element = msaa_default_strategy(strategy_svc)
 
@@ -63,9 +59,7 @@ def auto_default_strategy(
         uia_element = uia_default_strategy(strategy_svc)
     except Exception as e:
         logger.error("堆栈信息:\n%s", traceback.format_exc())
-        logger.error(
-            f"auto_default_strategy uia_picker error: {e} {traceback.extract_stack()}"
-        )
+        logger.error(f"auto_default_strategy uia_picker error: {e} {traceback.extract_stack()}")
 
     # 4. 结果优先选取
     if uia_element is None and preliminary_element is not None:

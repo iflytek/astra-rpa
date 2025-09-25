@@ -34,9 +34,7 @@ class CvCore:
 
         if data["img"]["parent"]:
             anchor_img = CvCore.base64_to_image(data["img"]["parent"])
-            center_coords_anchor = (
-                f"{data['pos']['parent_x']},{data['pos']['parent_y']}"
-            )
+            center_coords_anchor = f"{data['pos']['parent_x']},{data['pos']['parent_y']}"
         else:
             anchor_img = None
             center_coords_anchor = ""
@@ -86,9 +84,7 @@ class CvCore:
         return pyautogui.screenshot(region=region)
 
     @staticmethod
-    def get_region_position(
-        target_rect, specified_position, horizontal_offset, vertical_offset
-    ):
+    def get_region_position(target_rect, specified_position, horizontal_offset, vertical_offset):
         """
         获取指定位置的坐标
         :param target_rect: 目标元素的边框坐标

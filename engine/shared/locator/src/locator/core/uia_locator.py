@@ -20,7 +20,6 @@ from uiautomation import Control, ControlFromHandle
 
 
 class UIALocator(ILocator):
-
     def __init__(self, control: Control):
         self.__control = control
         self.__rect = None
@@ -28,26 +27,14 @@ class UIALocator(ILocator):
     def rect(self) -> Optional[Rect]:
         if self.__rect is None:
             rect = self.__control.BoundingRectangle
-            logger.info(
-                f"校验结果的初始rect { rect.left} {rect.top} {rect.right} {rect.bottom}"
-            )
-            is_valid_rect = validate_window_rect(
-                rect.left, rect.top, rect.right, rect.bottom
-            )
+            logger.info(f"校验结果的初始rect {rect.left} {rect.top} {rect.right} {rect.bottom}")
+            is_valid_rect = validate_window_rect(rect.left, rect.top, rect.right, rect.bottom)
             # logger.info(f'UIALocator rect  {is_valid_rect}')
             if not is_valid_rect:
                 rect.left = 1 if rect.left < 0 else rect.left
                 rect.top = 1 if rect.top < 0 else rect.top
-                rect.right = (
-                    pyautogui.size().width - 1
-                    if rect.right > pyautogui.size().width
-                    else rect.right
-                )
-                rect.bottom = (
-                    pyautogui.size().height - 1
-                    if rect.bottom > pyautogui.size().height
-                    else rect.bottom
-                )
+                rect.right = pyautogui.size().width - 1 if rect.right > pyautogui.size().width else rect.right
+                rect.bottom = pyautogui.size().height - 1 if rect.bottom > pyautogui.size().height else rect.bottom
             self.__rect = Rect(rect.left, rect.top, rect.right, rect.bottom)
         logger.info(f"校验结果的rect {self.__rect.to_json()}")
         return self.__rect
@@ -145,9 +132,7 @@ class UIAFactory:
     """UIA工厂"""
 
     @classmethod
-    def find(
-        cls, ele: dict, picker_type: str, **kwargs
-    ) -> Union[List[UIALocator], UIALocator, None]:
+    def find(cls, ele: dict, picker_type: str, **kwargs) -> Union[List[UIALocator], UIALocator, None]:
         if picker_type == PickerType.SIMILAR.value:
             return cls.__find_similar__(ele, picker_type, **kwargs)
         else:
@@ -164,9 +149,7 @@ class UIAFactory:
             child = child.GetNextSiblingControl()
 
     @classmethod
-    def __compare_node_and_uia_ele__(
-        cls, uia_ele: UIAEle, node: UIANode, keys: List[str]
-    ) -> bool:
+    def __compare_node_and_uia_ele__(cls, uia_ele: UIAEle, node: UIANode, keys: List[str]) -> bool:
         # 忽略没有选中
         if not node.checked:
             return True
@@ -202,9 +185,7 @@ class UIAFactory:
         return ", ".join(attrs)
 
     @classmethod
-    def __find_similar__(
-        cls, ele: dict, picker_type: str, **kwarg
-    ) -> Union[List[UIALocator], None]:
+    def __find_similar__(cls, ele: dict, picker_type: str, **kwarg) -> Union[List[UIALocator], None]:
         path_list = ele.get("path", [])
         if not path_list:
             return None
@@ -237,9 +218,7 @@ class UIAFactory:
         for root_ctrl in cls.__get_child_walk_control__(parent_locator.control()):
             # 判断第一场子元素是否符合规范
             root_ele = UIAEle(control=root_ctrl.control, index=0, index_match_sort="1")
-            is_ok = cls.__compare_node_and_uia_ele__(
-                root_ele, node_list[0], ["tag_name", "name", "cls", "value"]
-            )
+            is_ok = cls.__compare_node_and_uia_ele__(root_ele, node_list[0], ["tag_name", "name", "cls", "value"])
             if not is_ok:
                 continue
 
@@ -249,9 +228,7 @@ class UIAFactory:
                 continue
             else:
                 # 如果还有多层就需要向下遍历，并找到一个相近的值
-                search_list = [
-                    UIAEle(control=root_ctrl.control, index=0, index_match_sort="1")
-                ]
+                search_list = [UIAEle(control=root_ctrl.control, index=0, index_match_sort="1")]
                 i = 0
                 for i, node in enumerate(node_list[1:]):
                     # i 表示第几层
@@ -267,19 +244,13 @@ class UIAFactory:
                     child_list = [
                         item
                         for item in child_list
-                        if cls.__compare_node_and_uia_ele__(
-                            item, node, ["tag_name", "name", "cls", "value"]
-                        )
+                        if cls.__compare_node_and_uia_ele__(item, node, ["tag_name", "name", "cls", "value"])
                     ]
 
                     # 4.3 基于前端传递的node, 处理index，弱匹配
                     for item in child_list:
-                        index_match = cls.__compare_node_and_uia_ele__(
-                            item, node, ["index"]
-                        )
-                        item.index_match_sort = "{}{}".format(
-                            item.index_parent_match_sort, "1" if index_match else "0"
-                        )
+                        index_match = cls.__compare_node_and_uia_ele__(item, node, ["index"])
+                        item.index_match_sort = "{}{}".format(item.index_parent_match_sort, "1" if index_match else "0")
 
                     # 4.3 去一下层又去做比较，直到没有找人任何符合，或者层级结束
                     search_list = child_list
@@ -294,9 +265,7 @@ class UIAFactory:
         return res
 
     @classmethod
-    def __find_one__(
-        cls, ele: dict, picker_type: str, **kwargs
-    ) -> Union[UIALocator, None]:
+    def __find_one__(cls, ele: dict, picker_type: str, **kwargs) -> Union[UIALocator, None]:
         """
         使用列表遍历的方式查找窗口句柄，当找到元素时停止遍历
         使用 find_window_by_enum_list 和 find_window_handles_list 获取句柄列表
@@ -320,16 +289,8 @@ class UIAFactory:
             for path in path_list
         ]
 
-        first_cls = (
-            node_list[0].cls
-            if node_list[0].cls not in node_list[0].disable_keys
-            else None
-        )
-        first_name = (
-            node_list[0].name
-            if node_list[0].name not in node_list[0].disable_keys
-            else None
-        )
+        first_cls = node_list[0].cls if node_list[0].cls not in node_list[0].disable_keys else None
+        first_name = node_list[0].name if node_list[0].name not in node_list[0].disable_keys else None
         first_app_name = app_name if app_name not in node_list[0].disable_keys else None
 
         # 2. 获取所有可能的窗口句柄
@@ -402,33 +363,23 @@ class UIAFactory:
                     child_list = [
                         item
                         for item in child_list
-                        if cls.__compare_node_and_uia_ele__(
-                            item, node, ["tag_name", "name", "cls", "value"]
-                        )
+                        if cls.__compare_node_and_uia_ele__(item, node, ["tag_name", "name", "cls", "value"])
                     ]
                     # if len(child_list) > 0:
                     #     logger.info(f'筛选完是{child_list[0].tag_name}')
 
                     # 5.3 基于前端传递的node, 处理index，弱匹配
                     for item in child_list:
-                        index_match = cls.__compare_node_and_uia_ele__(
-                            item, node, ["index"]
-                        )
-                        item.index_match_sort = "{}{}".format(
-                            item.index_parent_match_sort, "1" if index_match else "0"
-                        )
+                        index_match = cls.__compare_node_and_uia_ele__(item, node, ["index"])
+                        item.index_match_sort = "{}{}".format(item.index_parent_match_sort, "1" if index_match else "0")
 
                     # 5.4 去一下层又去做比较，直到没有找到任何符合，或者层级结束
                     search_list = child_list
                     if not search_list:
-                        logger.debug(
-                            f"筛选完后剩余child_list为空 当前层级是{i} 候选taglist是 {tag_list}"
-                        )
+                        logger.debug(f"筛选完后剩余child_list为空 当前层级是{i} 候选taglist是 {tag_list}")
                         logger.debug(f"筛选前候选节点({len(befor_cmp_child)}个):")
                         for idx_child, ni in enumerate(befor_cmp_child):
-                            logger.debug(
-                                f"  节点{idx_child}: {cls._format_node_info(ni)}"
-                            )
+                            logger.debug(f"  节点{idx_child}: {cls._format_node_info(ni)}")
                         logger.debug(f"拾取节点: {cls._format_node_info(node)}")
                         element_found = False
                         break
@@ -443,9 +394,7 @@ class UIAFactory:
                     # 显示桌面元素，遮挡的都隐藏掉
                     cls.__show_desktop_ele__(root_handle, root_ctrl, match.rect)
                     res = UIALocator(control=match.control)
-                    logger.info(
-                        f"成功找到元素，使用句柄: {root_handle}，校验结果的rect {res.rect().to_json()}"
-                    )
+                    logger.info(f"成功找到元素，使用句柄: {root_handle}，校验结果的rect {res.rect().to_json()}")
                     return res
                 else:
                     logger.debug(f"句柄 {root_handle} 未找到匹配元素，继续尝试下一个")
@@ -460,9 +409,7 @@ class UIAFactory:
         raise Exception("元素无法找到")
 
     @classmethod
-    def __find_partial_match__(
-        cls, ele: dict, picker_type: str, **kwargs
-    ) -> Union[UIALocator, None]:
+    def __find_partial_match__(cls, ele: dict, picker_type: str, **kwargs) -> Union[UIALocator, None]:
         """
         根据路径查找元素，如果路径没有完全匹配，返回最后匹配的元素而不是报错
         """
@@ -486,16 +433,8 @@ class UIAFactory:
             for path in path_list
         ]
 
-        first_cls = (
-            node_list[0].cls
-            if node_list[0].cls not in node_list[0].disable_keys
-            else None
-        )
-        first_name = (
-            node_list[0].name
-            if node_list[0].name not in node_list[0].disable_keys
-            else None
-        )
+        first_cls = node_list[0].cls if node_list[0].cls not in node_list[0].disable_keys else None
+        first_name = node_list[0].name if node_list[0].name not in node_list[0].disable_keys else None
         first_app_name = app_name if app_name not in node_list[0].disable_keys else None
 
         # 2. 获取所有可能的窗口句柄
@@ -503,9 +442,7 @@ class UIAFactory:
 
         # 再尝试使用 find_window_handles_list 获取句柄列表
         try:
-            handles_list = find_window_handles_list(
-                first_cls, first_name, app_name=first_app_name
-            )
+            handles_list = find_window_handles_list(first_cls, first_name, app_name=first_app_name)
             if handles_list:
                 root_handles.extend(handles_list)
         except Exception as e:
@@ -513,9 +450,7 @@ class UIAFactory:
         if len(root_handles) == 0:
             # 先尝试使用 find_window_by_enum_list 获取句柄列表
             try:
-                enum_handles = find_window_by_enum_list(
-                    first_cls, first_name, app_name=first_app_name
-                )
+                enum_handles = find_window_by_enum_list(first_cls, first_name, app_name=first_app_name)
                 if enum_handles:
                     root_handles.extend(enum_handles)
             except Exception as e:
@@ -560,19 +495,13 @@ class UIAFactory:
                     child_list = [
                         item
                         for item in child_list
-                        if cls.__compare_node_and_uia_ele__(
-                            item, node, ["tag_name", "name", "cls", "value"]
-                        )
+                        if cls.__compare_node_and_uia_ele__(item, node, ["tag_name", "name", "cls", "value"])
                     ]
 
                     # 5.3 基于前端传递的node, 处理index，弱匹配
                     for item in child_list:
-                        index_match = cls.__compare_node_and_uia_ele__(
-                            item, node, ["index"]
-                        )
-                        item.index_match_sort = "{}{}".format(
-                            item.index_parent_match_sort, "1" if index_match else "0"
-                        )
+                        index_match = cls.__compare_node_and_uia_ele__(item, node, ["index"])
+                        item.index_match_sort = "{}{}".format(item.index_parent_match_sort, "1" if index_match else "0")
 
                     # 5.4 如果找到了匹配的子元素，更新search_list和当前匹配深度
                     if child_list:
@@ -583,14 +512,10 @@ class UIAFactory:
                         last_valid_match = search_list[0]
                     else:
                         # 当前层级没有匹配，停止搜索
-                        logger.debug(
-                            f"筛选完后剩余child_list为空 当前层级是{i} 候选taglist是 {tag_list}"
-                        )
+                        logger.debug(f"筛选完后剩余child_list为空 当前层级是{i} 候选taglist是 {tag_list}")
                         logger.debug(f"筛选前候选节点({len(befor_cmp_child)}个):")
                         for idx_child, ni in enumerate(befor_cmp_child):
-                            logger.debug(
-                                f"  节点{idx_child}: {cls._format_node_info(ni)}"
-                            )
+                            logger.debug(f"  节点{idx_child}: {cls._format_node_info(ni)}")
                         logger.debug(f"拾取节点: {cls._format_node_info(node)}")
                         break
 
@@ -599,20 +524,14 @@ class UIAFactory:
                     best_match_depth = current_depth
                     if current_depth == len(node_list):
                         # 完全匹配，直接返回
-                        cls.__show_desktop_ele__(
-                            root_handle, root_ctrl, last_valid_match.rect
-                        )
+                        cls.__show_desktop_ele__(root_handle, root_ctrl, last_valid_match.rect)
                         res = UIALocator(control=last_valid_match.control)
-                        logger.info(
-                            f"完全匹配成功，使用句柄: {root_handle}，校验结果的rect {res.rect().to_json()}"
-                        )
+                        logger.info(f"完全匹配成功，使用句柄: {root_handle}，校验结果的rect {res.rect().to_json()}")
                         return res
                     else:
                         # 部分匹配，保存最佳匹配
                         best_match = (root_handle, root_ctrl, last_valid_match)
-                        logger.debug(
-                            f"句柄 {root_handle} 部分匹配，深度: {current_depth}"
-                        )
+                        logger.debug(f"句柄 {root_handle} 部分匹配，深度: {current_depth}")
 
             except Exception as e:
                 # 如果当前句柄处理失败，继续尝试下一个句柄

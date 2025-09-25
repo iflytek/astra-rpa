@@ -9,7 +9,6 @@ from rpasystem.error import *
 
 
 class ClipBoardCore(IClipBoardCore):
-
     @staticmethod
     def copy_str_clip(data: str = ""):
         return pyperclip.copy(data)
@@ -96,12 +95,8 @@ class ClipBoardCore(IClipBoardCore):
                         input_content = file.read()
                     base64_encoded = base64.b64encode(input_content)
                     base64_encode_result = base64_encoded.decode("utf-8")
-                    base64_encode_result = (
-                        "data:image/png;base64," + base64_encode_result
-                    )
-                    html_fragment = html_fragment.replace(
-                        r"file:///" + match, base64_encode_result
-                    )
+                    base64_encode_result = "data:image/png;base64," + base64_encode_result
+                    html_fragment = html_fragment.replace(r"file:///" + match, base64_encode_result)
                 return html_fragment
             else:
                 logger.debug("Failed to extract HTML fragment.")

@@ -23,7 +23,6 @@ from rpabrowser.error import *
 
 
 class BrowserCore(IBrowserCore):
-
     @staticmethod
     def get_browser_path(browser_type: BrowserType) -> str:
         """获取浏览器绝对地址"""
@@ -92,9 +91,7 @@ class BrowserCore(IBrowserCore):
                         control = walkControlInfo.control
                         break
                 elif browser_type == browser_type.BTEdge:
-                    if BrowserCore.check_microsoft_edge_in_last_part(
-                        walkControlInfo.name
-                    ):
+                    if BrowserCore.check_microsoft_edge_in_last_part(walkControlInfo.name):
                         control = walkControlInfo.control
                         break
                 elif walkControlInfo.name.lower().endswith(browser_type.value.lower()):

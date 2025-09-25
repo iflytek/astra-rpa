@@ -13,7 +13,6 @@ from rpapdf.error import *
 
 
 class PDFCore(IPDFCore):
-
     @staticmethod
     def open_pdf(file_path: str, pwd: str = "") -> PdfReader:
         # 打开PDF文件
@@ -119,9 +118,7 @@ class PDFCore(IPDFCore):
         if merge_type == MergeType.FOLDER:
             # 合并文件夹中的PDF文件
             pdf_files = []
-            for file in os.listdir(
-                file_folder_path
-            ):  # 不遍历子文件夹，如果需要遍历子文件夹，则使用os.walk()
+            for file in os.listdir(file_folder_path):  # 不遍历子文件夹，如果需要遍历子文件夹，则使用os.walk()
                 if file.lower().endswith(".pdf"):
                     pdf_files.append(os.path.join(file_folder_path, file))
                     merger.append(os.path.join(file_folder_path, file))
@@ -277,9 +274,7 @@ class PDFCore(IPDFCore):
             # 将dfs中的df输出到各个sheet中
             with pd.ExcelWriter(new_file_path) as writer:
                 for index in range(1, len(dfs) + 1):
-                    dfs[index - 1].to_excel(
-                        writer, index=False, sheet_name="Sheet{}".format(str(index))
-                    )
+                    dfs[index - 1].to_excel(writer, index=False, sheet_name="Sheet{}".format(str(index)))
 
         return new_file_path
 
@@ -321,9 +316,7 @@ class PDFCore(IPDFCore):
             )
             pil_image = bitmap.to_pil()
             # 保存为文件
-            image_path = os.path.join(
-                save_dir, f"{prefix}_{page_num + 1}.{image_type.value}"
-            )
+            image_path = os.path.join(save_dir, f"{prefix}_{page_num + 1}.{image_type.value}")
             image_path = handle_existence(image_path, exist_handle_type)
             if image_path:
                 pil_image.save(image_path, quality=95)

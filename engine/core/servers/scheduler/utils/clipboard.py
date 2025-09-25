@@ -12,7 +12,6 @@ class Base64CodeType(Enum):
 
 
 class Clipboard:
-
     @staticmethod
     def paste_str_clip() -> str:
         """
@@ -53,12 +52,8 @@ class Clipboard:
                 # 使用 re.findall 查找所有匹配项
                 matches = re.findall(pattern, html_fragment)
                 for match in matches:
-                    base64_str = Clipboard._base64_encode(
-                        Base64CodeType.PICTURE, "", match
-                    )
-                    html_fragment = html_fragment.replace(
-                        r"file:///" + match, base64_str
-                    )
+                    base64_str = Clipboard._base64_encode(Base64CodeType.PICTURE, "", match)
+                    html_fragment = html_fragment.replace(r"file:///" + match, base64_str)
                 return html_fragment
             else:
                 return html_data

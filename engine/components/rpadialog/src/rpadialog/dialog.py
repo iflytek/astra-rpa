@@ -28,7 +28,6 @@ from rpatools.tools import RpaTools
 
 
 class Dialog:
-
     @staticmethod
     @atomicMg.atomic(
         "Dialog",
@@ -47,9 +46,7 @@ class Dialog:
             atomicMg.param(
                 "message_content",
                 types="Str",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.INPUT_VARIABLE_PYTHON.value
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.INPUT_VARIABLE_PYTHON.value),
                 limitLength=[-1, 120],
             ),
             atomicMg.param("button_type"),
@@ -144,12 +141,9 @@ class Dialog:
         default_button_yn: DefaultButtonYN = DefaultButtonYN.YES,
         preview_button=None,
     ) -> str:
-
         exe_path = RpaTools.get_window_dir()
         if not os.path.exists(exe_path):
-            raise BaseException(
-                EXE_EMPTY_FORMAT.format(exe_path), "可执行窗口路径不存在,请检查路径信息"
-            )
+            raise BaseException(EXE_EMPTY_FORMAT.format(exe_path), "可执行窗口路径不存在,请检查路径信息")
 
         if auto_check and not wait_time:
             wait_time = 60
@@ -180,9 +174,7 @@ class Dialog:
             encoding="utf-8",
         )
         output_list = []
-        thread = threading.Thread(
-            target=DialogCore.read_output, args=(process, output_list), daemon=True
-        )
+        thread = threading.Thread(target=DialogCore.read_output, args=(process, output_list), daemon=True)
         thread.start()
 
         last_position = None
@@ -219,9 +211,7 @@ class Dialog:
 
         if auto_check:  # Only start the listener if autocheck is enabled
             mouse_listener = mouse.Listener(on_click=on_click, on_move=on_move)
-            keyboard_listener = keyboard.Listener(
-                on_press=on_press, on_release=on_release
-            )
+            keyboard_listener = keyboard.Listener(on_press=on_press, on_release=on_release)
 
             mouse_listener.start()
             keyboard_listener.start()
@@ -279,18 +269,14 @@ class Dialog:
                 limitLength=[-1, 50],
             ),
             atomicMg.param("input_type"),
-            atomicMg.param(
-                "input_title", types="Str", required=False, limitLength=[-1, 60]
-            ),
+            atomicMg.param("input_title", types="Str", required=False, limitLength=[-1, 60]),
             atomicMg.param(
                 "default_input_text",
                 required=False,
                 dynamics=[
                     DynamicsItem(
                         key="$this.default_input_text.show",
-                        expression="return $this.input_type.value == '{}'".format(
-                            InputType.TEXT.value
-                        ),
+                        expression="return $this.input_type.value == '{}'".format(InputType.TEXT.value),
                     )
                 ],
             ),
@@ -302,9 +288,7 @@ class Dialog:
                 dynamics=[
                     DynamicsItem(
                         key="$this.default_input_pwd.show",
-                        expression="return $this.input_type.value == '{}'".format(
-                            InputType.PASSWORD.value
-                        ),
+                        expression="return $this.input_type.value == '{}'".format(InputType.PASSWORD.value),
                     )
                 ],
             ),
@@ -334,9 +318,7 @@ class Dialog:
             raise NotImplementedError()
 
         if not os.path.exists(exe_path):
-            raise BaseException(
-                EXE_EMPTY_FORMAT.format(exe_path), "可执行窗口路径不存在,请检查路径信息"
-            )
+            raise BaseException(EXE_EMPTY_FORMAT.format(exe_path), "可执行窗口路径不存在,请检查路径信息")
         data = {
             "key": "Dialog.input_box",
             "box_title": box_title,
@@ -395,12 +377,9 @@ class Dialog:
         options_title: str = "",
         preview_button=None,
     ):
-
         exe_path = RpaTools.get_window_dir()
         if not os.path.exists(exe_path):
-            raise BaseException(
-                EXE_EMPTY_FORMAT.format(exe_path), "可执行窗口路径不存在,请检查路径信息"
-            )
+            raise BaseException(EXE_EMPTY_FORMAT.format(exe_path), "可执行窗口路径不存在,请检查路径信息")
 
         data = {
             "key": "Dialog.select_box",
@@ -419,9 +398,7 @@ class Dialog:
 
         save_dict = DialogCore.exe_run(args)
 
-        return (
-            save_dict.get("select_result") if save_dict.get("select_result") else None
-        )
+        return save_dict.get("select_result") if save_dict.get("select_result") else None
 
     @staticmethod
     @atomicMg.atomic(
@@ -446,9 +423,7 @@ class Dialog:
                 dynamics=[
                     DynamicsItem(
                         key="$this.default_time.show",
-                        expression="return $this.time_type.value == '{}'".format(
-                            TimeType.TIME.value
-                        ),
+                        expression="return $this.time_type.value == '{}'".format(TimeType.TIME.value),
                     ),
                     DynamicsItem(
                         key="$this.default_time.formType.params.format",
@@ -466,9 +441,7 @@ class Dialog:
                 dynamics=[
                     DynamicsItem(
                         key="$this.default_time_range.show",
-                        expression="return $this.time_type.value == '{}'".format(
-                            TimeType.TIME_RANGE.value
-                        ),
+                        expression="return $this.time_type.value == '{}'".format(TimeType.TIME_RANGE.value),
                     ),
                     DynamicsItem(
                         key="$this.default_time.formType.params.format",
@@ -502,9 +475,7 @@ class Dialog:
         exe_path = RpaTools.get_window_dir()
 
         if not os.path.exists(exe_path):
-            raise BaseException(
-                EXE_EMPTY_FORMAT.format(exe_path), "可执行窗口路径不存在,请检查路径信息"
-            )
+            raise BaseException(EXE_EMPTY_FORMAT.format(exe_path), "可执行窗口路径不存在,请检查路径信息")
 
         data = {
             "key": "Dialog.select_time_box",
@@ -528,10 +499,7 @@ class Dialog:
 
         return (
             save_dict.get("select_time")
-            if (
-                save_dict.get("select_time")
-                and save_dict.get("select_time") != ["", ""]
-            )
+            if (save_dict.get("select_time") and save_dict.get("select_time") != ["", ""])
             else None
         )
 
@@ -547,9 +515,7 @@ class Dialog:
                 dynamics=[
                     DynamicsItem(
                         key="$this.box_title_file.show",
-                        expression="return $this.open_type.value == '{}'".format(
-                            OpenType.FILE.value
-                        ),
+                        expression="return $this.open_type.value == '{}'".format(OpenType.FILE.value),
                     )
                 ],
                 limitLength=[-1, 50],
@@ -562,9 +528,7 @@ class Dialog:
                 dynamics=[
                     DynamicsItem(
                         key="$this.box_title_folder.show",
-                        expression="return $this.open_type.value == '{}'".format(
-                            OpenType.FOLDER.value
-                        ),
+                        expression="return $this.open_type.value == '{}'".format(OpenType.FOLDER.value),
                     )
                 ],
                 limitLength=[-1, 50],
@@ -575,9 +539,7 @@ class Dialog:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_type.show",
-                        expression="return $this.open_type.value == '{}'".format(
-                            OpenType.FILE.value
-                        ),
+                        expression="return $this.open_type.value == '{}'".format(OpenType.FILE.value),
                     )
                 ],
             ),
@@ -588,9 +550,7 @@ class Dialog:
                 dynamics=[
                     DynamicsItem(
                         key="$this.multiple_choice.show",
-                        expression="return $this.open_type.value == '{}'".format(
-                            OpenType.FILE.value
-                        ),
+                        expression="return $this.open_type.value == '{}'".format(OpenType.FILE.value),
                     )
                 ],
             ),
@@ -630,9 +590,7 @@ class Dialog:
         exe_path = RpaTools.get_window_dir()
 
         if not os.path.exists(exe_path):
-            raise BaseException(
-                EXE_EMPTY_FORMAT.format(exe_path), "可执行窗口路径不存在,请检查路径信息"
-            )
+            raise BaseException(EXE_EMPTY_FORMAT.format(exe_path), "可执行窗口路径不存在,请检查路径信息")
         if open_type == OpenType.FILE:
             box_title = box_title_file
         elif open_type == OpenType.FOLDER:
@@ -718,9 +676,7 @@ class Dialog:
     ) -> DialogResult:
         exe_path = RpaTools.get_window_dir()
         if not os.path.exists(exe_path):
-            raise BaseException(
-                EXE_EMPTY_FORMAT.format(exe_path), "可执行窗口路径不存在,请检查路径信息"
-            )
+            raise BaseException(EXE_EMPTY_FORMAT.format(exe_path), "可执行窗口路径不存在,请检查路径信息")
 
         if auto_check and not wait_time:
             if wait_time == 0:
@@ -731,9 +687,7 @@ class Dialog:
         data = {
             "key": "Dialog.custom_box",
             "box_title": box_title,
-            "design_interface": json.dumps(
-                design_interface.get("value"), ensure_ascii=False
-            ),
+            "design_interface": json.dumps(design_interface.get("value"), ensure_ascii=False),
             "result_button": default_button.value,
             "outputkey": "dialog_result",
         }
@@ -774,9 +728,7 @@ class Dialog:
         process.stdin.close()  # 关闭输入流，通知子进程数据传输完成
 
         output_list = []
-        thread = threading.Thread(
-            target=DialogCore.read_output, args=(process, output_list)
-        )
+        thread = threading.Thread(target=DialogCore.read_output, args=(process, output_list))
         thread.start()
 
         last_position = DialogCore.get_mouse_position()
@@ -813,9 +765,7 @@ class Dialog:
 
         if auto_check:  # Only start the listener if autocheck is enabled
             mouse_listener = mouse.Listener(on_click=on_click, on_move=on_move)
-            keyboard_listener = keyboard.Listener(
-                on_press=on_press, on_release=on_release
-            )
+            keyboard_listener = keyboard.Listener(on_press=on_press, on_release=on_release)
 
             mouse_listener.start()
             keyboard_listener.start()

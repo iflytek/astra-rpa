@@ -9,11 +9,7 @@ class Regedit:
         if mode == "r":
             access = win32con.KEY_READ | win32con.KEY_WOW64_64KEY
         else:
-            access = (
-                win32con.WRITE_OWNER
-                | win32con.KEY_WOW64_64KEY
-                | win32con.KEY_ALL_ACCESS
-            )
+            access = win32con.WRITE_OWNER | win32con.KEY_WOW64_64KEY | win32con.KEY_ALL_ACCESS
         self.mode = mode
         self.handle = None
         if handle is None:
@@ -29,9 +25,7 @@ class Regedit:
 
     def __getattr__(self, name):
         if name[0] == "_":
-            raise Exception(
-                "'%s' object has no attribute '%s'" % (self.__class__.__name__, name)
-            )
+            raise Exception("'%s' object has no attribute '%s'" % (self.__class__.__name__, name))
         return self.__class__(name, self.handle, self.mode)
 
     def __setattr__(self, name, value):
@@ -53,17 +47,11 @@ class Regedit:
         try:
             if isinstance(value, (tuple, list)):
                 value = list(map(str, value))
-                win32api.RegSetValueEx(
-                    self.handle, name, None, win32con.REG_MULTI_SZ, value
-                )
+                win32api.RegSetValueEx(self.handle, name, None, win32con.REG_MULTI_SZ, value)
             elif isinstance(value, bytes):
-                win32api.RegSetValueEx(
-                    self.handle, name, None, win32con.REG_SZ, value.decode("UTF8")
-                )
+                win32api.RegSetValueEx(self.handle, name, None, win32con.REG_SZ, value.decode("UTF8"))
             else:
-                win32api.RegSetValueEx(
-                    self.handle, name, None, win32con.REG_SZ, str(value)
-                )
+                win32api.RegSetValueEx(self.handle, name, None, win32con.REG_SZ, str(value))
         except Exception as e:
             raise Exception("RegSetValueEx error {}".format(e))
 

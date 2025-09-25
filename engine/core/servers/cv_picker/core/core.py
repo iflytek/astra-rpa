@@ -16,7 +16,6 @@ match_filepath = os.path.join(current_directory, "imgs", "match_img.png")
 
 
 class IRectHandler(ABC):
-
     @staticmethod
     @abstractmethod
     def get_foreground_window_rect():
@@ -24,7 +23,6 @@ class IRectHandler(ABC):
 
 
 class IPickCore(ABC):
-
     @staticmethod
     @abstractmethod
     def get_mouse_position():
@@ -140,9 +138,7 @@ class IPickCore(ABC):
                 anchor = IPickCore.get_url(anchor, remote_addr)
                 print("获取到锚点url的base64为：{}".format(anchor))
             anchor_img = IPickCore.base64_to_image(anchor)
-            center_coords_anchor = (
-                f"{data['pos']['parent_x']},{data['pos']['parent_y']}"
-            )
+            center_coords_anchor = f"{data['pos']['parent_x']},{data['pos']['parent_y']}"
         else:
             anchor_img = None
             center_coords_anchor = ""

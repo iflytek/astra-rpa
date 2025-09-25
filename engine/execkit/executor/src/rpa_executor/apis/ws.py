@@ -34,9 +34,7 @@ def error_format(e=None) -> dict:
         if isinstance(e, BaseException):
             return e
         elif isinstance(e, WsException):
-            return BaseException(
-                ERROR_FORMAT.format(e), "ERROR_FORMAT error: {}".format(e)
-            )
+            return BaseException(ERROR_FORMAT.format(e), "ERROR_FORMAT error: {}".format(e))
         else:
             return BaseException(CODE_INNER, "raw error: {}".format(e))
 
@@ -82,7 +80,6 @@ class WsSocket(IWebSocket):
 
 
 class Ws:
-
     def __init__(self, svc: Svc, port):
         self.svc = svc
         self.svc.ws = self
@@ -153,9 +150,7 @@ class Ws:
                         self.BASE_MSG.send_uuid = "$executor$"
                         self.BASE_MSG.init().data = data
                         tasks_1 = [
-                            asyncio.create_task(
-                                self.send_text(v1, self.BASE_MSG.tojson())
-                            )
+                            asyncio.create_task(self.send_text(v1, self.BASE_MSG.tojson()))
                             for v1 in wsmg.conns[self.BASE_MSG.send_uuid]
                         ]
                     if is_send_tip and wsmg.conns.get("$executor_tip$"):
@@ -168,9 +163,7 @@ class Ws:
                             self.BASE_MSG.send_uuid = "$executor_tip$"
                             self.BASE_MSG.init().data = data
                             tasks_2 = [
-                                asyncio.create_task(
-                                    self.send_text(v2, self.BASE_MSG.tojson())
-                                )
+                                asyncio.create_task(self.send_text(v2, self.BASE_MSG.tojson()))
                                 for v2 in wsmg.conns[self.BASE_MSG.send_uuid]
                             ]
                     tasks = tasks_1 + tasks_2
@@ -223,9 +216,7 @@ class Ws:
                     error_traceback=traceback.format_exc(),
                 )
             )
-            self.svc.storage.report_status_upload(
-                "fail", "{} {}".format(ReportFlowTaskError, error_str)
-            )
+            self.svc.storage.report_status_upload("fail", "{} {}".format(ReportFlowTaskError, error_str))
 
     def server(self):
         from rpa_executor.apis.apis import init

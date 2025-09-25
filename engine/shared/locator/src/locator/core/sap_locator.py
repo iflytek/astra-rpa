@@ -22,7 +22,6 @@ from win32api import GetSystemMetrics
 
 
 class SAPLocatorV2(ILocator):
-
     def __init__(
         self,
         rect,
@@ -108,9 +107,7 @@ class SAPLocatorV1:
         screen_scale_rate = round(real_resolution[0] / screen_size[0], 2)
         screen_scale_rate2 = get_screen_scale_rate_runtime()
         ratio = max(screen_scale_rate, screen_scale_rate2)
-        logger.info(
-            f"屏幕缩放比是1 {screen_scale_rate} 2 {screen_scale_rate2} res{ratio}"
-        )
+        logger.info(f"屏幕缩放比是1 {screen_scale_rate} 2 {screen_scale_rate2} res{ratio}")
         return ratio
 
     def get_ctrl_by_id(self, ctrl_id):
@@ -123,9 +120,7 @@ class SAPLocatorV1:
         try:
             container_left = ctrl.ScreenLeft
             container_top = ctrl.ScreenTop
-            logger.info(
-                f"get_cell_nodes_by_ctrl_from_point container {container_left}  {container_top}"
-            )
+            logger.info(f"get_cell_nodes_by_ctrl_from_point container {container_left}  {container_top}")
             # 获取单元格位置信息（相对于控件）
             cell_left = ctrl.GetCellLeft(row, col_name)
             cell_top = ctrl.GetCellTop(row, col_name)
@@ -235,7 +230,7 @@ class SAPLocatorV1:
         app = self.ele_data["app"]
         path = self.ele_data["path"]  # self.customized_path(self.ele_data["path"])
         handle = find_window(path[0]["cls"], path[0]["name"], app_name=app)
-        logger.info(f'校验的第一层信息 {path[0]["cls"]} {path[0]["name"]}  {app}')
+        logger.info(f"校验的第一层信息 {path[0]['cls']} {path[0]['name']}  {app}")
         # 应该用uia让他置顶
         if not handle:
             raise Exception("元素无法找到")
@@ -276,24 +271,14 @@ class SAPLocatorV1:
 
         left = rect_wywh["left"] if rect_wywh["left"] >= 0 else 0
         top = rect_wywh["top"] if rect_wywh["top"] >= 0 else 0
-        right = (
-            rect_wywh["left"] + rect_wywh["width"]
-            if rect_wywh["left"] + rect_wywh["width"] >= 0
-            else 0
-        )
-        bottom = (
-            rect_wywh["top"] + rect_wywh["height"]
-            if rect_wywh["top"] + rect_wywh["height"] >= 0
-            else 0
-        )
+        right = rect_wywh["left"] + rect_wywh["width"] if rect_wywh["left"] + rect_wywh["width"] >= 0 else 0
+        bottom = rect_wywh["top"] + rect_wywh["height"] if rect_wywh["top"] + rect_wywh["height"] >= 0 else 0
         right = right if right >= left else left
         bottom = bottom if bottom >= top else top
 
         display = get_system_display_size()
         max_value_screen = [int(ratio * display[0]), int(ratio * display[1])]
-        if not validate_ui_element_rect(
-            left, top, right, bottom, max_value_screen[0], max_value_screen[1]
-        ):
+        if not validate_ui_element_rect(left, top, right, bottom, max_value_screen[0], max_value_screen[1]):
             logger.info("current rect is Invalid")
             left = 0
             top = 0

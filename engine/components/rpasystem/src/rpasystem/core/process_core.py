@@ -6,7 +6,6 @@ import psutil
 
 
 class IProcessCore(ABC):
-
     @staticmethod
     @abstractmethod
     def run_cmd_admin(cmd: str, cwd: str = ""):

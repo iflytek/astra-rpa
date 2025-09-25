@@ -58,9 +58,7 @@ class TaskInfo(BaseModel):
     open_virtual_desk: bool = False  # 虚拟桌面
 
 
-def report_task_log(
-    svc, status: TaskExecuteStatus, task_id: str = None, task_execute_id: str = None
-):
+def report_task_log(svc, status: TaskExecuteStatus, task_id: str = None, task_execute_id: str = None):
     """日志上报：计划任务整体状态上报，区分与普通日志上报"""
 
     import requests
@@ -92,9 +90,7 @@ def report_task_log(
     status_code = response.status_code
     text = response.text
     logger.info("report log request: {}".format(json.dumps(data)))
-    logger.info(
-        "report log result: {}, response: {} {}".format(task_id, status_code, text)
-    )
+    logger.info("report log result: {}, response: {} {}".format(task_id, status_code, text))
     json_data = json.loads(text.strip())
     return json_data["data"]
 
@@ -112,9 +108,7 @@ def executor_run_list(task_info: TaskInfo, svc: Svc = Depends(get_svc)):
     try:
         emit_to_front(EmitType.EDIT_SHOW_HIDE, msg={"type": "hide"})
 
-        task_executor_id = report_task_log(
-            svc, TaskExecuteStatus.EXECUTING, task_info.trigger_id
-        )
+        task_executor_id = report_task_log(svc, TaskExecuteStatus.EXECUTING, task_info.trigger_id)
         if not task_executor_id:
             raise Exception("服务日志上报异常")
 
@@ -137,12 +131,9 @@ def executor_run_list(task_info: TaskInfo, svc: Svc = Depends(get_svc)):
                     project_name=r.robotName,
                     exec_position=task_info.mode,
                     recording_config=settings.get("videoForm", None),
-                    hide_log_window=settings.get("commonSetting", {}).get(
-                        "hideLogWindow", False
-                    ),
+                    hide_log_window=settings.get("commonSetting", {}).get("hideLogWindow", False),
                     run_param=r.paramJson,
-                    open_virtual_desk=settings.get("open_virtual_desk", False)
-                    or task_info.open_virtual_desk,
+                    open_virtual_desk=settings.get("open_virtual_desk", False) or task_info.open_virtual_desk,
                     version=r.version,
                     is_send_log_event=False,
                 )
@@ -348,9 +339,7 @@ def executor_stop(exe_pro: ExecutorProject, svc: Svc = Depends(get_svc)):
 @router.post("/stop_list")
 def executor_stop_list(stop_info: StopTask, svc: Svc = Depends(get_svc)):
     if svc.executor_mg:
-        if (
-            stop_info.task_id and svc.executor_mg.curr_task_id == stop_info.task_id
-        ) or (not stop_info.task_id):
+        if (stop_info.task_id and svc.executor_mg.curr_task_id == stop_info.task_id) or (not stop_info.task_id):
             svc.terminal_task_stop = True
             svc.executor_mg.close_all()  # 关闭正在进行的任务
     return res_msg(msg="停止成功", data=None)

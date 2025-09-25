@@ -18,7 +18,5 @@ if __name__ == "__main__":
     atomicMg.meta()
 
     config.set_config_file("config_type.yaml")
-    typesMg.register_types(
-        ExcelObj, version=get_version(), channel="global", template="Excel对象"
-    )
+    typesMg.register_types(ExcelObj, version=get_version(), channel="global", template="Excel对象")
     typesMg.meta()

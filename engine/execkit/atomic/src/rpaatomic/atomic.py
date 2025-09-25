@@ -41,7 +41,6 @@ class AtomicManager:
 
     def atomic(self, group_key="", **kwargs):
         def real_atomic(func):
-
             t = AtomicMeta(**kwargs).init()
             if not t.key:
                 t.key = "{}.{}".format(group_key, func.__name__)
@@ -50,9 +49,7 @@ class AtomicManager:
             @wraps(func)
             def wrapper(*args, **war_kwargs):
                 if len(args) > 1:
-                    raise BaseException(
-                        PARAM_ARGS_NO_SUPPORT_FORMAT.format(args), "参数不支持args"
-                    )
+                    raise BaseException(PARAM_ARGS_NO_SUPPORT_FORMAT.format(args), "参数不支持args")
                 return self.atomic_run(func, t.key, *args, **war_kwargs)
 
             wrapper.__tag_key__ = "atomic"  # 标记
@@ -68,12 +65,8 @@ class AtomicManager:
         return AtomicParamMeta(**kwargs, key=key)
 
     def atomic_run(self, func: Any, key: str, *args, **kwargs):
-        base_kwargs = {
-            k: v for k, v in kwargs.items() if v is not None and not k.startswith("__")
-        }
-        advance_kwargs = {
-            k: v for k, v in kwargs.items() if v is not None and k.startswith("__")
-        }
+        base_kwargs = {k: v for k, v in kwargs.items() if v is not None and not k.startswith("__")}
+        advance_kwargs = {k: v for k, v in kwargs.items() if v is not None and k.startswith("__")}
 
         line = int(kwargs.get("__line__", 0))
         if not line:
@@ -114,19 +107,14 @@ class AtomicManager:
             if len(self.model_cache) > self.model_cache_max_size:
                 # gc回收
                 self.model_cache = {}
-            model = utils.ParamModel(
-                self.atomic_dict[key].inputList, params_name_dict, key
-            )
+            model = utils.ParamModel(self.atomic_dict[key].inputList, params_name_dict, key)
             self.model_cache[key] = model
         else:
             model = self.model_cache[key]
 
         # 2. 高级参数处理
         has_result = True
-        if (
-            self.atomic_dict[key].outputList is None
-            or len(self.atomic_dict[key].outputList) == 0
-        ):
+        if self.atomic_dict[key].outputList is None or len(self.atomic_dict[key].outputList) == 0:
             has_result = False
 
         if delay_before > 0:
@@ -234,11 +222,7 @@ class AtomicManager:
     def _inspect_param(inspect_item, user_item):
         options = None
         name = inspect_item.name
-        default = (
-            inspect_item.default
-            if inspect_item.default != inspect.Parameter.empty
-            else None
-        )
+        default = inspect_item.default if inspect_item.default != inspect.Parameter.empty else None
         formType = AtomicFormTypeMeta(type=AtomicFormType.INPUT_VARIABLE_PYTHON.value)
         __annotation__ = inspect_item.annotation
         noInput = None
@@ -251,9 +235,7 @@ class AtomicManager:
                     options = []
                 options.append(AtomicOption("是", True))
                 options.append(AtomicOption("否", False))
-                formType = AtomicFormTypeMeta(
-                    type=AtomicFormType.SWITCH.value, params={}
-                )
+                formType = AtomicFormTypeMeta(type=AtomicFormType.SWITCH.value, params={})
         elif kind == InspectType.ENUM:
             default = default.value
             for e in __annotation__:
@@ -266,18 +248,12 @@ class AtomicManager:
                 formType = AtomicFormTypeMeta(type=AtomicFormType.SELECT.value)
         elif kind == InspectType.RPABASE:
             if issubclass(__annotation__, Bool):
-                formType = AtomicFormTypeMeta(
-                    type=AtomicFormType.SWITCH.value, params={}
-                )
+                formType = AtomicFormTypeMeta(type=AtomicFormType.SWITCH.value, params={})
             if issubclass(__annotation__, Pick):
-                formType = AtomicFormTypeMeta(
-                    type=AtomicFormType.PICK.value, params={"use": types}
-                )
+                formType = AtomicFormTypeMeta(type=AtomicFormType.PICK.value, params={"use": types})
                 noInput = True
             if issubclass(__annotation__, Date):
-                formType = AtomicFormTypeMeta(
-                    type=AtomicFormType.DEFAULTDATEPICKER.value, params={}
-                )
+                formType = AtomicFormTypeMeta(type=AtomicFormType.DEFAULTDATEPICKER.value, params={})
 
         # 更新值
         return {

@@ -70,16 +70,12 @@ def demo_select_box():
 
     # 单选
     print("显示单选对话框...")
-    result = dialog.select_box(
-        options=options, select_type=SelectType.SINGLE, options_title="请选择一个选项"
-    )
+    result = dialog.select_box(options=options, select_type=SelectType.SINGLE, options_title="请选择一个选项")
     print(f"单选结果: {result}")
 
     # 多选
     print("显示多选对话框...")
-    result = dialog.select_box(
-        options=options, select_type=SelectType.MULTI, options_title="请选择多个选项"
-    )
+    result = dialog.select_box(options=options, select_type=SelectType.MULTI, options_title="请选择多个选项")
     print(f"多选结果: {result}")
 
 
@@ -124,9 +120,7 @@ def demo_file_box():
 
     # 文件夹选择
     print("显示文件夹选择对话框...")
-    result = dialog.select_file_box(
-        open_type=OpenType.FOLDER, select_title="请选择文件夹"
-    )
+    result = dialog.select_file_box(open_type=OpenType.FOLDER, select_title="请选择文件夹")
     print(f"文件夹选择结果: {result}")
 
 
@@ -584,9 +578,7 @@ def demo_custom_box():
         }
     }
     print("显示自定义对话框...")
-    result = dialog.custom_box(
-        design_interface=design_interface, auto_check=True, wait_time=10
-    )
+    result = dialog.custom_box(design_interface=design_interface, auto_check=True, wait_time=10)
     print(f"自定义对话框结果: {result}")
 
 

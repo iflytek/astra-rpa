@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 
 
 class IClipBoardCore(ABC):
-
     @staticmethod
     @abstractmethod
     def copy_str_clip(data: str = ""):

@@ -7,7 +7,6 @@ from ...utils.subprocess import SubPopen
 
 
 class Picker:
-
     def __init__(self, svc):
         self.svc = svc
         self.highlighter = None  # 画框
@@ -54,12 +53,8 @@ class Picker:
                     "{}".format(self.svc.hl_port),
                 ],
             )
-            self.cv_picker = SubPopen(
-                name="cv_picker", cmd=[python_executable, "-m", "cv_picker"]
-            )
-            self.app_picker = SubPopen(
-                name="picker", cmd=[python_executable, "-m", "picker"]
-            )
+            self.cv_picker = SubPopen(name="cv_picker", cmd=[python_executable, "-m", "cv_picker"])
+            self.app_picker = SubPopen(name="picker", cmd=[python_executable, "-m", "picker"])
         else:
             highlighter_path = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)),
@@ -75,23 +70,15 @@ class Picker:
                     "{}".format(self.svc.hl_port),
                 ],
             )
-            self.cv_picker = SubPopen(
-                name="cv_picker", cmd=[python_executable, "-m", "cv_picker"]
-            )
-            self.app_picker = SubPopen(
-                name="picker", cmd=[python_executable, "-m", "picker_linux"]
-            )
+            self.cv_picker = SubPopen(name="cv_picker", cmd=[python_executable, "-m", "cv_picker"])
+            self.app_picker = SubPopen(name="picker", cmd=[python_executable, "-m", "picker_linux"])
 
         # 2. 服务配置
-        self.app_picker.set_param(
-            "port", self.svc.get_validate_port(ComponentType.PICKER)
-        )
+        self.app_picker.set_param("port", self.svc.get_validate_port(ComponentType.PICKER))
         self.app_picker.set_param("route_port", self.svc.route_port)
         self.app_picker.set_param("highlight_socket_port", self.svc.hl_port)
 
         self.cv_picker.set_param("schema", "cv_picker")
-        self.cv_picker.set_param(
-            "cv_picker_port", self.svc.get_validate_port(ComponentType.CV_PICKER)
-        )
+        self.cv_picker.set_param("cv_picker_port", self.svc.get_validate_port(ComponentType.CV_PICKER))
         self.cv_picker.set_param("remote_addr", self.svc.config.app_server.remote_addr)
         self.cv_picker.set_param("highlight_socket_port", self.svc.hl_port)

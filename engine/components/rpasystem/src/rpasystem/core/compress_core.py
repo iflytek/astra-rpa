@@ -3,11 +3,8 @@ from typing import Any
 
 
 class CompressCore:
-
     @staticmethod
-    def compress(
-        items: list, file_name: str = "", dest_path: str = "", pwd: str = ""
-    ) -> str:
+    def compress(items: list, file_name: str = "", dest_path: str = "", pwd: str = "") -> str:
         import pyzipper
 
         if not file_name.endswith(".zip"):
@@ -25,9 +22,7 @@ class CompressCore:
                     zip_file.setpassword(pwd.encode("utf-8"))
                     CompressCore.__add_items_to_zip__(zip_file, items)
             else:
-                with pyzipper.ZipFile(
-                    zip_path, "w", compression=pyzipper.ZIP_DEFLATED
-                ) as zip_file:
+                with pyzipper.ZipFile(zip_path, "w", compression=pyzipper.ZIP_DEFLATED) as zip_file:
                     CompressCore.__add_items_to_zip__(zip_file, items)
             return os.path.abspath(zip_path)
         except Exception as e:
@@ -47,9 +42,7 @@ class CompressCore:
                     for file in files:
                         abs_file_path = os.path.join(root, file)
                         relative_file_path = os.path.relpath(abs_file_path, item)
-                        zip_file.write(
-                            abs_file_path, os.path.join(folder_name, relative_file_path)
-                        )
+                        zip_file.write(abs_file_path, os.path.join(folder_name, relative_file_path))
 
     @staticmethod
     def __support_gbk__(zip_file):

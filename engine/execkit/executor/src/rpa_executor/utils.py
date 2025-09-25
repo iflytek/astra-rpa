@@ -30,9 +30,7 @@ def kill_proc_tree(pid, including_parent=True, exclude_pids=None):
         # 获取所有子进程
         children = proc.children(recursive=True)
         for child in children:
-            kill_proc_tree(
-                child.pid, including_parent=True
-            )  # 递归调用以杀死子进程的子进程
+            kill_proc_tree(child.pid, including_parent=True)  # 递归调用以杀死子进程的子进程
     except Exception as e:
         pass
 

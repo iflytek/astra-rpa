@@ -67,9 +67,7 @@ class PickerCore(IPickerCore):
                 return self._draw_element(svc, highlight_client, data)
 
             else:
-                return DrawResult(
-                    success=False, error_message=f"不支持的拾取类型: {pick_type}"
-                )
+                return DrawResult(success=False, error_message=f"不支持的拾取类型: {pick_type}")
 
         except Exception as e:
             logger.error(f"拾取绘制失败: {e}")

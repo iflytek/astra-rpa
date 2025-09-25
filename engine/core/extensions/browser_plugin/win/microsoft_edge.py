@@ -21,19 +21,13 @@ class EdgePluginManager(PluginManagerCore):
         # TODO: edge安装在部分电脑上出现 “此扩展不是来自任何已知来源，可能是在你不知情的情况下添加的。”警告，插件无法使用
         # 参考如下方式解决https://blog.csdn.net/buxihuanchongzi/article/details/140160258，目前没有在插件安装中自动化
         # 解决，后续需要定制
-        self.extension_path = (
-            f"{self.browser_path}\\Extensions\\{plugin_data.plugin_id}"
-        )
+        self.extension_path = f"{self.browser_path}\\Extensions\\{plugin_data.plugin_id}"
         self.preferences_path_list = [
-            r"C:\Users\{}\AppData\Local\Microsoft\Edge\User Data\Default\Preferences".format(
-                getpass.getuser()
-            ),
-            r"C:\Users\{}\AppData\Local\Microsoft\Edge\User Data\Profile 1\Preferences".format(
-                getpass.getuser()
-            ),
+            r"C:\Users\{}\AppData\Local\Microsoft\Edge\User Data\Default\Preferences".format(getpass.getuser()),
+            r"C:\Users\{}\AppData\Local\Microsoft\Edge\User Data\Profile 1\Preferences".format(getpass.getuser()),
         ]
-        self.secure_preferences = r"C:\Users\{}\AppData\Local\Microsoft\Edge\User Data\Default\Secure Preferences".format(
-            getpass.getuser()
+        self.secure_preferences = (
+            r"C:\Users\{}\AppData\Local\Microsoft\Edge\User Data\Default\Secure Preferences".format(getpass.getuser())
         )
 
     def check_browser(self):
@@ -41,9 +35,7 @@ class EdgePluginManager(PluginManagerCore):
         return Registry.exist(self.browser_path)
 
     def check_plugin(self):
-        installed, installed_version = check_chrome_plugin(
-            self.preferences_path_list, self.plugin_data.plugin_id
-        )
+        installed, installed_version = check_chrome_plugin(self.preferences_path_list, self.plugin_data.plugin_id)
 
         latest_version = self.plugin_data.plugin_version
         latest = installed_version == latest_version
@@ -67,21 +59,13 @@ class EdgePluginManager(PluginManagerCore):
         )
 
         Registry.create(self.extension_path)
-        Registry.add_string_value(
-            self.extension_path, "path", self.plugin_data.plugin_path
-        )
-        Registry.add_string_value(
-            self.extension_path, "version", self.plugin_data.plugin_version
-        )
+        Registry.add_string_value(self.extension_path, "path", self.plugin_data.plugin_path)
+        Registry.add_string_value(self.extension_path, "version", self.plugin_data.plugin_version)
 
         try:
             # 插件未发布，这个去掉这个警告
-            if not Registry.exist(
-                r"Software\Policies\Microsoft\Edge\ExtensionInstallAllowlist"
-            ):
-                Registry.create(
-                    r"Software\Policies\Microsoft\Edge\ExtensionInstallAllowlist"
-                )
+            if not Registry.exist(r"Software\Policies\Microsoft\Edge\ExtensionInstallAllowlist"):
+                Registry.create(r"Software\Policies\Microsoft\Edge\ExtensionInstallAllowlist")
             Registry.add_string_value(
                 r"Software\Policies\Microsoft\Edge\ExtensionInstallAllowlist",
                 "2",

@@ -29,18 +29,8 @@ def generate_smooth_path(start_x, start_y, end_x, end_y, duration=1.0):
     path = []
     for t in (i / num_points for i in range(num_points + 1)):
         # 三次贝塞尔公式
-        x = (
-            (1 - t) ** 3 * start_x
-            + 3 * (1 - t) ** 2 * t * ctrl1[0]
-            + 3 * (1 - t) * t**2 * ctrl2[0]
-            + t**3 * end_x
-        )
-        y = (
-            (1 - t) ** 3 * start_y
-            + 3 * (1 - t) ** 2 * t * ctrl1[1]
-            + 3 * (1 - t) * t**2 * ctrl2[1]
-            + t**3 * end_y
-        )
+        x = (1 - t) ** 3 * start_x + 3 * (1 - t) ** 2 * t * ctrl1[0] + 3 * (1 - t) * t**2 * ctrl2[0] + t**3 * end_x
+        y = (1 - t) ** 3 * start_y + 3 * (1 - t) ** 2 * t * ctrl1[1] + 3 * (1 - t) * t**2 * ctrl2[1] + t**3 * end_y
         path.append((int(x), int(y)))
     return path
 

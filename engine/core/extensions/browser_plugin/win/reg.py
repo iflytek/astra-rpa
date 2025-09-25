@@ -10,17 +10,12 @@ def run_reg_file(plugin_id):
         project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         policy_reg_path = os.path.join(project_root, "policy", "policy.reg")
 
-        if not Registry.exist(
-            r"Software\Policies\Google\Chrome\ExtensionInstallAllowlist"
-        ):
-
+        if not Registry.exist(r"Software\Policies\Google\Chrome\ExtensionInstallAllowlist"):
             os.startfile(policy_reg_path)
             logger.info("已执行注册表文件")
             return True
         else:
-            values = Registry.query_value(
-                r"Software\Policies\Google\Chrome\ExtensionInstallAllowlist"
-            )
+            values = Registry.query_value(r"Software\Policies\Google\Chrome\ExtensionInstallAllowlist")
             logger.info(f"ExtensionInstallAllowlist values {values}")
             if plugin_id in values:
                 logger.info("注册表文件已存在且包含指定 plugin_id")

@@ -37,9 +37,7 @@ def get_executor_status():
     url = "http://127.0.0.1:{}/scheduler/executor/status".format(config.GATEWAY_PORT)
     response = requests.post(url)
     logger.info(f"当前调度器返回的结果的Json是：{response.json()}")
-    if int(response.status_code) == 200 and response.json().get("data", {}).get(
-        "running", False
-    ):
+    if int(response.status_code) == 200 and response.json().get("data", {}).get("running", False):
         return True
     else:
         return False
@@ -73,7 +71,6 @@ def send_stop_list(task_id: str = None):
 
 def list_trigger():
     def convert(recorder: List[Dict]) -> Dict:
-
         trigger_tasks = {}
         for task in recorder:
             _d = {}
@@ -108,9 +105,7 @@ def list_trigger():
 
         return trigger_tasks
 
-    url = "http://127.0.0.1:{}/api/robot/triggerTask/page/list4Trigger".format(
-        config.GATEWAY_PORT
-    )
+    url = "http://127.0.0.1:{}/api/robot/triggerTask/page/list4Trigger".format(config.GATEWAY_PORT)
     headers = {"Content-Type": "application/json"}
     payload = json.dumps({"pageSize": 100, "pageNo": 1, "name": "", "taskType": ""})
     response = requests.request("POST", url, headers=headers, data=payload, timeout=5)
@@ -130,9 +125,7 @@ def terminal_poll_update():
     Returns:
         True或False
     """
-    url = "http://127.0.0.1:{}/api/robot/dispatch-task/poll-task-update".format(
-        config.GATEWAY_PORT
-    )
+    url = "http://127.0.0.1:{}/api/robot/dispatch-task/poll-task-update".format(config.GATEWAY_PORT)
     params = {"terminalId": config.TERMINAL_ID}
     response = requests.request("GET", url, params=params, timeout=5)
     if int(response.status_code) == 200:
@@ -147,7 +140,6 @@ def terminal_list_task():
     """
 
     def convert(recorder: Dict):
-
         dispatch_tasks = {}
         retry_tasks = {}
         stop_tasks = {}
@@ -202,9 +194,7 @@ def terminal_list_task():
 
         return dispatch_tasks, retry_tasks, stop_tasks
 
-    url = "http://127.0.0.1:{}/api/robot/dispatch-task/terminal-task-detail".format(
-        config.GATEWAY_PORT
-    )
+    url = "http://127.0.0.1:{}/api/robot/dispatch-task/terminal-task-detail".format(config.GATEWAY_PORT)
     headers = {"Content-Type": "application/json"}
     params = {"terminalId": config.TERMINAL_ID}
     response = requests.request("GET", url, headers=headers, params=params, timeout=5)

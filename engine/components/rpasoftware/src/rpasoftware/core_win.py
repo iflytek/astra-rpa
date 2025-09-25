@@ -4,7 +4,6 @@ from rpasoftware.regedit_win import Regedit
 
 
 class SoftwareCore(ISoftwareCore):
-
     @staticmethod
     def get_app_path(app_name: str = "") -> str:
         return SoftwareCore.get_app_path_by_regedit(app_name)

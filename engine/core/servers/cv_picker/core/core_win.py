@@ -7,7 +7,6 @@ from cv_picker.core.core import IPickCore, IRectHandler
 
 
 class RectHandler(IRectHandler):
-
     @staticmethod
     def get_foreground_window_rect():
         # 获取当前置顶窗口的句柄
@@ -48,7 +47,6 @@ class RectHandler(IRectHandler):
 
 
 class PickCore(IPickCore):
-
     @staticmethod
     def get_mouse_position():
         current_position = pyautogui.position()

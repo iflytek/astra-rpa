@@ -45,23 +45,17 @@ if sys.platform == "win32":
 elif platform.system() == "Linux":
     from rpabrowser.core.core_unix import BrowserCore
 else:
-    raise NotImplementedError(
-        "Your platform (%s) is not supported by (%s)."
-        % (platform.system(), "clipboard")
-    )
+    raise NotImplementedError("Your platform (%s) is not supported by (%s)." % (platform.system(), "clipboard"))
 
 BrowserCore: IBrowserCore = BrowserCore()
 
 
 class BrowserSoftware:
-
     @staticmethod
     @atomicMg.atomic(
         "BrowserSoftware",
         inputList=[
-            atomicMg.param(
-                "wait_load_success", level=AtomicLevel.NORMAL, required=False
-            ),
+            atomicMg.param("wait_load_success", level=AtomicLevel.NORMAL, required=False),
             atomicMg.param(
                 "browser_abs_path",
                 level=AtomicLevel.NORMAL,
@@ -135,9 +129,7 @@ class BrowserSoftware:
             app_exe = os.path.basename(browser_abs_path)
             # 使用字典来简化条件判断
             software_tag_list = BROWSER_SOFTWARE_TAG.get(browser_type.value, None)
-            if not (
-                software_tag_list and (software_tag_list.lower() in app_exe.lower())
-            ):
+            if not (software_tag_list and (software_tag_list.lower() in app_exe.lower())):
                 raise BaseException(
                     SELECT_MATCHING_APP_PATH.format(app_exe.lower()),
                     "请选择跟浏览器匹配的应用路径",
@@ -153,22 +145,14 @@ class BrowserSoftware:
             if not browser_abs_path:
                 raise BaseException(
                     BROWSER_PATH_EMPTY,
-                    "注册表中未找到浏览器路径，请输入浏览器路径再运行 {}".format(
-                        browser_type
-                    ),
+                    "注册表中未找到浏览器路径，请输入浏览器路径再运行 {}".format(browser_type),
                 )
         res.browser_abs_path = browser_abs_path
 
         # 判断是否已经打开
         browser_file_name = browser_abs_path.file_name()
-        browser_file_name = (
-            browser_file_name
-            if browser_file_name != "IEXPLORE.EXE"
-            else browser_file_name.lower()
-        )
-        if not Software.exists(
-            browser_file_name
-        ) or not BrowserCore.get_browser_handler(browser_type):
+        browser_file_name = browser_file_name if browser_file_name != "IEXPLORE.EXE" else browser_file_name.lower()
+        if not Software.exists(browser_file_name) or not BrowserCore.get_browser_handler(browser_type):
             # 判断是否已经打开，没有打开的话起新的
             is_open = False
             if browser_type in CHROME_LIKE_BROWSERS:
@@ -226,10 +210,7 @@ class BrowserSoftware:
         # 等待网页加载完成
         if wait_load_success:
             result = BrowserSoftware.wait_web_load(browser_obj=res, timeout=timeout)
-            if (
-                not result
-                and timeout_handle_type == CommonForTimeoutHandleType.ExecError
-            ):
+            if not result and timeout_handle_type == CommonForTimeoutHandleType.ExecError:
                 BrowserSoftware.stop_web_load(browser_obj=res)
                 # raise BaseException(WEB_LOAD_TIMEOUT, "打开网页超时，请重试 {}".format(result))
         return res
@@ -241,9 +222,7 @@ class BrowserSoftware:
         close 关闭浏览器
         """
         if not browser_obj.browser_abs_path:
-            browser_obj.browser_abs_path = BrowserCore.get_browser_path(
-                browser_obj.browser_type
-            )
+            browser_obj.browser_abs_path = BrowserCore.get_browser_path(browser_obj.browser_type)
         Software.close(app_abs_path=browser_obj.browser_abs_path)
 
     @staticmethod
@@ -298,9 +277,7 @@ class BrowserSoftware:
             atomicMg.param("get_cookie", types="Str"),
         ],
     )
-    def get_cookies(
-        browser_obj: Browser, url: URL, cookie_name: str, page_timeout: float = 10
-    ) -> str:
+    def get_cookies(browser_obj: Browser, url: URL, cookie_name: str, page_timeout: float = 10) -> str:
         """
         获取cookies
         """
@@ -325,9 +302,7 @@ class BrowserSoftware:
             atomicMg.param("web_new_page", types="Browser"),
         ],
     )
-    def web_open(
-        browser_obj: Browser, new_tab_url: URL = "", wait_page: bool = True
-    ) -> "Browser":
+    def web_open(browser_obj: Browser, new_tab_url: URL = "", wait_page: bool = True) -> "Browser":
         """打开新网页"""
         browser_type = browser_obj.browser_type
         new_tab_url = URL.__validate__("", str(new_tab_url))
@@ -472,9 +447,7 @@ class BrowserSoftware:
             raise NotImplementedError()
 
     @staticmethod
-    @atomicMg.atomic(
-        "BrowserSoftware", inputList=[atomicMg.param("url", required=False)]
-    )
+    @atomicMg.atomic("BrowserSoftware", inputList=[atomicMg.param("url", required=False)])
     def web_close(browser_obj: Browser, url: str = ""):
         """
         关闭网页
@@ -743,19 +716,13 @@ class BrowserSoftware:
             def download_from_req(file_name_out):
                 for link_item in link_strs:
                     url_file = link_item.split("?")[0]
-                    res = requests.get(
-                        link_item, timeout=300, allow_redirects=True, stream=True
-                    )
+                    res = requests.get(link_item, timeout=300, allow_redirects=True, stream=True)
                     if res.status_code != 200:
                         raise requests.RequestException("请求的地址异常")
                     if not custom_flag:
                         file_name_out = url_file.split("/")[-1]
                     else:
-                        file_name_out = (
-                            file_name_out
-                            + "."
-                            + url_file.split("/")[-1].rsplit(".", 1)[-1]
-                        )
+                        file_name_out = file_name_out + "." + url_file.split("/")[-1].rsplit(".", 1)[-1]
                     file_path = os.path.join(save_path, file_name_out)
                     file_path_arr.append(file_path)
                     with open(file_path, "wb") as f:
@@ -768,9 +735,7 @@ class BrowserSoftware:
                 if time_out == 0 or time_out == "":
                     download_from_req(file_name)
                 else:
-                    threading.Thread(
-                        target=download_from_req, args=(file_name,)
-                    ).start()
+                    threading.Thread(target=download_from_req, args=(file_name,)).start()
                     try:
                         wait_time_download = int(time_out)
                     except Exception:
@@ -820,16 +785,11 @@ class BrowserSoftware:
             button_type=ButtonForClickTypeFlag.Left,
             element_timeout=10,
         )
-        BrowserCore.upload_window_operate(
-            browser_type=browser_obj.browser_type, upload_path=upload_path
-        )
+        BrowserCore.upload_window_operate(browser_type=browser_obj.browser_type, upload_path=upload_path)
 
 
 class GenericBrowser(webbrowser.GenericBrowser):
-
-    def open(
-        self, url, new=0, autoraise=True, open_args=None, open_with_incognito=None
-    ):
+    def open(self, url, new=0, autoraise=True, open_args=None, open_with_incognito=None):
         logger.info(f"打开浏览器的输入参数{open_args}")
         url_showed = [url]
         if open_args is None:

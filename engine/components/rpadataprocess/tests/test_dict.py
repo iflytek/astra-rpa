@@ -30,27 +30,21 @@ class TestDictProcess(unittest.TestCase):
     def test_set_value_to_dict_new_key(self):
         """测试向字典插入新键值对"""
         test_dict = {"name": "张三", "age": 25}
-        result = DictProcess.set_value_to_dict(
-            dict_data=test_dict, dict_key="city", value="上海"
-        )
+        result = DictProcess.set_value_to_dict(dict_data=test_dict, dict_key="city", value="上海")
         expected = {"name": "张三", "age": 25, "city": "上海"}
         self.assertEqual(result, expected)
 
     def test_set_value_to_dict_existing_key(self):
         """测试更新字典中已存在的键"""
         test_dict = {"name": "张三", "age": 25}
-        result = DictProcess.set_value_to_dict(
-            dict_data=test_dict, dict_key="age", value=30
-        )
+        result = DictProcess.set_value_to_dict(dict_data=test_dict, dict_key="age", value=30)
         expected = {"name": "张三", "age": 30}
         self.assertEqual(result, expected)
 
     def test_set_value_to_dict_empty_dict(self):
         """测试向空字典插入键值对"""
         test_dict = {}
-        result = DictProcess.set_value_to_dict(
-            dict_data=test_dict, dict_key="first_key", value="first_value"
-        )
+        result = DictProcess.set_value_to_dict(dict_data=test_dict, dict_key="first_key", value="first_value")
         expected = {"first_key": "first_value"}
         self.assertEqual(result, expected)
 
@@ -58,9 +52,7 @@ class TestDictProcess(unittest.TestCase):
         """测试插入复杂类型的值"""
         test_dict = {"simple": "value"}
         complex_value = {"nested": {"key": "value"}, "list": [1, 2, 3]}
-        result = DictProcess.set_value_to_dict(
-            dict_data=test_dict, dict_key="complex", value=complex_value
-        )
+        result = DictProcess.set_value_to_dict(dict_data=test_dict, dict_key="complex", value=complex_value)
         expected = {"simple": "value", "complex": complex_value}
         self.assertEqual(result, expected)
 
@@ -74,18 +66,14 @@ class TestDictProcess(unittest.TestCase):
     def test_delete_value_from_dict_nonexistent_key(self):
         """测试删除字典中不存在的键"""
         test_dict = {"name": "张三", "age": 25}
-        result = DictProcess.delete_value_from_dict(
-            dict_data=test_dict, dict_key="nonexistent"
-        )
+        result = DictProcess.delete_value_from_dict(dict_data=test_dict, dict_key="nonexistent")
         # 删除不存在的键应该不报错，返回原字典
         self.assertEqual(result, test_dict)
 
     def test_delete_value_from_dict_empty_dict(self):
         """测试从空字典删除键"""
         test_dict = {}
-        result = DictProcess.delete_value_from_dict(
-            dict_data=test_dict, dict_key="any_key"
-        )
+        result = DictProcess.delete_value_from_dict(dict_data=test_dict, dict_key="any_key")
         self.assertEqual(result, {})
 
     def test_get_value_from_dict_existing_key(self):
@@ -141,9 +129,7 @@ class TestDictProcess(unittest.TestCase):
         """测试获取复杂类型的值"""
         complex_value = {"nested": {"key": "value"}, "list": [1, 2, 3]}
         test_dict = {"simple": "value", "complex": complex_value}
-        result = DictProcess.get_value_from_dict(
-            dict_data=test_dict, dict_key="complex"
-        )
+        result = DictProcess.get_value_from_dict(dict_data=test_dict, dict_key="complex")
         self.assertEqual(result, complex_value)
 
     def test_get_keys_from_dict(self):
@@ -213,15 +199,9 @@ class TestDictProcess(unittest.TestCase):
         test_dict = {}
 
         # 插入多个键值对
-        test_dict = DictProcess.set_value_to_dict(
-            dict_data=test_dict, dict_key="name", value="王五"
-        )
-        test_dict = DictProcess.set_value_to_dict(
-            dict_data=test_dict, dict_key="age", value=28
-        )
-        test_dict = DictProcess.set_value_to_dict(
-            dict_data=test_dict, dict_key="city", value="深圳"
-        )
+        test_dict = DictProcess.set_value_to_dict(dict_data=test_dict, dict_key="name", value="王五")
+        test_dict = DictProcess.set_value_to_dict(dict_data=test_dict, dict_key="age", value=28)
+        test_dict = DictProcess.set_value_to_dict(dict_data=test_dict, dict_key="city", value="深圳")
 
         # 验证插入结果
         self.assertEqual(test_dict, {"name": "王五", "age": 28, "city": "深圳"})
@@ -231,9 +211,7 @@ class TestDictProcess(unittest.TestCase):
         self.assertEqual(name, "王五")
 
         # 删除一个键
-        test_dict = DictProcess.delete_value_from_dict(
-            dict_data=test_dict, dict_key="age"
-        )
+        test_dict = DictProcess.delete_value_from_dict(dict_data=test_dict, dict_key="age")
         self.assertEqual(test_dict, {"name": "王五", "city": "深圳"})
 
         # 获取所有键

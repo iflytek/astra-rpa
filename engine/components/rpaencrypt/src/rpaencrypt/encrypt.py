@@ -8,11 +8,8 @@ from rpaencrypt.core import EncryptCore
 
 
 class Encrypt:
-
     @staticmethod
-    @atomicMg.atomic(
-        "Encrypt", outputList=[atomicMg.param("md5_encrypted_result", types="Str")]
-    )
+    @atomicMg.atomic("Encrypt", outputList=[atomicMg.param("md5_encrypted_result", types="Str")])
     def md5_encrypt(
         source_str: str,
         md5_method: MD5bitsType = MD5bitsType.MD5_32,
@@ -22,15 +19,11 @@ class Encrypt:
         MD5加密算法
         """
         if source_str:
-            md5_encrypted_result = EncryptCore.md5_encrypt(
-                source_str, md5_method, case_method
-            )
+            md5_encrypted_result = EncryptCore.md5_encrypt(source_str, md5_method, case_method)
             return md5_encrypted_result
 
     @staticmethod
-    @atomicMg.atomic(
-        "Encrypt", outputList=[atomicMg.param("sha_encrypted_result", types="Str")]
-    )
+    @atomicMg.atomic("Encrypt", outputList=[atomicMg.param("sha_encrypted_result", types="Str")])
     def sha_encrypt(
         source_str: str,
         sha_method: SHAType = SHAType.SHA1,
@@ -40,9 +33,7 @@ class Encrypt:
         SHA加密算法
         """
         if source_str:
-            sha_encrypted_result = EncryptCore.sha_encrypt(
-                source_str, sha_method, case_method
-            )
+            sha_encrypted_result = EncryptCore.sha_encrypt(source_str, sha_method, case_method)
             return sha_encrypted_result
 
     @staticmethod
@@ -55,9 +46,7 @@ class Encrypt:
         对称加密算法
         """
         if source_str:
-            symmetric_encrypted_result = EncryptCore.symmetric_encrypt(
-                source_str, password
-            )
+            symmetric_encrypted_result = EncryptCore.symmetric_encrypt(source_str, password)
             return symmetric_encrypted_result
 
     @staticmethod
@@ -70,9 +59,7 @@ class Encrypt:
         对称解密算法
         """
         if source_str:
-            symmetric_decrypted_result = EncryptCore.symmetric_decrypt(
-                source_str, password
-            )
+            symmetric_decrypted_result = EncryptCore.symmetric_decrypt(source_str, password)
             return symmetric_decrypted_result
 
     # --------------Base64操作-----------------
@@ -86,9 +73,7 @@ class Encrypt:
                 dynamics=[
                     DynamicsItem(
                         key="$this.string_data.show",
-                        expression="return $this.encode_type.value == '{}'".format(
-                            Base64CodeType.STRING.value
-                        ),
+                        expression="return $this.encode_type.value == '{}'".format(Base64CodeType.STRING.value),
                     )
                 ],
             ),
@@ -98,9 +83,7 @@ class Encrypt:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_path.show",
-                        expression="return $this.encode_type.value == '{}'".format(
-                            Base64CodeType.PICTURE.value
-                        ),
+                        expression="return $this.encode_type.value == '{}'".format(Base64CodeType.PICTURE.value),
                     )
                 ],
                 formType=AtomicFormTypeMeta(
@@ -131,9 +114,7 @@ class Encrypt:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_path.show",
-                        expression="return $this.decode_type.value == '{}'".format(
-                            Base64CodeType.PICTURE.value
-                        ),
+                        expression="return $this.decode_type.value == '{}'".format(Base64CodeType.PICTURE.value),
                     )
                 ],
                 formType=AtomicFormTypeMeta(
@@ -147,9 +128,7 @@ class Encrypt:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_name.show",
-                        expression="return $this.decode_type.value == '{}'".format(
-                            Base64CodeType.PICTURE.value
-                        ),
+                        expression="return $this.decode_type.value == '{}'".format(Base64CodeType.PICTURE.value),
                     )
                 ],
             ),
@@ -159,9 +138,7 @@ class Encrypt:
                 dynamics=[
                     DynamicsItem(
                         key="$this.exist_handle_type.show",
-                        expression="return $this.decode_type.value == '{}'".format(
-                            Base64CodeType.PICTURE.value
-                        ),
+                        expression="return $this.decode_type.value == '{}'".format(Base64CodeType.PICTURE.value),
                     )
                 ],
             ),
@@ -175,14 +152,8 @@ class Encrypt:
         file_name: str = "",
         exist_handle_type: FileExistenceType = FileExistenceType.RENAME,
     ):
-        new_file_path = (
-            os.path.join(file_path, file_name + ".png")
-            if decode_type == Base64CodeType.PICTURE
-            else ""
-        )
+        new_file_path = os.path.join(file_path, file_name + ".png") if decode_type == Base64CodeType.PICTURE else ""
         if new_file_path:
             new_file_path = handle_existence(new_file_path, exist_handle_type)
-        decoded_string = EncryptCore.base64_decode(
-            decode_type, string_data, new_file_path
-        )
+        decoded_string = EncryptCore.base64_decode(decode_type, string_data, new_file_path)
         return decoded_string

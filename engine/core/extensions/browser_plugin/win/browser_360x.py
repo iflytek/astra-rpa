@@ -15,15 +15,13 @@ class Browser360XPluginManager(PluginManagerCore):
         self.browser_path = r"Software\360ChromeX\Chrome"
         self.extension_path = r"Software\360ChromeX\Chrome\Extensions"
         self.preferences_path_list = [
-            r"C:\Users\{}\AppData\Local\360ChromeX\Chrome\User Data\Default\Preferences".format(
-                getpass.getuser()
-            ),
-            r"C:\Users\{}\AppData\Local\360ChromeX\Chrome\User Data\Profile 1\Preferences".format(
-                getpass.getuser()
-            ),
+            r"C:\Users\{}\AppData\Local\360ChromeX\Chrome\User Data\Default\Preferences".format(getpass.getuser()),
+            r"C:\Users\{}\AppData\Local\360ChromeX\Chrome\User Data\Profile 1\Preferences".format(getpass.getuser()),
         ]
-        self.secure_preferences = r"C:\Users\{}\AppData\Local\360ChromeX\Chrome\User Data\Default\Secure Preferences".format(
-            getpass.getuser()
+        self.secure_preferences = (
+            r"C:\Users\{}\AppData\Local\360ChromeX\Chrome\User Data\Default\Secure Preferences".format(
+                getpass.getuser()
+            )
         )
 
     @staticmethod
@@ -42,26 +40,20 @@ class Browser360XPluginManager(PluginManagerCore):
         # 2. 查询注册表
         try:
             # 打开注册表中的路径
-            key_path = (
-                r"Software\Microsoft\Windows\CurrentVersion\App Paths\360chromeX.exe"
-            )
+            key_path = r"Software\Microsoft\Windows\CurrentVersion\App Paths\360chromeX.exe"
             key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, key_path, 0, winreg.KEY_READ)
             # 读取默认值，这通常是可执行文件的完整路径
             value, _ = winreg.QueryValueEx(key, "")
             return value
         except FileNotFoundError:
-            raise FileNotFoundError(
-                "360X is not installed or the registry key is not found."
-            )
+            raise FileNotFoundError("360X is not installed or the registry key is not found.")
 
     def check_browser(self):
         # 通过检查注册表来判断浏览器是否存在
         return Registry.exist(self.browser_path)
 
     def check_plugin(self):
-        installed, installed_version = check_chrome_plugin(
-            self.preferences_path_list, self.plugin_data.plugin_id
-        )
+        installed, installed_version = check_chrome_plugin(self.preferences_path_list, self.plugin_data.plugin_id)
 
         latest_version = self.plugin_data.plugin_version
         latest = installed_version == latest_version

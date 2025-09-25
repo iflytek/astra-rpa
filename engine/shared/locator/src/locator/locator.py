@@ -76,9 +76,7 @@ class LocatorManager:
             pass
         return json.loads(element_string)
 
-    def locator(
-        self, element: Union[str, dict], **kwargs
-    ) -> Union[List[ILocator], ILocator, None]:
+    def locator(self, element: Union[str, dict], **kwargs) -> Union[List[ILocator], ILocator, None]:
         """
         定位元素
 
@@ -113,9 +111,7 @@ class LocatorManager:
                     return result
             except Exception as exception:
                 last_error = exception
-                logger.error(
-                    f"Strategy run error: {exception} {traceback.format_exc()}"
-                )
+                logger.error(f"Strategy run error: {exception} {traceback.format_exc()}")
         if last_error:
             raise last_error
         return None

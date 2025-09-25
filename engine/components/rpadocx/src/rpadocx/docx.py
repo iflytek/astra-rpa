@@ -17,16 +17,12 @@ if sys.platform == "win32":
 elif platform.system() == "Linux":
     from rpadocx.core_unix import DocxCore
 else:
-    raise NotImplementedError(
-        "Your platform (%s) is not supported by (%s)."
-        % (platform.system(), "clipboard")
-    )
+    raise NotImplementedError("Your platform (%s) is not supported by (%s)." % (platform.system(), "clipboard"))
 
 DocxCore: IDocxCore = DocxCore()
 
 
 class Docx:
-
     @staticmethod
     @IDocxCore.validate_path("file_path")
     @atomicMg.atomic(
@@ -110,9 +106,7 @@ class Docx:
     )
     def read_docx(doc: DocxObj, select_range: SelectRangeType = SelectRangeType.ALL):
         if not doc:
-            raise BaseException(
-                DOC_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！"
-            )
+            raise BaseException(DOC_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！")
         try:
             doc_data = DocxCore.read(doc.obj, select_range)
             return doc_data
@@ -183,9 +177,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_path.show",
-                        expression="return $this.save_type.value == '{}'".format(
-                            SaveType.SAVE_AS.value
-                        ),
+                        expression="return $this.save_type.value == '{}'".format(SaveType.SAVE_AS.value),
                     )
                 ],
             ),
@@ -194,9 +186,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_name.show",
-                        expression="return $this.save_type.value == '{}'".format(
-                            SaveType.SAVE_AS.value
-                        ),
+                        expression="return $this.save_type.value == '{}'".format(SaveType.SAVE_AS.value),
                     )
                 ],
             ),
@@ -205,9 +195,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.exist_handle_type.show",
-                        expression="return $this.save_type.value == '{}'".format(
-                            SaveType.SAVE_AS.value
-                        ),
+                        expression="return $this.save_type.value == '{}'".format(SaveType.SAVE_AS.value),
                     )
                 ],
             ),
@@ -225,13 +213,9 @@ class Docx:
         close_flag: bool = False,
     ):
         if not doc:
-            raise BaseException(
-                DOC_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！"
-            )
+            raise BaseException(DOC_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！")
         try:
-            save_file_path = DocxCore.save(
-                doc.obj, file_path, file_name, save_type, exist_handle_type, close_flag
-            )
+            save_file_path = DocxCore.save(doc.obj, file_path, file_name, save_type, exist_handle_type, close_flag)
             return save_file_path
         except Exception as e:
             raise BaseException(
@@ -263,9 +247,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.pkill_flag.show",
-                        expression="return $this.close_range_flag.value == '{}'".format(
-                            CloseRangeType.ALL.value
-                        ),
+                        expression="return $this.close_range_flag.value == '{}'".format(CloseRangeType.ALL.value),
                     )
                 ],
             ),
@@ -274,9 +256,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.save_type.show",
-                        expression="return $this.close_range_flag.value == '{}'".format(
-                            CloseRangeType.ONE.value
-                        ),
+                        expression="return $this.close_range_flag.value == '{}'".format(CloseRangeType.ONE.value),
                     )
                 ],
             ),
@@ -296,9 +276,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.exist_handle_type.show",
-                        expression="return $this.close_range_flag.value == '{}'".format(
-                            CloseRangeType.ONE.value
-                        ),
+                        expression="return $this.close_range_flag.value == '{}'".format(CloseRangeType.ONE.value),
                     )
                 ],
             ),
@@ -315,9 +293,7 @@ class Docx:
         pkill_flag: bool = False,
     ):
         if not doc:
-            raise BaseException(
-                DOC_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！"
-            )
+            raise BaseException(DOC_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！")
         try:
             DocxCore.close(
                 doc.obj,
@@ -342,9 +318,7 @@ class Docx:
             atomicMg.param("font_name", required=False),
             atomicMg.param(
                 "font_color",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.INPUT_VARIABLE_COLOR.value
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.INPUT_VARIABLE_COLOR.value),
                 required=False,
             ),
         ],
@@ -362,9 +336,7 @@ class Docx:
         font_color: str = "0,0,0",
     ):
         if not doc:
-            raise BaseException(
-                DOC_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！"
-            )
+            raise BaseException(DOC_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！")
         try:
             if not font_color:
                 font_color = "0,0,0"
@@ -392,9 +364,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.p_start.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            SelectTextType.PARAGRAPH.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(SelectTextType.PARAGRAPH.value),
                     )
                 ],
             ),
@@ -403,9 +373,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.p_end.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            SelectTextType.PARAGRAPH.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(SelectTextType.PARAGRAPH.value),
                     )
                 ],
             ),
@@ -414,9 +382,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.r_start.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            SelectTextType.ROW.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(SelectTextType.ROW.value),
                     )
                 ],
             ),
@@ -425,9 +391,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.r_end.show",
-                        expression="return $this.select_type.value == '{}'".format(
-                            SelectTextType.ROW.value
-                        ),
+                        expression="return $this.select_type.value == '{}'".format(SelectTextType.ROW.value),
                     )
                 ],
             ),
@@ -443,17 +407,9 @@ class Docx:
         r_end: int = 1,
     ):
         if not doc:
-            raise BaseException(
-                DOC_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！"
-            )
-        if (
-            p_start > p_end
-            or r_start > r_end
-            or not IDocxCore.are_positive_integers(p_start, p_end, r_start, r_end)
-        ):
-            raise BaseException(
-                CONTENT_FORMAT_ERROR_FORMAT, "请正确输入起始行号或段落号！"
-            )
+            raise BaseException(DOC_NOT_EXIST_ERROR_FORMAT, "文档不存在，请先打开文档！")
+        if p_start > p_end or r_start > r_end or not IDocxCore.are_positive_integers(p_start, p_end, r_start, r_end):
+            raise BaseException(CONTENT_FORMAT_ERROR_FORMAT, "请正确输入起始行号或段落号！")
         try:
             DocxCore.select(doc.obj, select_type, p_start, p_end, r_start, r_end)
         except Exception as e:
@@ -471,9 +427,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.content.show",
-                        expression="return $this.by.value == '{}'".format(
-                            CursorPointerType.CONTENT.value
-                        ),
+                        expression="return $this.by.value == '{}'".format(CursorPointerType.CONTENT.value),
                     )
                 ],
             ),
@@ -482,9 +436,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.c_idx.show",
-                        expression="return $this.by.value == '{}'".format(
-                            CursorPointerType.CONTENT.value
-                        ),
+                        expression="return $this.by.value == '{}'".format(CursorPointerType.CONTENT.value),
                     )
                 ],
             ),
@@ -493,9 +445,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.p_idx.show",
-                        expression="return $this.by.value == '{}'".format(
-                            CursorPointerType.PARAGRAPH.value
-                        ),
+                        expression="return $this.by.value == '{}'".format(CursorPointerType.PARAGRAPH.value),
                     )
                 ],
             ),
@@ -504,9 +454,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.r_idx.show",
-                        expression="return $this.by.value == '{}'".format(
-                            CursorPointerType.ROW.value
-                        ),
+                        expression="return $this.by.value == '{}'".format(CursorPointerType.ROW.value),
                     )
                 ],
             ),
@@ -582,13 +530,9 @@ class Docx:
         if not IDocxCore.are_positive_integers(distance):
             raise BaseException(CONTENT_FORMAT_ERROR_FORMAT, "请输入正确的数值!")
         try:
-            DocxCore.move_cursor(
-                doc.obj, direction, unitupdown, unitleftright, distance, with_shift
-            )
+            DocxCore.move_cursor(doc.obj, direction, unitupdown, unitleftright, distance, with_shift)
         except Exception as e:
-            raise BaseException(
-                WORD_READ_ERROR_FORMAT.format(doc), "移动光标失败，请检查文档是否打开！"
-            )
+            raise BaseException(WORD_READ_ERROR_FORMAT.format(doc), "移动光标失败，请检查文档是否打开！")
 
     @staticmethod
     @atomicMg.atomic("Docx", inputList=[], outputList=[])
@@ -601,9 +545,7 @@ class Docx:
         try:
             DocxCore.insert_sep(doc.obj, sep_type)
         except Exception as e:
-            raise BaseException(
-                WORD_READ_ERROR_FORMAT.format(doc), "插入失败，请检查文档是否打开！"
-            )
+            raise BaseException(WORD_READ_ERROR_FORMAT.format(doc), "插入失败，请检查文档是否打开！")
 
     @staticmethod
     @atomicMg.atomic("Docx", inputList=[], outputList=[])
@@ -628,9 +570,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.img_path.show",
-                        expression="return $this.img_from.value == '{}'".format(
-                            InsertImgType.FILE.value
-                        ),
+                        expression="return $this.img_from.value == '{}'".format(InsertImgType.FILE.value),
                     )
                 ],
             ),
@@ -660,9 +600,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.text.show",
-                        expression="return $this.search_type.value == '{}'".format(
-                            SearchTableType.TEXT.value
-                        ),
+                        expression="return $this.search_type.value == '{}'".format(SearchTableType.TEXT.value),
                     )
                 ],
             ),
@@ -687,9 +625,7 @@ class Docx:
             return table_content
         except Exception as e:
             print(e)
-            raise BaseException(
-                WORD_READ_ERROR_FORMAT.format(doc), "读取表格失败，请检查文档是否打开！"
-            )
+            raise BaseException(WORD_READ_ERROR_FORMAT.format(doc), "读取表格失败，请检查文档是否打开！")
 
     @staticmethod
     @atomicMg.atomic(
@@ -706,9 +642,7 @@ class Docx:
             ),
             atomicMg.param(
                 "font_color",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.INPUT_VARIABLE_COLOR.value
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.INPUT_VARIABLE_COLOR.value),
                 dynamics=[
                     DynamicsItem(
                         key="$this.font_color.show",
@@ -794,9 +728,7 @@ class Docx:
                 newline,
             )
         except Exception as e:
-            raise BaseException(
-                WORD_READ_ERROR_FORMAT.format(doc), "插入表格失败，请检查文档是否打开！"
-            )
+            raise BaseException(WORD_READ_ERROR_FORMAT.format(doc), "插入表格失败，请检查文档是否打开！")
 
     @staticmethod
     @atomicMg.atomic(
@@ -807,9 +739,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.delete_str.show",
-                        expression="return $this.delete_mode.value == '{}'".format(
-                            DeleteMode.CONTENT.value
-                        ),
+                        expression="return $this.delete_mode.value == '{}'".format(DeleteMode.CONTENT.value),
                     )
                 ],
             ),
@@ -818,9 +748,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.str_delete_all.show",
-                        expression="return $this.delete_mode.value == '{}'".format(
-                            DeleteMode.CONTENT.value
-                        ),
+                        expression="return $this.delete_mode.value == '{}'".format(DeleteMode.CONTENT.value),
                     )
                 ],
             ),
@@ -840,9 +768,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.p_start.show",
-                        expression="return $this.delete_mode.value == '{}'".format(
-                            DeleteMode.RANGE.value
-                        ),
+                        expression="return $this.delete_mode.value == '{}'".format(DeleteMode.RANGE.value),
                     )
                 ],
             ),
@@ -851,9 +777,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.p_end.show",
-                        expression="return $this.delete_mode.value == '{}'".format(
-                            DeleteMode.RANGE.value
-                        ),
+                        expression="return $this.delete_mode.value == '{}'".format(DeleteMode.RANGE.value),
                     )
                 ],
             ),
@@ -862,9 +786,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.c_start.show",
-                        expression="return $this.delete_mode.value == '{}'".format(
-                            DeleteMode.RANGE.value
-                        ),
+                        expression="return $this.delete_mode.value == '{}'".format(DeleteMode.RANGE.value),
                     )
                 ],
             ),
@@ -873,9 +795,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.c_end.show",
-                        expression="return $this.delete_mode.value == '{}'".format(
-                            DeleteMode.RANGE.value
-                        ),
+                        expression="return $this.delete_mode.value == '{}'".format(DeleteMode.RANGE.value),
                     )
                 ],
             ),
@@ -911,9 +831,7 @@ class Docx:
                 c_end,
             )
         except Exception as e:
-            raise BaseException(
-                WORD_READ_ERROR_FORMAT.format(doc), "删除内容失败，请检查文档是否打开！"
-            )
+            raise BaseException(WORD_READ_ERROR_FORMAT.format(doc), "删除内容失败，请检查文档是否打开！")
 
     @staticmethod
     @atomicMg.atomic(
@@ -924,9 +842,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.new_word.show",
-                        expression="return $this.replace_type.value == '{}'".format(
-                            ReplaceType.STR.value
-                        ),
+                        expression="return $this.replace_type.value == '{}'".format(ReplaceType.STR.value),
                     )
                 ],
             ),
@@ -939,9 +855,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.img_path.show",
-                        expression="return $this.replace_type.value == '{}'".format(
-                            ReplaceType.IMG.value
-                        ),
+                        expression="return $this.replace_type.value == '{}'".format(ReplaceType.IMG.value),
                     )
                 ],
             ),
@@ -996,9 +910,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.paragraph_idx.show",
-                        expression="return $this.comment_type.value == '{}'".format(
-                            CommentType.POSITION.value
-                        ),
+                        expression="return $this.comment_type.value == '{}'".format(CommentType.POSITION.value),
                     )
                 ],
             ),
@@ -1007,9 +919,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.start.show",
-                        expression="return $this.comment_type.value == '{}'".format(
-                            CommentType.POSITION.value
-                        ),
+                        expression="return $this.comment_type.value == '{}'".format(CommentType.POSITION.value),
                     )
                 ],
             ),
@@ -1018,9 +928,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.end.show",
-                        expression="return $this.comment_type.value == '{}'".format(
-                            CommentType.POSITION.value
-                        ),
+                        expression="return $this.comment_type.value == '{}'".format(CommentType.POSITION.value),
                     )
                 ],
             ),
@@ -1029,9 +937,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.target_str.show",
-                        expression="return $this.comment_type.value == '{}'".format(
-                            CommentType.CONTENT.value
-                        ),
+                        expression="return $this.comment_type.value == '{}'".format(CommentType.CONTENT.value),
                     )
                 ],
             ),
@@ -1040,9 +946,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.comment_all.show",
-                        expression="return $this.comment_type.value == '{}'".format(
-                            CommentType.CONTENT.value
-                        ),
+                        expression="return $this.comment_type.value == '{}'".format(CommentType.CONTENT.value),
                     )
                 ],
             ),
@@ -1087,9 +991,7 @@ class Docx:
                 comment_index,
             )
         except Exception as e:
-            raise BaseException(
-                WORD_READ_ERROR_FORMAT.format(doc), "创建批注失败，请检查文档是否打开！"
-            )
+            raise BaseException(WORD_READ_ERROR_FORMAT.format(doc), "创建批注失败，请检查文档是否打开！")
 
     @staticmethod
     @atomicMg.atomic(
@@ -1116,9 +1018,7 @@ class Docx:
         try:
             DocxCore.delete_comment(doc.obj, comment_index, delete_all)
         except Exception as e:
-            raise BaseException(
-                WORD_READ_ERROR_FORMAT.format(doc), "删除批注失败，请检查文档是否打开！"
-            )
+            raise BaseException(WORD_READ_ERROR_FORMAT.format(doc), "删除批注失败，请检查文档是否打开！")
 
     @staticmethod
     @atomicMg.atomic(
@@ -1138,9 +1038,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.page_type.show",
-                        expression="return $this.output_file_type.value == '{}'".format(
-                            FileType.PDF.value
-                        ),
+                        expression="return $this.output_file_type.value == '{}'".format(FileType.PDF.value),
                     )
                 ],
             ),
@@ -1149,9 +1047,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.page_start.show",
-                        expression="return $this.page_type.value == '{}'".format(
-                            ConvertPageType.RANGE.value
-                        ),
+                        expression="return $this.page_type.value == '{}'".format(ConvertPageType.RANGE.value),
                     )
                 ],
             ),
@@ -1160,9 +1056,7 @@ class Docx:
                 dynamics=[
                     DynamicsItem(
                         key="$this.page_end.show",
-                        expression="return $this.page_type.value == '{}'".format(
-                            ConvertPageType.RANGE.value
-                        ),
+                        expression="return $this.page_type.value == '{}'".format(ConvertPageType.RANGE.value),
                     )
                 ],
             ),

@@ -37,9 +37,7 @@ class Terminal:
                 if count % 5 == 0:
                     flag = terminal_poll_update()
                     if flag:
-                        logger.info(
-                            "【terminal_poll_worker】terminal轮询结果：{}", flag
-                        )
+                        logger.info("【terminal_poll_worker】terminal轮询结果：{}", flag)
                     if flag or count % 100 == 0:
                         # 处理terminal更新逻辑
                         self.update_task_list()
@@ -62,9 +60,7 @@ class Terminal:
             return
 
         self.poll_stop_event.clear()
-        self.poll_thread = threading.Thread(
-            target=self.terminal_poll_worker, daemon=True
-        )
+        self.poll_thread = threading.Thread(target=self.terminal_poll_worker, daemon=True)
         self.poll_thread.start()
         logger.info("【start_poll】terminal轮询线程启动成功")
 
@@ -92,30 +88,12 @@ class Terminal:
         new_task_ids = new_task_list.keys()
         # 和本地任务的交集、本地任务差集、云端任务差集
 
-        intersection = [
-            new_task_list.get(task_id)
-            for task_id, task in self.tasks.items()
-            if task_id in new_task_ids
-        ]
-        local_tasks_unique = [
-            task_id
-            for task_id, task in self.tasks.items()
-            if task_id not in new_task_ids
-        ]
-        cloud_tasks_unique = [
-            task
-            for task_id, task in new_task_list.items()
-            if task_id not in self.tasks.keys()
-        ]
-        logger.info(
-            f"【update_task_list】intersection本地、云端相交部分是：{intersection} "
-        )
-        logger.info(
-            f"【update_task_list】local_tasks_unique本地独有任务：{local_tasks_unique} "
-        )
-        logger.info(
-            f"【update_task_list】cloud_tasks_unique云端独有任务：{cloud_tasks_unique} "
-        )
+        intersection = [new_task_list.get(task_id) for task_id, task in self.tasks.items() if task_id in new_task_ids]
+        local_tasks_unique = [task_id for task_id, task in self.tasks.items() if task_id not in new_task_ids]
+        cloud_tasks_unique = [task for task_id, task in new_task_list.items() if task_id not in self.tasks.keys()]
+        logger.info(f"【update_task_list】intersection本地、云端相交部分是：{intersection} ")
+        logger.info(f"【update_task_list】local_tasks_unique本地独有任务：{local_tasks_unique} ")
+        logger.info(f"【update_task_list】cloud_tasks_unique云端独有任务：{cloud_tasks_unique} ")
 
         # 本地任务差值，直接删除
         for task_id in local_tasks_unique:
@@ -133,14 +111,10 @@ class Terminal:
             task = self.tasks[new_task["trigger_id"]]
 
             if task.kwargs == new_task:
-                logger.info(
-                    "【update_task_list】云端、本地任务ID相同，参数相同，不进行更新。 "
-                )
+                logger.info("【update_task_list】云端、本地任务ID相同，参数相同，不进行更新。 ")
                 continue
             else:
-                logger.info(
-                    f"【update_task_list】云端、本地任务ID相同，参数不同，进行更新：{new_task} "
-                )
+                logger.info(f"【update_task_list】云端、本地任务ID相同，参数不同，进行更新：{new_task} ")
                 self.update_task(**new_task)
 
         # 处理retry和stop任务

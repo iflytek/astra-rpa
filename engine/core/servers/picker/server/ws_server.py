@@ -108,9 +108,7 @@ class PickerRequestHandler:
         from ..core.recorder_core_win import record_manager
 
         # 委托给录制管理器处理
-        result = await record_manager.handle_record_action(
-            input_data.record_action, ws, self.svc, input_data
-        )
+        result = await record_manager.handle_record_action(input_data.record_action, ws, self.svc, input_data)
         # 发送响应
         await self._send_response(ws, result)
 
@@ -144,9 +142,7 @@ class PickerRequestHandler:
                     input_data.data = self._process_element_data(input_data)
 
                 # 发送拾取开始信号
-                res = await self.svc.send_sign(
-                    PickerSign.START, input_data.model_dump()
-                )
+                res = await self.svc.send_sign(PickerSign.START, input_data.model_dump())
                 highlight_client.hide_wnd()
 
                 if res == "cancel":
@@ -268,9 +264,7 @@ class PickerRequestHandler:
         global_data = input_data.ext_data.get("global", [])
         env, id2name = rpa_param_utils.param_utils.global_to_dict(global_data)
         data = (
-            LocatorManager.parse_element_json(input_data.data)
-            if isinstance(input_data.data, str)
-            else input_data.data
+            LocatorManager.parse_element_json(input_data.data) if isinstance(input_data.data, str) else input_data.data
         )
         return rpa_param_utils.param_utils.special_eval_element(data, env, id2name)
 
@@ -282,23 +276,13 @@ class PickerRequestHandler:
                 data = json.dumps(data, ensure_ascii=False)
             elif not isinstance(data, str):
                 data = str(data)
-            await ws.send(
-                PickerMessage.create_response(
-                    ResponseKey.SUCCESS, data=data
-                ).model_dump_json()
-            )
+            await ws.send(PickerMessage.create_response(ResponseKey.SUCCESS, data=data).model_dump_json())
 
         else:
             if result.get("cancel"):
-                await ws.send(
-                    PickerMessage.create_response(ResponseKey.CANCEL).model_dump_json()
-                )
+                await ws.send(PickerMessage.create_response(ResponseKey.CANCEL).model_dump_json())
             error_msg = result.get("error", "未知错误")
-            await ws.send(
-                PickerMessage.create_response(
-                    ResponseKey.ERROR, err_msg=error_msg
-                ).model_dump_json()
-            )
+            await ws.send(PickerMessage.create_response(ResponseKey.ERROR, err_msg=error_msg).model_dump_json())
 
 
 class PushManager:
@@ -329,9 +313,7 @@ class PushManager:
         status = ack_data.status
         data = ack_data.data
 
-        logger.info(
-            f"[PushManager] 收到推送确认: reply_to={reply_to_id}, status={status}"
-        )
+        logger.info(f"[PushManager] 收到推送确认: reply_to={reply_to_id}, status={status}")
 
         if reply_to_id in self.pending_pushes:
             push_info = self.pending_pushes[reply_to_id]
@@ -386,9 +368,7 @@ class WsServer:
 
     async def _on_mouse_out(self, ws_connection):
         """录制 鼠标移出悬停元素区域回调"""
-        await self.push_manager.send_push_message(
-            ws_connection, PushKey.RECORD_AUTOMIC_DRAW_END
-        )
+        await self.push_manager.send_push_message(ws_connection, PushKey.RECORD_AUTOMIC_DRAW_END)
 
     async def websocket_endpoint(self, ws: WebSocketServerProtocol):
         """WebSocket端点 - 只负责消息路由"""
@@ -405,9 +385,7 @@ class WsServer:
                 # 2. 检查是否是拾取请求
                 if data.get("pick_sign"):
                     input_data = PickerRequire(**data)
-                    should_close = await self.request_handler.handle_request(
-                        ws, input_data
-                    )
+                    should_close = await self.request_handler.handle_request(ws, input_data)
                     if should_close:
                         await ws.close()
                     continue
@@ -415,25 +393,15 @@ class WsServer:
                 # 3. 未知消息格式
                 logger.warning(f"未知的消息格式: {data}")
                 await ws.send(
-                    PickerMessage.create_response(
-                        ResponseKey.ERROR, err_msg="未知的消息格式"
-                    ).model_dump_json()
+                    PickerMessage.create_response(ResponseKey.ERROR, err_msg="未知的消息格式").model_dump_json()
                 )
 
             except Exception as e:
                 import traceback
 
-                logger.error(
-                    "WebSocket消息处理错误: {} stack: {}".format(
-                        e, traceback.format_exc()
-                    )
-                )
+                logger.error("WebSocket消息处理错误: {} stack: {}".format(e, traceback.format_exc()))
                 try:
-                    await ws.send(
-                        PickerMessage.create_response(
-                            ResponseKey.ERROR, err_msg=str(e)
-                        ).model_dump_json()
-                    )
+                    await ws.send(PickerMessage.create_response(ResponseKey.ERROR, err_msg=str(e)).model_dump_json())
                 except:
                     pass  # 连接可能已断开
 

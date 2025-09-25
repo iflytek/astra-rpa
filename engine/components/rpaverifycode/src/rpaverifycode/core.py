@@ -13,7 +13,6 @@ from src.rpaverifycode import ElementGetAttributeTypeFlag
 
 
 class VerifyCodeCore:
-
     @staticmethod
     def get_api_result(api_type: str, pic_element_base64: str, **kwargs):
         data = {
@@ -26,19 +25,14 @@ class VerifyCodeCore:
         headers = {
             "Content-Type": "application/json",
         }
-        response = requests.post(
-            VerifyCodeConfig.url, headers=headers, json=data
-        ).json()
+        response = requests.post(VerifyCodeConfig.url, headers=headers, json=data).json()
         result = response["data"]["data"]
         return result
 
     @staticmethod
     def get_base64_screenshot(left, top, width, height):
-
         # 截取指定区域的屏幕
-        screenshot = pyautogui.screenshot(
-            region=(int(left), int(top), int(width), int(height))
-        )
+        screenshot = pyautogui.screenshot(region=(int(left), int(top), int(width), int(height)))
         buffer = BytesIO()
         screenshot.save(buffer, format="PNG")
         image_bytes = buffer.getvalue()

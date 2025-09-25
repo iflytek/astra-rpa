@@ -117,15 +117,9 @@ class ServiceContext:
         while result_sign not in self.__sign__ and start_time > 0:
             await asyncio.sleep(0.1)
             start_time -= 0.1
-            if (
-                self.pick_server
-                and self.pick_server.start_time
-                and time.time() - self.pick_server.start_time > 15
-            ):
+            if self.pick_server and self.pick_server.start_time and time.time() - self.pick_server.start_time > 15:
                 self.event_core.close()  # 关闭监听
-                raise RpaBaseException(
-                    TIMEOUT_LAG, "拾取卡顿超过15s，请退出编辑器后重新进入"
-                )
+                raise RpaBaseException(TIMEOUT_LAG, "拾取卡顿超过15s，请退出编辑器后重新进入")
         if start_time <= 0:
             raise RpaBaseException(TIMEOUT, "拾取超时")
 

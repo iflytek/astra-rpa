@@ -16,15 +16,9 @@ from rpa_executor.utils import kill_proc_tree
 def start():
     parser = argparse.ArgumentParser(description="{} service".format("executor"))
 
-    parser.add_argument(
-        "--cache_dir", default=".", help="[系统配置]缓存目录", required=False
-    )
-    parser.add_argument(
-        "--port", default="8077", help="[系统配置]本地端口号", required=False
-    )
-    parser.add_argument(
-        "--gateway_port", default="8003", help="[系统配置]网关端口", required=False
-    )
+    parser.add_argument("--cache_dir", default=".", help="[系统配置]缓存目录", required=False)
+    parser.add_argument("--port", default="8077", help="[系统配置]本地端口号", required=False)
+    parser.add_argument("--gateway_port", default="8003", help="[系统配置]网关端口", required=False)
 
     parser.add_argument(
         "--mode",
@@ -32,31 +26,15 @@ def start():
         help="[启动配置]运行场景[PROJECT_LIST, EDIT_PAGE, CRONTAB, EXECUTOR]",
         required=False,
     )
-    parser.add_argument(
-        "--version", default="", help="[启动配置]运行版本", required=False
-    )
-    parser.add_argument(
-        "--project_id", default="", help="[启动配置]启动的工程id", required=True
-    )
-    parser.add_argument(
-        "--process_id", default="", help="[启动配置]启动的流程id", required=False
-    )
-    parser.add_argument(
-        "--line", default="0", help="[启动配置]启动的行号", required=False
-    )
-    parser.add_argument(
-        "--end_line", default="0", help="[启动配置]结束的行号", required=False
-    )
-    parser.add_argument(
-        "--debug", default="n", help="[启动配置]是否是debug模式 y/n", required=False
-    )
-    parser.add_argument(
-        "--exec_id", default="", help="[启动配置]启动的执行id", required=False
-    )
+    parser.add_argument("--version", default="", help="[启动配置]运行版本", required=False)
+    parser.add_argument("--project_id", default="", help="[启动配置]启动的工程id", required=True)
+    parser.add_argument("--process_id", default="", help="[启动配置]启动的流程id", required=False)
+    parser.add_argument("--line", default="0", help="[启动配置]启动的行号", required=False)
+    parser.add_argument("--end_line", default="0", help="[启动配置]结束的行号", required=False)
+    parser.add_argument("--debug", default="n", help="[启动配置]是否是debug模式 y/n", required=False)
+    parser.add_argument("--exec_id", default="", help="[启动配置]启动的执行id", required=False)
 
-    parser.add_argument(
-        "--log_ws", default="y", help="[ws功能配置]ws通信，ws总开关 y/n", required=False
-    )
+    parser.add_argument("--log_ws", default="y", help="[ws功能配置]ws通信，ws总开关 y/n", required=False)
     parser.add_argument(
         "--wait_web_ws",
         default="y",
@@ -79,9 +57,7 @@ def start():
 
     parser.add_argument("--run_param", default="", help="运行参数", required=False)
 
-    parser.add_argument(
-        "--project_name", default="RPA机器人", help="工程名称", required=False
-    )
+    parser.add_argument("--project_name", default="RPA机器人", help="工程名称", required=False)
     args = parser.parse_args()
 
     logger.debug("start {}".format(args))
@@ -154,9 +130,7 @@ def start():
         int(args.end_line),
         env,
     )
-    thread_init = threading.Thread(
-        target=executor.__process_init__, args=(program,), daemon=True
-    )
+    thread_init = threading.Thread(target=executor.__process_init__, args=(program,), daemon=True)
     thread_init.start()
 
     # 开启执行前，等待ws(n)s内没有连接
@@ -183,16 +157,12 @@ def start():
         daemon=True,
     )
     thread_run.start()
-    while (
-        thread_run.is_alive()
-    ):  # 用is_alive替代join，使主线程不会被阻塞，用户监听kill命令
+    while thread_run.is_alive():  # 用is_alive替代join，使主线程不会被阻塞，用户监听kill命令
         time.sleep(0.1)
     thread_run.join()
 
     # 执行器完成后，等待ws消费完成
-    if (
-        args.log_ws == "y" and args.wait_web_ws == "y"
-    ):  # ws.is_open_top_link 不用考虑是否发送完成
+    if args.log_ws == "y" and args.wait_web_ws == "y":  # ws.is_open_top_link 不用考虑是否发送完成
         wait_time = 0
         size = svc.report.code.queue.qsize()
         while not svc.report.code.queue.empty():
@@ -200,9 +170,7 @@ def start():
             wait_time += 0.3
             if wait_time >= 3:
                 wait_time = 0
-                if (
-                    size == svc.report.code.queue.qsize()
-                ):  # 等待日志(n)s内没有任何发送，就不发送了，直接退出
+                if size == svc.report.code.queue.qsize():  # 等待日志(n)s内没有任何发送，就不发送了，直接退出
                     logger.error("The websocket connection send timed out")
                     break
                 else:

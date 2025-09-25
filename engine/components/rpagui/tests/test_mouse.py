@@ -10,9 +10,7 @@ from rpagui.gui import Gui, Mouse
 
 
 class TestMouse(TestCase):
-
     def test_position(self):
-
         print(Mouse.position())
 
     def test_mouse_position(self):
@@ -23,7 +21,6 @@ class TestMouse(TestCase):
 
 
 class TestKeyboard(TestCase):
-
     def test_input(self):
         gui = Gui()
         gui.keyboard(keyboard_type=KeyboardType.CLIP)

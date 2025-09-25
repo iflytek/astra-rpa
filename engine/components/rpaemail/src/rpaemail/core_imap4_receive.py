@@ -27,12 +27,10 @@ def decode_data(b, added_encode=None):
 
 
 class EmailImap4Receive:
-
     def __init__(self):
         self.mail_handler = None
 
     def login(self, server, port: int, user, password):
-
         self.mail_handler = imaplib.IMAP4_SSL(server, port)
         self.mail_handler.login(user, password)
         self.__build_header__(user)

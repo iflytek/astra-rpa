@@ -8,7 +8,6 @@ mimetypes.add_type("text/markdown", ".md")
 
 
 class Dify:
-
     base_url = "https://api.dify.ai/v1/"
 
     def __init__(self, api_key):
@@ -36,9 +35,7 @@ class Dify:
                 }
                 data = {"user": user, "type": file_extension}  # 设置文件类型为扩展名
 
-                response = requests.post(
-                    upload_url, headers=self.headers, files=files, data=data
-                )
+                response = requests.post(upload_url, headers=self.headers, files=files, data=data)
                 if response.status_code == 201:  # 201 表示创建成功
                     print("文件上传成功")
                     return response.json().get("id")  # 获取上传的文件 ID

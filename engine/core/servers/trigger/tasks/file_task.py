@@ -16,7 +16,6 @@ rename_flag = "rename"
 
 
 class FileTask:
-
     def __init__(
         self,
         directory: str = ".",
@@ -66,9 +65,7 @@ class FileTask:
             current_time = time.time()
 
             for change_type, path in changes:
-                logger.info(
-                    f"【AsyncFileTask callback】监听文件变化：{change_type} {path}"
-                )
+                logger.info(f"【AsyncFileTask callback】监听文件变化：{change_type} {path}")
                 path_obj = Path(path)
                 if path_obj.is_dir():  # 忽略目录自身的事件（如父目录MODIFIED）
                     continue
@@ -77,9 +74,7 @@ class FileTask:
                     deleted_paths.add(path)
                 elif change_type == Change.added:  # 属于added事件，则在对应的集合添加
                     added_paths.add(path)
-                elif (
-                    change_type == Change.modified
-                ):  #  属于modified事件，则在对应的集合添加
+                elif change_type == Change.modified:  #  属于modified事件，则在对应的集合添加
                     if path_obj.exists():  # 验证路径有效性（避免已删除文件残留事件）
                         modified_paths.add((path, current_time))
 

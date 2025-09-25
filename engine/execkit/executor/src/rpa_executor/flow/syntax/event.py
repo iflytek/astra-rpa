@@ -72,7 +72,6 @@ def default_debug_handler(svc, env, token):
 
 
 class Event:
-
     def __init__(
         self,
         raw_error_logger_handler=default_error_logger_handler,
@@ -101,9 +100,7 @@ class Event:
         def raw_error_logger_handler(func):
             @wraps(func)
             def wrapper(*args, **war_kwargs):
-                return self.raw_error_logger_handler(
-                    svc, env, token, func, *args, **war_kwargs
-                )
+                return self.raw_error_logger_handler(svc, env, token, func, *args, **war_kwargs)
 
             return wrapper
 

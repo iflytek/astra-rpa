@@ -14,9 +14,7 @@ class BrowserPluginFactory(PluginManager):
         ]
 
     @staticmethod
-    def get_plugin_manager(
-        browser_type: BrowserType, plugin_data: PluginData
-    ) -> PluginManagerCore:
+    def get_plugin_manager(browser_type: BrowserType, plugin_data: PluginData) -> PluginManagerCore:
         if browser_type == BrowserType.CHROME:
             return ChromiumPluginManager(
                 plugin_data,

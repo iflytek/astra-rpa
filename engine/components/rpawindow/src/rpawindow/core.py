@@ -6,7 +6,6 @@ from rpawindow import ControlInfo, WindowExistType, WindowSizeType
 
 
 class IWindowsCore(ABC):
-
     @staticmethod
     @abstractmethod
     def find(pick: WinPick) -> Any:
@@ -48,7 +47,6 @@ class IWindowsCore(ABC):
 
 
 class IUITreeCore(ABC):
-
     @staticmethod
     @abstractmethod
     def GetRootControl() -> Any:

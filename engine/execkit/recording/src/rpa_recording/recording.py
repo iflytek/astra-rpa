@@ -19,7 +19,6 @@ def folder_empty(folder_path) -> bool:
 
 
 class RecordingTool:
-
     def __init__(self):
         self.thread = None
 
@@ -44,14 +43,10 @@ class RecordingTool:
         if config:
             self.config = config
 
-        local_file_path = os.path.join(
-            os.getcwd(), self.config.get("file_path"), project_id
-        )
+        local_file_path = os.path.join(os.getcwd(), self.config.get("file_path"), project_id)
         if not os.path.exists(local_file_path):
             os.makedirs(local_file_path)
-        self.local_raw_file = os.path.join(
-            local_file_path, "{}_raw.mp4".format(exec_id)
-        )
+        self.local_raw_file = os.path.join(local_file_path, "{}_raw.mp4".format(exec_id))
         self.local_file = os.path.join(local_file_path, "{}.mp4".format(exec_id))
 
         return self
@@ -124,9 +119,7 @@ class RecordingTool:
 
             # 3. 关闭录制
             output, error = proc_1.communicate(input="q")
-            logger.info(
-                "RecordingTool proc_1 output: {}, error: {}".format(output, error)
-            )
+            logger.info("RecordingTool proc_1 output: {}, error: {}".format(output, error))
 
             self.end_time = int(time.time())
 
@@ -152,12 +145,7 @@ class RecordingTool:
             else:
                 # 剪切mp4, [改进: 冗余量前后各+5s]
                 dt = 5
-                ss = (
-                    self.end_time
-                    - self.start_time
-                    - int(self.config.get("cut_time"))
-                    - dt
-                )
+                ss = self.end_time - self.start_time - int(self.config.get("cut_time")) - dt
                 if ss <= 0:
                     os.rename("{}".format(self.local_raw_file), self.local_file)
                 else:
@@ -181,11 +169,7 @@ class RecordingTool:
                         encoding=system_encoding,
                     )
                     output, error = proc_2.communicate()
-                    logger.info(
-                        "RecordingTool proc_2 output: {}, error: {}".format(
-                            output, error
-                        )
-                    )
+                    logger.info("RecordingTool proc_2 output: {}, error: {}".format(output, error))
 
                     os.remove("{}".format(self.local_raw_file))
         except Exception as e:

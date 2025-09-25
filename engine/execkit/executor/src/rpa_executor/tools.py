@@ -7,7 +7,6 @@ from rpatools.tools import RpaTools
 
 
 class LogTool:
-
     def __init__(self):
         self.thread = None
         self.svc = None

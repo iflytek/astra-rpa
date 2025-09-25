@@ -16,9 +16,7 @@ def get_java_process() -> Tuple[List[int], List[str]]:
         logger.error("无法获取当前用户名")
         return [], []
 
-    hsperf_dir = os.path.join(
-        "C:\\Users", username, "AppData", "Local", "Temp", f"hsperfdata_{username}"
-    )
+    hsperf_dir = os.path.join("C:\\Users", username, "AppData", "Local", "Temp", f"hsperfdata_{username}")
     if not os.path.exists(hsperf_dir):
         logger.error(f"hsperf不存在: {hsperf_dir}")
         return [], []

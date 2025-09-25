@@ -6,7 +6,6 @@ from rpaencrypt import Base64CodeType, EncryptCaseType, MD5bitsType, SHAType
 
 
 class EncryptCore:
-
     @staticmethod
     def md5_encrypt(
         source_str: str,
@@ -82,13 +81,9 @@ class EncryptCore:
         if isinstance(source_str, str):
             password = str(password)
             iv = password  # 初始化偏移向量,偏移向量必须为16bit
-            aes = AES.new(
-                add_to_16(password), AES.MODE_CBC, add_to_16(iv)
-            )  # 初始化加密器
+            aes = AES.new(add_to_16(password), AES.MODE_CBC, add_to_16(iv))  # 初始化加密器
             encrypt_aes = aes.encrypt(add_to_16(source_str))  # 进行 aes 加密
-            aes_encrypt = str(
-                base64.b64encode(encrypt_aes), encoding="utf-8"
-            )  # 执行加密并转码返回 bytes
+            aes_encrypt = str(base64.b64encode(encrypt_aes), encoding="utf-8")  # 执行加密并转码返回 bytes
             return aes_encrypt
         else:
             raise ValueError("请提供字符串类型对象！")
@@ -109,12 +104,8 @@ class EncryptCore:
         if isinstance(source_str, str):
             password = str(password)
             iv = password  # 初始化偏移向量为密钥
-            aes = AES.new(
-                add_to_16(password), AES.MODE_CBC, add_to_16(iv)
-            )  # 初始化加密器
-            base64_decrypted = base64.decodebytes(
-                source_str.encode(encoding="utf-8")
-            )  # 优先逆向解密 base64 成 bytes
+            aes = AES.new(add_to_16(password), AES.MODE_CBC, add_to_16(iv))  # 初始化加密器
+            base64_decrypted = base64.decodebytes(source_str.encode(encoding="utf-8"))  # 优先逆向解密 base64 成 bytes
             aes_decrypt = str(aes.decrypt(base64_decrypted), encoding="utf-8").replace(
                 "\0", ""
             )  # 执行解密密并转码返回str
@@ -147,7 +138,6 @@ class EncryptCore:
         string_data: str = "",
         file_path: str = "",
     ):
-
         def add_to_4(value):
             while len(value) % 4 != 0:
                 value += "="
@@ -160,9 +150,5 @@ class EncryptCore:
         else:
             if file_path:
                 with open(file_path, "wb") as f:
-                    f.write(
-                        base64.b64decode(
-                            string_data.replace("data:image/png;base64,", "")
-                        )
-                    )
+                    f.write(base64.b64decode(string_data.replace("data:image/png;base64,", "")))
             return file_path

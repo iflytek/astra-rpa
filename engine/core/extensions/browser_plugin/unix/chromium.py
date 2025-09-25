@@ -35,9 +35,7 @@ class ChromiumPluginManager(PluginManagerCore):
 
     def check_browser(self):
         try:
-            result = subprocess.run(
-                ["which", self.browser_name], capture_output=True, text=True
-            )
+            result = subprocess.run(["which", self.browser_name], capture_output=True, text=True)
             if result.returncode == 0:
                 return True
             else:
@@ -48,9 +46,7 @@ class ChromiumPluginManager(PluginManagerCore):
 
     def check_plugin(self):
         # 检查插件配置文件是否存在
-        plugin_config_path = os.path.join(
-            self.extension_path, f"{self.plugin_data.plugin_id}.json"
-        )
+        plugin_config_path = os.path.join(self.extension_path, f"{self.plugin_data.plugin_id}.json")
         if os.path.exists(plugin_config_path):
             with open(plugin_config_path, "r") as file:
                 plugin_config_data = json.load(file)
@@ -99,9 +95,7 @@ class ChromiumPluginManager(PluginManagerCore):
             "external_crx": self.plugin_data.plugin_path,
             "external_version": self.plugin_data.plugin_version,
         }
-        plugin_config_path = os.path.join(
-            self.extension_path, f"{self.plugin_data.plugin_id}.json"
-        )
+        plugin_config_path = os.path.join(self.extension_path, f"{self.plugin_data.plugin_id}.json")
         # 写入JSON数据到文件
         with open(plugin_config_path, "w") as file:
             json.dump(plugin_config_data, file, indent=4)  # 使用indent参数美化输出格式

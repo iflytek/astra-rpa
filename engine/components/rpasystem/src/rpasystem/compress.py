@@ -28,9 +28,7 @@ class Compress:
                 dynamics=[
                     DynamicsItem(
                         key="$this.file_path.show",
-                        expression="return $this.file_type.value != '{}'".format(
-                            FileFolderType.FOLDER.value
-                        ),
+                        expression="return $this.file_type.value != '{}'".format(FileFolderType.FOLDER.value),
                     )
                 ],
             ),
@@ -44,9 +42,7 @@ class Compress:
                 dynamics=[
                     DynamicsItem(
                         key="$this.folder_path.show",
-                        expression="return $this.file_type.value != '{}'".format(
-                            FileFolderType.FILE.value
-                        ),
+                        expression="return $this.file_type.value != '{}'".format(FileFolderType.FILE.value),
                     )
                 ],
             ),
@@ -64,9 +60,7 @@ class Compress:
                 required=True,
             ),
             atomicMg.param("pwd", required=False),
-            atomicMg.param(
-                "save_type", level=AtomicLevel.ADVANCED.value, required=False
-            ),
+            atomicMg.param("save_type", level=AtomicLevel.ADVANCED.value, required=False),
         ],
         outputList=[
             atomicMg.param("compress_path", types="Str"),
@@ -108,9 +102,7 @@ class Compress:
             else:
                 raise NotImplementedError()
 
-        compress_path = CompressCore.compress(
-            items=items, file_name=compress_name, dest_path=compress_dir, pwd=pwd
-        )
+        compress_path = CompressCore.compress(items=items, file_name=compress_name, dest_path=compress_dir, pwd=pwd)
         if save_type == SaveType.SAVE:
             pass
         elif save_type == SaveType.DELETE:
@@ -144,9 +136,7 @@ class Compress:
                 required=True,
             ),
             atomicMg.param("pwd", required=False),
-            atomicMg.param(
-                "save_type", level=AtomicLevel.ADVANCED.value, required=False
-            ),
+            atomicMg.param("save_type", level=AtomicLevel.ADVANCED.value, required=False),
         ],
         outputList=[
             atomicMg.param("uncompress_path", types="Str"),
@@ -160,9 +150,7 @@ class Compress:
         save_type: SaveType = SaveType.SAVE,
     ):
         if not os.path.isfile(source_path):
-            raise BaseException(
-                FILE_PATH_ERROR_FORMAT.format(source_path), "文件不存在，请检查文件路径"
-            )
+            raise BaseException(FILE_PATH_ERROR_FORMAT.format(source_path), "文件不存在，请检查文件路径")
         if not folder_is_exists(target_path):
             if status_type == StateType.CREATE:
                 os.makedirs(target_path, exist_ok=True)
@@ -172,9 +160,7 @@ class Compress:
                     "指定目录不存在，请检查路径信息",
                 )
 
-        uncompress_path = CompressCore.uncompress(
-            source_path=source_path, dest_path=target_path, pwd=pwd
-        )
+        uncompress_path = CompressCore.uncompress(source_path=source_path, dest_path=target_path, pwd=pwd)
         if save_type == SaveType.SAVE:
             pass
         elif save_type == SaveType.DELETE:

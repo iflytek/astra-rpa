@@ -7,7 +7,6 @@ from rpaatomic.types import PATH
 
 
 class Agent:
-
     @staticmethod
     @atomicMg.atomic(
         "Agent",
@@ -72,14 +71,10 @@ class Agent:
         if file_id:
             # 文件上传成功，继续运行工作流
             # result = dify.run_workflow(user, "input_files", True, file_id, "document")
-            result = dify.run_workflow(
-                user, variable_name, file_flag, file_id, file_type.value
-            )
+            result = dify.run_workflow(user, variable_name, file_flag, file_id, file_type.value)
             print(result)
         else:
-            result = dify.run_workflow(
-                user, variable_name, file_flag, variable_value, file_type.value
-            )
+            result = dify.run_workflow(user, variable_name, file_flag, variable_value, file_type.value)
             print(result)
         return result
 
@@ -98,10 +93,7 @@ class Agent:
         ],
         outputList=[atomicMg.param("xcagent_result", types="Str")],
     )
-    def call_xcagent(
-        api_key: str, api_secret: str, flow_id: str, input_value: str = ""
-    ):
-
+    def call_xcagent(api_key: str, api_secret: str, flow_id: str, input_value: str = ""):
         # def call_xcagent(api_key: str, api_secret: str, file_flag: bool = False, variable_name: str = "",
         #                  variable_value: str = "",
         #                  file_path: PATH = "", file_type: DifyFileTypes = DifyFileTypes.DOCUMENT):

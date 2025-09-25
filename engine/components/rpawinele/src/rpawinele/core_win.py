@@ -10,11 +10,8 @@ from rpawinele.error import *
 
 
 class WinEleCore(IWinEleCore):
-
     @staticmethod
-    def find(
-        pick: WinPick, wait_time: float = 10.0
-    ) -> Union["ILocator", List["ILocator"]]:
+    def find(pick: WinPick, wait_time: float = 10.0) -> Union["ILocator", List["ILocator"]]:
         """
         find 查找 handle
         """

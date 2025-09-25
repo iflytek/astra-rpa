@@ -15,7 +15,6 @@ except Exception as e:
 
 
 class DatabaseCore(IDatabaseCore):
-
     @staticmethod
     def connect(db_info_dict: dict, db_type: DatabaseType = DatabaseType.MySQL):
         if db_type == DatabaseType.MySQL:
@@ -30,16 +29,14 @@ class DatabaseCore(IDatabaseCore):
                 charset=db_info_dict.get("charset", "utf8").replace("-", ""),
             )
         elif db_type == DatabaseType.SQLServer:
-            server = "{},{}".format(
-                db_info_dict.get("host", ""), int(db_info_dict.get("port", 1433))
-            )
+            server = "{},{}".format(db_info_dict.get("host", ""), int(db_info_dict.get("port", 1433)))
             # 连接字符串
             conn_str = (
                 r"DRIVER={SQL Server};"
                 rf"SERVER={server};"
-                rf'DATABASE={db_info_dict.get("database", "")};'
-                rf'UID={db_info_dict.get("user", "")};'
-                rf'PWD={db_info_dict.get("password", "")};'
+                rf"DATABASE={db_info_dict.get('database', '')};"
+                rf"UID={db_info_dict.get('user', '')};"
+                rf"PWD={db_info_dict.get('password', '')};"
             )
             # 连接数据库
             db_conn = pyodbc.connect(conn_str)
@@ -51,7 +48,7 @@ class DatabaseCore(IDatabaseCore):
             db_conn = cx_Oracle.connect(
                 user=db_info_dict.get("user", ""),
                 password=db_info_dict.get("password", ""),
-                dsn=f'{db_info_dict.get("host", "")}:{int(db_info_dict.get("port", 1521))}/{service}',
+                dsn=f"{db_info_dict.get('host', '')}:{int(db_info_dict.get('port', 1521))}/{service}",
             )
         elif db_type == DatabaseType.PostgreSQL:
             db_conn = psycopg2.connect(
@@ -62,17 +59,17 @@ class DatabaseCore(IDatabaseCore):
                 port=int(db_info_dict.get("port", 5432)),
             )
         elif db_type == DatabaseType.SQLite:
-            db_conn = sqlite3.connect(f'{db_info_dict.get("sqlite_path", "")}')
+            db_conn = sqlite3.connect(f"{db_info_dict.get('sqlite_path', '')}")
         elif db_type == DatabaseType.Access:
             conn_str = (
                 r"DRIVER={Driver do Microsoft Access (*.mdb)};"
-                rf'DBQ={db_info_dict.get("access_path", "")};'
-                rf'PWD={db_info_dict.get("password", "")};'
+                rf"DBQ={db_info_dict.get('access_path', '')};"
+                rf"PWD={db_info_dict.get('password', '')};"
             )
             db_conn = pyodbc.connect(conn_str)
         elif db_type == DatabaseType.DB2:
             db_conn = ibm_db_dbi.connect(
-                f'PORT={int(db_info_dict.get("port", 50000))};PROTOCOL=TCPIP;',
+                f"PORT={int(db_info_dict.get('port', 50000))};PROTOCOL=TCPIP;",
                 database=db_info_dict.get("database", ""),
                 user=db_info_dict.get("user", ""),
                 password=db_info_dict.get("password", ""),

@@ -17,11 +17,8 @@ from rpagui.error import *
 
 
 class GuiMouse:
-
     @staticmethod
-    @atomicMg.atomic(
-        "Gui", inputList=[atomicMg.param("ctrl_type", level=AtomicLevel.ADVANCED.value)]
-    )
+    @atomicMg.atomic("Gui", inputList=[atomicMg.param("ctrl_type", level=AtomicLevel.ADVANCED.value)])
     def mouse(
         btn_type: BtnType = BtnType.LEFT,
         btn_model: BtnModel = BtnModel.CLICK,
@@ -61,9 +58,7 @@ class GuiMouse:
                 dynamics=[
                     DynamicsItem(
                         key="$this.times.show",
-                        expression="return $this.scroll_type.value == '{}'".format(
-                            ScrollType.TIME.value
-                        ),
+                        expression="return $this.scroll_type.value == '{}'".format(ScrollType.TIME.value),
                     )
                 ],
             ),
@@ -72,9 +67,7 @@ class GuiMouse:
                 dynamics=[
                     DynamicsItem(
                         key="$this.scroll_px.show",
-                        expression="return $this.scroll_type.value == '{}'".format(
-                            ScrollType.PX.value
-                        ),
+                        expression="return $this.scroll_type.value == '{}'".format(ScrollType.PX.value),
                     )
                 ],
             ),
@@ -152,17 +145,13 @@ class GuiMouse:
                 dynamics=[
                     DynamicsItem(
                         key="$this.window_position.show",
-                        expression="return $this.window_type.value == '{}'".format(
-                            WindowType.ACTIVE_WINDOW.value
-                        ),
+                        expression="return $this.window_type.value == '{}'".format(WindowType.ACTIVE_WINDOW.value),
                     )
                 ],
             ),
             atomicMg.param(
                 "get_mouse_position",
-                formType=AtomicFormTypeMeta(
-                    type=AtomicFormType.MOUSEPOSITION.value, params={"size": "middle"}
-                ),
+                formType=AtomicFormTypeMeta(type=AtomicFormType.MOUSEPOSITION.value, params={"size": "middle"}),
                 required=False,
             ),
             atomicMg.param(
@@ -215,31 +204,18 @@ class GuiMouse:
             position_y = window_position[1] + position_y
 
         screen_weight, screen_height = Mouse.screen_size()
-        if (
-            position_x < 0
-            or position_x > screen_weight
-            or position_y < 0
-            or position_y > screen_height
-        ):
+        if position_x < 0 or position_x > screen_weight or position_y < 0 or position_y > screen_height:
             raise BaseException(REGION_ERROR, "坐标参数不合法！")
 
         # Get current mouse position
         current_x, current_y = Mouse.position()
 
         if move_type == MoveType.LINEAR:
-            duration = Mouse.calculate_movement_duration(
-                current_x, current_y, position_x, position_y, move_speed
-            )
-            Mouse.move(
-                position_x, position_y, duration=duration, tween=pyautogui.linear
-            )
+            duration = Mouse.calculate_movement_duration(current_x, current_y, position_x, position_y, move_speed)
+            Mouse.move(position_x, position_y, duration=duration, tween=pyautogui.linear)
         elif move_type == MoveType.SIMULATION:
-            duration = Mouse.calculate_movement_duration(
-                current_x, current_y, position_x, position_y, move_speed
-            )
-            Mouse.move_simulate(
-                position_x, position_y, duration=duration, tween=pyautogui.easeInOutQuad
-            )
+            duration = Mouse.calculate_movement_duration(current_x, current_y, position_x, position_y, move_speed)
+            Mouse.move_simulate(position_x, position_y, duration=duration, tween=pyautogui.easeInOutQuad)
         elif move_type == MoveType.TELEPORTATION:
             Mouse.move(position_x, position_y, duration=0)
         else:
@@ -333,16 +309,10 @@ class GuiMouse:
         try:
             Mouse.down(x=start_pos_x, y=start_pos_y, button=btn_type.value)
             if move_type == MoveType.LINEAR:
-                duration = Mouse.calculate_movement_duration(
-                    start_pos_x, start_pos_y, end_pos_x, end_pos_y, move_speed
-                )
-                Mouse.move(
-                    x=end_pos_x, y=end_pos_y, duration=duration, tween=pyautogui.linear
-                )
+                duration = Mouse.calculate_movement_duration(start_pos_x, start_pos_y, end_pos_x, end_pos_y, move_speed)
+                Mouse.move(x=end_pos_x, y=end_pos_y, duration=duration, tween=pyautogui.linear)
             elif move_type == MoveType.SIMULATION:
-                duration = Mouse.calculate_movement_duration(
-                    start_pos_x, start_pos_y, end_pos_x, end_pos_y, move_speed
-                )
+                duration = Mouse.calculate_movement_duration(start_pos_x, start_pos_y, end_pos_x, end_pos_y, move_speed)
                 Mouse.move_simulate(
                     x=end_pos_x,
                     y=end_pos_y,
