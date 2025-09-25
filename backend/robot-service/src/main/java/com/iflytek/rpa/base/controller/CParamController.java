@@ -59,7 +59,7 @@ public class CParamController {
      * @param id
      * @return
      */
-    @PutMapping("/delete")
+    @GetMapping("/delete")
     public AppResponse<Boolean> deleteParam(@RequestParam(value = "id") String id) {
         // 判断id是否为空
         if (StringUtils.isBlank(id)) {
@@ -74,7 +74,7 @@ public class CParamController {
      * @param paramDto
      * @return
      */
-    @PutMapping("/update")
+    @PostMapping("/update")
     public AppResponse<Boolean> updateParam(@Valid @RequestBody CParamDto paramDto) throws NoLoginException {
         return cParamService.updateParam(paramDto);
     }
