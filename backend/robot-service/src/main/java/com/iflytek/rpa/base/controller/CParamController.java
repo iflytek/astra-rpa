@@ -59,7 +59,7 @@ public class CParamController {
      * @param id
      * @return
      */
-    @GetMapping("/delete")
+    @PostMapping("/delete")
     public AppResponse<Boolean> deleteParam(@RequestParam(value = "id") String id) {
         // 判断id是否为空
         if (StringUtils.isBlank(id)) {
