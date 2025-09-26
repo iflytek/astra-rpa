@@ -621,7 +621,12 @@ class File:
             for file in files:
                 if find_type == SearchType.EXACT and file == search_pattern:
                     find_file_result.append(os.path.join(root, file))
-                if find_type == SearchType.FUZZY and search_pattern in file or find_type == SearchType.REGEX and re.search(search_pattern, file):
+                if (
+                    find_type == SearchType.FUZZY
+                    and search_pattern in file
+                    or find_type == SearchType.REGEX
+                    and re.search(search_pattern, file)
+                ):
                     find_file_result.append(os.path.join(root, file))
 
             if traverse_subfolder == TraverseType.YES:

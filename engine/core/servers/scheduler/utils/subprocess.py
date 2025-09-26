@@ -129,7 +129,11 @@ class SubPopen:
         for key, value in self.params.items():
             param_list.append("--{}={}".format(key, value))
         cmd = self.cmd + param_list
-        logger.info("cmd: {} env".format(cmd, ))
+        logger.info(
+            "cmd: {} env".format(
+                cmd,
+            )
+        )
 
         # 启动是否包含log
         self.start_time = time.time()

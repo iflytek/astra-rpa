@@ -155,7 +155,12 @@ def condition_expression(
         elif cond in ["in", "notin"]:
             # 优先将args2_val尝试转换成list和dict
             try:
-                if isinstance(args2_val, str) and str_is_list(args2_val) or isinstance(args2_val, str) and str_is_dict(args2_val):
+                if (
+                    isinstance(args2_val, str)
+                    and str_is_list(args2_val)
+                    or isinstance(args2_val, str)
+                    and str_is_dict(args2_val)
+                ):
                     args2_val = ast.literal_eval(args2_val)
             except Exception:
                 pass

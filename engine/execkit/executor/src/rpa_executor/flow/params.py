@@ -206,12 +206,20 @@ class Params:
         input_list = token.value.get("inputList", [])
         for i in input_list:
             # 优化:过滤高级选项中的默认值，减少参数传递[可以剔除这段优化代码]
-            if i.get("key") in [
-                "__delay_before__",
-                "__delay_after____",
-                "__retry_time__",
-                "__retry_interval__",
-            ] and i.get("value") == [{"type": "other", "value": 0}] or i.get("key") == "__res_print__" and i.get("value") is False or i.get("key") == "__skip_err__" and i.get("value") == "exit":
+            if (
+                i.get("key")
+                in [
+                    "__delay_before__",
+                    "__delay_after____",
+                    "__retry_time__",
+                    "__retry_interval__",
+                ]
+                and i.get("value") == [{"type": "other", "value": 0}]
+                or i.get("key") == "__res_print__"
+                and i.get("value") is False
+                or i.get("key") == "__skip_err__"
+                and i.get("value") == "exit"
+            ):
                 continue
 
             # 0. 显隐关系

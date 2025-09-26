@@ -32,9 +32,7 @@ def gen_type(__annotation__):
     elif __annotation__ in [str, list, tuple, int, float, dict, bool]:
         # 基础变量
         types = (
-            __annotation__.__name__.capitalize()
-            if getattr(__annotation__, "__name__", "_empty") != "_empty"
-            else None
+            __annotation__.__name__.capitalize() if getattr(__annotation__, "__name__", "_empty") != "_empty" else None
         )
         kind = InspectType.PYTHONBASE
     elif isinstance(__annotation__, str):
@@ -48,15 +46,11 @@ def gen_type(__annotation__):
         logger.warning("type not support: {}".format(__annotation__))
     elif issubclass(__annotation__, Enum):
         # Enum类型
-        types = (
-            __annotation__.__name__ if getattr(__annotation__, "__name__", "_empty") != "_empty" else None
-        )
+        types = __annotation__.__name__ if getattr(__annotation__, "__name__", "_empty") != "_empty" else None
         kind = InspectType.ENUM
     elif hasattr(__annotation__, "__validate__"):
         # pydantic基础类型扩展
-        types = (
-            __annotation__.__name__ if getattr(__annotation__, "__name__", "_empty") != "_empty" else None
-        )
+        types = __annotation__.__name__ if getattr(__annotation__, "__name__", "_empty") != "_empty" else None
         kind = InspectType.RPABASE
     else:
         # 其他类型

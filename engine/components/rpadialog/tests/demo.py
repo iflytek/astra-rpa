@@ -1,4 +1,3 @@
-
 from rpadialog import (
     ButtonType,
     DefaultButtonCN,

@@ -132,7 +132,14 @@ class Process:
         for proc in ProcessCore.get_pid_list():
             try:
                 name = proc.info["name"]
-                if search_type == SearchType.EXACT and process_name == name or search_type == SearchType.FUZZY and process_name in name or search_type == SearchType.REGEX and re.search(process_name, name):
+                if (
+                    search_type == SearchType.EXACT
+                    and process_name == name
+                    or search_type == SearchType.FUZZY
+                    and process_name in name
+                    or search_type == SearchType.REGEX
+                    and re.search(process_name, name)
+                ):
                     matched = True
                 else:
                     matched = False
