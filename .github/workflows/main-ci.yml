@@ -36,14 +36,18 @@ jobs:
             frontend:
               - 'frontend/**'
             backend:
-              - 'backend/**'
+              - 'backend/robot-service/**'
+              - 'backend/resource-service/**'
 
   # Run tests in parallel
   style-check:
     name: Style Check
     uses: ./.github/workflows/style.yml
     needs: check-changes
-    if: needs.check-changes.outputs.engine-changed == 'true'
+    if: |
+      needs.check-changes.outputs.engine-changed == 'true' ||
+      needs.check-changes.outputs.frontend-changed == 'true' ||
+      needs.check-changes.outputs.backend-changed == 'true'
 
   # ============================================================================
   # Summary Stage
