@@ -19,6 +19,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,7 @@ import software.amazon.awssdk.services.s3.model.*;
  * @author system
  * @since 2024-01-01
  */
+@Slf4j
 @Service
 public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements FileService {
 
@@ -66,6 +69,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
 
         // 2. 从S3下载文件
         downloadFileFromS3(file.getPath());
+        log.info("download success");
 
         return AppResponse.success(true);
     }
