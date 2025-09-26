@@ -1,7 +1,6 @@
 import asyncio
 import threading
 import time
-from typing import List
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
@@ -133,7 +132,7 @@ class Terminal:
         trigger_id: str,
         trigger_name: str,
         task_type: str,
-        callback_project_ids: List,
+        callback_project_ids: list,
         exceptional: str,
         timeout: int,
         queue_enable: bool,
@@ -269,7 +268,7 @@ class Terminal:
         """
         删除所有任务
         """
-        logger.info("【delete_all_tasks】: {}".format((self.tasks.keys())))
+        logger.info("【delete_all_tasks】: {}".format(self.tasks.keys()))
         task_keys = list(self.tasks.keys())
         for task_key in task_keys:
             logger.info("【delete_all_tasks】删除任务: {}".format(task_key))

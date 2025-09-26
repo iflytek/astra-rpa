@@ -4,6 +4,7 @@ import time
 
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel, DynamicsItem
 from rpaatomic.atomic import atomicMg
+
 from rpagui import KeyboardType, KeyModel, Simulate_flag
 from rpagui.code.clipboard import Clipboard
 from rpagui.code.keyboard import Keyboard

@@ -76,7 +76,7 @@ class Socket:
                 logger.info(f"receive_data:{self.receive_data}")
                 operation, rect = self.parse_response(self.receive_data)
             return operation, rect
-        except socket.error as e:
+        except OSError as e:
             pass
 
     def parse_response(self, data):
@@ -137,7 +137,7 @@ class CVPicker:
 
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
-            cls._instance = super(CVPicker, cls).__new__(cls)
+            cls._instance = super().__new__(cls)
         return cls._instance
 
     def __init__(

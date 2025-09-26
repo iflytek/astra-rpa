@@ -2,8 +2,9 @@ import asyncio
 import json
 import threading
 import time
+from collections.abc import Callable
 from enum import Enum
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Optional
 
 from .. import (
     RECORDING_BLACKLIST,
@@ -194,7 +195,7 @@ class RecordManager:
         self.push_callbacks["on_mouse_out"] = on_mouse_out
         logger.info("录制管理器：设置推送回调函数，f4...esc...on_hover")
 
-    async def handle_record_action(self, action: RecordAction, ws, svc, input_data) -> Dict[str, Any]:
+    async def handle_record_action(self, action: RecordAction, ws, svc, input_data) -> dict[str, Any]:
         """处理录制动作"""
         self.initialize(svc)  # 确保svc是最新的
         try:
@@ -222,7 +223,7 @@ class RecordManager:
             logger.error(f"处理录制动作失败: {e}\n完整堆栈信息:\n{error_traceback}")
             return OperationResult.error(str(e)).to_dict()
 
-    async def _handle_listening(self, ws) -> Dict[str, Any]:
+    async def _handle_listening(self, ws) -> dict[str, Any]:
         """处理监听动作"""
         if self.state != RecordingState.IDLE:
             return OperationResult.error(f"无法开始监听，当前状态: {self.state.value}").to_dict()
@@ -241,7 +242,7 @@ class RecordManager:
         logger.info("录制管理器：开始监听模式")
         return OperationResult.success().to_dict()
 
-    async def _handle_start(self) -> Dict[str, Any]:
+    async def _handle_start(self) -> dict[str, Any]:
         """处理开始录制动作"""
         if self.state not in [RecordingState.LISTENING, RecordingState.PAUSED]:
             return OperationResult.error(f"无法开始录制，当前状态: {self.state.value}").to_dict()
@@ -255,7 +256,7 @@ class RecordManager:
             logger.info(f' "error": f"无法开始录制，当前状态: {self.state.value} {e}"')
             return OperationResult.error("无法开始录制，出现异常").to_dict()
 
-    async def _handle_pause(self) -> Dict[str, Any]:
+    async def _handle_pause(self) -> dict[str, Any]:
         """处理暂停录制动作"""
         if self.state != RecordingState.RECORDING:
             return OperationResult.error(f"无法暂停录制，当前状态: {self.state.value}").to_dict()
@@ -266,7 +267,7 @@ class RecordManager:
         logger.info("录制管理器：暂停录制")
         return OperationResult.success().to_dict()
 
-    async def _handle_hover_start(self) -> Dict[str, Any]:
+    async def _handle_hover_start(self) -> dict[str, Any]:
         """处理暂停录制动作"""
         if self.state != RecordingState.RECORDING:
             return OperationResult.error(f"无法暂停录制过程的拾取，当前状态: {self.state.value}").to_dict()
@@ -278,9 +279,9 @@ class RecordManager:
         logger.info("录制管理器：前端hover暂停录制")
         return OperationResult.success().to_dict()
 
-    async def _handle_hover_end(self) -> Dict[str, Any]:
+    async def _handle_hover_end(self) -> dict[str, Any]:
         """处理暂停录制动作"""
-        if self.state not in [RecordingState.PAUSED] and not self.is_hover_paused:
+        if self.state != RecordingState.PAUSED and not self.is_hover_paused:
             return OperationResult.error(f"无法开始录制，当前状态: {self.state.value}").to_dict()
 
         self.state = RecordingState.RECORDING
@@ -290,7 +291,7 @@ class RecordManager:
         logger.info("录制管理器：继续录制")
         return OperationResult.success().to_dict()
 
-    async def _handle_atomic_end(self, input_data) -> Dict[str, Any]:
+    async def _handle_atomic_end(self, input_data) -> dict[str, Any]:
         """处理原子操作结束"""
         logger.info("走入_handle_atomic_end了")
         was_recording = self.state == RecordingState.RECORDING
@@ -320,7 +321,7 @@ class RecordManager:
                 self.state = RecordingState.RECORDING
                 self._start_continuous_drawing()
 
-    async def _handle_end(self) -> Dict[str, Any]:
+    async def _handle_end(self) -> dict[str, Any]:
         """处理结束录制动作"""
         # 停止键鼠事件监控的callback
         if self.event_monitor_task:

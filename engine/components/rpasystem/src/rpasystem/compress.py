@@ -2,6 +2,7 @@ import os
 
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel, DynamicsItem
 from rpaatomic.atomic import atomicMg
+
 from rpasystem import *
 from rpasystem.core.compress_core import CompressCore
 from rpasystem.error import *

@@ -2,6 +2,7 @@ import platform
 import sys
 
 from rpaatomic.src.rpaatomic.atomic import atomicMg
+
 from rpademo.src.rpademo import ReportLevelType
 from rpademo.src.rpademo.core import IDemoCore
 from rpademo.src.rpademo.error import *

@@ -162,12 +162,7 @@ class PickerCore(IPickerCore):
         if pick_type == PickerType.POINT:
             point_data = {"x": self.last_point.x, "y": self.last_point.y}
             return {"point": point_data, "version": "1"}
-        elif pick_type == PickerType.WINDOW:
-            with self.lock:
-                if self.last_element:
-                    return self.last_element.path(svc, self.last_strategy_svc)
-                return {}
-        elif pick_type in [PickerType.ELEMENT, PickerType.SIMILAR, PickerType.BATCH]:
+        elif pick_type == PickerType.WINDOW or pick_type in [PickerType.ELEMENT, PickerType.SIMILAR, PickerType.BATCH]:
             with self.lock:
                 if self.last_element:
                     return self.last_element.path(svc, self.last_strategy_svc)

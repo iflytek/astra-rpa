@@ -112,7 +112,7 @@ def parse_datetime(date_string):
     return date_format
 
 
-class DataFilter(object):
+class DataFilter:
     def __init__(self, data_json):
         self.data_json = data_json
         self.produceType = data_json.get("produceType")

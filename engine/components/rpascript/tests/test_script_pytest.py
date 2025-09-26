@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 使用pytest的测试文件
 展示如何使用fixture来减少mock的使用
 """
 
-import pytest
 from rpascript.script import Script
 
 

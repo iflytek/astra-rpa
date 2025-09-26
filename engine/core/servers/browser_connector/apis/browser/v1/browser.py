@@ -18,7 +18,7 @@ async def transition(request: Request, svc: ServiceContext = Depends(get_svc)):
     data_path = req_data.get("data_path", "")
     time_out_ws = req_data.get("time_out", 10)
     if data_path and not data:
-        with open(data_path, "r", encoding="utf-8") as file:
+        with open(data_path, encoding="utf-8") as file:
             # 读取文件内容
             data = file.read()
     browser_type = req_data.get("browser_type", "")

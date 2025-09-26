@@ -11,4 +11,3 @@ for package in packages:
     version = package.version
     if not name:
         continue
-    print(f"{name}=={version}")

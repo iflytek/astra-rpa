@@ -3,15 +3,6 @@ import time
 import traceback
 from typing import Any, Optional
 
-from rpa_executor import ExecPosition, ExecuteStatus, ProcessInfo, ProjectInfo
-from rpa_executor.error import *
-from rpa_executor.flow.svc import Svc
-from rpa_executor.flow.syntax import Token
-from rpa_executor.flow.syntax.environment import EnvBizTypes, EnvItem
-from rpa_executor.flow.syntax.event import CloseError, EventKey, event
-from rpa_executor.flow.syntax.lexer import Lexer
-from rpa_executor.flow.syntax.parser import Parser
-from rpa_executor.flow.syntax.token import TokenType
 from rpaatomic import (
     ReportCode,
     ReportCodeStatus,
@@ -20,16 +11,26 @@ from rpaatomic import (
     ReportType,
 )
 
+from rpa_executor import ExecuteStatus, ProcessInfo, ProjectInfo
+from rpa_executor.error import *
+from rpa_executor.flow.svc import Svc
+from rpa_executor.flow.syntax import Token
+from rpa_executor.flow.syntax.environment import EnvBizTypes, EnvItem
+from rpa_executor.flow.syntax.event import CloseError, EventKey, event
+from rpa_executor.flow.syntax.lexer import Lexer
+from rpa_executor.flow.syntax.parser import Parser
+from rpa_executor.flow.syntax.token import TokenType
+
 
 def flow_to_token(flow_json: dict) -> Optional[Token]:
     """将flow转换成token"""
 
-    token_type = flow_json.get("key", None)
+    token_type = flow_json.get("key")
     if not token_type:
         raise Exception("Lexer error: missing key {}".format(flow_json))
     if token_type in [TokenType.Group.value, TokenType.GroupEnd.value]:
         return
-    disabled = flow_json.get("disabled", None)
+    disabled = flow_json.get("disabled")
     if disabled:
         return
     return Token(token_type, flow_json)
@@ -112,13 +113,13 @@ class Executor:
 
         def wait():
             while True:
-                if EventKey.Next.value in svc.events and svc.events[EventKey.Next.value]:
+                if svc.events.get(EventKey.Next.value):
                     svc.events[EventKey.ResNext.value] = True
                     svc.events[EventKey.Next.value] = False
 
-                    svc.events[EventKey.PreNext.value] = {item: True for item in svc.events[EventKey.STACK.value]}
+                    svc.events[EventKey.PreNext.value] = dict.fromkeys(svc.events[EventKey.STACK.value], True)
                     break
-                if EventKey.Continue.value in svc.events and svc.events[EventKey.Continue.value]:
+                if svc.events.get(EventKey.Continue.value):
                     svc.events[EventKey.ResContinue.value] = True
                     svc.events[EventKey.Continue.value] = False
                     break
@@ -129,9 +130,7 @@ class Executor:
         if EventKey.PreNext.value in svc.events and process_id in svc.events[EventKey.PreNext.value]:
             del svc.events[EventKey.PreNext.value]
             is_break = True
-        elif EventKey.LINE.value not in svc.events:
-            is_break = True
-        elif (
+        elif EventKey.LINE.value not in svc.events or (
             EventKey.Break.value in svc.events and "{}-{}".format(process_id, line) in svc.events[EventKey.Break.value]
         ):
             is_break = True
@@ -178,7 +177,7 @@ class Executor:
                 )
                 if project_id == self.svc.start_project_id:
                     # 只有启动工程才有断点的能力
-                    if "breakpoint" in v and v["breakpoint"]:
+                    if v.get("breakpoint"):
                         self.svc.event_break()["{}-{}".format(process_id, v.get("__line__"))] = True
 
             # 更新参数信息和flow信息

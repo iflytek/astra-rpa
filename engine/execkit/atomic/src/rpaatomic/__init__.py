@@ -215,7 +215,7 @@ class AtomicParamMeta:
     # 等级
     level: AtomicLevel = None
     # 动态
-    dynamics: List[DynamicsItem] = None
+    dynamics: list[DynamicsItem] = None
     # 链接方向
     direction: str = None
     # 是否必须(前提是要显示)

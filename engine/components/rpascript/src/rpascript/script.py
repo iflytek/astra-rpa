@@ -2,7 +2,7 @@ import builtins
 from inspect import isfunction
 
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta
-from rpaatomic.atomic import AtomicManager, atomicMg
+from rpaatomic.atomic import atomicMg
 from rpaatomic.report import report
 
 

@@ -3,10 +3,12 @@ import functools
 import heapq
 import json
 import time
+from collections.abc import Callable
 from datetime import datetime
-from typing import Any, Callable, Dict, List
+from typing import Any
 
 import anyio
+
 from rpawebsocket.ws import (
     AckMsg,
     BaseMsg,
@@ -74,16 +76,16 @@ class WsManager:
         self.ping_close_time = ping_close_time
 
         # 消息监听
-        self.watch_msg: Dict[str, Watch] = {}
+        self.watch_msg: dict[str, Watch] = {}
         self.watch_interval = 1
         self.watch_msg_queue: list = []
 
         # 路由管理
-        self.routes: Dict[str, Route] = {}
+        self.routes: dict[str, Route] = {}
 
         # 链接管理
-        self.conns: Dict[str, List[Conn]] = {}
-        self.no_login_conns: List[Conn] = []
+        self.conns: dict[str, list[Conn]] = {}
+        self.no_login_conns: list[Conn] = []
 
         # 启动任务
         self.check_ping_once = AsyncOnce()

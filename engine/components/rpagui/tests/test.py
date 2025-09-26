@@ -1,5 +1,3 @@
-import os
-import sys
 import time
 from unittest import TestCase
 
@@ -11,11 +9,9 @@ from rpagui import (
     KeyboardType,
     MoveType,
     ScrollType,
-    Simulate_flag,
     Speed,
     WindowType,
 )
-from rpagui.code import clipboard
 from rpagui.gui import Gui
 
 

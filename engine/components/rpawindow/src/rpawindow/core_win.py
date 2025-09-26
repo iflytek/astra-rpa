@@ -1,10 +1,10 @@
-import time
 from typing import Any
 
 import win32com.client
 import win32con
 import win32gui
 from rpaatomic.types import WinPick
+
 from rpawindow import ControlInfo, WalkControlInfo, WindowSizeType
 from rpawindow.core import IUITreeCore, IWindowsCore
 from rpawindow.error import *

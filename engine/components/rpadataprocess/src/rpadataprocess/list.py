@@ -4,6 +4,7 @@ from typing import Any
 
 from rpaatomic import DynamicsItem
 from rpaatomic.atomic import atomicMg
+
 from rpadataprocess import DeleteMethodType, InsertMethodType, ListType, SortMethodType
 from rpadataprocess.error import *
 

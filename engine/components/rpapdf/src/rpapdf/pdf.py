@@ -6,6 +6,7 @@ from typing import Any
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel, DynamicsItem
 from rpaatomic.atomic import atomicMg
 from rpaatomic.utils import FileExistenceType, handle_existence
+
 from rpapdf import MergeType, PictureType, SelectRangeType, TextSaveType
 from rpapdf.core import IPDFCore
 from rpapdf.error import *

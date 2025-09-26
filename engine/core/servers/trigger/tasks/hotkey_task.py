@@ -1,5 +1,4 @@
 import asyncio
-from typing import List
 
 from keyboard import add_hotkey, remove_hotkey
 
@@ -7,7 +6,7 @@ from ..core.logger import logger
 
 
 class HotKeyTask:
-    def __init__(self, shortcuts: List = None, **kwargs):
+    def __init__(self, shortcuts: list = None, **kwargs):
         """
         构建热键监听的类
 

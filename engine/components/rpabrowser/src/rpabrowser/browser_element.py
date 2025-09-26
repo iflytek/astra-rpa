@@ -223,9 +223,7 @@ class BrowserElement:
                 element_exist = None
 
             # 判断是否提前结束
-            if ele_status == WaitElementForStatusFlag.ElementExists and element_exist:
-                return True
-            elif ele_status == WaitElementForStatusFlag.ElementDisappears and not element_exist:
+            if ele_status == WaitElementForStatusFlag.ElementExists and element_exist or ele_status == WaitElementForStatusFlag.ElementDisappears and not element_exist:
                 return True
             else:
                 # 重试

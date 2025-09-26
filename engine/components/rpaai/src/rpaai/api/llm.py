@@ -3,6 +3,7 @@ from typing import Any
 
 import requests
 import sseclient
+
 from rpaai.error import *
 
 API_URL = "http://127.0.0.1:8003/api/rpa-ai-service/v1/chat/completions"

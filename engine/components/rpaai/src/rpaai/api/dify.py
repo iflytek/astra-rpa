@@ -1,4 +1,3 @@
-import json
 import mimetypes
 import os
 

@@ -5,8 +5,8 @@ import clr
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "exes", "ie"))
 
-clr.AddReference("IEAutomationProvider2")  # noqa
-from IEAutomationProvider2 import IEAutomationClass  # noqa
+clr.AddReference("IEAutomationProvider2")
+from IEAutomationProvider2 import IEAutomationClass
 
 IEAutomationClass = IEAutomationClass
 

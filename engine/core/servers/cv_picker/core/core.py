@@ -161,5 +161,5 @@ class IPickCore(ABC):
                 match_similarity=match_similarity,
             )
         except cv2.error as e:
-            raise ValueError(f"图像匹配报错，请检查图像")
+            raise ValueError("图像匹配报错，请检查图像")
         return match_box

@@ -6,11 +6,12 @@ from json import JSONDecodeError
 from typing import Any, Optional
 
 import requests
+from rpaatomic import ReportTip
+
 from rpa_executor.error import *
 from rpa_executor.flow.syntax.token import TokenType
 from rpa_executor.logger import logger
 from rpa_executor.tools import recording_tool
-from rpaatomic import ReportTip
 
 common_advanced = [
     {
@@ -435,13 +436,13 @@ class HttpStorage(Storage):
 
         # 关闭日志
         if self.svc.recording_config.get("enable", False):
-            if result in ["fail"]:
+            if result == "fail":
                 self.svc.report.info(ReportTip(msg_str=VIDEO_RECORDING_WAIT))
                 recording_tool.close(False)
             elif result in ["success", "cancel"]:
                 self.svc.report.info(ReportTip(msg_str=VIDEO_RECORDING_WAIT))
                 recording_tool.close(True)
-            elif result in ["execute"]:
+            elif result == "execute":
                 pass
 
     def get_remote_var_key(self) -> str:

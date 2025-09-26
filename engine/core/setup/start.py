@@ -20,7 +20,7 @@ def start(conf_file="conf.json", schema="START"):
         # 2. 读取配置，并解析
         conf = conf_file.strip('"')
         conf = conf.replace("\\\\", "\\")
-        with open(conf, "r") as f:
+        with open(conf) as f:
             conf_json = json.loads(f.readline().strip())
 
         config.REMOTE_ADDR = conf_json.get("remote_addr", "")

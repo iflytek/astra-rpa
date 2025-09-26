@@ -72,7 +72,7 @@ class TestFile(TestCase):
         )
         self.assertEqual(result, existing_file)
         # 检查文件是否被清空
-        with open(existing_file, "r") as f:
+        with open(existing_file) as f:
             content = f.read()
         self.assertEqual(content, "")
 
@@ -131,7 +131,7 @@ class TestFile(TestCase):
         )
         self.assertEqual(result, self.test_file_path)
 
-        with open(self.test_file_path, "r", encoding="utf-8") as f:
+        with open(self.test_file_path, encoding="utf-8") as f:
             final_content = f.read()
         self.assertEqual(final_content, self.test_content + content)
 
@@ -146,7 +146,7 @@ class TestFile(TestCase):
         )
         self.assertEqual(result, self.test_file_path)
 
-        with open(self.test_file_path, "r", encoding="utf-8") as f:
+        with open(self.test_file_path, encoding="utf-8") as f:
             final_content = f.read()
         self.assertEqual(final_content, content)
 

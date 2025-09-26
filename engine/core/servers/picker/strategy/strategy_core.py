@@ -5,4 +5,4 @@ from .manager import Strategy
 from .types import StrategyEnv, StrategySvc
 
 # 导出所有类型供其他模块使用
-__all__ = ["Strategy", "StrategySvc", "StrategyEnv"]
+__all__ = ["Strategy", "StrategyEnv", "StrategySvc"]

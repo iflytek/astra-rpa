@@ -1,10 +1,11 @@
-from typing import Any, Optional, Tuple, Union
+from typing import Any, Optional, Union
 
 import requests
 import uiautomation as auto
+from rpaframe.logger.logger import logger
+
 from locator import LIKE_CHROME_BROWSER_TYPES, BrowserType, ILocator, Rect
 from locator.utils.window import top_browser
-from rpaframe.logger.logger import logger
 
 
 class WEBLocator(ILocator):
@@ -84,7 +85,7 @@ class WebFactory:
             raise Exception(response.json()["data"]["msg"])
 
     @classmethod
-    def __get_web_top__(cls, element: dict) -> Tuple[int, int]:
+    def __get_web_top__(cls, element: dict) -> tuple[int, int]:
         """浏览器右上角位置"""
         root_control = auto.GetRootControl()
         app_name = element.get("app", "")
@@ -94,29 +95,29 @@ class WebFactory:
 
         control_target = None
         for control, _ in auto.WalkControl(root_control, includeTop=True, maxDepth=1):
-            if app_name in [BrowserType.CHROME.value]:
+            if app_name == BrowserType.CHROME.value:
                 if (control.Name == "Chrome Legacy Window") or (
                     ("- Google Chrome" in control.Name) or ("- Chrome" in control.Name)
                 ):
                     control_target = control
                     break
-            if app_name in [BrowserType.EDGE.value]:
+            if app_name == BrowserType.EDGE.value:
                 if "- Microsoft​ Edge" in control.Name:
                     control_target = control
                     break
-            if app_name in [BrowserType.CHROME_360_SE.value]:
+            if app_name == BrowserType.CHROME_360_SE.value:
                 if "360安全浏览器" in control.Name:
                     control_target = control
                     break
-            if app_name in [BrowserType.CHROME_360_X.value]:
+            if app_name == BrowserType.CHROME_360_X.value:
                 if "360极速浏览器X" in control.Name:
                     control_target = control
                     break
-            if app_name in [BrowserType.FIREFOX.value]:
+            if app_name == BrowserType.FIREFOX.value:
                 if "Mozilla Firefox" in control.Name:
                     control_target = control
                     break
-            if app_name in [BrowserType.CHROMIUM.value]:
+            if app_name == BrowserType.CHROMIUM.value:
                 if (control.Name == "Chrome Legacy Window") or ("- Chromium" in control.Name):
                     control_target = control
                     break
@@ -124,10 +125,10 @@ class WebFactory:
             return 0, 0
 
         # 置顶
-        # control_target.SetActive()  # noqa 会调用SetForegroundWindow，后者会触发焦点事件
+        # control_target.SetActive()
         handle = control_target.NativeWindowHandle
         top_browser(handle, control_target)
-        if app_name in [BrowserType.FIREFOX.value]:
+        if app_name == BrowserType.FIREFOX.value:
             for child, _ in auto.WalkControl(control_target, includeTop=True, maxDepth=100):
                 if child.AutomationId == "tabbrowser-tabpanels":
                     bounding_rect = child.BoundingRectangle

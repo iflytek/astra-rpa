@@ -1,9 +1,8 @@
 import os
 import sys
-from typing import List
 
 
-def replace_keyword(prompts: List, input_keys: List) -> List:
+def replace_keyword(prompts: list, input_keys: list) -> list:
     """
     批量替换关键词
     :param input_keys: [{"keyword": "question", "text": "Your replacement keyword"}]

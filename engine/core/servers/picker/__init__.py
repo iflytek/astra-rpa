@@ -287,7 +287,7 @@ class APP(Enum):
     @classmethod
     def init(cls, name: str):
         try:
-            if "msedge" == name:
+            if name == "msedge":
                 return APP.Edge
             return cls(name)
         except ValueError:

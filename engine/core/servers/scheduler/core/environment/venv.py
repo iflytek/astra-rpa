@@ -16,7 +16,7 @@ class VenvManager:
         if not os.path.exists(svc.config.app_server.venv_base_dir):
             return res
         for temp_venv in os.listdir(svc.config.app_server.venv_base_dir):
-            if re.search("^temp_venv\d+$", temp_venv):
+            if re.search(r"^temp_venv\d+$", temp_venv):
                 res.append(temp_venv)
         res.sort()
         return res
@@ -30,7 +30,7 @@ class VenvManager:
         if not os.path.exists(self.svc.config.app_server.venv_base_dir):
             return project_venv_list
         for venv in os.listdir(self.svc.config.app_server.venv_base_dir):
-            if re.search("^\d+$", venv):
+            if re.search(r"^\d+$", venv):
                 project_venv_list.append(os.path.join(self.svc.config.app_server.venv_base_dir, venv))
         return project_venv_list
 
@@ -106,7 +106,7 @@ class VenvManager:
             else:
                 os.system("rm -rf {}".format(env_dir_parent))
             return
-        with open(pyvenv_cfg, "r") as file:
+        with open(pyvenv_cfg) as file:
             pyvenv_cfg_content = file.read()
         pyvenv_cfg_content = pyvenv_cfg_content.replace(
             "include-system-site-packages = false",

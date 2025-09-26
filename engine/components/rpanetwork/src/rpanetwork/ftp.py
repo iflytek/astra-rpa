@@ -3,6 +3,7 @@ import os.path
 
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, DynamicsItem
 from rpaatomic.atomic import atomicMg
+
 from rpanetwork import FileExistenceType, FileType, ListType, StateType
 from rpanetwork.core_ftp import FtpCore
 from rpanetwork.error import *

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 RPA Setup 启动脚本
 最外层启动脚本，用于启动 scheduler 模块
@@ -15,7 +14,6 @@ print("__file__:", pathlib.Path(__file__).resolve())
 import argparse
 import os
 import subprocess
-import sys
 
 
 def main():

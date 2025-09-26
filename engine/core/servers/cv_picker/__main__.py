@@ -30,7 +30,7 @@ async def handler(websocket):
 
             # 判断是否收到开始拾取信号
             if input_data.pick_sign == PickerSign.START:
-                logger.info(f"START CV PICKER")
+                logger.info("START CV PICKER")
                 # 初始化拾取
                 picker.set(status=Status.INIT, picktype=PickType.TARGET)
                 status, msg = picker.run()
@@ -77,7 +77,7 @@ async def handler(websocket):
                         await websocket.send(PickerResponse(err_msg="", data="校验成功").json())
                     else:
                         # 发送未校验到目标元素
-                        logger.info(f"目标元素校验失败")
+                        logger.info("目标元素校验失败")
                         await websocket.send(
                             PickerResponse(
                                 err_msg="未校验到目标元素，请检查页面元素或降低校验相似度重试",
@@ -99,7 +99,7 @@ async def handler(websocket):
                         # 向高亮发送designate信号及目标元素坐标，进行标识
                         hl.send_rect(operation="start", status="designate", rect=match_rect)
                         # 开始拾取锚点图像
-                        logger.info(f"元素校验成功，开始拾取锚点")
+                        logger.info("元素校验成功，开始拾取锚点")
                         picker.set(
                             status=Status.INIT,
                             picktype=PickType.ANCHOR,
@@ -108,7 +108,7 @@ async def handler(websocket):
                         status, anchor_msg = picker.run()
                     else:
                         # 未检测到目标元素，报错返回
-                        logger.info(f"元素校验失败，当前界面无目标元素")
+                        logger.info("元素校验失败，当前界面无目标元素")
                         await websocket.send(
                             PickerResponse(
                                 err_msg="当前界面未检测到目标元素，无法拾取锚点",

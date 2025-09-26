@@ -2,6 +2,8 @@
 
 import copy
 
+from rpaatomic.atomic import atomicMg
+
 from rpaai.chat import ChatAI
 from rpaai.prompt.g_document import (
     prompt_sentence_extend,
@@ -9,7 +11,6 @@ from rpaai.prompt.g_document import (
     prompt_theme_extend,
 )
 from rpaai.utils.str import replace_keyword
-from rpaatomic.atomic import atomicMg
 
 
 class DocumentAI:

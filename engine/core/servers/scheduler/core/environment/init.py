@@ -18,8 +18,7 @@ def repair_pywin32_dependence(svc):
     if not version:
         return
     try:
-        import win32api
-        import win32gui
+        pass
     except Exception as e:
         emit_to_front(
             EmitType.SYNC,

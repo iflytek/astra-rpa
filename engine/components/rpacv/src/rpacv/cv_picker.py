@@ -1,13 +1,12 @@
 import copy
 import os
 import time
-from typing import List, Tuple
 
 import cv2
 import numpy as np
 
 
-class ImageDetector(object):
+class ImageDetector:
     """
     用于图像处理和目标检测的类，使用OpenCV库。
 
@@ -27,7 +26,7 @@ class ImageDetector(object):
             self.original_img, self.gray_img = self.get_image(img_path)
 
     @staticmethod
-    def get_image(img_path: str) -> Tuple[np.ndarray, np.ndarray]:
+    def get_image(img_path: str) -> tuple[np.ndarray, np.ndarray]:
         """
         读取并返回图像及其灰度版本。
 
@@ -82,7 +81,7 @@ class ImageDetector(object):
         :return: 经过阈值处理和模糊处理的图像。
         """
 
-        ##阈值影响模型对边框的可检测性，大于75无法检测到灰框
+        # 阈值影响模型对边框的可检测性，大于75无法检测到灰框
         _, thresh = cv2.threshold(gradient, 75, 255, cv2.THRESH_BINARY)
 
         return thresh
@@ -111,7 +110,7 @@ class ImageDetector(object):
         return closed
 
     @staticmethod
-    def compute_iou(box1: List[int], box2: List[int]) -> float:
+    def compute_iou(box1: list[int], box2: list[int]) -> float:
         """
         计算两个边界框的交并比（IoU）。
 
@@ -155,7 +154,7 @@ class ImageDetector(object):
         return mask
 
     @staticmethod
-    def apply_nms(boxes: List[List[int]], iou_threshold: float = 0.3) -> List[List[int]]:
+    def apply_nms(boxes: list[list[int]], iou_threshold: float = 0.3) -> list[list[int]]:
         """
         对边界框应用非极大值抑制（NMS）。
 
@@ -166,7 +165,7 @@ class ImageDetector(object):
         if not boxes:
             return []
 
-        ##排序算法以边界框的宽度为标准降序排列
+        # 排序算法以边界框的宽度为标准降序排列
         boxes = sorted(boxes, key=lambda x: x[2], reverse=False)
         print(boxes)
         keep_boxes = []
@@ -176,7 +175,7 @@ class ImageDetector(object):
             keep_boxes.append(base_box)
 
             for box in boxes[:]:
-                ##设置合适的阈值对交并比大的边界框进行筛选
+                # 设置合适的阈值对交并比大的边界框进行筛选
                 iou = ImageDetector.compute_iou(base_box, box)
                 if iou > 0 and (iou >= iou_threshold or iou < 0.0003):
                     boxes.remove(box)
@@ -246,7 +245,7 @@ class ImageDetector(object):
         canny_gradient = self.compute_canny_edge(sharpened)
         sobel_gradient = self.compute_sobel_gradient(sharpened)
 
-        ## Step1 前景检测，筛选
+        # Step1 前景检测，筛选
         _, fore_g = cv2.threshold(canny_gradient, 127, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
         kernel = np.ones((3, 3), np.uint8)
         # 膨胀函数
@@ -255,13 +254,13 @@ class ImageDetector(object):
         fore_markers = fore_markers.astype(np.uint8)
         fore_contours, _ = cv2.findContours(fore_markers.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-        ## Step2 Sobel算子检测常规边框
+        # Step2 Sobel算子检测常规边框
         sobel_contours = self.preprocess_stage(sobel_gradient, False)
 
-        ## Step3 Canny算子检测细节内容
+        # Step3 Canny算子检测细节内容
         canny_contours = self.preprocess_stage(canny_gradient, False)
 
-        ## 边框筛选
+        # 边框筛选
         fore_boxes = [
             (x, y, w, h)
             for x, y, w, h in (cv2.boundingRect(contour) for contour in fore_contours)
@@ -288,7 +287,7 @@ class ImageDetector(object):
         ]
 
         self.output_img = copy.deepcopy(self.original_img)
-        ## 边框融合&非极大值抑制
+        # 边框融合&非极大值抑制
         all_boxes = fore_boxes + sobel_boxes
         selected_boxes = self.apply_nms(all_boxes)
 

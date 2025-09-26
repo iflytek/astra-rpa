@@ -1,6 +1,7 @@
 import pyautogui
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel, DynamicsItem
 from rpaatomic.atomic import atomicMg
+
 from rpagui import (
     BtnModel,
     BtnType,
@@ -114,7 +115,7 @@ class GuiMouse:
         else:
             raise NotImplementedError()
 
-        reversal = -1 if direction in [Direction.DOWN] else 1
+        reversal = -1 if direction == Direction.DOWN else 1
 
         if ctrl_type != ControlType.EMPTY:
             Keyboard.key_down(ctrl_type.value)

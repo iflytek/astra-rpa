@@ -18,7 +18,7 @@ elif sys.platform == "linux":
     from .unix import BrowserPluginFactory
 
 
-class ExtensionManager(object):
+class ExtensionManager:
     def __init__(self, browser_type: BrowserType = BrowserType.CHROME):
         self.browser_type = browser_type
 

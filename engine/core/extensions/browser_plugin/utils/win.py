@@ -5,7 +5,7 @@ import winreg as reg
 import psutil
 
 
-class Registry(object):
+class Registry:
     @staticmethod
     def exist(key_path) -> bool:
         """
@@ -120,7 +120,7 @@ def check_chrome_plugin(preferences_path_list, extension_id):
     """
     for file in preferences_path_list:
         if os.path.exists(file):
-            with open(file, "r", encoding="utf8") as f:
+            with open(file, encoding="utf8") as f:
                 content = f.read()
                 dict_msg = json.loads(content)
                 try:
@@ -143,7 +143,7 @@ def remove_browser_setting(preferences_path_list, secure_preferences, extension_
     """
     for file in preferences_path_list:
         if os.path.exists(file):
-            with open(file, "r", encoding="utf8") as f:
+            with open(file, encoding="utf8") as f:
                 content = f.read()
                 dict_msg = json.loads(content)
                 uninstall_list = (

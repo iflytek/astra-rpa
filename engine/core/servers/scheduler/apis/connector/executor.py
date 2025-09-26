@@ -1,6 +1,6 @@
 import json
 import time
-from typing import List, Optional
+from typing import Optional
 
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
@@ -52,7 +52,7 @@ class TaskInfo(BaseModel):
     trigger_name: str  # 任务名称
     exceptional: str
     timeout: int = 0
-    callback_project_ids: List[RobotInfo] = []
+    callback_project_ids: list[RobotInfo] = []
     mode: ProjectExecPosition = ProjectExecPosition.EDIT_PAGE
     retry_num: int = 0
     open_virtual_desk: bool = False  # 虚拟桌面

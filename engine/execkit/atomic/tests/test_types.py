@@ -1,6 +1,4 @@
-import re
 from base64 import b64decode
-from unittest import TestCase
 
 from Crypto.Cipher import AES
 from rpaatomic.types import Ciphertext

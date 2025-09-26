@@ -3,7 +3,7 @@ import fnmatch
 import os
 import time
 from pathlib import Path
-from typing import List, Union
+from typing import Union
 
 from watchfiles import Change, awatch
 
@@ -20,8 +20,8 @@ class FileTask:
         self,
         directory: str = ".",
         relative_sub_path: bool = False,
-        events: List[str] = None,
-        files_or_type: Union[List[str], None] = None,
+        events: list[str] = None,
+        files_or_type: Union[list[str], None] = None,
         **kwargs,
     ):
         """
@@ -38,7 +38,7 @@ class FileTask:
         self.directory = directory
         self.relative_sub_path = relative_sub_path
         self.events = events
-        self.files_or_type = files_or_type if files_or_type else []
+        self.files_or_type = files_or_type or []
 
     def _match_file(self, filepath: str) -> bool:
         filename = os.path.basename(filepath)
@@ -74,7 +74,7 @@ class FileTask:
                     deleted_paths.add(path)
                 elif change_type == Change.added:  # 属于added事件，则在对应的集合添加
                     added_paths.add(path)
-                elif change_type == Change.modified:  #  属于modified事件，则在对应的集合添加
+                elif change_type == Change.modified:  # 属于modified事件，则在对应的集合添加
                     if path_obj.exists():  # 验证路径有效性（避免已删除文件残留事件）
                         modified_paths.add((path, current_time))
 

@@ -2,6 +2,7 @@ import random
 import time
 
 import pyautogui
+
 from rpagui import Speed
 
 speed_to_int = {Speed.SLOW: 0.5, Speed.NORMAL: 1, Speed.FAST: 2}

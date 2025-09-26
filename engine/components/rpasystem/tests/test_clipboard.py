@@ -316,7 +316,7 @@ class TestClipboard(TestCase):
         )
 
         # 验证文件内容
-        with open(pasted_file, "r", encoding="utf-8") as f:
+        with open(pasted_file, encoding="utf-8") as f:
             pasted_content = f.read()
 
         self.assertEqual(pasted_content, original_content)

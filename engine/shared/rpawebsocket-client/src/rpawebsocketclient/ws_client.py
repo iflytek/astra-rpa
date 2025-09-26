@@ -2,9 +2,12 @@ import heapq
 import json
 import threading
 import time
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from typing import Any, Callable, Dict
+from typing import Any
+
+from websocket import WebSocketApp
 
 from rpawebsocketclient.ws import (
     AckMsg,
@@ -19,7 +22,6 @@ from rpawebsocketclient.ws import (
     WsException,
     default_log,
 )
-from websocket import WebSocketApp
 
 
 class WsApp:
@@ -44,7 +46,7 @@ class WsApp:
         self.ping_interval = ping_interval
 
         # 路由管理
-        self.routes: Dict[str, Route] = {}
+        self.routes: dict[str, Route] = {}
 
         # 重启机制
         self.reconnect_time = 0
@@ -54,7 +56,7 @@ class WsApp:
         # 消息监听
         self.watch_msg_event = None
         self.watch_interval = 1
-        self.watch_msg: Dict[str, Watch] = {}
+        self.watch_msg: dict[str, Watch] = {}
         self.watch_msg_queue: list = []
 
         # 任务
@@ -76,10 +78,7 @@ class WsApp:
         """
         temp_channel = "{}$${}".format(channel, key)
         no_key_temp_channel = "{}$${}".format(channel, "")
-        if temp_channel in self.routes:
-            func = self.routes[temp_channel].func
-            return func(*args, **kwargs)
-        elif no_key_temp_channel in self.routes:
+        if temp_channel in self.routes or no_key_temp_channel in self.routes:
             func = self.routes[temp_channel].func
             return func(*args, **kwargs)
         else:

@@ -5,14 +5,15 @@ import pyautogui
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel, DynamicsItem
 from rpaatomic.atomic import atomicMg
 from rpaatomic.types import IMGPick
-from rpacv import *
-from rpacv.core import CvCore
-from rpacv.error import *
 from rpagui import MoveType, Simulate_flag, Speed
 from rpagui.code.clipboard import Clipboard
 from rpagui.code.keyboard import Keyboard
 from rpagui.code.mouse import Mouse
 from rpagui.error import CLIP_PASTE_ERROR, REGION_ERROR
+
+from rpacv import *
+from rpacv.core import CvCore
+from rpacv.error import *
 
 # 定义输入法的语言代码
 ENGLISH = 0x0409  # 英文（美国）

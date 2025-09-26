@@ -1,13 +1,14 @@
 import dataclasses
 import time
 from copy import deepcopy
-from typing import Any, List, Optional, Union
+from typing import Any, Optional, Union
 
 import pyautogui
+from rpaframe.logger.logger import logger
+from uiautomation import Control, ControlFromHandle
+
 from locator import ILocator, PickerType, Rect
 from locator.utils.window import (
-    find_window,
-    find_window_by_enum,
     find_window_by_enum_list,
     find_window_handles_list,
     is_desktop_by_handle,
@@ -15,8 +16,6 @@ from locator.utils.window import (
     top_window,
     validate_window_rect,
 )
-from rpaframe.logger.logger import logger
-from uiautomation import Control, ControlFromHandle
 
 
 class UIALocator(ILocator):
@@ -49,7 +48,7 @@ class UIANode:
 
     tag_name: str = None  # 标签名
     checked: bool = False  # 是否选中
-    disable_keys: List[str] = None  # 禁用的key
+    disable_keys: list[str] = None  # 禁用的key
     cls: str = None  # class name
     index: int = None  # 索引
     name: str = None
@@ -117,8 +116,8 @@ class UIAEle:
     def value(self):
         if self.__value is None:
             try:
-                value = self.__control.GetValuePattern().Value  # noqa
-            except Exception:  # noqa
+                value = self.__control.GetValuePattern().Value
+            except Exception:
                 value = None
             self.__value = value
         return self.__value
@@ -132,7 +131,7 @@ class UIAFactory:
     """UIA工厂"""
 
     @classmethod
-    def find(cls, ele: dict, picker_type: str, **kwargs) -> Union[List[UIALocator], UIALocator, None]:
+    def find(cls, ele: dict, picker_type: str, **kwargs) -> Union[list[UIALocator], UIALocator, None]:
         if picker_type == PickerType.SIMILAR.value:
             return cls.__find_similar__(ele, picker_type, **kwargs)
         else:
@@ -149,7 +148,7 @@ class UIAFactory:
             child = child.GetNextSiblingControl()
 
     @classmethod
-    def __compare_node_and_uia_ele__(cls, uia_ele: UIAEle, node: UIANode, keys: List[str]) -> bool:
+    def __compare_node_and_uia_ele__(cls, uia_ele: UIAEle, node: UIANode, keys: list[str]) -> bool:
         # 忽略没有选中
         if not node.checked:
             return True
@@ -185,7 +184,7 @@ class UIAFactory:
         return ", ".join(attrs)
 
     @classmethod
-    def __find_similar__(cls, ele: dict, picker_type: str, **kwarg) -> Union[List[UIALocator], None]:
+    def __find_similar__(cls, ele: dict, picker_type: str, **kwarg) -> Union[list[UIALocator], None]:
         path_list = ele.get("path", [])
         if not path_list:
             return None

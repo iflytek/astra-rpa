@@ -1,7 +1,7 @@
 import threading
 import time
 from ctypes import wintypes
-from ctypes.wintypes import BOOL, WCHAR
+from ctypes.wintypes import WCHAR
 from pathlib import Path
 from typing import Any, Optional
 
@@ -9,6 +9,10 @@ import win32con
 import win32gui
 import win32print
 import win32process
+from rpaframe.logger.logger import logger
+from uiautomation import ControlFromHandle
+from win32api import GetSystemMetrics
+
 from locator import ILocator, PickerType, Rect
 from locator.core.jab_locator_dll import *
 from locator.core.uia_locator import uia_factory
@@ -19,9 +23,6 @@ from locator.utils.window import (
     top_window,
     validate_ui_element_rect,
 )
-from rpaframe.logger.logger import logger
-from uiautomation import ControlFromHandle
-from win32api import GetSystemMetrics
 
 # 一些常量
 MAX_STRING_SIZE = 1024
@@ -52,7 +53,7 @@ class AccessibleTextRectInfo(Structure):
     ]
 
 
-class JABContext(object):
+class JABContext:
     """直接与java应用交互，类似于uia框架的抽象"""
 
     def __init__(self, hwnd=None, vm_id=None, acc_context=None):
@@ -350,12 +351,12 @@ class JABFactory:
         ratio = cls.__get_screen_scale__()
 
         rect_wywh = jab_context.get_element_rect(ratio=ratio)
-        left = rect_wywh.x if rect_wywh.x >= 0 else 0
-        top = rect_wywh.y if rect_wywh.y >= 0 else 0
-        right = rect_wywh.x + rect_wywh.width if rect_wywh.x + rect_wywh.width >= 0 else 0
-        bottom = rect_wywh.y + rect_wywh.height if rect_wywh.y + rect_wywh.height >= 0 else 0
-        right = right if right >= left else left
-        bottom = bottom if bottom >= top else top
+        left = max(rect_wywh.x, 0)
+        top = max(rect_wywh.y, 0)
+        right = max(rect_wywh.x + rect_wywh.width, 0)
+        bottom = max(rect_wywh.y + rect_wywh.height, 0)
+        right = max(right, left)
+        bottom = max(bottom, top)
 
         display = get_system_display_size()
         max_value_screen = [int(ratio * display[0]), int(ratio * display[1])]

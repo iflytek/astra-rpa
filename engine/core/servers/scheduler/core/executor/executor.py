@@ -9,7 +9,6 @@ import uuid
 from enum import Enum
 from typing import Union
 
-import psutil
 import requests
 import websocket
 
@@ -27,7 +26,6 @@ from ...utils.utils import (
     EmitType,
     check_port,
     emit_to_front,
-    kill_proc_tree,
     read_last_n_lines,
 )
 
@@ -86,7 +84,7 @@ def read_status(file) -> (ExecuteStatus, str):
             log_lines = read_last_n_lines(file, 5)
             for line in reversed(log_lines):
                 line = line.strip()
-                if "" == line:
+                if line == "":
                     continue
                 try:
                     result_json = json.loads(line)
@@ -418,7 +416,9 @@ class ExecutorManager:
                         logger.errr("step2 error: {}".format(e))
                         continue
 
-                    # 任务3: 日志上报，如果标记回收，没有标记强杀时间，或已经被强杀了，所有尘埃落地后，去上报状态，并标记上报状态 上报 0 没上报 > 0 上报中 <0 上报结束
+                    # 任务3: 日志上报，如果标记回收，没有标记强杀时间，或已经被强杀了
+                    # 所有尘埃落地后，去上报并标记上报状态
+                    # 上报 0 没上报 > 0 上报中 <0 上报结束
                     try:
                         if executor.open_async and executor.kill_time <= 0 and executor.report_log_time == 0:
                             logger.info("step3: {}".format(executor.exec_id))
@@ -563,7 +563,7 @@ class ExecutorManager:
                 log_path_size = os.path.getsize(log_file)
                 if log_path_size < 10 * 1024 * 1024:
                     # 小于10M的才读取
-                    with open(log_file, "r", encoding="utf-8") as f:
+                    with open(log_file, encoding="utf-8") as f:
                         log_content = f.readlines()
                     log_content = [json.loads(item.strip()) for item in log_content]
                     log_content = json.dumps(log_content)
@@ -603,7 +603,7 @@ class ExecutorManager:
                 # 日志上报
                 data = {
                     "robotId": executor.project_id,
-                    "executeId": executor.exec_id if executor.exec_id else "",
+                    "executeId": executor.exec_id or "",
                     "taskExecuteId": executor.task_exec_id,
                     "result": executor.execute_status.value,
                     "errorReason": executor.execute_reason,

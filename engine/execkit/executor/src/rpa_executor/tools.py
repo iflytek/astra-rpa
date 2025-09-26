@@ -1,9 +1,10 @@
 import sys
 import threading
 
-from rpa_executor.utils import exec_run
 from rpa_recording.recording import RecordingTool
 from rpatools.tools import RpaTools
+
+from rpa_executor.utils import exec_run
 
 
 class LogTool:

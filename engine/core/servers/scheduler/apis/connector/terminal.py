@@ -7,7 +7,6 @@ from fastapi import APIRouter, Depends
 from ...apis.response import ResCode, res_msg
 from ...core.svc import Svc, get_svc
 from ...core.terminal.terminal import Terminal
-from ...logger import logger
 
 router = APIRouter()
 

@@ -8,6 +8,8 @@ import urllib.parse
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel, DynamicsItem
 from rpaatomic.atomic import atomicMg
 from rpaatomic.types import DialogResult
+from rpatools.tools import RpaTools
+
 from rpadialog import (
     ButtonType,
     DefaultButtonC,
@@ -24,7 +26,6 @@ from rpadialog import (
 )
 from rpadialog.core import DialogCore
 from rpadialog.error import *
-from rpatools.tools import RpaTools
 
 
 class Dialog:
@@ -186,19 +187,19 @@ class Dialog:
         def on_move(x, y):
             nonlocal auto_check
             if auto_check:
-                print(f"用户干预：鼠标移动，停止自动检查")
+                print("用户干预：鼠标移动，停止自动检查")
                 auto_check = False
 
         def on_click(x, y, button, pressed):
             nonlocal auto_check
             if auto_check:
-                print(f"用户干预：鼠标点击，停止自动检查")
+                print("用户干预：鼠标点击，停止自动检查")
                 auto_check = False
 
         def on_press(key):
             nonlocal auto_check
             if auto_check:
-                print(f"用户干预：键盘按下，停止自动检查")
+                print("用户干预：键盘按下，停止自动检查")
                 auto_check = False
 
         def on_release(key):
@@ -337,7 +338,7 @@ class Dialog:
         save_dict = DialogCore.exe_run(args)
 
         input_content = save_dict.get("input_content")
-        return input_content if input_content else None
+        return input_content or None
 
     @staticmethod
     @atomicMg.atomic(
@@ -740,19 +741,19 @@ class Dialog:
         def on_move(x, y):
             nonlocal auto_check
             if auto_check:
-                print(f"用户干预：鼠标移动，停止自动检查")
+                print("用户干预：鼠标移动，停止自动检查")
                 auto_check = False
 
         def on_click(x, y, button, pressed):
             nonlocal auto_check
             if auto_check:
-                print(f"用户干预：鼠标点击，停止自动检查")
+                print("用户干预：鼠标点击，停止自动检查")
                 auto_check = False
 
         def on_press(key):
             nonlocal auto_check
             if auto_check:
-                print(f"用户干预：键盘按下，停止自动检查")
+                print("用户干预：键盘按下，停止自动检查")
                 auto_check = False
 
         def on_release(key):

@@ -1,5 +1,5 @@
 from queue import Queue
-from typing import Dict, List, Union
+from typing import Union
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
@@ -15,7 +15,7 @@ from .tasks.base_task import (
 
 class Trigger:
     def __init__(self):
-        self.tasks: Dict[str, Union[AsyncSchedulerTask, AsyncOneCallTask, AsyncImmediateTask]] = {}
+        self.tasks: dict[str, Union[AsyncSchedulerTask, AsyncOneCallTask, AsyncImmediateTask]] = {}
         self.queue: Queue = Queue(maxsize=1000)
         self.scheduler = AsyncIOScheduler()
         self.scheduler.start()
@@ -86,7 +86,7 @@ class Trigger:
         trigger_name: str,
         task_type: str,
         queue_enable: bool,
-        callback_project_ids: List,
+        callback_project_ids: list,
         exceptional: str,
         timeout: int,
         **kwargs,
@@ -167,7 +167,7 @@ class Trigger:
         trigger_id: str,
         task_type: str,
         queue_enable: bool,
-        callback_project_ids: List,
+        callback_project_ids: list,
         **kwargs,
     ):
         """
@@ -275,7 +275,7 @@ class Trigger:
         task.enable = False
         return True
 
-    def to_dict(self) -> List:
+    def to_dict(self) -> list:
         """
         序列化任务
 
@@ -289,7 +289,7 @@ class Trigger:
         """
         删除所有任务
         """
-        logger.info("【delete_all_tasks】: {}".format((self.tasks.keys())))
+        logger.info("【delete_all_tasks】: {}".format(self.tasks.keys()))
         task_keys = list(self.tasks.keys())
         for task_key in task_keys:
             logger.info("【delete_all_tasks】删除任务: {}".format(task_key))

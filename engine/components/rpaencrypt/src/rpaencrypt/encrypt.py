@@ -3,6 +3,7 @@ import os
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel, DynamicsItem
 from rpaatomic.atomic import atomicMg
 from rpaatomic.utils import FileExistenceType, handle_existence
+
 from rpaencrypt import Base64CodeType, EncryptCaseType, MD5bitsType, SHAType
 from rpaencrypt.core import EncryptCore
 

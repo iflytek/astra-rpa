@@ -1,5 +1,5 @@
 import json
-from typing import Dict, List, Optional
+from typing import Optional
 from uuid import uuid4
 
 from ...logger import logger
@@ -7,10 +7,10 @@ from . import SessionId, SessionOptions
 from .lsp_client import LspClient, Session
 
 # Map of active sessions indexed by ID
-active_sessions: Dict[SessionId, Session] = {}
+active_sessions: dict[SessionId, Session] = {}
 
 # List of inactive sessions that can be reused.
-inactive_sessions: List[Session] = []
+inactive_sessions: list[Session] = []
 
 # Maximum time a session can be idle before it is closed.
 maxSessionLifetime = 1 * 60 * 1000  # 1 minute
@@ -42,7 +42,7 @@ def start_session(session_options: SessionOptions = None) -> SessionId:
     """
     Start a new session and return its ID.
     """
-    logger.info(f"Starting new session")
+    logger.info("Starting new session")
 
     session_id = str(uuid4())
     lang_client = LspClient(session_options.project_id)
@@ -147,7 +147,7 @@ def get_compatible_session(session_options: SessionOptions = None) -> Optional[S
     requested_options = {k: getattr(session_options, k) for k in keys_to_pick}
     logger.info("Requested options: %s", json.dumps(requested_options))
 
-    def find_session(sessions: List[Session]) -> Optional[Session]:
+    def find_session(sessions: list[Session]) -> Optional[Session]:
         for index, session in enumerate(sessions):
             existing_options = {k: getattr(session.options, k) for k in keys_to_pick}
             logger.info("Existing options: %s", json.dumps(existing_options))

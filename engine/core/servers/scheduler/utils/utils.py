@@ -143,7 +143,7 @@ def get_settings(file_path=".setting.json", times: int = 5):
     for i in range(times):
         try:
             if os.path.exists(file_path):
-                with open(file_path, "r", encoding="utf-8") as file:
+                with open(file_path, encoding="utf-8") as file:
                     setting = json.load(file)
                     break
         except Exception as e:

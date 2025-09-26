@@ -1,5 +1,5 @@
 # from rpa_picker.logger import logger
-from typing import Any, List, Optional, Tuple
+from typing import Any, Optional
 
 import pyautogui
 import uiautomation as auto
@@ -102,8 +102,8 @@ class UIAElement(IElement):
         while True:
             # 添加元素信息到路径列表
             try:
-                value = curr_ele.control.GetValuePattern().Value  # noqa
-            except Exception:  # noqa
+                value = curr_ele.control.GetValuePattern().Value
+            except Exception:
                 value = None
             current_attrs = {
                 "cls": curr_ele.control.ClassName,
@@ -184,7 +184,7 @@ class UIAPicker:
     @classmethod
     def _search_elements_recursively(
         cls,
-        res_list: List[UIAElement],
+        res_list: list[UIAElement],
         control: auto.Control,
         point: Point,
         ignore_parent_zero=False,
@@ -279,7 +279,7 @@ class UIAPicker:
                 res = cls.__uia_control_cache__
                 if res and res.rect().contains(point):
                     return res
-            except Exception as e:  # noqa
+            except Exception as e:
                 cls.__uia_control_cache__ = None
 
         # 是否开启root初始化检查
@@ -321,7 +321,7 @@ class UIAOperate:
         return cls._is_desktop_element(parent)
 
     @classmethod
-    def get_cursor_pos(cls) -> Tuple[int, int]:
+    def get_cursor_pos(cls) -> tuple[int, int]:
         return auto.GetCursorPos()
 
     @classmethod
@@ -387,12 +387,12 @@ class UIAOperate:
         target_class_names: list,
         app: APP = None,
         point=None,
-    ) -> Tuple[bool, int, int, Any]:
+    ) -> tuple[bool, int, int, Any]:
         # logger.info(f"get_web_control app: {app}")
         x = point.x
         y = point.y
         while control:
-            if app in [APP.Firefox]:
+            if app == APP.Firefox:
                 for child, _ in auto.WalkControl(control, includeTop=True, maxDepth=10):
                     if child.AutomationId == "tabbrowser-tabpanels":
                         if (

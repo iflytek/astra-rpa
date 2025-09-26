@@ -38,7 +38,7 @@ def default_event_handler(svc, func=None, *args, **war_kwargs):
     events = svc.events
     if events:
         # 关闭 事件
-        if EventKey.Stop.value in events and events[EventKey.Stop.value]:
+        if events.get(EventKey.Stop.value):
             reason = events[EventKey.Stop.value]
             if reason == EventStopReason.Close.value:
                 raise default_close_error
@@ -46,13 +46,13 @@ def default_event_handler(svc, func=None, *args, **war_kwargs):
                 raise default_kill_error
 
         # 暂停\取消暂停 事件
-        if EventKey.Pause.value in events and events[EventKey.Pause.value]:
+        if events.get(EventKey.Pause.value):
             while events[EventKey.Pause.value]:
                 events[EventKey.ResPause.value] = True
                 time.sleep(0.3)
 
                 # 关闭 事件
-                if EventKey.Stop.value in events and events[EventKey.Stop.value]:
+                if events.get(EventKey.Stop.value):
                     reason = events[EventKey.Stop.value]
                     if reason == EventStopReason.Close.value:
                         raise default_close_error

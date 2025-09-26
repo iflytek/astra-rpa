@@ -1,7 +1,6 @@
 import ctypes
 
 import pyautogui
-import win32con
 import win32gui
 from cv_picker.core.core import IPickCore, IRectHandler
 

@@ -1,13 +1,14 @@
 import json
 import traceback
-from typing import Any, List, Optional, Tuple, Union
+from typing import Any, Optional, Union
 
 import uiautomation as auto
+from rpaframe.logger.logger import logger
+
 from locator import BrowserType, Rect, like_chrome_browser_type
 from locator.core.web_ie_locator_dll import *
 from locator.core.web_locator import WEBLocator
 from locator.utils.window import top_window
-from rpaframe.logger.logger import logger
 
 
 class WEBIELocator(WEBLocator):
@@ -29,7 +30,7 @@ class WebIEFactory:
     """WebIE工厂"""
 
     @classmethod
-    def find(cls, ele: dict, picker_type: str, **kwargs) -> Union[List[WEBIELocator], WEBIELocator, None]:
+    def find(cls, ele: dict, picker_type: str, **kwargs) -> Union[list[WEBIELocator], WEBIELocator, None]:
         if ele.get("app", "") in like_chrome_browser_type:
             # 直接结束
             return None
@@ -311,7 +312,7 @@ class WebIEFactory:
             "setInputValueByXPath('"
             + xpath
             + "');"
-            + """
+            + r"""
             function startsWithRpa(strT,str){{
                if(str==null||str==''||strT.length==0||str.length>strT.length){{
                return false;
@@ -583,7 +584,7 @@ class WebIEFactory:
                                 if (attr.name === 'class' && is_blanck==1) {{
                                     // 去除无意义字符，多个空白字符（包括换行、制表、全角空格等）都替换为一个半角空格   跟拾取一样，因为ie中元素获取的值有时候是不一样的，跟edge表现不一样
                                     value = value.replace(/[\\r\\n\\t\\f\\v\\u00A0\\u1680\\u2000-\\u200A\\u202F\\u205F\\u3000]+/g, ' ') // 替换所有不可见空白字符
-                                                .replace(/\s+/g, ' ') // 再次替换多个空白为单个空格
+                                                .replace(/\\s+/g, ' ') // 再次替换多个空白为单个空格
                                                 .trim();
                                 }}
                                 return value;
@@ -621,7 +622,7 @@ class WebIEFactory:
                             if (attr.checked === true && attr.type === 0 && attr.name !== "innerText") {{
                                 if (attr.name === "class") {{
                                     // 类名需要特殊处理，因为可能有多个类
-                                    var classes = attr.value.split(/\s+/);
+                                    var classes = attr.value.split(/\\s+/);
                                     for (var k = 0; k < classes.length; k++) {{
                                         if (classes[k]) {{
                                             selector += "." + classes[k];
@@ -669,7 +670,7 @@ class WebIEFactory:
                                     return false;
                                 }}
                             }} else if (attr.type === 1) {{    // 通配符匹配
-                                var wildcardPattern = nodeValue.replace(/\?/g, ".").replace(/\*/g, ".*");
+                                var wildcardPattern = nodeValue.replace(/\\?/g, ".").replace(/\\*/g, ".*");
                                 var reg = new RegExp('^' + wildcardPattern + '$');
                                 if (!reg.test(value)) {{
                                     return false;
@@ -916,13 +917,13 @@ class WebIEFactory:
         return pathDirs
 
     @classmethod
-    def __get_web_top__(cls, ele: dict) -> Tuple[int, int]:
+    def __get_web_top__(cls, ele: dict) -> tuple[int, int]:
         root_control = auto.GetRootControl()
         app_name = ele.get("app", "")
 
         ct = None
         for control, _ in auto.WalkControl(root_control, includeTop=True, maxDepth=1):
-            if app_name in [BrowserType.BTIE.value]:
+            if app_name == BrowserType.BTIE.value:
                 if control.ClassName == "IEFrame":
                     ct = control
                     break
@@ -930,10 +931,10 @@ class WebIEFactory:
             return 0, 0
 
         # 置顶
-        ct.SetActive()  # noqa
+        ct.SetActive()
         handle = ct.NativeWindowHandle
         top_window(handle, ct)
-        if app_name in [BrowserType.BTIE.value]:
+        if app_name == BrowserType.BTIE.value:
             notification_bar = ct.Control(searchDepth=1, ClassName="BrowserRootView")
             direct_ui = notification_bar.Control(searchDepth=1, ClassName="NonClientView")
             direct_ui = direct_ui.Control(searchDepth=1, ClassName="BrowserFrameViewWin")

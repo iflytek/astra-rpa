@@ -74,7 +74,7 @@ def demo():
 
         if locator:
             point = locator.point()
-            print(f"✅ 元素查找成功!")
+            print("✅ 元素查找成功!")
             print(f"   执行时间: {find_time:.3f}秒")
             print(f"   元素位置: ({point.x}, {point.y})")
 
@@ -123,7 +123,7 @@ def demo():
         )
         screenshot_time = time.time() - start_time
         print(f"✅ 元素截图完成 - 耗时: {screenshot_time:.3f}秒")
-        print(f"   截图保存路径: ./demo_screenshot.png")
+        print("   截图保存路径: ./demo_screenshot.png")
 
         # 5. 性能测试演示
         print("\n⚡ 5. 性能测试演示")
@@ -151,7 +151,7 @@ def demo():
             min_time = min(execution_times)
             max_time = max(execution_times)
 
-            print(f"\n📊 性能测试结果:")
+            print("\n📊 性能测试结果:")
             print(f"   平均执行时间: {avg_time:.3f}秒")
             print(f"   最快执行时间: {min_time:.3f}秒")
             print(f"   最慢执行时间: {max_time:.3f}秒")

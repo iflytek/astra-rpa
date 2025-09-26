@@ -104,7 +104,7 @@ class Terminal:
 
         try:
             active_net = []
-            addrs = psutil.net_if_addrs()  # noqa
+            addrs = psutil.net_if_addrs()
             stats = psutil.net_if_stats()
             for iface, addresses in addrs.items():
                 if not stats[iface].isup:

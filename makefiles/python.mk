@@ -7,5 +7,6 @@ fmt-python:
 
 check-python:
 	@echo "[Check] Running ruff check..."
+	@uv run --project engine --dev ruff check --fix ./engine
 	@uv run --project engine --dev ruff check ./engine
 	@echo "[Done] Code check complete"

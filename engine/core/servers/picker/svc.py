@@ -7,8 +7,6 @@ import threading
 import time
 from typing import Any
 
-import win32com.client
-
 from . import IEventCore, IPickerCore, PickerSign
 from .error import TIMEOUT, TIMEOUT_LAG
 from .error import BaseException as RpaBaseException

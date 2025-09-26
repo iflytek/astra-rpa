@@ -11,28 +11,22 @@ os.environ.update(
 
 import sys
 
-from PyQt5.QtCore import QEvent, QPointF, QRect, QRectF, Qt, QThread, QTimer, pyqtSignal
+from PyQt5.QtCore import QRect, Qt, QTimer, pyqtSignal
 from PyQt5.QtGui import (
     QBrush,
     QColor,
     QFont,
     QGuiApplication,
-    QMouseEvent,
     QPainter,
-    QPainterPath,
     QPen,
-    QPixmap,
 )
 from PyQt5.QtNetwork import QHostAddress, QUdpSocket
 from PyQt5.QtWidgets import (
-    QAction,
     QApplication,
     QHBoxLayout,
     QLabel,
     QMainWindow,
-    QMessageBox,
     QPushButton,
-    QToolBar,
     QVBoxLayout,
     QWidget,
 )

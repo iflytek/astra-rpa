@@ -169,7 +169,6 @@ class BrowserSoftware:
                 )
             else:
                 raise NotImplementedError()
-        # noqa
 
         # 查询打开状态
         handler = None
@@ -200,7 +199,7 @@ class BrowserSoftware:
         else:
             if browser_type in CHROME_LIKE_BROWSERS and not open_with_incognito:
                 res.send_browser_extension(
-                    browser_type=res.browser_type.value,  #'{{' + res.browser_type.value + '}}',
+                    browser_type=res.browser_type.value,  # '{{' + res.browser_type.value + '}}',
                     key="updateTab",
                     data={"url": str(url)},
                 )

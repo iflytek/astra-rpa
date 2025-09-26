@@ -2,10 +2,8 @@ import ast
 import os
 import re
 import subprocess
-import time
 import traceback
 import winreg
-from typing import Tuple
 
 import numpy as np
 import win32clipboard as cv
@@ -15,6 +13,7 @@ from win32api import RGB
 excel_constants = win32com.client.constants
 
 from rpaatomic.logger import logger
+
 from rpaexcel import (
     ApplicationType,
     ClearType,
@@ -22,8 +21,6 @@ from rpaexcel import (
     ColumnDirectionType,
     ColumnOutputType,
     ColumnType,
-    CopySheetLocationType,
-    CopySheetType,
     CreateCommentType,
     DeleteCellDirection,
     EditRangeType,
@@ -36,7 +33,6 @@ from rpaexcel import (
     InsertFormulaDirectionType,
     MatchCountType,
     MergeOrSplitType,
-    MoveSheetType,
     NumberFormatType,
     PasteType,
     ReadRangeType,
@@ -136,7 +132,7 @@ class ExcelCore(IExcelCore):
         visible_flag: bool = True,
         exist_handle_type: FileExistenceType = FileExistenceType.RENAME,
         password: str = "",
-    ) -> Tuple[object, str]:
+    ) -> tuple[object, str]:
         """
         Excel - 文档操作 - 创建
         """
@@ -177,7 +173,6 @@ class ExcelCore(IExcelCore):
             excel.SaveAs(Filename=new_file_path)
         elif save_type == SaveType.SAVE:
             excel.Save()
-        return
 
     @classmethod
     def open(
@@ -771,7 +766,7 @@ class ExcelCore(IExcelCore):
     @staticmethod
     def range_location_supply(data_region, ws):
         try:
-            if not re.findall("\d", data_region):
+            if not re.findall(r"\d", data_region):
                 if ":" in data_region:
                     used_row = ws.Cells.SpecialCells(11).Row
                     columns_list = data_region.split(":")

@@ -4,9 +4,10 @@ import cx_Oracle
 import psycopg2
 import pymysql
 import pyodbc
+from rpaframe.logger.logger import logger
+
 from rpadatabase import DatabaseType
 from rpadatabase.core import IDatabaseCore
-from rpaframe.logger.logger import logger
 
 try:
     import ibm_db_dbi

@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import List
 
 from .constants import BrowserType, PluginData, PluginStatus
 
@@ -38,7 +37,7 @@ class PluginManagerCore(ABC):
 class PluginManager(ABC):
     @staticmethod
     @abstractmethod
-    def get_support_browser() -> List[BrowserType]:
+    def get_support_browser() -> list[BrowserType]:
         """
         获取支持的浏览器类型
         :return:

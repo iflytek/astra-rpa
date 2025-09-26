@@ -4,6 +4,7 @@ import sys
 
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel, DynamicsItem
 from rpaatomic.atomic import atomicMg
+
 from rpasystem import *
 from rpasystem.error import *
 from rpasystem.utils import (

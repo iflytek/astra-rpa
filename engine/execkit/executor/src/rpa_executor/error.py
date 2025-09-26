@@ -1,10 +1,11 @@
 import re
 from functools import wraps
 
-from rpa_executor.flow.syntax.event import CloseError
 from rpaatomic import IgnoreException
 from rpaframe.error.error import BaseException, BizCode, ErrorCode
 from rpaframe.i18n.i18n import _
+
+from rpa_executor.flow.syntax.event import CloseError
 
 INDEX_ERROR = IndexError
 

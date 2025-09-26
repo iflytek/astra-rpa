@@ -1,9 +1,5 @@
-import platform
-import sys
-import time
 from unittest import TestCase
 
-from rpadocx import SelectRangeType
 from rpaexcel import (
     ApplicationType,
     CloseRangeType,
@@ -12,7 +8,6 @@ from rpaexcel import (
     EnhancedInsertType,
     FileExistenceType,
     ImageSizeType,
-    InsertType,
     PasteType,
     ReadRangeType,
     RowDirectionType,
@@ -20,8 +15,6 @@ from rpaexcel import (
     SaveType,
     SaveType_ALL,
     SearchRangeType,
-    SearchResultType,
-    SearchSheetType,
     SheetInsertType,
     SheetRangeType,
 )

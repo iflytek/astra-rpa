@@ -8,8 +8,9 @@ import pyautogui
 import requests
 from locator import smooth_move
 from rpaatomic.logger import logger
-from rpaverifycode import VerifyCodeConfig
 from src.rpaverifycode import ElementGetAttributeTypeFlag
+
+from rpaverifycode import VerifyCodeConfig
 
 
 class VerifyCodeCore:

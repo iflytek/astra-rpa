@@ -91,7 +91,7 @@ class FirefoxUtils:
             # extensions.json 文件中保存了插件的相关信息
             extensions_path = os.path.join(default_profile_path, "extensions.json")
             if os.path.exists(extensions_path):
-                with open(extensions_path, "r", encoding="utf8") as f:
+                with open(extensions_path, encoding="utf8") as f:
                     dict_msg = json.loads(f.read())
                     for addon in dict_msg["addons"]:
                         if addon["id"] == FirefoxUtils.firefox_plugin_id:

@@ -1,6 +1,5 @@
 import http.client
 import json
-import ssl
 
 
 class xcAgent:

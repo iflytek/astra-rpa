@@ -132,7 +132,7 @@ class AnchorMatch:
             rw, rh = 1, 1
 
         # 确保锚点和锚点坐标都获取到
-        logger.info(f"当前屏幕与原始比例为{rw},{rh}")
+        logger.info("当前屏幕与原始比例为%s,%s", rw, rh)
         if center_coords_anchor != "" and anchor is not None:
             # 提取并转换坐标
             aim_x, aim_y = map(int, center_coords_aim.split(","))
@@ -174,7 +174,7 @@ class AnchorMatch:
                 _, anchor_max_val, _, anchor_pos = cv2.minMaxLoc(anchor_match_res)
 
                 # TODO 执行的时候锚点不存在了，需要处理逻辑，当执行的时候缩放导致锚点变化的情况
-                logger.info(f"当前目标元素不唯一或置信度低，需要锚点，且锚点置信度为{anchor_max_val}")
+                logger.info("当前目标元素不唯一或置信度低，需要锚点，且锚点置信度为%s", anchor_max_val)
                 if anchor_max_val < anchor_threshold:
                     logger.info("屏幕上不存在锚点元素或者当前界面像素过低导致找不到锚点元素")
                     # gr.Info("屏幕上不存在锚点元素或者当前界面像素过低导致找不到锚点元素")

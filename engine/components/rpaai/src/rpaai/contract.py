@@ -1,12 +1,13 @@
 import ast
 
+from rpaatomic import AtomicFormType, AtomicFormTypeMeta, DynamicsItem
+from rpaatomic.atomic import atomicMg
+from rpaatomic.types import PATH
+
 from rpaai import InputType
 from rpaai.api.llm import chat_prompt
 from rpaai.prompt.contract import CONTRACT_FACTOR_DICT
 from rpaai.utils.extract import FileExtractor
-from rpaatomic import AtomicFormType, AtomicFormTypeMeta, DynamicsItem
-from rpaatomic.atomic import atomicMg
-from rpaatomic.types import PATH
 
 
 class ContractAI:

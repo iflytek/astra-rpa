@@ -1,7 +1,7 @@
 import threading
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 
 class EnvBizTypes(Enum):
@@ -24,9 +24,9 @@ class EnvItem:
 class Environment:
     def __init__(self, outer: "Environment" = None):
         self.lock = threading.Lock()
-        self.store: Dict[str, EnvItem] = {}
-        self.g_store: Dict[str, EnvItem] = {}
-        self.outer: "Environment" = outer
+        self.store: dict[str, EnvItem] = {}
+        self.g_store: dict[str, EnvItem] = {}
+        self.outer: Environment = outer
 
     def in_global(self, project_id, key: str) -> bool:
         """判断是否是全局变量"""

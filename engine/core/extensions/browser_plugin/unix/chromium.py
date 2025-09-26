@@ -48,7 +48,7 @@ class ChromiumPluginManager(PluginManagerCore):
         # 检查插件配置文件是否存在
         plugin_config_path = os.path.join(self.extension_path, f"{self.plugin_data.plugin_id}.json")
         if os.path.exists(plugin_config_path):
-            with open(plugin_config_path, "r") as file:
+            with open(plugin_config_path) as file:
                 plugin_config_data = json.load(file)
                 installed_version = plugin_config_data.get("external_version")
                 latest_version = self.plugin_data.plugin_version

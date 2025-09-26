@@ -5,6 +5,7 @@ import time
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, DynamicsItem
 from rpaatomic.atomic import atomicMg
 from rpaatomic.types import WinPick
+
 from rpawindow.core import IWindowsCore, WindowExistType, WindowSizeType
 from rpawindow.error import *
 
@@ -41,7 +42,7 @@ class Window:
         """
         exist 窗口是否存在/不存在
         """
-        wait_time = wait_time if wait_time > 0 else 0
+        wait_time = max(0, wait_time)
         while wait_time >= 0:
             try:
                 window_found = WindowsCore.find(pick) is not None

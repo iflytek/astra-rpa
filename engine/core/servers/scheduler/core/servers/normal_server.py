@@ -78,7 +78,7 @@ class TriggerServer(IServer):
                 return False
             return True
         except Exception as e:
-            self.svc.logger.error(f"update_config error: {e}")
+            self.svc.logger.error("update_config error: %s", e)
 
 
 class VNCServer(IServer):

@@ -9,6 +9,7 @@ from rpaatomic.types import WebPick
 from rpabrowser.browser import Browser
 from rpabrowser.browser_element import BrowserElement
 from rpaframe.logger.logger import logger
+
 from rpaverifycode import HintPosition, PictureCodeType
 from rpaverifycode.core import VerifyCodeCore
 from rpaverifycode.error import *

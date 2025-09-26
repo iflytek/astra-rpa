@@ -7,7 +7,7 @@ from pydantic import BaseModel
 class TaskInput(BaseModel):
     task_type: str
     enable: bool
-    callback_project_ids: List
+    callback_project_ids: list
     queue_enable: bool
     exceptional: str
     timeout: int = 9999
@@ -17,8 +17,8 @@ class TaskInput(BaseModel):
     frequency_flag: str = None
     minutes: Optional[int] = None
     hours: Optional[int] = None
-    weeks: Optional[List[int]] = None
-    months: Optional[List[int]] = None
+    weeks: Optional[list[int]] = None
+    months: Optional[list[int]] = None
     time_expression: Optional[str] = None
     cron_expression: Optional[str] = None
 
@@ -40,11 +40,11 @@ class TaskInput(BaseModel):
     # 文件任务参数
     directory: str = None
     relative_sub_path: bool = False
-    events: List[str] = None
-    files_or_type: List[str] = None
+    events: list[str] = None
+    files_or_type: list[str] = None
 
     # 热键参数
-    shortcuts: List = None
+    shortcuts: list = None
 
     # 手动触发参数
     pass
@@ -64,14 +64,14 @@ class TaskFutureExecWithoutIdInput(BaseModel):
     frequency_flag: str = None
     minutes: Optional[int] = None
     hours: Optional[int] = None
-    weeks: Optional[List[int]] = None
-    months: Optional[List[int]] = None
+    weeks: Optional[list[int]] = None
+    months: Optional[list[int]] = None
     time_expression: Optional[str] = None
     cron_expression: Optional[str] = None
 
 
 class RemoveQueueTaskInput(BaseModel):
-    unique_id: List[str] = []
+    unique_id: list[str] = []
 
 
 class QueueConfigInput(BaseModel):

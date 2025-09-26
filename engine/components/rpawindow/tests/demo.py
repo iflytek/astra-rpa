@@ -35,7 +35,7 @@ def demo():
         time.sleep(1)
         # close方法
         Window.close(pick=test_pick)
-        print(f"演示完成")
+        print("演示完成")
     except Exception as e:
         print(f"演示出现异常: {e}")
 

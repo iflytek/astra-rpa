@@ -4,6 +4,8 @@ from typing import Any
 from urllib.parse import urlparse
 
 from importlib_metadata import version as check_version
+from rpaatomic import ReportTip
+
 from rpa_executor.error import DOWNLOAD_ATOMIC_FORMAT, DOWNLOAD_ATOMIC_SUCCESS_FORMAT
 from rpa_executor.flow.report import SimpleReport
 from rpa_executor.flow.storage import Storage
@@ -12,7 +14,6 @@ from rpa_executor.flow.syntax.environment import Environment
 from rpa_executor.flow.syntax.token import Token
 from rpa_executor.logger import logger
 from rpa_executor.utils import exec_run
-from rpaatomic import ReportTip
 
 python_executable = sys.executable
 

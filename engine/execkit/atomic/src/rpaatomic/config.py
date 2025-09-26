@@ -14,7 +14,7 @@ class Config:
         self.set_config_file(os.path.join(script_dir, "config.yaml"))
 
     def set_config_file(self, url, file_type="yaml"):
-        with open(url, "r", encoding="utf-8") as yaml_file:
+        with open(url, encoding="utf-8") as yaml_file:
             if file_type == "yaml":
                 import yaml
 

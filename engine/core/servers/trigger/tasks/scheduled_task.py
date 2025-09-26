@@ -1,5 +1,5 @@
 import re
-from typing import Any, List, Union
+from typing import Any, Union
 
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
@@ -110,7 +110,7 @@ class FrequencyDays(BaseModel):
 
 
 class FrequencyWeeks(BaseModel):
-    weeks: List[int]
+    weeks: list[int]
     hours: int
     minutes: int
 
@@ -146,8 +146,8 @@ class FrequencyWeeks(BaseModel):
 
 
 class FrequencyMonths(BaseModel):
-    months: List[int]
-    weeks: List[int]
+    months: list[int]
+    weeks: list[int]
     hours: int
     minutes: int
 

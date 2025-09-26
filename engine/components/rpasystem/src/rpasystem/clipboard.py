@@ -3,6 +3,7 @@ import sys
 
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, DynamicsItem
 from rpaatomic.atomic import atomicMg
+
 from rpasystem import *
 from rpasystem.core.clipboard_core import IClipBoardCore
 from rpasystem.error import *

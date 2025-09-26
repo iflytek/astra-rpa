@@ -3,6 +3,7 @@ import time
 
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel, DynamicsItem
 from rpaatomic.atomic import atomicMg
+
 from rpasystem import *
 from rpasystem.error import *
 from rpasystem.utils import *
@@ -399,10 +400,10 @@ class File:
 
         try:
             if read_type == ReadType.ALL:
-                with open(file_path, "r", encoding=encoding) as f:
+                with open(file_path, encoding=encoding) as f:
                     read_file_content = f.read()
             elif read_type == ReadType.List:
-                with open(file_path, "r", encoding=encoding) as f:
+                with open(file_path, encoding=encoding) as f:
                     read_file_content = f.readlines()
                     read_file_content = [line.rstrip("\r\n") for line in read_file_content]
             elif read_type == ReadType.BYTE:
@@ -620,9 +621,7 @@ class File:
             for file in files:
                 if find_type == SearchType.EXACT and file == search_pattern:
                     find_file_result.append(os.path.join(root, file))
-                if find_type == SearchType.FUZZY and search_pattern in file:
-                    find_file_result.append(os.path.join(root, file))
-                elif find_type == SearchType.REGEX and re.search(search_pattern, file):
+                if find_type == SearchType.FUZZY and search_pattern in file or find_type == SearchType.REGEX and re.search(search_pattern, file):
                     find_file_result.append(os.path.join(root, file))
 
             if traverse_subfolder == TraverseType.YES:

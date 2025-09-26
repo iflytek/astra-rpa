@@ -1,8 +1,6 @@
 import email
 import imaplib
 from datetime import datetime
-from email.header import Header
-from email.utils import parseaddr
 
 
 def decode_data(b, added_encode=None):
@@ -50,7 +48,7 @@ class EmailImap4Receive:
             "vendor",
             "myclient",
         )
-        self.mail_handler._simple_command("ID", '("' + '" "'.join(args) + '")')  # noqa
+        self.mail_handler._simple_command("ID", '("' + '" "'.join(args) + '")')
 
     def showFolders(self):
         """

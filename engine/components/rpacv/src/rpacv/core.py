@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 import pyautogui
 from PIL import Image
+
 from rpacv.cv_match import AnchorMatch
 
 desktop_filepath = "desktop.png"

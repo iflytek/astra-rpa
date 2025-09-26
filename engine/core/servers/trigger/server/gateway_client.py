@@ -1,5 +1,4 @@
 import json
-from typing import Dict, List
 
 import requests
 
@@ -8,7 +7,7 @@ from ..core.config import config
 from ..core.logger import logger
 
 
-def execute_multiple_projects(project_info: Dict):
+def execute_multiple_projects(project_info: dict):
     url = "http://127.0.0.1:{}/scheduler/executor/run_list".format(config.GATEWAY_PORT)
     headers = {"Content-Type": "application/json"}
     logger.info(f"当前调度器请求的Json是：{project_info}")
@@ -21,7 +20,7 @@ def execute_multiple_projects(project_info: Dict):
         return False
 
 
-def execute_single_project(project_info: Dict):
+def execute_single_project(project_info: dict):
     url = "http://127.0.0.1:{}/scheduler/executor/run_sync".format(config.GATEWAY_PORT)
     headers = {"Content-Type": "application/json"}
     response = requests.post(url, headers=headers, data=json.dumps(project_info))
@@ -70,7 +69,7 @@ def send_stop_list(task_id: str = None):
 
 
 def list_trigger():
-    def convert(recorder: List[Dict]) -> Dict:
+    def convert(recorder: list[dict]) -> dict:
         trigger_tasks = {}
         for task in recorder:
             _d = {}
@@ -139,7 +138,7 @@ def terminal_list_task():
     从节点获取任务列表接口
     """
 
-    def convert(recorder: Dict):
+    def convert(recorder: dict):
         dispatch_tasks = {}
         retry_tasks = {}
         stop_tasks = {}

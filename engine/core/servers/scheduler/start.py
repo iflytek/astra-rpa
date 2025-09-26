@@ -42,7 +42,7 @@ def start():
         # 2. 读取配置，并解析到上下文
         conf_path = args.conf.strip('"')
         conf_path = conf_path.replace("\\\\", "\\")
-        with open(conf_path, "r") as f:
+        with open(conf_path) as f:
             conf_json = json.loads(f.readline().strip())
 
         conf.app_server.remote_addr = conf_json.get("remote_addr")

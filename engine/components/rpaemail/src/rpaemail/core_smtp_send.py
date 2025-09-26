@@ -12,8 +12,9 @@ from email.mime.text import MIMEText
 from email.utils import formataddr, parseaddr
 from typing import Union
 
-from rpaemail.error import *
 from rpaframe.logger.logger import logger
+
+from rpaemail.error import *
 
 
 class EmailSmtpSend:
@@ -110,7 +111,7 @@ class EmailSmtpSend:
             msg["Cc"] = cc_list[i]
             msg["Bcc"] = bcc_list[i]
             msg["date"] = time.strftime("%a, %d %b %Y %H:%M:%S %z")
-            msg["Subject"] = subject if subject else "来自{}的邮件".format(user)
+            msg["Subject"] = subject or "来自{}的邮件".format(user)
             if not content_is_html:
                 msg.attach(MIMEText(origin_content, "plain", "utf-8"))
             else:

@@ -22,7 +22,7 @@ class LspSession(MethodDispatcher):
 
     def __init__(self, cwd=None):
         self.svc = get_svc()
-        self.cwd = cwd if cwd else os.getcwd()
+        self.cwd = cwd or os.getcwd()
         self._thread_pool = ThreadPoolExecutor()
         self._sub = None
         self._writer = None

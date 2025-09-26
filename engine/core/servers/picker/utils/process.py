@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import psutil
 
@@ -11,7 +11,7 @@ def get_process_name(pid: int):
     return p.name().split(".exe")[0] if p.name().endswith(".exe") else p.name()
 
 
-def get_process_info(pid: int) -> Dict:
+def get_process_info(pid: int) -> dict:
     """获取进程详细信息"""
     try:
         process = psutil.Process(pid)
@@ -46,7 +46,7 @@ def get_process_info(pid: int) -> Dict:
         return {"pid": pid, "name": f"未知进程 (PID: {pid})", "error": str(e)}
 
 
-def find_real_application_process(webview_pid: int) -> Optional[Dict]:
+def find_real_application_process(webview_pid: int) -> Optional[dict]:
     """
     从WebView2进程追踪到真正的应用程序进程
     """
@@ -86,7 +86,7 @@ def find_real_application_process(webview_pid: int) -> Optional[Dict]:
         return get_process_info(webview_pid)
 
 
-def get_java_process() -> Tuple[List[int], List[str]]:
+def get_java_process() -> tuple[list[int], list[str]]:
     username = os.getenv("USERNAME")
     if not username:
         logger.error("无法获取当前用户名")

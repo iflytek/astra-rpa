@@ -5,6 +5,7 @@ from base64 import b64decode
 from datetime import datetime
 
 from dateutil import parser
+
 from rpaatomic import TimeFormatType
 from rpaatomic.error import *
 from rpaatomic.types_manager import TypesManager
@@ -275,7 +276,7 @@ class URL(Str):
             if len(temp_value) == 0:
                 raise BaseException(
                     PARAM_VERIFY_ERROR_FORMAT.format(name, value),
-                    "{}参数验证失败".format(name, value),
+                    "{}参数验证失败".format(name, ),
                 )
             if "://" not in temp_value:
                 temp_value = "http://" + temp_value

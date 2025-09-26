@@ -2,8 +2,9 @@ import subprocess
 from typing import Any
 
 from rpaatomic.types import WinPick
-from rpawindow import ControlInfo, WalkControlInfo, WindowSizeType
-from rpawindow.core import IUITreeCore, IWindowsCore
+
+from rpawindow import ControlInfo, WindowSizeType
+from rpawindow.core import IWindowsCore
 
 
 class WindowsCore(IWindowsCore):

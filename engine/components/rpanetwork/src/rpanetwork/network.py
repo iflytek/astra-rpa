@@ -2,6 +2,7 @@ import os.path
 
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel, DynamicsItem
 from rpaatomic.atomic import atomicMg
+
 from rpanetwork import FileExistenceType, RequestType, SaveType, StateType
 from rpanetwork.core_network import NetworkCore
 from rpanetwork.error import *

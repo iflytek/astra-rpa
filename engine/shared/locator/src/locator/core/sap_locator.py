@@ -1,24 +1,23 @@
 import json
-from typing import Any, List, Optional, Union
+from typing import Any, Optional
 
 import win32com.client
 import win32con
 import win32gui
 import win32print
 import win32process
-from locator import ILocator, PickerType, Rect
+from rpaframe.logger.logger import logger
+from uiautomation import Control, ControlFromHandle
+from win32api import GetSystemMetrics
+
+from locator import ILocator, Rect
 from locator.utils.window import (
     find_window,
     get_screen_scale_rate_runtime,
     get_system_display_size,
-    is_desktop_by_handle,
-    show_desktop_rect,
     top_window,
     validate_ui_element_rect,
 )
-from rpaframe.logger.logger import logger
-from uiautomation import Control, ControlFromHandle
-from win32api import GetSystemMetrics
 
 
 class SAPLocatorV2(ILocator):
@@ -56,7 +55,7 @@ class SAPLocatorV1:
             # 获取类型字符串
             type_str = control.Type
             type_num = control.TypeAsNumber
-            class_text = getattr(control, "Text").split(".")[1]
+            class_text = control.Text.split(".")[1]
             logger.info(
                 f"control{class_text} {control} control.Type {control.Type}  control.TypeAsNumber {control.TypeAsNumber}"
             )
@@ -240,7 +239,7 @@ class SAPLocatorV1:
         if not path or len(path) < 1:
             raise Exception("请勾选校验信息")
         if len(path) == 1:
-            ###使用uia的校验
+            # 使用uia的校验
             from .uia_locator import UiaLocatorV1
 
             return UiaLocatorV1(self.ele_data)
@@ -269,12 +268,12 @@ class SAPLocatorV1:
         rect_wywh["top"] = rect_wywh["top"]
         logger.info(f"校验路径获取的rect信息 {rect_wywh} 缩放比是{ratio}")
 
-        left = rect_wywh["left"] if rect_wywh["left"] >= 0 else 0
-        top = rect_wywh["top"] if rect_wywh["top"] >= 0 else 0
-        right = rect_wywh["left"] + rect_wywh["width"] if rect_wywh["left"] + rect_wywh["width"] >= 0 else 0
-        bottom = rect_wywh["top"] + rect_wywh["height"] if rect_wywh["top"] + rect_wywh["height"] >= 0 else 0
-        right = right if right >= left else left
-        bottom = bottom if bottom >= top else top
+        left = max(rect_wywh["left"], 0)
+        top = max(rect_wywh["top"], 0)
+        right = max(rect_wywh["left"] + rect_wywh["width"], 0)
+        bottom = max(rect_wywh["top"] + rect_wywh["height"], 0)
+        right = max(right, left)
+        bottom = max(bottom, top)
 
         display = get_system_display_size()
         max_value_screen = [int(ratio * display[0]), int(ratio * display[1])]

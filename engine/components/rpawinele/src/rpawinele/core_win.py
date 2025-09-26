@@ -1,17 +1,18 @@
 import time
-from typing import List, Union
+from typing import Union
 
 from locator import ILocator
 from locator.locator import locator
 from rpaatomic.types import WinPick
 from rpaframe.logger.logger import logger
+
 from rpawinele.core import IWinEleCore
 from rpawinele.error import *
 
 
 class WinEleCore(IWinEleCore):
     @staticmethod
-    def find(pick: WinPick, wait_time: float = 10.0) -> Union["ILocator", List["ILocator"]]:
+    def find(pick: WinPick, wait_time: float = 10.0) -> Union["ILocator", list["ILocator"]]:
         """
         find 查找 handle
         """

@@ -6,8 +6,9 @@ import requests
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta
 from rpaatomic.atomic import atomicMg
 from rpaatomic.types import PATH, Ciphertext
-from rpaenterprise.error import *
 from rpaframe.logger.logger import logger
+
+from rpaenterprise.error import *
 
 
 class Enterprise:

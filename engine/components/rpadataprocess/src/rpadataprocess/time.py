@@ -1,10 +1,11 @@
 import copy
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from dateutil.relativedelta import relativedelta
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, DynamicsItem, TimeFormatType
 from rpaatomic.atomic import atomicMg
 from rpaatomic.types import Date
+
 from rpadataprocess import TimeChangeType, TimestampUnitType, TimeUnitType, TimeZoneType
 
 
@@ -142,7 +143,7 @@ class TimeProcess:
             timestamp = timestamp / 1000000
         time_obj = Date()
         if time_zone == TimeZoneType.UTC:
-            time_obj.time = datetime.fromtimestamp(timestamp, tz=timezone.utc)
+            time_obj.time = datetime.fromtimestamp(timestamp, tz=UTC)
         elif time_zone == TimeZoneType.LOCAL:
             time_obj.time = datetime.fromtimestamp(timestamp)
         return time_obj

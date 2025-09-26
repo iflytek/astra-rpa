@@ -3,7 +3,7 @@ import json
 import time
 import uuid
 from enum import Enum
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 import websockets
 from pydantic import BaseModel
@@ -129,7 +129,7 @@ class PickerRequestHandler:
 
         await self._send_response(ws, result)
 
-    async def _handle_pick_start(self, input_data: PickerRequire) -> Dict[str, Any]:
+    async def _handle_pick_start(self, input_data: PickerRequire) -> dict[str, Any]:
         """处理拾取开始"""
         try:
             from ..core.highlight_client import highlight_client
@@ -157,7 +157,7 @@ class PickerRequestHandler:
             logger.error(f"拾取开始处理失败: {e}")
             return OperationResult.error(str(e)).to_dict()
 
-    async def _handle_pick_stop(self, input_data: PickerRequire) -> Dict[str, Any]:
+    async def _handle_pick_stop(self, input_data: PickerRequire) -> dict[str, Any]:
         """处理拾取停止"""
         try:
             await self.svc.send_sign(PickerSign.STOP, input_data.model_dump())
@@ -165,7 +165,7 @@ class PickerRequestHandler:
         except Exception as e:
             return OperationResult.error(str(e)).to_dict()
 
-    async def _handle_pick_validate(self, input_data: PickerRequire) -> Dict[str, Any]:
+    async def _handle_pick_validate(self, input_data: PickerRequire) -> dict[str, Any]:
         """处理拾取校验"""
         try:
             from locator.locator import LocatorManager
@@ -191,7 +191,7 @@ class PickerRequestHandler:
         except Exception as e:
             return OperationResult.error(str(e)).to_dict()
 
-    async def _handle_pick_highlight(self, input_data: PickerRequire) -> Dict[str, Any]:
+    async def _handle_pick_highlight(self, input_data: PickerRequire) -> dict[str, Any]:
         """处理拾取高亮"""
         try:
             from locator.locator import LocatorManager
@@ -219,7 +219,7 @@ class PickerRequestHandler:
         except Exception as e:
             return OperationResult.error(str(e)).to_dict()
 
-    async def _handle_pick_gain(self, input_data: PickerRequire) -> Dict[str, Any]:
+    async def _handle_pick_gain(self, input_data: PickerRequire) -> dict[str, Any]:
         """处理拾取获取数据"""
         try:
             from locator.locator import LocatorManager
@@ -268,7 +268,7 @@ class PickerRequestHandler:
         )
         return rpa_param_utils.param_utils.special_eval_element(data, env, id2name)
 
-    async def _send_response(self, ws, result: Dict[str, Any]):
+    async def _send_response(self, ws, result: dict[str, Any]):
         """发送响应消息"""
         if result.get("success"):
             data = result.get("data", "")

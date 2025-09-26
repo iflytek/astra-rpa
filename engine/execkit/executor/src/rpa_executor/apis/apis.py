@@ -1,11 +1,12 @@
 import asyncio
 import os
 
+from rpawebsocket.ws import BaseMsg
+
 from rpa_executor.apis.ws import wsmg
 from rpa_executor.flow.svc import Svc
 from rpa_executor.logger import logger
 from rpa_executor.utils import kill_proc_tree
-from rpawebsocket.ws import BaseMsg
 
 
 def init():

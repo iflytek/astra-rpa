@@ -1,18 +1,17 @@
 import copy
 import json
-from typing import Any, Dict, List
 
-from rpa_executor.error import *
-from rpa_executor.flow.syntax import Environment, InputParam, OutputParam
-from rpa_executor.flow.syntax.token import Token, token_type_key_dict
 from rpa_param_utils.param_utils import (
     ParamType,
     param_to_eval,
-    param_type_dict,
     pre_param_handler,
     special_eval_element,
     special_eval_parse,
 )
+
+from rpa_executor.error import *
+from rpa_executor.flow.syntax import Environment, InputParam, OutputParam
+from rpa_executor.flow.syntax.token import Token, token_type_key_dict
 
 
 def callback_special_eval_element(svc, param: InputParam, env: Environment, project_id):
@@ -44,7 +43,7 @@ class Params:
         self.svc = svc
 
     def parse_param(self, project_id: str, i: dict, svc=None, token=None) -> InputParam:
-        if i.get("need_parse", None) is not None:
+        if i.get("need_parse") is not None:
             # 复杂数据前置处理
             if isinstance(i.get("value"), list) and i.get("need_parse", "") == "str":
                 dict_value = i.get("value")
@@ -159,7 +158,7 @@ class Params:
                     need_eval=need_eval,
                 )
 
-    def parse_condition_input(self, token: Token) -> Dict[str, InputParam]:
+    def parse_condition_input(self, token: Token) -> dict[str, InputParam]:
         """参数解析比较输入 例如if while"""
 
         res = {}
@@ -184,7 +183,7 @@ class Params:
         return res
 
     @staticmethod
-    def parse_output(token: Token) -> List[OutputParam]:
+    def parse_output(token: Token) -> list[OutputParam]:
         """参数解析 输出"""
         res = []
         output_list = token.value.get("outputList", [])
@@ -199,7 +198,7 @@ class Params:
                 res.append(OutputParam(types=i.get("types", "Any"), value=ls[0].get("value", "")))
         return res
 
-    def parse_input(self, token: Token) -> Dict[str, InputParam]:
+    def parse_input(self, token: Token) -> dict[str, InputParam]:
         """参数解析 输入"""
 
         res = {}
@@ -212,11 +211,7 @@ class Params:
                 "__delay_after____",
                 "__retry_time__",
                 "__retry_interval__",
-            ] and i.get("value") == [{"type": "other", "value": 0}]:
-                continue
-            elif i.get("key") in ["__res_print__"] and i.get("value") is False:
-                continue
-            elif i.get("key") in ["__skip_err__"] and i.get("value") == "exit":
+            ] and i.get("value") == [{"type": "other", "value": 0}] or i.get("key") == "__res_print__" and i.get("value") is False or i.get("key") == "__skip_err__" and i.get("value") == "exit":
                 continue
 
             # 0. 显隐关系

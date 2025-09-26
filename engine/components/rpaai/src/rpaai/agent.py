@@ -1,9 +1,10 @@
-from rpaai import DifyFileTypes
-from rpaai.api.dify import Dify
-from rpaai.api.xcagent import xcAgent
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, DynamicsItem
 from rpaatomic.atomic import atomicMg
 from rpaatomic.types import PATH
+
+from rpaai import DifyFileTypes
+from rpaai.api.dify import Dify
+from rpaai.api.xcagent import xcAgent
 
 
 class Agent:

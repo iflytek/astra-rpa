@@ -14,7 +14,7 @@ class FileExtractor:
         elif file_extension.lower() in ["docx", "doc"]:
             text_content = self.extract_docx(self.file_path)
         elif file_extension.lower() == "txt":
-            text_content = open(self.file_path, "r").read()
+            text_content = open(self.file_path).read()
         else:
             raise ValueError("不支持的文件扩展类型: " + file_extension)
         return text_content

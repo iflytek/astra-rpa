@@ -244,7 +244,7 @@ class TestCompress(TestCase):
         # 验证解压后的文件内容
         extracted_file = os.path.join(self.compress_dir, "test_content.txt")
         self.assertTrue(os.path.exists(extracted_file))
-        with open(extracted_file, "r") as f:
+        with open(extracted_file) as f:
             content = f.read()
         self.assertEqual(content, "测试内容")
 
@@ -437,7 +437,7 @@ class TestCompress(TestCase):
         extracted_file = os.path.join(extract_dir, "cycle_test.txt")
         self.assertTrue(os.path.exists(extracted_file))
 
-        with open(extracted_file, "r", encoding="utf-8") as f:
+        with open(extracted_file, encoding="utf-8") as f:
             extracted_content = f.read()
 
         self.assertEqual(extracted_content, original_content)

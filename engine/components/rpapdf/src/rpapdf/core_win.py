@@ -7,6 +7,7 @@ import pypdfium2
 from pdfminer.pdfdocument import PDFPasswordIncorrect
 from pypdf import PdfReader, PdfWriter
 from rpaatomic.utils import FileExistenceType, handle_existence
+
 from rpapdf import MergeType, PictureType, SelectRangeType
 from rpapdf.core import IPDFCore
 from rpapdf.error import *

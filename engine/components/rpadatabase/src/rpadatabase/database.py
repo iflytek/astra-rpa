@@ -1,8 +1,8 @@
-import ast
 import platform
 import sys
 
 from rpaatomic.atomic import atomicMg
+
 from rpadatabase import DatabaseType
 from rpadatabase.core import IDatabaseCore
 from rpadatabase.error import *
@@ -35,7 +35,6 @@ class Database:
     @atomicMg.atomic("Database", intputList=[], outputList=[])
     def disconnect_database(database_obj: object):
         DatabaseCore.disconnect(database_obj)
-        return
 
     @staticmethod
     @atomicMg.atomic("Database", intputList=[], outputList=[])

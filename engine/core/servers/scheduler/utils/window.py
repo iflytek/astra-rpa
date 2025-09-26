@@ -1,8 +1,7 @@
-import os
 import winreg as reg
 
 
-class Registry(object):
+class Registry:
     """注册表操作"""
 
     @staticmethod
@@ -66,8 +65,8 @@ class Registry(object):
             return None
 
 
-class AutoStart(object):
-    AUTO_START_KEY_PATH = "Software\Microsoft\Windows\CurrentVersion\Run"
+class AutoStart:
+    AUTO_START_KEY_PATH = r"Software\Microsoft\Windows\CurrentVersion\Run"
 
     @staticmethod
     def check(name="iflyrpa"):

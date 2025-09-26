@@ -1,16 +1,14 @@
 import ast
 import os
 import platform
-import subprocess
 import sys
-import time
-from typing import Tuple
 
 import psutil
 import win32com
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel, DynamicsItem
 from rpaatomic.atomic import atomicMg
 from rpaatomic.types import PATH
+
 from rpaexcel import *
 from rpaexcel.core import IExcelCore
 from rpaexcel.error import *
@@ -99,7 +97,7 @@ class Excel:
         visible_flag: bool = True,
         exist_handle_type: FileExistenceType = FileExistenceType.RENAME,
         password: str = "",
-    ) -> Tuple[ExcelObj, str]:
+    ) -> tuple[ExcelObj, str]:
         if not os.path.exists(file_path):
             raise BaseException(
                 FILE_PATH_ERROR_FORMAT.format(file_path),

@@ -1,9 +1,8 @@
 from enum import Enum
-from typing import Any, Tuple
+from typing import Any
 
-from rpaatomic.types import Bool
+from rpaatomic.types import Bool, Float, Int
 from rpaatomic.types import Dict as RpaDict
-from rpaatomic.types import Float, Int
 from rpaatomic.types import List as RpaList
 
 
@@ -64,7 +63,7 @@ def __special_eval__(value: Any, env: dict, id2name: dict = None) -> Any:
     return value
 
 
-def global_to_dict(ls: list) -> Tuple[dict, dict]:
+def global_to_dict(ls: list) -> tuple[dict, dict]:
     """工具类: 全局变量转换为字典"""
     res = {}
     id2name = {}

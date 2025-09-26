@@ -1,5 +1,5 @@
 import unittest
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from dateutil.relativedelta import relativedelta
 from rpaatomic import *
@@ -101,7 +101,7 @@ class TestTimeProcess(unittest.TestCase):
 
     def test_timestamp_to_time_utc(self):
         """测试时间戳转时间 - UTC时区"""
-        utc_datetime = datetime(2023, 12, 25, 10, 30, 45, tzinfo=timezone.utc)
+        utc_datetime = datetime(2023, 12, 25, 10, 30, 45, tzinfo=UTC)
         timestamp = int(utc_datetime.timestamp())
         result = TimeProcess.timestamp_to_time(timestamp=timestamp, time_zone=TimeZoneType.UTC)
 

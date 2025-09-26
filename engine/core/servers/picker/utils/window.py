@@ -1,5 +1,4 @@
 import ctypes
-from typing import Tuple
 
 import pyautogui
 import win32con
@@ -61,10 +60,10 @@ def get_screen_scale_rate_runtime():
         return get_screen_scale_rate_new()
 
 
-def get_system_display_size() -> Tuple[int, int]:
+def get_system_display_size() -> tuple[int, int]:
     user32 = ctypes.windll.user32
-    width = user32.GetSystemMetrics(0)  # noqa
-    height = user32.GetSystemMetrics(1)  # noqa
+    width = user32.GetSystemMetrics(0)
+    height = user32.GetSystemMetrics(1)
     return width, height
 
 

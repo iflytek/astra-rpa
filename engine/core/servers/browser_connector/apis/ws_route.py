@@ -77,7 +77,7 @@ async def browser_init_inject(ws: IWebSocket, uuid: str):
         },
     ]
     for data in data_list:
-        with open(data.get("data_path"), "r", encoding="utf-8") as file:
+        with open(data.get("data_path"), encoding="utf-8") as file:
             file_data = file.read()
         await ws.send(
             BaseMsg(
@@ -86,7 +86,7 @@ async def browser_init_inject(ws: IWebSocket, uuid: str):
                 uuid="$root$",
                 send_uuid=uuid,
                 need_ack=False,
-                data=file_data,  # noqa
+                data=file_data,
             )
             .init()
             .tojson()

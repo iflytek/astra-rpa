@@ -1,6 +1,7 @@
 import subprocess
 
 import pyperclip
+
 from rpasystem.core.clipboard_core import IClipBoardCore
 
 

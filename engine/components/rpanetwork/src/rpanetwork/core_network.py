@@ -2,6 +2,7 @@ import json
 import os
 
 import requests
+
 from rpanetwork.utils import is_json
 
 
@@ -191,7 +192,6 @@ class NetworkCore:
         with requests.get(url=url, stream=True) as response:
             response.raise_for_status()
             with open(dst_path, "wb") as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
+                f.writelines(response.iter_content(chunk_size=8192))
 
         return dst_path

@@ -1,9 +1,10 @@
-from rpaai import InputType, JobWebsitesTypes, LLMModelTypes, RatingSystemTypes
-from rpaai.api.llm import chat_prompt
-from rpaai.utils.extract import FileExtractor
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, DynamicsItem
 from rpaatomic.atomic import atomicMg
 from rpaframe.logger.logger import logger
+
+from rpaai import InputType, JobWebsitesTypes, RatingSystemTypes
+from rpaai.api.llm import chat_prompt
+from rpaai.utils.extract import FileExtractor
 
 
 class RecruitAI:

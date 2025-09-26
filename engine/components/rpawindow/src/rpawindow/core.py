@@ -2,7 +2,8 @@ from abc import ABC, abstractmethod
 from typing import Any
 
 from rpaatomic.types import WinPick
-from rpawindow import ControlInfo, WindowExistType, WindowSizeType
+
+from rpawindow import ControlInfo, WindowSizeType
 
 
 class IWindowsCore(ABC):

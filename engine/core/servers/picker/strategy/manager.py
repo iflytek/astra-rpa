@@ -32,7 +32,7 @@ class Strategy:
         """调用策略函数"""
         import traceback
 
-        from .. import IElement, PickerDomain
+        from .. import PickerDomain
         from ..logger import logger
 
         # 根据domain动态导入对应的策略函数

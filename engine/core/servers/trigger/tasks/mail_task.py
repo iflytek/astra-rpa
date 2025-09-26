@@ -2,8 +2,6 @@ import email
 import imaplib
 import poplib
 from datetime import datetime
-from email.header import Header
-from email.utils import parseaddr
 
 from apscheduler.triggers.interval import IntervalTrigger
 
@@ -173,7 +171,7 @@ class MailTask:
                     "myclient",
                 )
                 client._simple_command("ID", '("' + '" "'.join(args) + '")')
-                logger.info(f"【AsyncMailTask callback】IMAP登录成功")
+                logger.info("【AsyncMailTask callback】IMAP登录成功")
 
                 return client
             elif used_mail_protocol == "POP3":
@@ -184,7 +182,7 @@ class MailTask:
 
                 client.user(self.user_mail)
                 client.pass_(self.user_authorization)
-                logger.info(f"【AsyncMailTask callback】POP3登录成功")
+                logger.info("【AsyncMailTask callback】POP3登录成功")
 
                 return client
             else:
@@ -297,7 +295,7 @@ class MailTask:
             global_mail_ids[self.task_id] = email_ids
             return False
         # 如果有过滤条件，则逐封判断
-        logger.info(f"【AsyncMailTask callback】准备开始进行循环判断新邮件...")
+        logger.info("【AsyncMailTask callback】准备开始进行循环判断新邮件...")
         processed_count = 0
         for email_id in updated_ids:
             try:

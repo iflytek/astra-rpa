@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from os import path
 from threading import Event
-from typing import Dict, Optional
+from typing import Optional
 
 from pylsp import uris
 
@@ -16,11 +16,11 @@ document_uri = "file:///Untitled.py"
 LSP_EXIT_TIMEOUT = 5000
 
 
-class LspClient(object):
+class LspClient:
     _project_path: str
     _document_version: int = 1
     _document_text: str = ""
-    _document_diags: Dict = None
+    _document_diags: dict = None
     _pending_diag_event: Event = None
 
     _lsp_session: LspSession

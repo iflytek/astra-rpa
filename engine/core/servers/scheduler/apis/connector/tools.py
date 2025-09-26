@@ -6,9 +6,8 @@ import os
 import sys
 from dataclasses import field
 from enum import Enum
-from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, field_validator
 
@@ -66,7 +65,7 @@ class CheckBrowserPlugin(BaseModel):
     定义检测安装插件参数
     """
 
-    browsers: List[str] = field(default_factory=list)
+    browsers: list[str] = field(default_factory=list)
 
     @classmethod
     @field_validator("browsers", mode="before")
@@ -217,7 +216,6 @@ def browser_get_support():
     """
     try:
         from .....extensions.browser_plugin.browser import ExtensionManager
-        from .....extensions.browser_plugin.constants import BrowserType
 
         browsers = [browser.value.lower() for browser in ExtensionManager.get_support()]
         return res_msg(msg="获取成功", data={"browsers": browsers})
@@ -331,7 +329,7 @@ def stream_sse(pck: PipPackages, svc: Svc = Depends(get_svc)):
         finally:
             for sub_pro in sub_processes:
                 sub_pro.kill()
-            yield f"event: done\ndata: [DONE]\n\n"
+            yield "event: done\ndata: [DONE]\n\n"
 
     return StreamingResponse(sse_async_generator(pck), media_type="text/event-stream")
 

@@ -18,7 +18,7 @@ async def create_session(req: SessionOptions, svc: Svc = Depends(get_svc)):
         session_id = service.create_session(req)
         return {"sessionId": session_id}
     except Exception as err:
-        logger.error(f"createNewSession returning a 500: ", exc_info=err)
+        logger.error("createNewSession returning a 500: ", exc_info=err)
         raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})
 
 
@@ -38,7 +38,7 @@ async def get_diagnostics(sid: str, req: SessionOptions):
         diagnostics = service.get_diagnostics(session, req)
         return {"diagnostics": diagnostics}
     except Exception as err:
-        logger.error(f"getDiagnostics returning a 500: ", exc_info=err)
+        logger.error("getDiagnostics returning a 500: ", exc_info=err)
         raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})
 
 
@@ -53,7 +53,7 @@ async def get_hover_info(sid: str, req: SessionOptions):
         hover = service.get_hover_info(session, req)
         return {"hover": hover}
     except Exception as err:
-        logger.error(f"getHoverInfo returning a 500: ", exc_info=err)
+        logger.error("getHoverInfo returning a 500: ", exc_info=err)
         raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})
 
 
@@ -68,7 +68,7 @@ async def get_rename_edits(sid: str, req: SessionOptions):
         edits = service.get_rename_edits(session, req)
         return {"edits": edits}
     except Exception as err:
-        logger.error(f"getRenameEdits returning a 500: ", exc_info=err)
+        logger.error("getRenameEdits returning a 500: ", exc_info=err)
         raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})
 
 
@@ -83,7 +83,7 @@ async def get_signature_help(sid: str, req: SessionOptions):
         signature_help = service.get_signature_help(session, req)
         return {"signatureHelp": signature_help}
     except Exception as err:
-        logger.error(f"getSignatureHelp returning a 500: ", exc_info=err)
+        logger.error("getSignatureHelp returning a 500: ", exc_info=err)
         raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})
 
 
@@ -98,7 +98,7 @@ async def get_completion(sid: str, req: SessionOptions):
         completion_list = service.get_completion(session, req)
         return {"completionList": completion_list}
     except Exception as err:
-        logger.error(f"getCompletion returning a 500: ", exc_info=err)
+        logger.error("getCompletion returning a 500: ", exc_info=err)
         raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})
 
 
@@ -113,5 +113,5 @@ async def resolve_completion(sid: str, req: SessionOptions):
         completion_item = service.resolve_completion(session, req)
         return {"completionItem": completion_item}
     except Exception as err:
-        logger.error(f"resolveCompletion returning a 500: ", exc_info=err)
+        logger.error("resolveCompletion returning a 500: ", exc_info=err)
         raise HTTPException(status_code=500, detail={"message": err or "An unexpected error occurred"})

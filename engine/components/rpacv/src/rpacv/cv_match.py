@@ -101,7 +101,7 @@ class AnchorMatch:
         print("屏幕缩放", rw, rh)
 
         # 确保锚点和锚点坐标都获取到
-        logger.info(f"当前屏幕与原始比例为{rw},{rh}")
+        logger.info("当前屏幕与原始比例为%s,%s", rw, rh)
         if center_coords_anchor != "" and anchor is not None:
             # 提取并转换坐标
             aim_x, aim_y = map(lambda x: int(float(x)), center_coords_aim.split(","))

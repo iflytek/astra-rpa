@@ -4,6 +4,7 @@ from copy import deepcopy
 
 from rpaatomic import DynamicsItem
 from rpaatomic.atomic import atomicMg
+
 from rpadataprocess import (
     CaseChangeType,
     ConcatStringType,

@@ -1,5 +1,3 @@
-import json
-import time
 
 from rpadialog import (
     ButtonType,

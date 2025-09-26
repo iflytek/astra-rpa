@@ -7,10 +7,11 @@
 import json
 import re
 import traceback
-from typing import List, Union
+from typing import Union
+
+from rpaframe.logger.logger import logger
 
 from locator import ILocator, PickerDomain
-from rpaframe.logger.logger import logger
 
 
 def uia_factory_callback():
@@ -76,7 +77,7 @@ class LocatorManager:
             pass
         return json.loads(element_string)
 
-    def locator(self, element: Union[str, dict], **kwargs) -> Union[List[ILocator], ILocator, None]:
+    def locator(self, element: Union[str, dict], **kwargs) -> Union[list[ILocator], ILocator, None]:
         """
         定位元素
 

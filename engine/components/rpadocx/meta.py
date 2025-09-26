@@ -7,7 +7,7 @@ from rpadocx.docx_obj import DocxObj
 
 
 def get_version():
-    with open("pyproject.toml", "r", encoding="utf-8") as f:
+    with open("pyproject.toml", encoding="utf-8") as f:
         pyproject_data = toml.load(f)
     return pyproject_data["project"]["version"]
 

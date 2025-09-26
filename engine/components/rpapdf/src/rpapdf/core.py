@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from functools import wraps
 
 from docx import Document
+
 from rpapdf import FileExistenceType, PictureType
 
 

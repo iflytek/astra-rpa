@@ -1,14 +1,14 @@
 from dataclasses import dataclass
-from typing import Type, Union
+from typing import Union
 
 from browser_connector.config import Config
 
 
 @dataclass
 class ServiceContext:
-    config: Union[Type[Config], None]
+    config: Union[type[Config], None]
 
-    def set_config(self, conf: Type[Config]):
+    def set_config(self, conf: type[Config]):
         self.config = conf
 
 

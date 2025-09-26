@@ -1,6 +1,7 @@
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, DynamicsItem
 from rpaatomic.atomic import atomicMg
 from rpaatomic.types import PATH
+
 from rpaopenapi import utils
 from rpaopenapi.core_iflytek import OpenapiIflytek
 from rpaopenapi.error import *

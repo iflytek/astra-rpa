@@ -1,5 +1,3 @@
-import platform
-import sys
 from unittest import TestCase
 
 from rpaencrypt import Base64CodeType

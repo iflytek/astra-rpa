@@ -1,9 +1,9 @@
-import base64
 import os
 import subprocess
 import sys
 
 import psutil
+
 from rpa_executor.logger import logger
 
 system_encoding = sys.getdefaultencoding()

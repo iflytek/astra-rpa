@@ -11,9 +11,10 @@ from typing import Any, Optional, Union
 import comtypes
 import comtypes.automation
 import comtypes.client
+from rpaframe.logger.logger import logger
+
 from locator import ILocator, Rect
 from locator.core.uia_locator import uia_factory
-from rpaframe.logger.logger import logger
 
 # 加载MSAA相关库
 comtypes.client.GetModule("oleacc.dll")
@@ -411,11 +412,11 @@ class MSAAValidator:
 
             # 如果没有直接匹配的子元素，且允许递归搜索，则尝试递归搜索
             if not candidates and use_recursive:
-                logger.info(f"没有找到直接匹配的子元素，尝试递归搜索...")
+                logger.info("没有找到直接匹配的子元素，尝试递归搜索...")
                 for child in children:
                     recursive_matches = MSAAValidator._find_matches_in_parent(child, target_desc, use_recursive=True)
                     if recursive_matches:
-                        logger.info(f"递归搜索找到匹配元素")
+                        logger.info("递归搜索找到匹配元素")
                         return recursive_matches
 
             # 进一步过滤匹配名称和值的元素
@@ -435,7 +436,7 @@ class MSAAValidator:
             # 根据索引选择元素
             if filtered_candidates:
                 matches.append(filtered_candidates[0])
-                logger.info(f"选择第一个元素")
+                logger.info("选择第一个元素")
 
         except Exception as e:
             logger.info(f"在父元素中查找匹配项时出错: {str(e)}")

@@ -3,8 +3,9 @@ import os
 
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel, DynamicsItem
 from rpaatomic.atomic import atomicMg
-from rpaemail import EmailSeenType, EmailServerType
 from rpaframe.logger.logger import logger
+
+from rpaemail import EmailSeenType, EmailServerType
 
 
 class Email:

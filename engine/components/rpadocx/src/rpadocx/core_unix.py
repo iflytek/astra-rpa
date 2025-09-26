@@ -7,10 +7,10 @@ from io import BytesIO
 import PIL
 from docx import Document
 from docx.shared import RGBColor
-from PIL.Image import Image
 from pywpsrpc import rpcwpsapi
 from pywpsrpc.rpcwpsapi import *
 from rpaatomic.utils import handle_existence
+
 from rpadocx import *
 from rpadocx.core import IDocxCore
 from rpadocx.error import *
@@ -178,7 +178,6 @@ class DocxCore(IDocxCore):
             doc.SaveAs(FileName=new_file_path)
         elif save_type == SaveType.SAVE:
             doc.Save()
-        return
 
     # def create(cls, file_path: str = "", file_name: str = "", visible_flag: bool = True, default_application: ApplicationType = ApplicationType.WORD,
     #            exist_handle_type: FileExistenceType = FileExistenceType.RENAME) -> object:
@@ -669,8 +668,8 @@ class DocxCore(IDocxCore):
                 if if_change_font:
                     # 设置字体属性
                     run = cell.Range.Font
-                    run.Name = font_set if font_set else "宋体"
-                    run.Size = font_size if font_size else 12
+                    run.Name = font_set or "宋体"
+                    run.Size = font_size or 12
                     run.Bold = font_bold
                     run.Italic = font_italic
                     run.Underline = underline.value if underline else 0
@@ -846,8 +845,7 @@ class DocxCore(IDocxCore):
         pydoc = Document(oldfilepath)
         new_path = os.path.join(output_path, filename)
         with open(new_path, "w", encoding="utf-8") as txt_file:
-            for para in pydoc.paragraphs:
-                txt_file.write(para.text + "\n")
+            txt_file.writelines(para.text + "\n" for para in pydoc.paragraphs)
 
     @classmethod
     def convert_to_pdf(

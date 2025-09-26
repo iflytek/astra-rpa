@@ -32,7 +32,7 @@ def gen_type(__annotation__):
     elif __annotation__ in [str, list, tuple, int, float, dict, bool]:
         # 基础变量
         types = (
-            getattr(__annotation__, "__name__").capitalize()
+            __annotation__.__name__.capitalize()
             if getattr(__annotation__, "__name__", "_empty") != "_empty"
             else None
         )
@@ -49,13 +49,13 @@ def gen_type(__annotation__):
     elif issubclass(__annotation__, Enum):
         # Enum类型
         types = (
-            getattr(__annotation__, "__name__") if getattr(__annotation__, "__name__", "_empty") != "_empty" else None
+            __annotation__.__name__ if getattr(__annotation__, "__name__", "_empty") != "_empty" else None
         )
         kind = InspectType.ENUM
     elif hasattr(__annotation__, "__validate__"):
         # pydantic基础类型扩展
         types = (
-            getattr(__annotation__, "__name__") if getattr(__annotation__, "__name__", "_empty") != "_empty" else None
+            __annotation__.__name__ if getattr(__annotation__, "__name__", "_empty") != "_empty" else None
         )
         kind = InspectType.RPABASE
     else:
@@ -182,25 +182,23 @@ class ParamModel:
                 pass
             elif i.__annotation__ in [str, list, tuple, int, float, dict, bool]:
                 try:
-                    if i.__annotation__ in [bool] and isinstance(value, str):
+                    if i.__annotation__ == bool and isinstance(value, str):
                         if value.lower() in ["false", "none", "undefined", ""]:
                             value = False
                         else:
                             value = i.__annotation__(value)
                     elif i.__annotation__ in [int, float] and isinstance(value, str):
-                        if value.lower() in [""]:
+                        if value.lower() == "":
                             value = 0
                         else:
                             value = i.__annotation__(value)
                     elif (
-                        i.__annotation__ in [list]
+                        i.__annotation__ == list
                         and isinstance(value, str)
                         and value.startswith("[")
                         and value.endswith("]")
-                    ):
-                        value = ast.literal_eval(value)
-                    elif (
-                        i.__annotation__ in [dict]
+                    ) or (
+                        i.__annotation__ == dict
                         and isinstance(value, str)
                         and value.startswith("{")
                         and value.endswith("}")
@@ -213,10 +211,7 @@ class ParamModel:
                         PARAM_CONVERT_ERROR_FORMAT.format(show_name, i.types, value),
                         "{}的值转换成{}失败{}, error:{}".format(show_name, i.types, value, e),
                     ) from e
-            elif isinstance(i.__annotation__, str):
-                # 忽略
-                pass
-            elif str(i.__annotation__).startswith("typing."):
+            elif isinstance(i.__annotation__, str) or str(i.__annotation__).startswith("typing."):
                 # 忽略
                 pass
             elif issubclass(i.__annotation__, Enum):

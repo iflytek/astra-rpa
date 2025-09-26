@@ -63,7 +63,7 @@ class EventCore(IEventCore):
         self.__hook_manager.HookMouse()
         self.__hook_manager.HookKeyboard()
         self.__init = True
-        pythoncom.PumpMessages()  # noqa
+        pythoncom.PumpMessages()
         logger.info("EventCore __hook__ end")
 
     def is_cancel(self):

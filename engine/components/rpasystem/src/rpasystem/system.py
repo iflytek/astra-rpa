@@ -2,6 +2,7 @@ import os
 
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, DynamicsItem
 from rpaatomic.atomic import atomicMg
+
 from rpasystem import *
 from rpasystem.core.screenshot_core import ScreenShotCore
 from rpasystem.error import *

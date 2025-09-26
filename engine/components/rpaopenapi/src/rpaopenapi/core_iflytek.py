@@ -9,6 +9,7 @@ from urllib.parse import urlencode
 from wsgiref.handlers import format_date_time
 
 import requests
+
 from rpaopenapi.error import *
 
 APPId = ""

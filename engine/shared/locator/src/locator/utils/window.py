@@ -1,5 +1,4 @@
 import ctypes
-from typing import List, Tuple
 
 import pyautogui
 import pygetwindow
@@ -9,11 +8,12 @@ import win32com.client
 import win32con
 import win32gui
 import win32process
-from locator import PickerType, Rect
-from locator.utils.process import get_process_name
 from pygetwindow._pygetwindow_win import Win32Window, isWindowVisible
 from rpaframe.logger.logger import logger
 from uiautomation import Control, ControlFromHandle
+
+from locator import PickerType, Rect
+from locator.utils.process import get_process_name
 
 
 def get_screen_scale_rate_new():
@@ -64,10 +64,10 @@ def get_screen_scale_rate_runtime():
         return get_screen_scale_rate_new()
 
 
-def get_system_display_size() -> Tuple[int, int]:
+def get_system_display_size() -> tuple[int, int]:
     user32 = ctypes.windll.user32
-    width = user32.GetSystemMetrics(0)  # noqa
-    height = user32.GetSystemMetrics(1)  # noqa
+    width = user32.GetSystemMetrics(0)
+    height = user32.GetSystemMetrics(1)
     return width, height
 
 
@@ -180,13 +180,12 @@ RPA_HIGHLIGHT_CHECKED = False
 
 def is_rpa_highlight(ctrl: Control) -> bool:
     """判断control是否是高亮窗口"""
-    global RPA_HIGHLIGHT_CHECKED
-    global RPA_HIGHLIGHT_PROCESSES
+    global RPA_HIGHLIGHT_CHECKED, RPA_HIGHLIGHT_PROCESSES
     if not RPA_HIGHLIGHT_CHECKED:
         RPA_HIGHLIGHT_CHECKED = True
         all_windows = pygetwindow.getWindowsWithTitle("")
         for window in all_windows:
-            win_control = ControlFromHandle(window._hWnd)  # noqa
+            win_control = ControlFromHandle(window._hWnd)
             if getattr(win_control, "AutomationId", None) == "HighlightForm":
                 RPA_HIGHLIGHT_PROCESSES.append(win_control.ProcessId)
     if ctrl.ProcessId in RPA_HIGHLIGHT_PROCESSES:
@@ -215,7 +214,7 @@ def find_app_handles(app: str) -> list:
     for window in pygetwindow.getWindowsWithTitle(""):
         try:
             # logger.info(f"窗口标题: {window.title}")
-            hwnd = window._hWnd  # noqa
+            hwnd = window._hWnd
             pid = get_pid_by_handle(handle=hwnd)
             if not pid:
                 continue
@@ -245,7 +244,7 @@ DESKTOP_WINDOW_HANDLES = list()
 def show_desktop_rect(rect: Rect, desktop_handle=None):
     all_windows = pygetwindow.getWindowsWithTitle("")
     for window in all_windows:
-        win_control = ControlFromHandle(window._hWnd)  # noqa
+        win_control = ControlFromHandle(window._hWnd)
 
         # rpa高亮窗口，忽略
         if is_rpa_highlight(win_control):
@@ -256,7 +255,7 @@ def show_desktop_rect(rect: Rect, desktop_handle=None):
             continue
 
         # 桌面窗口不能最小化，最小化导致桌面被隐藏
-        if (desktop_handle and window._hWnd == desktop_handle) or window._hWnd in DESKTOP_WINDOW_HANDLES:  # noqa
+        if (desktop_handle and window._hWnd == desktop_handle) or window._hWnd in DESKTOP_WINDOW_HANDLES:
             continue
 
         # 窗口挡住桌面元素，最小化窗口
@@ -333,7 +332,7 @@ def find_window(cls_name: str, name: str, app_name: str = None) -> int:
     return 0
 
 
-def find_window_handles_list(cls_name: str, name: str, app_name: str = None, picker_type=None) -> List[int]:
+def find_window_handles_list(cls_name: str, name: str, app_name: str = None, picker_type=None) -> list[int]:
     """
     获取指定窗口的handle列表，包含cls完全一致的handle和窗口name最长并且一致的handle
 
@@ -671,7 +670,7 @@ def top_window(handle: int, ctrl: Control):
             cur_window.restore()
             cur_window.activate()
     except Exception as e:
-        logger.info(f"恢复和激活窗口失败")
+        logger.info("恢复和激活窗口失败")
 
     if is_desktop_by_handle(handle, ctrl):
         # 桌面窗口不需要置顶
@@ -741,7 +740,7 @@ def top_browser(handle: int, ctrl: Control):
             cur_window.restore()
             cur_window.activate()
     except Exception as e:
-        logger.info(f"恢复和激活窗口失败")
+        logger.info("恢复和激活窗口失败")
 
     if is_desktop_by_handle(handle, ctrl):
         # 桌面窗口不需要置顶

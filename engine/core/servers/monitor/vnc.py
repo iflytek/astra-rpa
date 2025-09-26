@@ -129,7 +129,7 @@ class VNCServer:
             ini_path = os.path.join(self.vnc_dir, "ultravnc.ini")
 
             # 读取模板文件内容
-            with open(ini_tpl_path, "r", encoding="utf-8") as file:
+            with open(ini_tpl_path, encoding="utf-8") as file:
                 content = file.read()
 
             # 替换路径变量

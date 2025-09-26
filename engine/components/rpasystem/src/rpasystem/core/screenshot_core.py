@@ -4,7 +4,7 @@ import io
 import os
 import subprocess
 import sys
-from typing import Any, Tuple
+from typing import Any
 
 import pyautogui
 
@@ -14,7 +14,7 @@ class ScreenShotCore:
         pyautogui.FAILSAFE = False
 
     @staticmethod
-    def screenshot(region: Tuple[int, int, int, int] = None, file_path: str = "") -> Any:
+    def screenshot(region: tuple[int, int, int, int] = None, file_path: str = "") -> Any:
         """
         截图
         """

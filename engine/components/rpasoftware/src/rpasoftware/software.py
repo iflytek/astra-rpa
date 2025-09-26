@@ -4,12 +4,12 @@ import subprocess
 import sys
 import time
 import warnings
-from typing import Any
 
 import psutil
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel
 from rpaatomic.atomic import atomicMg
 from rpaatomic.logger import logger
+
 from rpasoftware.core import ISoftwareCore
 from rpasoftware.error import *
 

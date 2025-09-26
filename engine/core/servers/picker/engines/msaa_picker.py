@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
 独立的 MSAA 拾取与校验模块
 整合原有项目中的 MSAA 相关功能，可独立运行，不依赖项目中的其他文件
@@ -617,8 +616,8 @@ class MSAAPickerUtil:
 
                         while uia_current:
                             try:
-                                value = uia_current.GetValuePattern().Value  # noqa
-                            except Exception:  # noqa
+                                value = uia_current.GetValuePattern().Value
+                            except Exception:
                                 value = None
                             uia_info = {
                                 "cls": uia_current.ClassName,

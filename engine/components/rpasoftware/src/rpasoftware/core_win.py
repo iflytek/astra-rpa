@@ -1,4 +1,5 @@
 import win32con
+
 from rpasoftware.core import ISoftwareCore
 from rpasoftware.regedit_win import Regedit
 

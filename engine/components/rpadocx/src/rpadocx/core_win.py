@@ -2,7 +2,6 @@ import io
 import os
 import re
 import tempfile
-from typing import Tuple
 
 import psutil
 import win32clipboard
@@ -13,6 +12,7 @@ from PIL import Image
 from rpaatomic.logger import logger
 from rpaatomic.types import PATH
 from rpaatomic.utils import FileExistenceType, handle_existence
+
 from rpadocx import *
 from rpadocx.core import IDocxCore
 from rpadocx.error import *
@@ -151,7 +151,7 @@ class DocxCore(IDocxCore):
         visible_flag: bool = True,
         default_application: ApplicationType = ApplicationType.WORD,
         exist_handle_type: FileExistenceType = FileExistenceType.RENAME,
-    ) -> Tuple[object, str]:
+    ) -> tuple[object, str]:
         """
         Word - 文档操作 - 创建
         """
@@ -530,7 +530,7 @@ class DocxCore(IDocxCore):
             image = Image.open(io.BytesIO(img))
             if image.mode != "RGB":
                 image = image.convert("RGB")
-            with tempfile.NamedTemporaryFile(delete=False, suffix=f".png") as temp_file:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_file:
                 temp_file_path = temp_file.name
                 print("临时文件路径:", temp_file_path)
                 # 将字节数据转换为Image对象
@@ -617,8 +617,8 @@ class DocxCore(IDocxCore):
                 if if_change_font:
                     # 设置字体属性
                     run = cell.Range.Font
-                    run.Name = font_set if font_set else "宋体"
-                    run.Size = font_size if font_size else 12
+                    run.Name = font_set or "宋体"
+                    run.Size = font_size or 12
                     run.Bold = font_bold
                     run.Italic = font_italic
                     run.Underline = underline.value if underline else 0
@@ -773,8 +773,7 @@ class DocxCore(IDocxCore):
         pydoc = Document(oldfilepath)
         new_path = os.path.join(output_path, filename)
         with open(new_path, "w", encoding="utf-8") as txt_file:
-            for para in pydoc.paragraphs:
-                txt_file.write(para.text + "\n")
+            txt_file.writelines(para.text + "\n" for para in pydoc.paragraphs)
 
     @classmethod
     def convert_to_pdf(

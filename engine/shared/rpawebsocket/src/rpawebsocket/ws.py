@@ -4,9 +4,10 @@ import logging
 import time
 import uuid as uid
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Any, Callable, Union
+from typing import Any, Union
 
 
 class IWebSocket(ABC):

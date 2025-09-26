@@ -2,6 +2,7 @@ import base64
 import hashlib
 
 from Cryptodome.Cipher import AES
+
 from rpaencrypt import Base64CodeType, EncryptCaseType, MD5bitsType, SHAType
 
 

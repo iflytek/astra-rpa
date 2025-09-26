@@ -6,20 +6,22 @@ import subprocess
 import sys
 import time
 
-from rpaai import LLMModelTypes
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta
 from rpatools.tools import RpaTools
 
+from rpaai import LLMModelTypes
+
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 print(os.path.dirname(os.path.abspath(__file__)))
+
+from rpaatomic.atomic import atomicMg
+from rpaframe.logger.logger import logger
 
 from rpaai.api.llm import chat_normal, chat_streamable
 from rpaai.error import *
 from rpaai.prompt.g_chat import prompt_generate_question
 from rpaai.utils.extract import FileExtractor
 from rpaai.utils.str import replace_keyword
-from rpaatomic.atomic import atomicMg
-from rpaframe.logger.logger import logger
 
 
 class ChatAI:
@@ -59,7 +61,7 @@ class ChatAI:
         args = [
             exe_path,
             f"--url=tauri://localhost/multichat.html?max_turns={str(max_turns)}&is_save={str(int(is_save))}&title={title}&model={model.value}",
-            f"--height=600",
+            "--height=600",
         ]
         process = subprocess.Popen(
             args,

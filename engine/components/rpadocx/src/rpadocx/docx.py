@@ -1,12 +1,12 @@
 import os
 import platform
 import sys
-from typing import Tuple
 
 from rpaatomic import AtomicFormType, AtomicFormTypeMeta, AtomicLevel, DynamicsItem
 from rpaatomic.atomic import atomicMg
 from rpaatomic.types import PATH
 from rpaatomic.utils import FileExistenceType
+
 from rpadocx import *
 from rpadocx.core import IDocxCore
 from rpadocx.docx_obj import DocxObj
@@ -139,7 +139,7 @@ class Docx:
         default_application: ApplicationType = ApplicationType.WORD,
         visible_flag: bool = True,
         exist_handle_type: FileExistenceType = FileExistenceType.RENAME,
-    ) -> Tuple[DocxObj, PATH]:
+    ) -> tuple[DocxObj, PATH]:
         if not os.path.exists(file_path):
             raise BaseException(
                 FILE_PATH_ERROR_FORMAT.format(file_path),

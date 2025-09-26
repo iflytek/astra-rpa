@@ -188,7 +188,7 @@ class WEBPicker:
             web_info = response.json()["data"]["data"]
             if not web_info:
                 return None
-        except Exception as e:  # noqa
+        except Exception as e:
             logger.info(f"get_element获取输出出现异常{e}")
             return None
 
