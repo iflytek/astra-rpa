@@ -46,3 +46,40 @@ jobs:
       - name: Run Ruff check
         if: steps.changed-files.outputs.any_changed == 'true'
         run: uv run --project engine --dev ruff format ./engine --check
+
+  java-style:
+    name: Java Style
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Check changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v46
+        with:
+          files: |
+            backend/robot-service/**
+            backend/resource-service/**
+            .github/workflows/style.yml
+
+      - name: Setup JDK Corretto 21 with Maven 3.8.4
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '21'
+          maven-version: '3.8.4'
+
+      - name: Run Spotless check in robot-service
+        if: steps.changed-files.outputs.any_changed == 'true'
+        working-directory: backend/robot-service
+        run: mvn -B -DskipTests -DskipITs spotless:check
+
+      - name: Run Spotless check in resource-service
+        if: steps.changed-files.outputs.any_changed == 'true'
+        working-directory: backend/resource-service
+        run: mvn -B -DskipTests -DskipITs spotless:check
